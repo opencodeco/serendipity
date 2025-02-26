@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Testing;
 
-use Serendipity\Infrastructure\Faker\Faker;
 use BackedEnum;
 use FastRoute\Dispatcher;
 use Hyperf\Context\Context;
@@ -13,11 +12,11 @@ use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\HttpServer\Router\Handler;
 use PHPUnit\Framework\TestCase as PHPUnit;
 use Psr\Http\Message\ServerRequestInterface;
+use Serendipity\Infrastructure\Faker\Faker;
 
 use function Hyperf\Support\make;
 
 /**
- * @internal
  * @coversNothing
  */
 class TestCase extends PHPUnit

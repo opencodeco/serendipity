@@ -12,7 +12,6 @@ use Serendipity\Infrastructure\Persistence\Testing\PostgresHelper;
 use Serendipity\Infrastructure\Persistence\Testing\SleekDBHelper;
 
 /**
- * @internal
  * @coversNothing
  */
 class IntegrationTestCase extends TestCase
