@@ -1,7 +1,6 @@
 {
   "name": "devitools/serendipity",
   "type": "library",
-  "version": "1.0.3",
   "license": "MIT",
   "keywords": [
     "php",
