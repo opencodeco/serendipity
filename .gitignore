@@ -5,6 +5,7 @@
 .idea/
 .git/
 runtime/
+tests/.phpunit/
 vendor/
 .phpintel/
 .env
