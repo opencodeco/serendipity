@@ -37,7 +37,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: git config --global --add safe.directory /__w/hyperf-com-rapadura/hyperf-com-rapadura
+      - run: git config --global --add safe.directory /__w/devitools/serendipity
 
       - run: composer install
 

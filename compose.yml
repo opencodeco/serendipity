@@ -10,4 +10,30 @@ services:
     environment:
       - SCAN_CACHEABLE=false
       - STDOUT_LOG_LEVEL=alert,critical,emergency,error,warning,notice,info
+    networks:
+      - serendipity-network
     restart: on-failure
+
+  postgres:
+    profiles:
+      - postgres
+    container_name: serendipity-postgres
+    image: postgres:16.2
+    tty: true
+    environment:
+      - POSTGRES_USER=${POSTGRES_DB_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD:-root}
+      - POSTGRES_DB=${POSTGRES_DB_NAME:-database}
+    ports:
+      - '5432:5432'
+    volumes:
+      - serendipity-postgres-data:/var/lib/postgresql/data
+    networks:
+      - serendipity-network
+
+volumes:
+  serendipity-postgres-data:
+
+networks:
+  serendipity-network:
+    name: serendipity-network
