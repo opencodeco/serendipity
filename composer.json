@@ -64,9 +64,6 @@
     "swoole/ide-helper": "^5.0",
     "vimeo/psalm": "^5.26"
   },
-  "suggest": {
-    "swow/swow": "Required to create swow components."
-  },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "config": {
