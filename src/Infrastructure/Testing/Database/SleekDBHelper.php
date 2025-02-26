@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Testing\Database;
 
-use JsonException;
 use ReflectionException;
 use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\Adapter\Serializing\DeserializerFactory;
@@ -52,18 +51,9 @@ final class SleekDBHelper extends Helper
         return new Values(array_merge($data, ['_id' => $generatedId]));
     }
 
-    protected function count(string $resource, array $filters = []): int
+    public function count(string $resource, array $filters = []): int
     {
         $database = $this->factory->make($resource);
         return count($database->findBy($filters));
-    }
-
-    protected function json(array $filters): string
-    {
-        try {
-            return json_encode($filters, JSON_THROW_ON_ERROR);
-        } catch (JsonException $e) {
-            return $e->getMessage();
-        }
     }
 }

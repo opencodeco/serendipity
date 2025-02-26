@@ -63,7 +63,7 @@ final class PostgresHelper extends Helper
         return new Values($data);
     }
 
-    protected function count(string $resource, array $filters): int
+    public function count(string $resource, array $filters): int
     {
         $callback = static function (string $key, mixed $value) {
             if ($value === null) {

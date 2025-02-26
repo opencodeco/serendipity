@@ -11,8 +11,6 @@ use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\Faker\Faker;
 
 use function array_merge;
-use function Serendipity\Type\Json\encode;
-use function sprintf;
 
 abstract class Helper
 {
@@ -27,51 +25,7 @@ abstract class Helper
 
     abstract public function seed(string $type, string $resource, array $override = []): Values;
 
-    public function assertHas(string $resource, array $filters): void
-    {
-        $count = $this->count($resource, $filters);
-        $message = sprintf(
-            "Expected to find at least one item in resource '%s' with filters '%s'",
-            $resource,
-            $this->json($filters),
-        );
-        assert($count > 0, $message);
-    }
-
-    public function assertHasNot(string $resource, array $filters): void
-    {
-        $count = $this->count($resource, $filters);
-        $message = sprintf(
-            "Expected to not find any item in resource '%s' with filters '%s'",
-            $resource,
-            $this->json($filters)
-        );
-        assert($count === 0, $message);
-    }
-
-    public function assertHasCount(int $expected, string $resource, array $filters): void
-    {
-        $count = $this->count($resource, $filters);
-        $message = sprintf(
-            "Expected to find %d items in resource '%s' with filters '%s', but found %d",
-            $expected,
-            $resource,
-            $this->json($filters),
-            $count
-        );
-        assert($count === $expected, $message);
-    }
-
-    public function assertIsEmpty(string $resource): void
-    {
-        $count = $this->count($resource, []);
-        $message = sprintf(
-            "Expected resource '%s' to be empty, but found %d items",
-            $resource,
-            $count
-        );
-        assert($count === 0, $message);
-    }
+    abstract public function count(string $resource, array $filters): int;
 
     /**
      * @template T of object
@@ -84,12 +38,5 @@ abstract class Helper
         $instance = $this->serializerFactory->make($type)->serialize($fake->toArray());
         $datum = $this->deserializerFactory->make($type)->deserialize($instance);
         return array_merge($datum, $override);
-    }
-
-    abstract protected function count(string $resource, array $filters): int;
-
-    protected function json(array $filters): ?string
-    {
-        return encode($filters);
     }
 }

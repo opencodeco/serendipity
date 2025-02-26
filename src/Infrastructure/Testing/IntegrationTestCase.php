@@ -4,23 +4,28 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Testing;
 
+use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
 use Serendipity\Infrastructure\Testing\Database\Helper;
 use Serendipity\Infrastructure\Testing\Database\PostgresHelper;
 use Serendipity\Infrastructure\Testing\Database\SleekDBHelper;
+
+use function Serendipity\Type\Json\encode;
 
 /**
  * @coversNothing
  */
 class IntegrationTestCase extends TestCase
 {
-    protected Helper $sleek;
+    private Helper $sleek;
+
+    private Helper $postgres;
 
     protected Builder $mapper;
 
-    protected PostgresHelper $postgres;
+    protected ?string $helper = null;
 
-    protected array $truncate = [];
+    protected ?string $resource = null;
 
     protected function setUp(): void
     {
@@ -29,7 +34,6 @@ class IntegrationTestCase extends TestCase
         $this->mapper = $this->make(Builder::class);
 
         $this->sleek = $this->make(SleekDBHelper::class, ['assertion' => $this]);
-
         $this->postgres = $this->make(PostgresHelper::class, ['assertion' => $this]);
 
         $this->truncate();
@@ -42,14 +46,101 @@ class IntegrationTestCase extends TestCase
         $this->truncate();
     }
 
+    protected function seed(string $type, array $override = [], ?string $resource = null): Values
+    {
+        if ($this->helper === null) {
+            $this->fail('Helper not defined. Please define the helper property.');
+        }
+        $resource = $resource ?? $this->resource ?? '';
+        if ($resource === '') {
+            $this->fail('Resource not defined');
+        }
+        return match ($this->helper) {
+            'sleek' => $this->sleek->seed($type, $resource, $override),
+            'postgres' => $this->postgres->seed($type, $resource, $override),
+            default => Values::createFrom([]),
+        };
+    }
+
     protected function truncate(): void
     {
-        foreach ($this->truncate as $resource => $database) {
-            match ($database) {
-                'sleek' => $this->sleek->truncate($resource),
-                'postgres' => $this->postgres->truncate($resource),
-                default => null,
-            };
+        if ($this->resource === null) {
+            return;
         }
+        match ($this->helper) {
+            'sleek' => $this->sleek->truncate($this->resource),
+            'postgres' => $this->postgres->truncate($this->resource),
+            default => null,
+        };
+    }
+
+    protected function assertHas(array $filters, ?string $resource = null, ?string $helper = null): void
+    {
+        $resource = $resource ?? $this->resource ?? '';
+        $count = $this->countWithHelper($resource, $filters, $helper);
+        $message = sprintf(
+            "Expected to find at least one item in resource '%s' with filters '%s'",
+            $resource,
+            encode($filters),
+        );
+        $this->assertEquals($count > 0, $message);
+    }
+
+    protected function assertHasNot(array $filters, ?string $resource = null, ?string $helper = null): void
+    {
+        $resource = $resource ?? $this->resource ?? '';
+        $count = $this->countWithHelper($resource, $filters, $helper);
+        $message = sprintf(
+            "Expected to not find any item in resource '%s' with filters '%s'",
+            $resource,
+            encode($filters)
+        );
+        $this->assertEquals($count === 0, $message);
+    }
+
+    protected function assertHasCount(
+        int $expected,
+        array $filters,
+        ?string $resource = null,
+        ?string $helper = null
+    ): void {
+        $resource = $resource ?? $this->resource ?? '';
+        $count = $this->countWithHelper($resource, $filters, $helper);
+        $message = sprintf(
+            "Expected to find %d items in resource '%s' with filters '%s', but found %d",
+            $expected,
+            $resource,
+            encode($filters),
+            $count
+        );
+        $this->assertEquals($count === $expected, $message);
+    }
+
+    protected function assertIsEmpty(?string $resource = null, ?string $helper = null): void
+    {
+        $resource = $resource ?? $this->resource ?? '';
+        $count = $this->countWithHelper($resource, [], $helper);
+        $message = sprintf(
+            "Expected resource '%s' to be empty, but found %d items",
+            $resource,
+            $count
+        );
+        $this->assertEquals($count === 0, $message);
+    }
+
+    protected function countWithHelper(string $resource, array $filters, ?string $helper = null): int
+    {
+        $helper = $helper ?? $this->helper ?? null;
+        if ($helper === null) {
+            $this->fail('Helper not defined');
+        }
+        if ($resource === '') {
+            $this->fail('Resource not defined');
+        }
+        return match ($helper) {
+            'sleek' => $this->sleek->count($resource, $filters),
+            'postgres' => $this->postgres->count($resource, $filters),
+            default => 0,
+        };
     }
 }
