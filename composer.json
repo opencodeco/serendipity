@@ -29,6 +29,8 @@
     "hyperf/context": "^3.1",
     "hyperf/contract": "^3.1",
     "hyperf/coordinator": "^3.1",
+    "hyperf/database": "^3.1",
+    "hyperf/database-pgsql": "^3.1",
     "hyperf/db": "^3.1",
     "hyperf/di": "3.1.*",
     "hyperf/event": "^3.1",
