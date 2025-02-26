@@ -14,8 +14,6 @@
         <directory name="config" />
         <ignoreFiles>
             <directory name="vendor" />
-            <file name="config/autoload/server.php" />
-            <file name="config/autoload/annotations.php" />
         </ignoreFiles>
     </projectFiles>
     <enableExtensions>

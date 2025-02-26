@@ -45,7 +45,7 @@ if (! function_exists('toBool')) {
     }
 }
 
-namespace Serendipity\Type\Array;
+namespace Serendipity\Type\Util;
 
 if (! function_exists('extractArray')) {
     /**

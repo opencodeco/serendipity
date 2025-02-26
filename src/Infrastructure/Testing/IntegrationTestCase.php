@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Testing;
 
 use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
-use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
-use Serendipity\Infrastructure\Persistence\Factory\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Persistence\Testing\Helper;
-use Serendipity\Infrastructure\Persistence\Testing\PostgresHelper;
-use Serendipity\Infrastructure\Persistence\Testing\SleekDBHelper;
+use Serendipity\Infrastructure\Testing\Database\Helper;
+use Serendipity\Infrastructure\Testing\Database\PostgresHelper;
+use Serendipity\Infrastructure\Testing\Database\SleekDBHelper;
 
 /**
  * @coversNothing
@@ -30,9 +28,9 @@ class IntegrationTestCase extends TestCase
 
         $this->mapper = $this->make(Builder::class);
 
-        $this->sleek = new SleekDBHelper($this->make(SleekDBDatabaseFactory::class), $this);
+        $this->sleek = $this->make(SleekDBHelper::class, ['assertion' => $this]);
 
-        $this->postgres = new PostgresHelper($this->make(HyperfDBFactory::class)->make('postgres'), $this);
+        $this->postgres = $this->make(PostgresHelper::class, ['assertion' => $this]);
 
         $this->truncate();
     }

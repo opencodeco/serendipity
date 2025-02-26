@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Faker\Handler;
 
-use Serendipity\Domain\Support\Value;
 use Faker\Generator;
 use ReflectionParameter;
+use Serendipity\Domain\Support\Value;
 
 abstract class Chain
 {
@@ -30,7 +30,7 @@ abstract class Chain
         return null;
     }
 
-    private function previous(Chain $previous): void
+    protected function previous(Chain $previous): void
     {
         $this->previous = $previous;
     }

@@ -23,13 +23,16 @@ use function Serendipity\Type\Cast\toString;
 
 class ConfigProvider
 {
+    /**
+     * @SuppressWarnings(ExcessiveMethodLength)
+     */
     public function __invoke(): array
     {
         return [
             'dependencies' => [
-                LoggerInterface::class => static function (ContainerInterface $container) {
-                    return $container->get(EnvironmentLoggerFactory::class)->make(toString(env('APP_ENV', 'dev')));
-                },
+                LoggerInterface::class => static fn (ContainerInterface $container) => $container
+                    ->get(EnvironmentLoggerFactory::class)
+                    ->make(toString(env('APP_ENV', 'dev'))),
             ],
             'exceptions' => [
                 'handler' => [

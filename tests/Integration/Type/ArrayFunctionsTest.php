@@ -6,10 +6,10 @@ namespace Serendipity\Test\Integration\Type;
 
 use PHPUnit\Framework\TestCase;
 
-use function Serendipity\Type\Array\extractArray;
-use function Serendipity\Type\Array\extractBool;
-use function Serendipity\Type\Array\extractInt;
-use function Serendipity\Type\Array\extractString;
+use function Serendipity\Type\Util\extractArray;
+use function Serendipity\Type\Util\extractBool;
+use function Serendipity\Type\Util\extractInt;
+use function Serendipity\Type\Util\extractString;
 
 /**
  * @internal

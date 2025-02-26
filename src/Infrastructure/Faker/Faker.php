@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Faker;
 
+use Faker\Factory;
+use Faker\Generator as FakerMachine;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionParameter;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\CaseConvention;
@@ -11,11 +17,6 @@ use Serendipity\Infrastructure\Faker\Handler\NamedChain;
 use Serendipity\Infrastructure\Faker\Handler\OptionalChain;
 use Serendipity\Infrastructure\Faker\Handler\TypedChain;
 use Serendipity\Infrastructure\Persistence\Generator;
-use Faker\Factory;
-use Faker\Generator as FakerMachine;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionParameter;
 
 use function Serendipity\Type\String\toSnakeCase;
 
@@ -23,13 +24,16 @@ readonly class Faker
 {
     public FakerMachine $faker;
 
+    /**
+     * @SuppressWarnings(StaticAccess)
+     */
     public function __construct(
         public Generator $generator,
         private CaseConvention $case = CaseConvention::SNAKE,
     ) {
         $this->faker = Factory::create('pt_BR');
         $this->faker->addProvider(
-            new class($generator) {
+            new class ($generator) {
                 public function __construct(private readonly Generator $generator)
                 {
                 }
@@ -52,13 +56,17 @@ readonly class Faker
         );
     }
 
+    /**
+     * @template T of object
+     * @param class-string<T> $class
+     * @throws ReflectionException
+     */
     public function fake(string $class, array $presets = []): Values
     {
         $preset = new Values($presets);
-        $reflectionClass = new ReflectionClass($class);
-        $constructor = $reflectionClass->getConstructor();
+        $constructor = (new ReflectionClass($class))->getConstructor();
         if ($constructor === null) {
-            return new $class();
+            return Values::createFrom([]);
         }
 
         return $this->parseValues($constructor, $preset);
@@ -67,8 +75,7 @@ readonly class Faker
     public function parseValues(ReflectionMethod $constructor, Values $preset): Values
     {
         $values = [];
-        $parameters = $constructor->getParameters();
-        foreach ($parameters as $parameter) {
+        foreach ($constructor->getParameters() as $parameter) {
             $field = $this->normalize($parameter);
             if ($preset->has($field)) {
                 $values[$field] = $preset->get($field);

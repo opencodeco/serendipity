@@ -30,6 +30,9 @@ class TestCase extends PHPUnit
         $this->faker = $this->make(Faker::class);
     }
 
+    /**
+     * @SuppressWarnings(StaticAccess)
+     */
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -66,6 +69,9 @@ class TestCase extends PHPUnit
         return $this->make($class);
     }
 
+    /**
+     * @SuppressWarnings(StaticAccess)
+     */
     protected function configureRequestContext(array $data = [], array $queryParams = [], array $params = []): void
     {
         $array = [

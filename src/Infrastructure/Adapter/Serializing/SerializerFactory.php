@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Serializing;
 
-class SerializerFactory
+use Serendipity\Domain\Contract\SerializerFactory as Contract;
+
+class SerializerFactory implements Contract
 {
     /**
      * @template T of object
