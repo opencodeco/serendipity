@@ -6,8 +6,8 @@ namespace Serendipity\Infrastructure\Testing\Database;
 
 use JsonException;
 use ReflectionException;
-use Serendipity\Domain\Contract\DeserializerFactory;
 use Serendipity\Domain\Support\Values;
+use Serendipity\Infrastructure\Adapter\Serializing\DeserializerFactory;
 use Serendipity\Infrastructure\Adapter\Serializing\SerializerFactory;
 use Serendipity\Infrastructure\Faker\Faker;
 use Serendipity\Infrastructure\Persistence\Factory\SleekDBDatabaseFactory;
