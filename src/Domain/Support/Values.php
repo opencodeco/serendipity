@@ -55,7 +55,7 @@ final readonly class Values
      */
     public function toArray(): array
     {
-        return array_map(fn ($value) => is_object($value) ? clone $value : $value, $this->data);
+        return $this->data;
     }
 
     public function along(array $values): self

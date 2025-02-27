@@ -13,9 +13,12 @@ class DependencyChain extends Chain
 {
     public function resolve(mixed $value): Value
     {
-        if (is_object($value)) {
-            return new Value($this->demolish($value));
+        if (! is_object($value)) {
+            return parent::resolve($value);
         }
-        return parent::resolve($value);
+        if (enum_exists($value::class)) {
+            return new Value($value->value);
+        }
+        return new Value($this->demolish($value));
     }
 }

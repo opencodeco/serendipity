@@ -27,7 +27,12 @@ final class DeserializerTest extends TestCase
     {
         $mapped = new Stub('John Doe', 30);
         $deserializer = new Deserializer(Stub::class);
-        $this->assertEquals(['foo' => 'John Doe', 'bar' => 30], $deserializer->deserialize($mapped));
+        $expected = [
+            'foo' => 'John Doe',
+            'bar' => 30,
+            'baz' => 'baz',
+        ];
+        $this->assertEquals($expected, $deserializer->deserialize($mapped));
     }
 
     public function testShouldSerializeWhenAnInstanceOfResult(): void
