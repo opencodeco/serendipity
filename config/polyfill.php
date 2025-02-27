@@ -3,12 +3,27 @@
 declare(strict_types=1);
 
 if (! function_exists('array_flatten')) {
-    function array_flatten(array $array, string $prefix = ''): array
+    function array_flatten(array $array): array
     {
         $result = [];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $result += array_flatten($value, $prefix . $key . '.');
+                $result += array_flatten($value);
+                continue;
+            }
+            $result[$key] = $value;
+        }
+        return $result;
+    }
+}
+
+if (! function_exists('array_flatten_prefixed')) {
+    function array_flatten_prefixed(array $array, string $prefix = ''): array
+    {
+        $result = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result += array_flatten_prefixed($value, $prefix . $key . '.');
                 continue;
             }
             $result[$prefix . $key] = $value;
