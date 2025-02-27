@@ -80,7 +80,7 @@ class BuilderTest extends TestCase
             'tags' => ['tag1', 'tag2'],
             'more' => new DateTime(),
             'no' => 'invalid',
-            'enum' => 0,
+            'enum' => false,
         ];
 
         try {

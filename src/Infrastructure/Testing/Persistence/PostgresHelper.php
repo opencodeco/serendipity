@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Testing\Database;
+namespace Serendipity\Infrastructure\Testing\Persistence;
 
 use Hyperf\DB\DB as Database;
 use ReflectionException;

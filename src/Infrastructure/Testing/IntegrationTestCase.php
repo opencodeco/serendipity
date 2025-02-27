@@ -6,14 +6,14 @@ namespace Serendipity\Infrastructure\Testing;
 
 use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
-use Serendipity\Infrastructure\Testing\Database\Helper;
-use Serendipity\Infrastructure\Testing\Database\PostgresHelper;
-use Serendipity\Infrastructure\Testing\Database\SleekDBHelper;
+use Serendipity\Infrastructure\Testing\Persistence\Helper;
+use Serendipity\Infrastructure\Testing\Persistence\PostgresHelper;
+use Serendipity\Infrastructure\Testing\Persistence\SleekDBHelper;
 
 use function Serendipity\Type\Json\encode;
 
 /**
- * @ExcessiveClassLength
+ * @SuppressWarnings(ExcessiveClassLength)
  */
 class IntegrationTestCase extends TestCase
 {
