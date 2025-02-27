@@ -63,6 +63,24 @@ abstract class PostgresRepository
         );
     }
 
+    /**
+     * @param array<string> $fields
+     * @return string
+     */
+    protected function columns(array $fields): string
+    {
+        return implode(', ', array_map(fn ($field) => sprintf('"%s"', $field), $fields));
+    }
+
+    /**
+     * @param array<string> $fields
+     * @return string
+     */
+    protected function values(array $fields): string
+    {
+        return implode(', ', array_fill(0, count($fields), '?'));
+    }
+
     protected function detectUniqueKeyViolation(QueryException|Throwable $exception): ?UniqueKeyViolationException
     {
         $message = $exception->getMessage();
