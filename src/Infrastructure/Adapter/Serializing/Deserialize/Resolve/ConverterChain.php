@@ -7,9 +7,8 @@ namespace Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Resolve;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Chain;
 
-use function Serendipity\Type\Cast\toString;
-use function gettype;
 use function is_object;
+use function Serendipity\Type\Cast\toString;
 
 class ConverterChain extends Chain
 {
@@ -25,13 +24,7 @@ class ConverterChain extends Chain
 
     private function extractType(mixed $value): string
     {
-        $type = gettype($value);
-        $type = match ($type) {
-            'double' => 'float',
-            'integer' => 'int',
-            'boolean' => 'bool',
-            default => $type,
-        };
+        $type = $this->type($value);
         if ($type === 'object' && is_object($value)) {
             $type = $value::class;
         }

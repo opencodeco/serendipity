@@ -19,7 +19,7 @@ class Serializer extends Builder implements Contract
      * @param class-string<T> $type
      */
     public function __construct(
-        private readonly string $type,
+        public readonly string $type,
         CaseConvention $case = CaseConvention::SNAKE,
         array $converters = [],
     ) {

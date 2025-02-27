@@ -94,8 +94,6 @@
     "sort-packages": true
   },
   "scripts": {
-    "test:unit": "@composer test -- --testsuite=Unit",
-    "test:integration": "@composer test -- --testsuite=Integration",
     "test": "bin/phpunit.php",
     "lint:phpcs": "phpcs --standard=PSR12,phpcs.xml -s src",
     "lint:phpstan": "phpstan analyse --memory-limit 512M",

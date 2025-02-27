@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Serializing\Deserialize;
 
-use Serendipity\Domain\Support\Outputable;
+use Serendipity\Domain\Contract\Result;
 use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Resolve\ConverterChain;
 use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Resolve\DependencyChain;
 use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Resolve\DoNothingChain;
@@ -22,7 +22,7 @@ class Demolisher extends Engine
         $values = $this->extractValues($instance);
         $data = [];
         foreach ($values as $field => $value) {
-            $name = $this->normalize($field);
+            $name = $this->name($field);
 
             $resolved = (new DoNothingChain($this->case))
                 ->then(new DependencyChain($this->case))
@@ -36,7 +36,7 @@ class Demolisher extends Engine
 
     public function extractValues(object $instance): array
     {
-        if ($instance instanceof Outputable) {
+        if ($instance instanceof Result) {
             return $instance->content()?->toArray() ?? [];
         }
         return get_object_vars($instance);

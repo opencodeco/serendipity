@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Support;
 
-use Serendipity\Domain\Contract\Result;
 use Hyperf\Contract\Jsonable;
 use JsonException;
 use JsonSerializable;
+use Serendipity\Domain\Contract\Result;
 
-use function Serendipity\Type\String\toSnakeCase;
 use function get_object_vars;
 use function json_encode;
+use function Serendipity\Type\String\toSnakeCase;
 use function sprintf;
 
 abstract class Outputable implements Result, JsonSerializable, Jsonable

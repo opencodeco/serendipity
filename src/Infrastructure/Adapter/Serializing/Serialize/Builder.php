@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Serializing\Serialize;
 
-use Serendipity\Domain\Exception\MappingException;
-use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Prepare\ConverterChain;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Prepare\DependencyChain;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Prepare\EmptyChain;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\CheckInvalidChain;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\CheckRequiredChain;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\Consolidator;
 use ReflectionClass;
 use ReflectionParameter;
+use Serendipity\Domain\Exception\MappingException;
+use Serendipity\Domain\Support\Values;
+use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\Consolidator;
+use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\WhenCanConvertUseConverterChain;
+use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\WhenEnumUseBackedChain;
+use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\WhenIsValidUseValueChain;
+use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\WhenNoValueUseDefaultChain;
+use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Resolve\WhenRecursiveUseBuildChain;
 use Throwable;
 
 class Builder extends Engine
@@ -36,8 +36,7 @@ class Builder extends Engine
             }
 
             $parameters = $constructor->getParameters();
-            $values = $this->prepare($parameters, $values);
-            $args = $this->resolve($parameters, $values);
+            $args = $this->resolveArgs($parameters, $values);
             return $reflectionClass->newInstanceArgs($args);
         } catch (MappingException $e) {
             throw $e;
@@ -49,39 +48,15 @@ class Builder extends Engine
     /**
      * @param array<ReflectionParameter> $parameters
      */
-    private function prepare(array $parameters, Values $values): Values
-    {
-        foreach ($parameters as $parameter) {
-            $resolved = (new DependencyChain($this->case))
-                ->then(new ConverterChain($this->case, $this->converters))
-                ->then(new EmptyChain($this->case))
-                ->resolve($parameter, $values);
-
-            if ($resolved === null) {
-                continue;
-            }
-
-            $name = $this->normalize($parameter);
-            $value = $resolved->content;
-            if ($value instanceof Context) {
-                /** @phpstan-ignore argument.type, argument.templateType */
-                $value = $this->build($value->class, $value->values);
-            }
-            $values = $values->with($name, $value);
-        }
-
-        return $values;
-    }
-
-    /**
-     * @param array<ReflectionParameter> $parameters
-     */
-    private function resolve(array $parameters, Values $values): array
+    private function resolveArgs(array $parameters, Values $values): array
     {
         $consolidator = new Consolidator();
         foreach ($parameters as $parameter) {
-            $resolved = (new CheckInvalidChain($this->case))
-                ->then(new CheckRequiredChain($this->case))
+            $resolved = (new WhenIsValidUseValueChain($this->case))
+                ->then(new WhenRecursiveUseBuildChain($this->case))
+                ->then(new WhenEnumUseBackedChain($this->case))
+                ->then(new WhenCanConvertUseConverterChain($this->case, $this->converters))
+                ->then(new WhenNoValueUseDefaultChain($this->case))
                 ->resolve($parameter, $values);
 
             $consolidator->consolidate($resolved);

@@ -13,10 +13,10 @@ final class GeneratingException extends Exception
 {
     public function __construct(
         public readonly string $type,
-        Throwable $previous,
+        ?Throwable $previous = null,
     ) {
         parent::__construct(
-            message: sprintf('Error generating "%s": "%s"', $type, $previous->getMessage()),
+            message: sprintf('Error generating "%s": "%s"', $type, $previous?->getMessage() ?? 'unknown'),
             previous: $previous
         );
     }

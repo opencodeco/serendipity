@@ -26,8 +26,9 @@ class SleekDBDatabaseFactory
      */
     public function make(string $resource): Store
     {
-        $path = toString($this->config->get('databases.sleek.path'));
-        $configuration = toArray($this->config->get('databases.sleek.configuration'));
+        $config = toArray($this->config->get('databases.sleek'));
+        $path = toString($config['path'] ?? '');
+        $configuration = toArray($config['configuration'] ?? []);
         return new Store($resource, $path, $configuration);
     }
 }

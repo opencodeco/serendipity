@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Serializing\Serialize;
 
-use Serendipity\Infrastructure\Adapter\Serializing\Converter;
-use Serendipity\Infrastructure\CaseConvention;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
+use Serendipity\Infrastructure\Adapter\Serializing\Converter;
+use Serendipity\Infrastructure\CaseConvention;
 
 use function array_map;
-use function Serendipity\Type\String\toSnakeCase;
 use function is_string;
+use function Serendipity\Type\String\toSnakeCase;
 
 abstract class Engine
 {
     public function __construct(
         public readonly CaseConvention $case = CaseConvention::SNAKE,
-        protected readonly array $converters = [],
+        public readonly array $converters = [],
     ) {
     }
 
@@ -43,7 +43,13 @@ abstract class Engine
         return [];
     }
 
-    protected function normalize(ReflectionParameter|string $field): string
+    protected function conversor(string $type): ?Converter
+    {
+        $converter = $this->converters[$type] ?? null;
+        return $converter instanceof Converter ? $converter : null;
+    }
+
+    protected function name(ReflectionParameter|string $field): string
     {
         $name = is_string($field) ? $field : $field->getName();
         return match ($this->case) {
@@ -52,9 +58,14 @@ abstract class Engine
         };
     }
 
-    protected function conversor(string $type): ?Converter
+    protected function type(mixed $value): ?string
     {
-        $converter = $this->converters[$type] ?? null;
-        return $converter instanceof Converter ? $converter : null;
+        $type = gettype($value);
+        return match ($type) {
+            'double' => 'float',
+            'integer' => 'int',
+            'boolean' => 'bool',
+            default => $type,
+        };
     }
 }

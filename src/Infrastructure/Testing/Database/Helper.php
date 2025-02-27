@@ -8,7 +8,7 @@ use ReflectionException;
 use Serendipity\Domain\Contract\DeserializerFactory;
 use Serendipity\Domain\Contract\SerializerFactory;
 use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Faker\Faker;
+use Serendipity\Infrastructure\Testing\Faker\Faker;
 
 use function array_merge;
 

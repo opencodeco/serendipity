@@ -12,13 +12,10 @@ use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\HttpServer\Router\Handler;
 use PHPUnit\Framework\TestCase as PHPUnit;
 use Psr\Http\Message\ServerRequestInterface;
-use Serendipity\Infrastructure\Faker\Faker;
+use Serendipity\Infrastructure\Testing\Faker\Faker;
 
 use function Hyperf\Support\make;
 
-/**
- * @coversNothing
- */
 class TestCase extends PHPUnit
 {
     public Faker $faker;

@@ -4,10 +4,34 @@
 
 COMPOSE_RUNNER ?= "docker-compose"
 
+
+setup: ## Setup the project
+	@make prune
+	@make install
+	@make up
+	@make migrate
+
 ##@ Bash controls
 
 bash: ## Start nginx bash
 	@$(COMPOSE_RUNNER) run --rm --entrypoint sh app
+
+up: ## Start the project
+	@$(COMPOSE_RUNNER) --profile postgres up -d
+	@$(COMPOSE_RUNNER) --profile mysql up -d
+
+down: ## Stop the project
+	@$(COMPOSE_RUNNER) --profile postgres down --remove-orphans
+	@$(COMPOSE_RUNNER) --profile mysql down --remove-orphans
+
+prune: ## Prune the project
+	@$(COMPOSE_RUNNER) --profile postgres down --remove-orphans --volumes
+	@$(COMPOSE_RUNNER) --profile mysql down --remove-orphans --volumes
+
+watch: ## Start the project in watch mode
+	@make up
+	@$(COMPOSE_RUNNER) logs -f app
+
 
 ##@ Composer
 
@@ -46,13 +70,7 @@ fix: ## Perform code style fix
 ##@ Tests
 
 test: ## Execute suite's test unit and integration
-	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app "test"
-
-test-unit: ## Execute tests unit
-	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app "test:unit"
-
-test-integration: ## Execute tests integration
-	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app "test:integration"
+	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app test -- --coverage-html tests/.phpunit/html
 
 
 ##@ CI
@@ -60,6 +78,14 @@ test-integration: ## Execute tests integration
 ci: ## Execute all analysis as CI does
 	@$(COMPOSE_RUNNER) run --rm --entrypoint composer app ci
 
+
+##@ Database
+
+postgres: ## Start the postgres container
+	@$(COMPOSE_RUNNER) --profile postgres up -d
+
+migrate: ## Execute the migrations
+	@$(COMPOSE_RUNNER) run --rm --entrypoint "php bin/hyperf.php" app migrate --database=postgres
 
 ##@ Docs
 

@@ -7,10 +7,10 @@ namespace Serendipity\Infrastructure\Testing\Database;
 use Hyperf\DB\DB as Database;
 use ReflectionException;
 use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Faker\Faker;
 use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalSerializerFactory;
+use Serendipity\Infrastructure\Testing\Faker\Faker;
 
 use function array_filter;
 use function array_keys;
@@ -18,8 +18,8 @@ use function array_map;
 use function array_values;
 use function count;
 use function implode;
-use function Serendipity\Type\Util\extractNumeric;
 use function Serendipity\Type\Cast\toArray;
+use function Serendipity\Type\Util\extractNumeric;
 use function sprintf;
 use function str_repeat;
 

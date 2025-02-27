@@ -13,7 +13,7 @@ use Serendipity\Infrastructure\Testing\Database\SleekDBHelper;
 use function Serendipity\Type\Json\encode;
 
 /**
- * @coversNothing
+ * @ExcessiveClassLength
  */
 class IntegrationTestCase extends TestCase
 {

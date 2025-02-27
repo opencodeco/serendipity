@@ -14,8 +14,7 @@
 >
     <coverage disableCodeCoverageIgnore="true">
         <report>
-            <html outputDirectory="tests/.phpunit/report/html"/>
-            <clover outputFile="tests/.phpunit/report/clover.xml"/>
+            <clover outputFile="tests/.phpunit/clover.xml"/>
         </report>
     </coverage>
 
@@ -24,11 +23,8 @@
     </logging>
 
     <testsuites>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Integration">
-            <directory>tests/Integration</directory>
+        <testsuite name="default">
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
