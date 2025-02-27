@@ -10,9 +10,9 @@ use DateTimeInterface;
 use Throwable;
 use Visus\Cuid2\Cuid2;
 
-readonly class Generator
+class Generator
 {
-    public function __construct(public int $length = 10)
+    public function __construct(public readonly int $length = 10)
     {
     }
 

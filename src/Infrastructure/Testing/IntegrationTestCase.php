@@ -130,7 +130,7 @@ class IntegrationTestCase extends TestCase
 
     protected function countWithHelper(string $resource, array $filters, ?string $helper = null): int
     {
-        $helper = $helper ?? $this->helper ?? null;
+        $helper ??= $this->helper ?? null;
         if ($helper === null) {
             $this->fail('Helper not defined');
         }

@@ -12,7 +12,7 @@ final class CreatedTest extends TestCase
 {
     public function testShouldHaveIdOnContent(): void
     {
-        $id = $this->faker->engine->id();
+        $id = $this->faker->engine->uuid();
         $output = new Created($id);
         $this->assertEquals($id, $output->content()->get('id'));
     }
