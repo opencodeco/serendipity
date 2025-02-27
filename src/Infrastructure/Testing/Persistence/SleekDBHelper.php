@@ -6,8 +6,8 @@ namespace Serendipity\Infrastructure\Testing\Persistence;
 
 use ReflectionException;
 use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Adapter\DeserializerFactory;
-use Serendipity\Infrastructure\Adapter\SerializerFactory;
+use Serendipity\Infrastructure\Adapter\Serializing\DeserializerFactory;
+use Serendipity\Infrastructure\Adapter\Serializing\SerializerFactory;
 use Serendipity\Infrastructure\Persistence\Factory\SleekDBDatabaseFactory;
 use Serendipity\Infrastructure\Testing\Faker\Faker;
 use SleekDB\Exceptions\IdNotAllowedException;
@@ -27,6 +27,11 @@ final class SleekDBHelper extends Helper
         parent::__construct($faker, $serializerFactory, $deserializerFactory);
     }
 
+    /**
+     * @throws IOException
+     * @throws InvalidConfigurationException
+     * @throws InvalidArgumentException
+     */
     public function truncate(string $resource): void
     {
         $database = $this->factory->make($resource);
