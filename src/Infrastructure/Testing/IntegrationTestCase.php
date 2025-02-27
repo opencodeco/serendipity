@@ -51,7 +51,7 @@ class IntegrationTestCase extends TestCase
         if ($this->helper === null) {
             $this->fail('Helper not defined. Please define the helper property.');
         }
-        $resource = $resource ?? $this->resource ?? '';
+        $resource ??= $this->resource ?? '';
         if ($resource === '') {
             $this->fail('Resource not defined');
         }
@@ -76,7 +76,7 @@ class IntegrationTestCase extends TestCase
 
     protected function assertHas(array $filters, ?string $resource = null, ?string $helper = null): void
     {
-        $resource = $resource ?? $this->resource ?? '';
+        $resource ??= $this->resource ?? '';
         $count = $this->countWithHelper($resource, $filters, $helper);
         $message = sprintf(
             "Expected to find at least one item in resource '%s' with filters '%s'",
@@ -88,7 +88,7 @@ class IntegrationTestCase extends TestCase
 
     protected function assertHasNot(array $filters, ?string $resource = null, ?string $helper = null): void
     {
-        $resource = $resource ?? $this->resource ?? '';
+        $resource ??= $this->resource ?? '';
         $count = $this->countWithHelper($resource, $filters, $helper);
         $message = sprintf(
             "Expected to not find any item in resource '%s' with filters '%s'",
@@ -104,7 +104,7 @@ class IntegrationTestCase extends TestCase
         ?string $resource = null,
         ?string $helper = null
     ): void {
-        $resource = $resource ?? $this->resource ?? '';
+        $resource ??= $this->resource ?? '';
         $count = $this->countWithHelper($resource, $filters, $helper);
         $message = sprintf(
             "Expected to find %d items in resource '%s' with filters '%s', but found %d",
@@ -118,7 +118,7 @@ class IntegrationTestCase extends TestCase
 
     protected function assertIsEmpty(?string $resource = null, ?string $helper = null): void
     {
-        $resource = $resource ?? $this->resource ?? '';
+        $resource ??= $this->resource ?? '';
         $count = $this->countWithHelper($resource, [], $helper);
         $message = sprintf(
             "Expected resource '%s' to be empty, but found %d items",
