@@ -10,11 +10,12 @@ use Serendipity\Domain\Support\Values;
 class Output implements Result
 {
     private readonly Values $properties;
+
     private readonly ?Values $content;
 
     public function __construct(
-        array $properties,
-        ?array $content
+        array $properties = [],
+        ?array $content = null
     ) {
         $this->properties = Values::createFrom($properties);
         $this->content = $content === null ? null : Values::createFrom($content);

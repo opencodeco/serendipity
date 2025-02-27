@@ -11,10 +11,10 @@ use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\HttpServer\Router\Handler;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Serendipity\Infrastructure\Adapter\Output;
 use Serendipity\Infrastructure\Http\Middleware\AppMiddleware;
 use Serendipity\Infrastructure\Testing\TestCase;
 use Serendipity\Presentation\Output\NoContent;
-use Serendipity\Presentation\Output\Output;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Swow\Psr7\Message\ServerRequestPlusInterface;
 

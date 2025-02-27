@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation\Output;
 
+use Serendipity\Infrastructure\Adapter\Output;
+
 use function sprintf;
 
 class NotFound extends Output

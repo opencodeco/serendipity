@@ -18,9 +18,9 @@ use function Serendipity\Type\Json\encode;
  */
 class IntegrationTestCase extends TestCase
 {
-    private Helper $sleek;
+    private ?Helper $sleek = null;
 
-    private Helper $postgres;
+    private ?Helper $postgres = null;
 
     protected Builder $mapper;
 
@@ -35,9 +35,11 @@ class IntegrationTestCase extends TestCase
         parent::setUp();
 
         $this->mapper = $this->make(Builder::class);
-
-        $this->sleek = $this->make(SleekDBHelper::class, ['assertion' => $this]);
-        $this->postgres = $this->make(PostgresHelper::class, ['assertion' => $this]);
+        match ($this->helper) {
+            'sleek' => $this->sleek = $this->make(SleekDBHelper::class),
+            'postgres' => $this->postgres = $this->make(PostgresHelper::class),
+            default => null,
+        };
 
         $this->truncate();
     }
