@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Persistence;
 
 use Hyperf\DB\DB as Database;
+use Hyperf\DB\Exception\QueryException;
 use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalSerializerFactory;
+
+use Throwable;
+
+use function Serendipity\Type\Cast\toString;
 
 abstract class PostgresRepository
 {
@@ -55,5 +61,18 @@ abstract class PostgresRepository
             static fn (string $field) => $values[$field] ?? null,
             $fields
         );
+    }
+
+    protected function detectUniqueKeyViolation(QueryException|Throwable $exception): ?UniqueKeyViolationException
+    {
+        $message = $exception->getMessage();
+        $pattern = '/duplicate key value violates unique constraint "([^"]+)"\s+DETAIL:\s+Key \(([^)]+)\)=\(([^)]+)\) already exists\./m';
+        if (! preg_match($pattern, $message, $matches, PREG_SET_ORDER)) {
+            return null;
+        }
+        $resource = toString($matches[1] ?? null);
+        $key = toString($matches[2] ?? null);
+        $value = toString($matches[3] ?? null);
+        return new UniqueKeyViolationException($key, $value, $resource, $exception);
     }
 }
