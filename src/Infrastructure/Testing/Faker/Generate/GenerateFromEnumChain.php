@@ -8,7 +8,7 @@ use ReflectionParameter;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Values;
 
-final class GenerateFromBuiltinTypeChain extends Chain
+final class GenerateFromEnumChain extends Chain
 {
     public function resolve(ReflectionParameter $parameter, ?Values $preset = null): ?Value
     {

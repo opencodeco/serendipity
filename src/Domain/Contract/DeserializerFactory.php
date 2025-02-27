@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Contract;
 
-use Serendipity\Infrastructure\Adapter\Serializing\Deserializer;
-
 interface DeserializerFactory
 {
     /**
