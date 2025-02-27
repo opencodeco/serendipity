@@ -4,25 +4,51 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Testing\Faker\Generate;
 
+use BackedEnum;
+use Random\RandomException;
+use ReflectionNamedType;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Values;
 
 final class GenerateFromEnumChain extends Chain
 {
+    /**
+     * @throws RandomException
+     */
     public function resolve(ReflectionParameter $parameter, ?Values $preset = null): ?Value
     {
-        $type = $this->extractType($parameter);
-        if ($type === null) {
+        $parameterType = $parameter->getType();
+        if (! $parameterType instanceof ReflectionNamedType) {
             return parent::resolve($parameter, $preset);
         }
-        return match ($type) {
-            'int' => new Value($this->engine->numberBetween(1, 100)),
-            'string' => new Value($this->engine->word()),
-            'bool' => new Value($this->engine->boolean()),
-            'float' => new Value($this->engine->randomFloat(2, 1, 100)),
-            'array' => new Value($this->engine->words()),
-            default => parent::resolve($parameter, $preset),
-        };
+        $enum = $parameterType->getName();
+        if ($this->isNotEnum($enum)) {
+            return parent::resolve($parameter, $preset);
+        }
+        return $this->resolveEnumValue($enum, $parameter, $preset);
+    }
+
+    private function isNotEnum(string $enum): bool
+    {
+        return ! is_subclass_of($enum, BackedEnum::class) || ! enum_exists($enum);
+    }
+
+    /**
+     * @throws RandomException
+     */
+    private function resolveEnumValue(string $enum, ReflectionParameter $parameter, ?Values $preset): ?Value
+    {
+        if (! is_subclass_of($enum, BackedEnum::class)) {
+            return parent::resolve($parameter, $preset);
+        }
+
+        $enumValues = $enum::cases();
+        if (empty($enumValues)) {
+            return parent::resolve($parameter, $preset);
+        }
+
+        $randomValue = $enumValues[random_int(0, count($enumValues) - 1)]->value;
+        return new Value($randomValue);
     }
 }

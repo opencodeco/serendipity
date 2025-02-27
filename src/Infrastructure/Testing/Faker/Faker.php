@@ -55,9 +55,9 @@ class Faker
         $values = [];
         foreach ($constructor->getParameters() as $parameter) {
             $field = $this->name($parameter);
-            $generated = (new GenerateFromEnumChain($this->case))
-                ->then(new GenerateFromTypeChain($this->case))
+            $generated = (new GenerateFromTypeChain($this->case))
                 ->then(new GenerateFromNameChain($this->case))
+                ->then(new GenerateFromEnumChain($this->case))
                 ->then(new GenerateFromDefaultValueChain($this->case))
                 ->then(new GenerateFromPresetChain($this->case))
                 ->resolve($parameter, $preset);
