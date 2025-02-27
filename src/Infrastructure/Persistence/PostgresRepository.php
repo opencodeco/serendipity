@@ -67,7 +67,7 @@ abstract class PostgresRepository
     {
         $message = $exception->getMessage();
         $pattern = '/duplicate key value violates unique constraint "([^"]+)"\s+DETAIL:\s+Key \(([^)]+)\)=\(([^)]+)\) already exists\./m';
-        if (! preg_match($pattern, $message, $matches, PREG_SET_ORDER)) {
+        if (! preg_match($pattern, $message, $matches)) {
             return null;
         }
         $resource = toString($matches[1] ?? null);
