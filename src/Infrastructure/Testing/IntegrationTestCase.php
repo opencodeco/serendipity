@@ -27,6 +27,8 @@ class IntegrationTestCase extends TestCase
 
     protected ?string $resource = null;
 
+    protected bool $truncate = true;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -64,6 +66,9 @@ class IntegrationTestCase extends TestCase
 
     protected function truncate(): void
     {
+        if (! $this->truncate) {
+            return;
+        }
         if ($this->resource === null) {
             return;
         }
@@ -83,7 +88,7 @@ class IntegrationTestCase extends TestCase
             $resource,
             encode($filters),
         );
-        $this->assertEquals($count > 0, $message);
+        $this->assertTrue($count > 0, $message);
     }
 
     protected function assertHasNot(array $filters, ?string $resource = null, ?string $helper = null): void
@@ -95,7 +100,7 @@ class IntegrationTestCase extends TestCase
             $resource,
             encode($filters)
         );
-        $this->assertEquals($count === 0, $message);
+        $this->assertSame($count, 0, $message);
     }
 
     protected function assertHasCount(
@@ -113,7 +118,7 @@ class IntegrationTestCase extends TestCase
             encode($filters),
             $count
         );
-        $this->assertEquals($count === $expected, $message);
+        $this->assertSame($count, $expected, $message);
     }
 
     protected function assertIsEmpty(?string $resource = null, ?string $helper = null): void
@@ -125,7 +130,7 @@ class IntegrationTestCase extends TestCase
             $resource,
             $count
         );
-        $this->assertEquals($count === 0, $message);
+        $this->assertSame($count, 0, $message);
     }
 
     protected function countWithHelper(string $resource, array $filters, ?string $helper = null): int
