@@ -27,7 +27,7 @@ final class GenerateFromTypeChain extends Chain
             return new Value($this->engine->format($type));
         } catch (Throwable) {
         }
-        if ($type === 'object' && class_exists($type)) {
+        if (class_exists($type)) {
             return new Value($this->fake($type, $preset?->toArray() ?? []));
         }
         return match ($type) {

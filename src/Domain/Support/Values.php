@@ -10,7 +10,6 @@ use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function is_array;
-use function is_object;
 use function is_string;
 
 final readonly class Values
@@ -55,7 +54,7 @@ final readonly class Values
      */
     public function toArray(): array
     {
-        return $this->data;
+        return array_map(fn (mixed $item) => $item instanceof Values ? $item->toArray() : $item, $this->data);
     }
 
     public function along(array $values): self

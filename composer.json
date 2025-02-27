@@ -12,7 +12,8 @@
       "Serendipity\\": "src/"
     },
     "files": [
-      "config/functions.php"
+      "config/functions.php",
+      "config/polyfill.php"
     ]
   },
   "autoload-dev": {
