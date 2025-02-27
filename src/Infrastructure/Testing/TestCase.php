@@ -12,6 +12,7 @@ use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\HttpServer\Router\Handler;
 use PHPUnit\Framework\TestCase as PHPUnit;
 use Psr\Http\Message\ServerRequestInterface;
+use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
 use Serendipity\Infrastructure\Testing\Faker\Faker;
 
 use function Hyperf\Support\make;
@@ -20,11 +21,14 @@ class TestCase extends PHPUnit
 {
     public Faker $faker;
 
+    protected Builder $mapper;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->faker = $this->make(Faker::class);
+        $this->mapper = $this->make(Builder::class);
     }
 
     /**

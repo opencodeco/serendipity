@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Testing;
 
 use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
 use Serendipity\Infrastructure\Testing\Persistence\Helper;
 use Serendipity\Infrastructure\Testing\Persistence\PostgresHelper;
 use Serendipity\Infrastructure\Testing\Persistence\SleekDBHelper;
@@ -22,8 +21,6 @@ class IntegrationTestCase extends TestCase
 
     private ?Helper $postgres = null;
 
-    protected Builder $mapper;
-
     protected ?string $helper = null;
 
     protected ?string $resource = null;
@@ -33,8 +30,6 @@ class IntegrationTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->mapper = $this->make(Builder::class);
         match ($this->helper) {
             'sleek' => $this->sleek = $this->make(SleekDBHelper::class),
             'postgres' => $this->postgres = $this->make(PostgresHelper::class),
