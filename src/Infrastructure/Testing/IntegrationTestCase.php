@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Testing;
 
 use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Adapter\Serialize\Builder;
+use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
 use Serendipity\Infrastructure\Testing\Persistence\Helper;
 use Serendipity\Infrastructure\Testing\Persistence\PostgresHelper;
 use Serendipity\Infrastructure\Testing\Persistence\SleekDBHelper;
