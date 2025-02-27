@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Testing\Faker\Generate;
 
-use Faker\Generator;
+use ReflectionIntersectionType;
+use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionUnionType;
+use RuntimeException;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Domain\Support\Values;
+use Serendipity\Infrastructure\Testing\Faker\Faker;
 
-abstract class Chain
+use function Hyperf\Support\make;
+
+abstract class Chain extends Faker
 {
     protected ?Chain $previous = null;
-
-    public function __construct(protected readonly Generator $faker)
-    {
-    }
 
     final public function then(Chain $chain): Chain
     {
@@ -22,10 +25,10 @@ abstract class Chain
         return $chain;
     }
 
-    public function resolve(ReflectionParameter $parameter): ?Value
+    public function resolve(ReflectionParameter $parameter, ?Values $preset = null): ?Value
     {
         if (isset($this->previous)) {
-            return $this->previous->resolve($parameter);
+            return $this->previous->resolve($parameter, $preset);
         }
         return null;
     }
@@ -33,5 +36,39 @@ abstract class Chain
     protected function previous(Chain $previous): void
     {
         $this->previous = $previous;
+    }
+
+    /**
+     * @template T of mixed
+     * @param class-string<T> $class
+     * @param array<string, mixed> $args
+     *
+     * @return T
+     */
+    protected function make(string $class, array $args = []): mixed
+    {
+        return make($class, $args);
+    }
+
+    protected function extractType(ReflectionParameter $parameter): ?string
+    {
+        $type = $parameter->getType();
+        if ($type instanceof ReflectionNamedType) {
+            return $type->getName();
+        }
+        if ($type instanceof ReflectionUnionType) {
+            /** @var array<ReflectionNamedType> $reflectionNamedTypes */
+            $reflectionNamedTypes = $type->getTypes();
+            return $reflectionNamedTypes[0]->getName();
+        }
+        if ($type instanceof ReflectionIntersectionType) {
+            throw new RuntimeException(
+                sprintf(
+                    'Intersection type not supported for parameter "%s". Please provide a preset value for it',
+                    $parameter->getName()
+                )
+            );
+        }
+        return null;
     }
 }

@@ -10,29 +10,28 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionParameter;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\CaseConvention;
-use Serendipity\Infrastructure\Testing\Faker\Generate\NamedChain;
-use Serendipity\Infrastructure\Testing\Faker\Generate\OptionalChain;
-use Serendipity\Infrastructure\Testing\Faker\Generate\TypedChain;
-use Serendipity\Infrastructure\Testing\Faker\Provider\PersistenceProvider;
+use Serendipity\Infrastructure\Testing\Faker\Generate\GenerateFromBuiltinTypeChain;
+use Serendipity\Infrastructure\Testing\Faker\Generate\GenerateFromDefaultValueChain;
+use Serendipity\Infrastructure\Testing\Faker\Generate\GenerateFromNameChain;
+use Serendipity\Infrastructure\Testing\Faker\Generate\GenerateFromPresetChain;
+use Serendipity\Infrastructure\Testing\Faker\Generate\GenerateFromTypeUsingFormatChain;
 
 use function Serendipity\Type\String\toSnakeCase;
 
-readonly class Faker
+class Faker
 {
-    public Engine $engine;
+    public readonly Engine $engine;
 
     /**
      * @SuppressWarnings(StaticAccess)
      */
     public function __construct(
-        public PersistenceProvider $persistenceProvider,
-        private CaseConvention $case = CaseConvention::SNAKE,
+        public readonly CaseConvention $case = CaseConvention::SNAKE,
+        public readonly array $converters = [],
     ) {
         $this->engine = Factory::create('pt_BR');
-        $this->engine->addProvider($persistenceProvider);
     }
 
     /**
@@ -55,12 +54,14 @@ readonly class Faker
     {
         $values = [];
         foreach ($constructor->getParameters() as $parameter) {
-            $field = $this->normalize($parameter);
-            if ($preset->has($field)) {
-                $values[$field] = $preset->get($field);
-                continue;
-            }
-            $generated = $this->generateValue($parameter);
+            $field = $this->name($parameter);
+            $generated = (new GenerateFromTypeUsingFormatChain($this->case))
+                ->then(new GenerateFromBuiltinTypeChain($this->case))
+                ->then(new GenerateFromNameChain($this->case))
+                ->then(new GenerateFromDefaultValueChain($this->case))
+                ->then(new GenerateFromPresetChain($this->case))
+                ->resolve($parameter, $preset);
+
             if ($generated === null) {
                 continue;
             }
@@ -69,20 +70,12 @@ readonly class Faker
         return Values::createFrom($values);
     }
 
-    private function normalize(ReflectionParameter $parameter): string
+    protected function name(ReflectionParameter $parameter): string
     {
         $name = $parameter->getName();
         return match ($this->case) {
             CaseConvention::SNAKE => toSnakeCase($name),
             CaseConvention::NONE => $name,
         };
-    }
-
-    private function generateValue(ReflectionParameter $parameter): ?Value
-    {
-        return (new TypedChain($this->engine))
-            ->then(new NamedChain($this->engine))
-            ->then(new OptionalChain($this->engine))
-            ->resolve($parameter);
     }
 }
