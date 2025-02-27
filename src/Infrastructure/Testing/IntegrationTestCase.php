@@ -9,6 +9,7 @@ use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
 use Serendipity\Infrastructure\Testing\Persistence\Helper;
 use Serendipity\Infrastructure\Testing\Persistence\PostgresHelper;
 use Serendipity\Infrastructure\Testing\Persistence\SleekDBHelper;
+use Throwable;
 
 use function Serendipity\Type\Json\encode;
 
@@ -72,11 +73,15 @@ class IntegrationTestCase extends TestCase
         if ($this->resource === null) {
             return;
         }
-        match ($this->helper) {
-            'sleek' => $this->sleek->truncate($this->resource),
-            'postgres' => $this->postgres->truncate($this->resource),
-            default => null,
-        };
+        try {
+            match ($this->helper) {
+                'sleek' => $this->sleek->truncate($this->resource),
+                'postgres' => $this->postgres->truncate($this->resource),
+                default => null,
+            };
+        } catch (Throwable $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     protected function assertHas(array $filters, ?string $resource = null, ?string $helper = null): void
