@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Infrastructure\Http\Middleware\CorsMiddleware;
 use Serendipity\Test\TestCase;
 
-class CorsMiddlewareTest extends TestCase
+final class CorsMiddlewareTest extends TestCase
 {
     final public function testShouldAllowCors(): void
     {

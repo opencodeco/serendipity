@@ -16,7 +16,7 @@ use stdClass;
 
 use function Serendipity\Type\Json\encode;
 
-class BuilderTest extends TestCase
+final class BuilderTest extends TestCase
 {
     final public function testMapWithValidValues(): void
     {

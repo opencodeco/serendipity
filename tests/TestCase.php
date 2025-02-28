@@ -17,7 +17,7 @@ use Serendipity\Infrastructure\Testing\Faker\Faker;
 
 use function Hyperf\Support\make;
 
-class TestCase extends PHPUnit
+final class TestCase extends PHPUnit
 {
     public Faker $faker;
 

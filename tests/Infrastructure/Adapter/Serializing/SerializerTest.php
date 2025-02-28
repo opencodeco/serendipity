@@ -8,7 +8,7 @@ use Serendipity\Infrastructure\Adapter\Serializing\Serializer;
 use Serendipity\Test\Infrastructure\Stub;
 use Serendipity\Test\TestCase;
 
-class SerializerTest extends TestCase
+final class SerializerTest extends TestCase
 {
     private Serializer $serializer;
 

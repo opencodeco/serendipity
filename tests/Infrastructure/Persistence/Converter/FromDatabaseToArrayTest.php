@@ -7,7 +7,7 @@ namespace Serendipity\Test\Infrastructure\Persistence\Converter;
 use Serendipity\Infrastructure\Persistence\Converter\FromDatabaseToArray;
 use Serendipity\Test\TestCase;
 
-class FromDatabaseToArrayTest extends TestCase
+final class FromDatabaseToArrayTest extends TestCase
 {
     final public function testConvertStringToArray(): void
     {

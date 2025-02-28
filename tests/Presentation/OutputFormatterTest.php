@@ -7,7 +7,7 @@ namespace Serendipity\Test\Presentation;
 use Serendipity\Presentation\OutputFormatter;
 use Serendipity\Test\TestCase;
 
-class OutputFormatterTest extends TestCase
+final class OutputFormatterTest extends TestCase
 {
     use OutputFormatter;
 

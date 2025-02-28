@@ -7,7 +7,7 @@ namespace Serendipity\Test\Domain\Support;
 use Serendipity\Domain\Support\Outputable;
 use Serendipity\Test\TestCase;
 
-class OutputableTest extends TestCase
+final class OutputableTest extends TestCase
 {
     public function testJsonSerializeReturnsObjectVars(): void
     {

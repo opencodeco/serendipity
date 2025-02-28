@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Adapter;
 
 use Serendipity\Test\TestCase;
 
-class InputTest extends TestCase
+final class InputTest extends TestCase
 {
     final public function testShouldAuthorize(): void
     {

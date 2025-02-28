@@ -9,13 +9,22 @@ use Hyperf\Contract\StdoutLoggerInterface;
 use Serendipity\Infrastructure\Logging\EnvironmentLoggerFactory;
 use Serendipity\Test\TestCase;
 
-class EnvironmentLoggerFactoryTest extends TestCase
+final class EnvironmentLoggerFactoryTest extends TestCase
 {
     private StdoutLoggerInterface $stdoutLogger;
 
     private ConfigInterface $config;
 
     private EnvironmentLoggerFactory $factory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->stdoutLogger = $this->createMock(StdoutLoggerInterface::class);
+        $this->config = $this->createMock(ConfigInterface::class);
+        $this->factory = new EnvironmentLoggerFactory($this->stdoutLogger, $this->config);
+    }
 
     public function testShouldReturnStdoutLoggerForDevEnv(): void
     {
@@ -38,14 +47,5 @@ class EnvironmentLoggerFactoryTest extends TestCase
         $logger = $this->factory->make('prd');
 
         $this->assertNotSame($this->stdoutLogger, $logger);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->stdoutLogger = $this->createMock(StdoutLoggerInterface::class);
-        $this->config = $this->createMock(ConfigInterface::class);
-        $this->factory = new EnvironmentLoggerFactory($this->stdoutLogger, $this->config);
     }
 }

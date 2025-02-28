@@ -8,7 +8,7 @@ use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Infrastructure\Persistence\Generator;
 use Serendipity\Test\TestCase;
 
-class GeneratorTest extends TestCase
+final class GeneratorTest extends TestCase
 {
     final public function testId(): void
     {

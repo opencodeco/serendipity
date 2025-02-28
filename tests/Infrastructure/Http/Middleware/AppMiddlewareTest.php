@@ -18,7 +18,7 @@ use Serendipity\Test\TestCase;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Swow\Psr7\Message\ServerRequestPlusInterface;
 
-class AppMiddlewareTest extends TestCase
+final class AppMiddlewareTest extends TestCase
 {
     final public function testShouldRenderOutputResponse(): void
     {

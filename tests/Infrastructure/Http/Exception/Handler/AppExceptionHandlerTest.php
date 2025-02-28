@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Serendipity\Infrastructure\Http\Exception\Handler\AppExceptionHandler;
 use Serendipity\Test\TestCase;
 
-class AppExceptionHandlerTest extends TestCase
+final class AppExceptionHandlerTest extends TestCase
 {
     public function testHandleShouldLogErrorAndReturnFormattedResponseWith500Code(): void
     {

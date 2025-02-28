@@ -8,7 +8,7 @@ use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Resolve\Dependenc
 use Serendipity\Test\TestCase;
 use stdClass;
 
-class DependencyChainTest extends TestCase
+final class DependencyChainTest extends TestCase
 {
     final public function testResolveObject(): void
     {

@@ -8,7 +8,7 @@ use DateTime;
 use Serendipity\Infrastructure\Persistence\Converter\FromDatetimeToDatabase;
 use Serendipity\Test\TestCase;
 
-class FromDatetimeToDatabaseTest extends TestCase
+final class FromDatetimeToDatabaseTest extends TestCase
 {
     final public function testConvertDatetimeToString(): void
     {

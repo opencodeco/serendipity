@@ -7,7 +7,7 @@ namespace Serendipity\Test\Infrastructure\Adapter\Serializing\Deserialize\Resolv
 use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Resolve\DoNothingChain;
 use Serendipity\Test\TestCase;
 
-class DoNothingChainTest extends TestCase
+final class DoNothingChainTest extends TestCase
 {
     final public function testResolveValue(): void
     {

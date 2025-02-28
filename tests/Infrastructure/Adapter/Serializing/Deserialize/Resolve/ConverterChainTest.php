@@ -12,7 +12,7 @@ use stdClass;
 
 use function Serendipity\Type\Json\encode;
 
-class ConverterChainTest extends TestCase
+final class ConverterChainTest extends TestCase
 {
     #[TestWith(['string'])]
     #[TestWith([10])]

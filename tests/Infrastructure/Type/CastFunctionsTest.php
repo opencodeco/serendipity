@@ -11,7 +11,7 @@ use function Serendipity\Type\Cast\toBool;
 use function Serendipity\Type\Cast\toInt;
 use function Serendipity\Type\Cast\toString;
 
-class CastFunctionsTest extends TestCase
+final class CastFunctionsTest extends TestCase
 {
     public function testToArrayReturnsArrayWhenValueIsArray(): void
     {

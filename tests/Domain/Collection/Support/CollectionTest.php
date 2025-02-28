@@ -8,7 +8,7 @@ use DomainException;
 use Serendipity\Test\TestCase;
 use stdClass;
 
-class CollectionTest extends TestCase
+final class CollectionTest extends TestCase
 {
     final public function testShouldCreateFromArray(): void
     {

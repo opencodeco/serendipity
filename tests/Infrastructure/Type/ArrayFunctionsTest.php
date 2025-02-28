@@ -11,7 +11,7 @@ use function Serendipity\Type\Util\extractBool;
 use function Serendipity\Type\Util\extractInt;
 use function Serendipity\Type\Util\extractString;
 
-class ArrayFunctionsTest extends TestCase
+final class ArrayFunctionsTest extends TestCase
 {
     public function testExtractArrayReturnsArrayWhenPropertyExists(): void
     {

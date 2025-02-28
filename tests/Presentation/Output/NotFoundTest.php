@@ -7,7 +7,7 @@ namespace Serendipity\Test\Presentation\Output;
 use Serendipity\Presentation\Output\NotFound;
 use Serendipity\Test\TestCase;
 
-class NotFoundTest extends TestCase
+final class NotFoundTest extends TestCase
 {
     public function testShouldHaveMissingOnContent(): void
     {

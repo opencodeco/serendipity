@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Serendipity\Domain\Support\Values;
 use Serendipity\Test\TestCase;
 
-class ValuesTest extends TestCase
+final class ValuesTest extends TestCase
 {
     public function testCreateFromArray(): void
     {

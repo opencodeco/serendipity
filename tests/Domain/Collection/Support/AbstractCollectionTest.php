@@ -7,11 +7,11 @@ namespace Serendipity\Test\Domain\Collection\Support;
 use Serendipity\Domain\Collection\AbstractCollection;
 use Serendipity\Test\TestCase;
 
-class AbstractCollectionTest extends TestCase
+final class AbstractCollectionTest extends TestCase
 {
     final public function testShouldRewind(): void
     {
-        $collection = new class([1, 2, 3]) extends AbstractCollection {
+        $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
             {
                 return $this->datum();
@@ -27,7 +27,7 @@ class AbstractCollectionTest extends TestCase
 
     final public function testShouldReturnKey(): void
     {
-        $collection = new class([1, 2, 3]) extends AbstractCollection {
+        $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
             {
                 return $this->datum();
@@ -41,7 +41,7 @@ class AbstractCollectionTest extends TestCase
 
     final public function testShouldReturnNext(): void
     {
-        $collection = new class([1, 2, 3]) extends AbstractCollection {
+        $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
             {
                 return $this->datum();
@@ -55,7 +55,7 @@ class AbstractCollectionTest extends TestCase
 
     final public function testShouldReturnValid(): void
     {
-        $collection = new class([1, 2, 3]) extends AbstractCollection {
+        $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
             {
                 return $this->datum();
@@ -69,7 +69,7 @@ class AbstractCollectionTest extends TestCase
 
     final public function testShouldReturnCount(): void
     {
-        $collection = new class([1, 2, 3]) extends AbstractCollection {
+        $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
             {
                 return $this->datum();
@@ -81,7 +81,7 @@ class AbstractCollectionTest extends TestCase
 
     final public function testShouldReturnRows(): void
     {
-        $collection = new class([1, 2, 3]) extends AbstractCollection {
+        $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
             {
                 return $this->datum();
@@ -98,7 +98,7 @@ class AbstractCollectionTest extends TestCase
 
     final public function testShouldReturnAll(): void
     {
-        $collection = new class([1, 2, 3]) extends AbstractCollection {
+        $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
             {
                 return $this->datum();
@@ -110,7 +110,7 @@ class AbstractCollectionTest extends TestCase
 
     final public function testShouldReturnMap(): void
     {
-        $collection = new class([1, 2, 3]) extends AbstractCollection {
+        $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
             {
                 return $this->datum();

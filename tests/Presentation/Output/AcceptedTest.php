@@ -7,7 +7,7 @@ namespace Serendipity\Test\Presentation\Output;
 use Serendipity\Presentation\Output\Accepted;
 use Serendipity\Test\TestCase;
 
-class AcceptedTest extends TestCase
+final class AcceptedTest extends TestCase
 {
     public function testShouldHaveTokenOnContent(): void
     {

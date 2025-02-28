@@ -10,7 +10,7 @@ use Hyperf\Coordinator\CoordinatorManager;
 use Serendipity\Infrastructure\Listener\ResumeExitCoordinatorListener;
 use Serendipity\Test\TestCase;
 
-class ResumeExitCoordinatorListenerTest extends TestCase
+final class ResumeExitCoordinatorListenerTest extends TestCase
 {
     public function testShouldListenToAfterExecuteEvent(): void
     {
