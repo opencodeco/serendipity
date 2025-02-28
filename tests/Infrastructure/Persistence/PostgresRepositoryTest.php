@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Persistence;
 
+use Hyperf\DB\DB;
+use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Infrastructure\Adapter\Serializing\Deserializer;
 use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
 use Serendipity\Infrastructure\Persistence\Generator;
@@ -30,38 +32,38 @@ final class PostgresRepositoryTest extends TestCase
         $hyperfDBFactory = $this->createMock(HyperfDBFactory::class);
         $hyperfDBFactory->expects($this->once())
             ->method('make')
-            ->willReturn($this->createMock(\Hyperf\DB\DB::class));
+            ->willReturn($this->createMock(DB::class));
         $repository = new PostgresRepositoryTestMock(
             $generator,
             $deserializerFactory,
             $serializerFactory,
             $hyperfDBFactory,
         );
-        $values = $repository->expose(instance: new \stdClass(), fields: ['field'], generate: [
+        $values = $repository->expose(instance: new stdClass(), fields: ['field'], generate: [
             'cuid' => 'id',
-            'at' => 'now'
+            'at' => 'now',
         ]);
         $this->assertEquals(['value'], $values);
     }
 
     public function testShouldRaiseMappingExceptionOnInvalidGenerate(): void
     {
-        $this->expectException(\Serendipity\Domain\Exception\GeneratingException::class);
+        $this->expectException(GeneratingException::class);
         $generator = $this->createMock(Generator::class);
         $deserializerFactory = $this->createMock(RelationalDeserializerFactory::class);
         $serializerFactory = $this->createMock(RelationalSerializerFactory::class);
         $hyperfDBFactory = $this->createMock(HyperfDBFactory::class);
         $hyperfDBFactory->expects($this->once())
             ->method('make')
-            ->willReturn($this->createMock(\Hyperf\DB\DB::class));
+            ->willReturn($this->createMock(DB::class));
         $repository = new PostgresRepositoryTestMock(
             $generator,
             $deserializerFactory,
             $serializerFactory,
             $hyperfDBFactory,
         );
-        $repository->expose(instance: new \stdClass(), fields: ['field'], generate: [
-            'field' => 'invalid'
+        $repository->expose(instance: new stdClass(), fields: ['field'], generate: [
+            'field' => 'invalid',
         ]);
     }
 }

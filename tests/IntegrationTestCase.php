@@ -17,15 +17,15 @@ use function Serendipity\Type\Json\encode;
  */
 class IntegrationTestCase extends TestCase
 {
-    private ?Helper $sleek = null;
-
-    private ?Helper $postgres = null;
-
     protected ?string $helper = null;
 
     protected ?string $resource = null;
 
     protected bool $truncate = true;
+
+    private ?Helper $sleek = null;
+
+    private ?Helper $postgres = null;
 
     protected function setUp(): void
     {

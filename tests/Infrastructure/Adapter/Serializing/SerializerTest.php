@@ -12,6 +12,13 @@ class SerializerTest extends TestCase
 {
     private Serializer $serializer;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->serializer = new Serializer(Stub::class);
+    }
+
     public function testSerialize(): void
     {
         $datum = ['foo' => 'John Doe', 'bar' => 30];
@@ -20,12 +27,5 @@ class SerializerTest extends TestCase
 
         $this->assertEquals('John Doe', $result->foo);
         $this->assertEquals(30, $result->bar);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->serializer = new Serializer(Stub::class);
     }
 }

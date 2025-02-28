@@ -104,16 +104,6 @@ class BuilderTest extends TestCase
         }
     }
 
-    private function hasErrorMessage(array $errors, string $message): bool
-    {
-        foreach ($errors as $error) {
-            if ($error->message() === $message) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     final public function testMapWithNoConstructor(): void
     {
         $values = [];
@@ -175,5 +165,15 @@ class BuilderTest extends TestCase
         $this->assertInstanceOf(BuilderTestStubEdgeCaseIntersection::class, $instance->intersection);
         $this->assertInstanceOf(BuilderTestStubWithConstructor::class, $instance->nested);
         $this->assertInstanceOf(stdClass::class, $instance->getWhatever());
+    }
+
+    private function hasErrorMessage(array $errors, string $message): bool
+    {
+        foreach ($errors as $error) {
+            if ($error->message() === $message) {
+                return true;
+            }
+        }
+        return false;
     }
 }
