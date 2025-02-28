@@ -34,15 +34,6 @@ class ConfigProvider
                     ->get(EnvironmentLoggerFactory::class)
                     ->make(toString(env('APP_ENV', 'dev'))),
             ],
-            'exceptions' => [
-                'handler' => [
-                    'http' => [
-                        ValidationExceptionHandler::class,
-                        HttpExceptionHandler::class,
-                        AppExceptionHandler::class,
-                    ],
-                ],
-            ],
             'http' => [
                 'result' => [
                     Created::class => [
@@ -57,12 +48,6 @@ class ConfigProvider
                     NotFound::class => [
                         'status' => 404,
                     ],
-                ],
-            ],
-            'middlewares' => [
-                'http' => [
-                    CoreMiddleware::class => AppMiddleware::class,
-                    ValidationMiddleware::class,
                 ],
             ],
             'annotations' => [
