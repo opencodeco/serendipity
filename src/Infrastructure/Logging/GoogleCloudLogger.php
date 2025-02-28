@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Logging;
 
+use Google\Cloud\Logging\Entry;
 use Google\Cloud\Logging\Logger;
 use Psr\Log\LoggerInterface;
 use Stringable;
@@ -56,12 +57,25 @@ class GoogleCloudLogger implements LoggerInterface
 
     public function log($level, Stringable|string $message, array $context = []): void
     {
-        $options = [
-            'severity' => Logger::EMERGENCY,
-            'context' => $context,
+        $levels = [
+            'emergency' => Logger::EMERGENCY,
+            'alert' => Logger::ALERT,
+            'critical' => Logger::CRITICAL,
+            'error' => Logger::ERROR,
+            'warning' => Logger::WARNING,
+            'notice' => Logger::NOTICE,
+            'info' => Logger::INFO,
+            'debug' => Logger::DEBUG,
         ];
-        $entry = $this->driver->entry($message, $options);
-        $this->driver->write($entry);
+        $info = [
+            'severity' => $levels[$level] ?? Logger::DEBUG,
+            'textPayload' => $message,
+            'jsonPayload' => $context,
+        ];
+        $entries = [
+            new Entry($info),
+        ];
+        $this->driver->writeBatch($entries);
         printf(sprintf("[%s] '%s" . PHP_EOL, $level, $message));
     }
 }
