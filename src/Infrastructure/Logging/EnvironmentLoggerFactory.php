@@ -9,8 +9,8 @@ use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Psr\Log\LoggerInterface;
 
-use function Serendipity\Type\Cast\toString;
 use function Hyperf\Support\env;
+use function Serendipity\Type\Cast\toString;
 
 readonly class EnvironmentLoggerFactory
 {
@@ -39,6 +39,7 @@ readonly class EnvironmentLoggerFactory
                 ],
             ];
         }
-        return $logging->psrLogger(toString(env('APP_NAME')), $options);
+        $name = sprintf('%s[%s]', toString(env('APP_NAME')), $env);
+        return new GoogleCloudLogger($logging->psrLogger($name, $options));
     }
 }
