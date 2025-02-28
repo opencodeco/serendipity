@@ -91,17 +91,14 @@ class GoogleCloudLogger implements LoggerInterface
             return;
         } catch (Throwable $throwable) {
         }
-        try {
-            $error = sprintf(
-                '[GoogleCloudLogger] "%s" in `%s` at `%s`',
-                $throwable->getMessage(),
-                $throwable->getFile(),
-                $throwable->getLine()
-            );
-            $stdout = sprintf('[%s] %s (%s): %s', $severity, $message, $error, encode($context));
-            printf("%s\n", $stdout);
-        } catch (Throwable) {
-        }
+        $error = sprintf(
+            '"%s" in `%s` at `%s`',
+            $throwable->getMessage(),
+            $throwable->getFile(),
+            $throwable->getLine()
+        );
+        $stdout = sprintf('[GoogleCloudLogger][%s] %s: %s (%s)', $severity, $message, encode($context), $error);
+        printf("%s\n", $stdout);
     }
 
     private function payload(string $severity, array $context): array

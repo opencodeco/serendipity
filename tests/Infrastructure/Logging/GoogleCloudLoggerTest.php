@@ -218,6 +218,6 @@ final class GoogleCloudLoggerTest extends TestCase
         $output = ob_get_clean();
 
         // Assert
-        $this->assertStringContainsString('(Test Exception)', $output);
+        $this->assertMatchesRegularExpression('/\("Test Exception" in `.*` at `.*`\)/', $output);
     }
 }
