@@ -17,9 +17,9 @@ class AppExceptionHandlerTest extends TestCase
     {
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())
-            ->method('error')
+            ->method('emergency')
             ->with(
-                $this->stringContains('[app.error]'),
+                $this->stringContains('[AppExceptionHandler]'),
                 $this->arrayHasKey('message')
             );
 
@@ -39,9 +39,9 @@ class AppExceptionHandlerTest extends TestCase
     {
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())
-            ->method('error')
+            ->method('emergency')
             ->with(
-                $this->stringContains('[app.error]'),
+                $this->stringContains('[AppExceptionHandler]'),
                 $this->arrayHasKey('message')
             );
 

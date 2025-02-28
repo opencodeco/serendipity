@@ -34,7 +34,7 @@ class AppExceptionHandler extends ExceptionHandler
     public function handle(Throwable $throwable, ResponseInterface $response): MessageInterface|ResponseInterface
     {
         $message = sprintf(
-            '[app.error] "%s" in `%s` at `%s`',
+            '[AppExceptionHandler] "%s" in `%s` at `%s`',
             $throwable->getMessage(),
             $throwable->getFile(),
             $throwable->getLine()
@@ -48,7 +48,7 @@ class AppExceptionHandler extends ExceptionHandler
             'trace' => $throwable->getTraceAsString(),
         ];
 
-        $this->logger->error($message, $context);
+        $this->logger->emergency($message, $context);
 
         $statusCode = $this->extractCode($throwable);
 

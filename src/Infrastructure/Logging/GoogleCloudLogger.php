@@ -4,79 +4,128 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Logging;
 
+use DateTimeImmutable;
+use DateTimeInterface;
 use Google\Cloud\Logging\Entry;
 use Google\Cloud\Logging\Logger;
 use Psr\Log\LoggerInterface;
 use Stringable;
+use Throwable;
+
+use function Serendipity\Type\Json\encode;
 
 class GoogleCloudLogger implements LoggerInterface
 {
-    public function __construct(private readonly Logger $driver)
-    {
+    public function __construct(
+        private readonly Logger $driver,
+        public readonly string $projectId,
+        public readonly string $serviceName,
+        public readonly string $env,
+        public readonly string $type = 'cloud_run_revision',
+        public readonly string $location = 'us-central1',
+    ) {
     }
 
-    public function emergency(Stringable|string $message, array $context = []): void
-    {
-        $this->log('emergency', $message, $context);
-    }
-
-    public function alert(Stringable|string $message, array $context = []): void
-    {
-        $this->log('alert', $message, $context);
-    }
-
-    public function critical(Stringable|string $message, array $context = []): void
-    {
-        $this->log('critical', $message, $context);
-    }
-
-    public function error(Stringable|string $message, array $context = []): void
-    {
-        $this->log('error', $message, $context);
-    }
-
-    public function warning(Stringable|string $message, array $context = []): void
-    {
-        $this->log('warning', $message, $context);
-    }
-
-    public function notice(Stringable|string $message, array $context = []): void
-    {
-        $this->log('notice', $message, $context);
-    }
-
-    public function info(Stringable|string $message, array $context = []): void
-    {
-        $this->log('info', $message, $context);
-    }
-
-    public function debug(Stringable|string $message, array $context = []): void
-    {
-        $this->log('debug', $message, $context);
-    }
-
-    public function log($level, Stringable|string $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
         $levels = [
-            'emergency' => Logger::EMERGENCY,
-            'alert' => Logger::ALERT,
-            'critical' => Logger::CRITICAL,
-            'error' => Logger::ERROR,
-            'warning' => Logger::WARNING,
-            'notice' => Logger::NOTICE,
-            'info' => Logger::INFO,
-            'debug' => Logger::DEBUG,
+            Logger::EMERGENCY => 'EMERGENCY',
+            Logger::ALERT => 'ALERT',
+            Logger::CRITICAL => 'CRITICAL',
+            Logger::ERROR => 'ERROR',
+            Logger::WARNING => 'WARNING',
+            Logger::NOTICE => 'NOTICE',
+            Logger::INFO => 'INFO',
+            Logger::DEBUG => 'DEBUG',
         ];
         $context['message'] = $message;
-        $info = [
-            'name' => $this->driver->name(),
-            'severity' => $levels[$level] ?? Logger::DEBUG,
+        $severity = $levels[$level] ?? $levels[Logger::INFO];
+        $payload = $this->payload($severity, $context);
+        $this->write($severity, $message, $payload);
+    }
+
+    public function emergency(string|Stringable $message, array $context = []): void
+    {
+        $this->log(Logger::EMERGENCY, $message, $context);
+    }
+
+    public function info(string|Stringable $message, array $context = []): void
+    {
+        $this->log(Logger::INFO, $message, $context);
+    }
+
+    public function alert(string|Stringable $message, array $context = []): void
+    {
+        $this->log(Logger::ALERT, $message, $context);
+    }
+
+    public function critical(string|Stringable $message, array $context = []): void
+    {
+        $this->log(Logger::CRITICAL, $message, $context);
+    }
+
+    public function error(string|Stringable $message, array $context = []): void
+    {
+        $this->log(Logger::ERROR, $message, $context);
+    }
+
+    public function warning(string|Stringable $message, array $context = []): void
+    {
+        $this->log(Logger::WARNING, $message, $context);
+    }
+
+    public function notice(string|Stringable $message, array $context = []): void
+    {
+        $this->log(Logger::NOTICE, $message, $context);
+    }
+
+    public function debug(string|Stringable $message, array $context = []): void
+    {
+        $this->log(Logger::DEBUG, $message, $context);
+    }
+
+    private function write(string $severity, string|Stringable $message, array $context): void
+    {
+        try {
+            $this->driver->write(new Entry($context));
+            return;
+        } catch (Throwable $throwable) {
+        }
+        try {
+            $error = sprintf(
+                '[GoogleCloudLogger] "%s" in `%s` at `%s`',
+                $throwable->getMessage(),
+                $throwable->getFile(),
+                $throwable->getLine()
+            );
+            $stdout = sprintf('[%s] %s (%s): %s', $severity, $message, $error, encode($context));
+            printf("%s\n", $stdout);
+        } catch (Throwable) {
+        }
+    }
+
+    private function payload(string $severity, array $context): array
+    {
+        return [
+            'timestamp' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
+            'logName' => sprintf(
+                'projects/%s/logs/%s%%2F%s-%s',
+                $this->serviceName,
+                $this->projectId,
+                'env',
+                $this->env,
+            ),
+            'severity' => $severity,
             'jsonPayload' => $context,
+            'resource' => [
+                'labels' => [
+                    'configuration_name' => $this->serviceName,
+                    'location' => $this->location,
+                    'service_name' => $this->serviceName,
+                    'project_id' => $this->projectId,
+                ],
+                'type' => $this->type,
+            ],
         ];
-        $entries = [
-            new Entry($info),
-        ];
-        $this->driver->writeBatch($entries);
-        printf(sprintf("[%s] '%s" . PHP_EOL, $level, $message));
     }
 }

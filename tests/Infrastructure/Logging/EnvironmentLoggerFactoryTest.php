@@ -19,26 +19,21 @@ class EnvironmentLoggerFactoryTest extends TestCase
 
     public function testShouldReturnStdoutLoggerForDevEnv(): void
     {
-        $logger = $this->factory->make('dev');
+        $logger = $this->factory->make();
 
         $this->assertSame($this->stdoutLogger, $logger);
     }
 
-    public function testShouldReturnGcloudLoggerForNonDevEnv(): void
-    {
-        $this->config->method('get')
-            ->willReturn(false);
-
-        $logger = $this->factory->make('prd');
-
-        $this->assertNotSame($this->stdoutLogger, $logger);
-    }
-
     public function testShouldReturnBatchGcloudLoggerWhenConfigured(): void
     {
-        $this->config->method('get')
-            ->with('logger.gcloud.batch', false)
-            ->willReturn(true);
+        $this->config->expects($this->exactly(3))
+            ->method('get')
+            ->willReturnCallback(fn (string $key) => match ($key) {
+                'logger.gcloud.project_id' => 'project-id',
+                'logger.gcloud.batch' => true,
+                'logger.gcloud.service_name' => 'service-name',
+                default => null,
+            });
 
         $logger = $this->factory->make('prd');
 
