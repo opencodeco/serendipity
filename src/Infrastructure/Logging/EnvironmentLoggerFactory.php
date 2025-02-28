@@ -40,6 +40,6 @@ readonly class EnvironmentLoggerFactory
             ];
         }
         $name = sprintf('%s[%s]', toString(env('APP_NAME')), $env);
-        return new GoogleCloudLogger($logging->psrLogger($name, $options));
+        return new GoogleCloudLogger($logging->logger($name, $options));
     }
 }
