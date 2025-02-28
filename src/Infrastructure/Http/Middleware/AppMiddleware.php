@@ -53,7 +53,7 @@ class AppMiddleware extends Hyperf
         $output = $this->configureHeaders($response, $output);
 
         if ($statusCode === 204) {
-            return $output->setBody(new SwooleStream('empty'));
+            return $output->setBody(new SwooleStream());
         }
 
         $body = $response->content()?->toArray();
