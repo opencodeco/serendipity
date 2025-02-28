@@ -6,12 +6,12 @@ namespace Serendipity\Test;
 
 use PHPUnit\Framework\TestCase as PHPUnit;
 use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
-use Serendipity\Infrastructure\Testing\Factory;
+use Serendipity\Infrastructure\Testing\HelperFactory;
 use Serendipity\Infrastructure\Testing\Faker\Faker;
 
 class TestCase extends PHPUnit
 {
-    use Factory;
+    use HelperFactory;
 
     protected Faker $faker;
 

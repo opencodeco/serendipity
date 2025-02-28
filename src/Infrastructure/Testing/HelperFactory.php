@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Testing;
 
-use BackedEnum;
 use FastRoute\Dispatcher;
 use Hyperf\Context\Context;
 use Hyperf\HttpMessage\Server\Request;
@@ -14,7 +13,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 use function Hyperf\Support\make;
 
-trait Factory
+/**
+ * @phpstan-ignore trait.unused
+ */
+trait HelperFactory
 {
     /**
      * @SuppressWarnings(StaticAccess)
@@ -38,11 +40,6 @@ trait Factory
         return make($class, $args);
     }
 
-    final protected function assertEnumValue(BackedEnum $enum, string $value): void
-    {
-        $this->assertEquals($enum->value, $value);
-    }
-
     /**
      * @template T of mixed
      * @param class-string<T> $class
@@ -50,14 +47,14 @@ trait Factory
      */
     final protected function input(string $class, array $data = [], array $queryParams = [], array $params = []): mixed
     {
-        $this->configureRequestContext($data, $queryParams, $params);
+        $this->makeRequestContext($data, $queryParams, $params);
         return $this->make($class);
     }
 
     /**
      * @SuppressWarnings(StaticAccess)
      */
-    final protected function configureRequestContext(
+    final protected function makeRequestContext(
         array $data = [],
         array $queryParams = [],
         array $params = []

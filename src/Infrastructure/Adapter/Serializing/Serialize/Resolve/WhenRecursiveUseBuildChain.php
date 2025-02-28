@@ -28,7 +28,7 @@ class WhenRecursiveUseBuildChain extends Chain
             return parent::resolve($parameter, $values);
         }
         $value = $values->get($name);
-        if (is_object($value) && ($value::class === $class || is_subclass_of($value::class, $class))) {
+        if (is_object($value) && is_subclass_of($value::class, $class)) {
             return new Value($value);
         }
         $args = $this->resolveDependencyArgs($class, $value);

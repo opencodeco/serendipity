@@ -84,9 +84,9 @@ abstract class PostgresRepository
         if (! preg_match($pattern, $message, $matches)) {
             return null;
         }
-        $resource = toString($matches[1] ?? null);
-        $key = toString($matches[2] ?? null);
-        $value = toString($matches[3] ?? null);
+        $resource = toString($matches[1]);
+        $key = toString($matches[2]);
+        $value = toString($matches[3]);
         return new UniqueKeyViolationException($key, $value, $resource, $exception);
     }
 }
