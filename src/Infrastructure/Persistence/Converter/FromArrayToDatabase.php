@@ -6,9 +6,9 @@ namespace Serendipity\Infrastructure\Persistence\Converter;
 
 use Serendipity\Infrastructure\Adapter\Serializing\Converter;
 
-use function Serendipity\Type\Json\encode;
 use function is_array;
 use function is_string;
+use function Serendipity\Type\Json\encode;
 
 class FromArrayToDatabase implements Converter
 {

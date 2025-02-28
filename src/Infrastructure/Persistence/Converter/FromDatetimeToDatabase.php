@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Persistence\Converter;
 
-use Serendipity\Infrastructure\Adapter\Serializing\Converter;
 use DateTimeInterface;
+use Serendipity\Infrastructure\Adapter\Serializing\Converter;
 
 use function is_string;
 

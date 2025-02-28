@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Serializing;
 
+use InvalidArgumentException;
 use Serendipity\Domain\Contract\Deserializer as Contract;
 use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Demolisher;
 use Serendipity\Infrastructure\CaseConvention;
-use InvalidArgumentException;
 
 use function is_object;
 

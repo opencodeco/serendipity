@@ -30,11 +30,9 @@ abstract class PostgresRepository
     }
 
     /**
-     * @param object $instance
      * @param array<string> $fields
      * @param array<string,mixed> $default
      * @param array<string,string> $generate
-     * @return array
      * @throws GeneratingException
      */
     protected function bindings(
@@ -65,7 +63,6 @@ abstract class PostgresRepository
 
     /**
      * @param array<string> $fields
-     * @return string
      */
     protected function columns(array $fields): string
     {
@@ -74,7 +71,6 @@ abstract class PostgresRepository
 
     /**
      * @param array<string> $fields
-     * @return string
      */
     protected function values(array $fields): string
     {
@@ -84,7 +80,8 @@ abstract class PostgresRepository
     protected function detectUniqueKeyViolation(QueryException|Throwable $exception): ?UniqueKeyViolationException
     {
         $message = $exception->getMessage();
-        $pattern = '/duplicate key value violates unique constraint "([^"]+)"\s+DETAIL:\s+Key \(([^)]+)\)=\(([^)]+)\) already exists\./m';
+        $pattern = '/duplicate key value violates unique constraint '
+            . '"([^"]+)"\s+DETAIL:\s+Key \(([^)]+)\)=\(([^)]+)\) already exists\./m';
         if (! preg_match($pattern, $message, $matches)) {
             return null;
         }

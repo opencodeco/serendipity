@@ -9,8 +9,6 @@ use Serendipity\Domain\Exception\Mapping\NotResolvedType;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Values;
 
-use function gettype;
-
 class WhenIsValidUseValueChain extends Chain
 {
     public function resolve(ReflectionParameter $parameter, Values $values): Value

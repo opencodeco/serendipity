@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Http\Middleware;
 
-use Serendipity\Domain\Contract\Result;
-use Serendipity\Presentation\OutputFormatter;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\HttpServer\CoreMiddleware as Hyperf;
@@ -14,10 +12,12 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Serendipity\Domain\Contract\Result;
+use Serendipity\Presentation\OutputFormatter;
 use Swow\Psr7\Message\ResponsePlusInterface;
 
-use function Serendipity\Type\Cast\toInt;
 use function is_string;
+use function Serendipity\Type\Cast\toInt;
 use function sprintf;
 
 class AppMiddleware extends Hyperf

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Http\Exception\Handler;
 
-use Serendipity\Presentation\OutputFormatter;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Serendipity\Presentation\OutputFormatter;
 use Throwable;
 
 use function array_map;
+use function in_array;
 use function Serendipity\Type\Cast\toInt;
 use function Serendipity\Type\Cast\toString;
-use function in_array;
 use function sprintf;
 
 class AppExceptionHandler extends ExceptionHandler

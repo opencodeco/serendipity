@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Collection;
 
-use Serendipity\Domain\Contract\Serializer;
 use DomainException;
+use Serendipity\Domain\Contract\Serializer;
 
 /**
  * @template T

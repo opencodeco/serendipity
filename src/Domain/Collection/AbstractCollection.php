@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Collection;
 
-use Serendipity\Domain\Support\Outputable;
 use Closure;
 use Countable;
 use Iterator;
+use Serendipity\Domain\Support\Outputable;
 
 /**
  * @template T

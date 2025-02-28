@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Exception;
 
+use InvalidArgumentException;
 use Serendipity\Domain\Exception\Mapping\NotResolved;
 use Serendipity\Domain\Support\Values;
-use InvalidArgumentException;
 use Throwable;
 
 use function array_map;

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Persistence\Serializing;
 
+use DateTime;
+use DateTimeImmutable;
 use Serendipity\Infrastructure\Adapter\Serializing\DeserializerFactory;
 use Serendipity\Infrastructure\Persistence\Converter\FromArrayToDatabase;
 use Serendipity\Infrastructure\Persistence\Converter\FromDatetimeToDatabase;
-use DateTime;
-use DateTimeImmutable;
 
 class RelationalDeserializerFactory extends DeserializerFactory
 {

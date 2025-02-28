@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Persistence;
 
-use Serendipity\Domain\Exception\GeneratingException;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Serendipity\Domain\Exception\GeneratingException;
 use Throwable;
 use Visus\Cuid2\Cuid2;
 
