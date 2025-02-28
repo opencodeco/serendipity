@@ -67,9 +67,9 @@ class GoogleCloudLogger implements LoggerInterface
             'info' => Logger::INFO,
             'debug' => Logger::DEBUG,
         ];
+        $context['message'] = $message;
         $info = [
             'severity' => $levels[$level] ?? Logger::DEBUG,
-            'textPayload' => $message,
             'jsonPayload' => $context,
         ];
         $entries = [
