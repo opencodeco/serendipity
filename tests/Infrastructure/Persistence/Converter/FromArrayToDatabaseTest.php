@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Persistence\Converter;
 
 use Serendipity\Infrastructure\Persistence\Converter\FromArrayToDatabase;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class FromArrayToDatabaseTest extends TestCase
 {

@@ -11,7 +11,7 @@ use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
 use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Infrastructure\Persistence\Converter\FromDatabaseToArray;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 use stdClass;
 
 use function Serendipity\Type\Json\encode;

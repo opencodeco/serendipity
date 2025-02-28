@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Adapter\Serializing;
 
 use Serendipity\Infrastructure\Adapter\Serializing\DeserializerFactory;
-use Serendipity\Infrastructure\Testing\TestCase;
 use Serendipity\Test\Infrastructure\Stub;
+use Serendipity\Test\TestCase;
 
 final class DeserializerFactoryTest extends TestCase
 {

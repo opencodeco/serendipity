@@ -8,8 +8,8 @@ use InvalidArgumentException;
 use Serendipity\Domain\Contract\Result;
 use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\Adapter\Serializing\Deserializer;
-use Serendipity\Infrastructure\Testing\TestCase;
 use Serendipity\Test\Infrastructure\Stub;
+use Serendipity\Test\TestCase;
 
 final class DeserializerTest extends TestCase
 {

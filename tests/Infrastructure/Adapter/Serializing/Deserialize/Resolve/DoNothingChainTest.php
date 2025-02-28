@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Adapter\Serializing\Deserialize\Resolve;
 
 use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Resolve\DoNothingChain;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class DoNothingChainTest extends TestCase
 {

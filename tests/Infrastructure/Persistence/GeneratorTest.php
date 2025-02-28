@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Persistence;
 
 use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Infrastructure\Persistence\Generator;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class GeneratorTest extends TestCase
 {

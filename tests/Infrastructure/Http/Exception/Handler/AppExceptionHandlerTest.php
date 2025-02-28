@@ -9,7 +9,7 @@ use Hyperf\HttpMessage\Server\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Infrastructure\Http\Exception\Handler\AppExceptionHandler;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class AppExceptionHandlerTest extends TestCase
 {

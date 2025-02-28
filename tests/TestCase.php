@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Testing;
+namespace Serendipity\Test;
 
 use BackedEnum;
 use FastRoute\Dispatcher;

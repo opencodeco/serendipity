@@ -9,7 +9,7 @@ use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
 use Serendipity\Infrastructure\Persistence\Generator;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalSerializerFactory;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 use stdClass;
 
 final class PostgresRepositoryTest extends TestCase

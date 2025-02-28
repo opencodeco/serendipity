@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Persistence\Factory;
 
 use Hyperf\DB\DB as Database;
 use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 final class HyperfDBFactoryTest extends TestCase
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Collection\Support;
 
 use DomainException;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 use stdClass;
 
 class CollectionTest extends TestCase

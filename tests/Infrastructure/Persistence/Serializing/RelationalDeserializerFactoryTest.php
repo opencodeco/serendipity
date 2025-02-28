@@ -9,8 +9,8 @@ use DateTimeImmutable;
 use Serendipity\Infrastructure\Persistence\Converter\FromArrayToDatabase;
 use Serendipity\Infrastructure\Persistence\Converter\FromDatetimeToDatabase;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalDeserializerFactory;
-use Serendipity\Infrastructure\Testing\TestCase;
 use Serendipity\Test\Infrastructure\Stub;
+use Serendipity\Test\TestCase;
 
 final class RelationalDeserializerFactoryTest extends TestCase
 {

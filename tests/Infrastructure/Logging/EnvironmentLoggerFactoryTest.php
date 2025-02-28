@@ -7,7 +7,7 @@ namespace Serendipity\Test\Infrastructure\Logging;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Serendipity\Infrastructure\Logging\EnvironmentLoggerFactory;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class EnvironmentLoggerFactoryTest extends TestCase
 {

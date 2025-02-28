@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation\Output;
 
-use Serendipity\Infrastructure\Testing\TestCase;
 use Serendipity\Presentation\Output\NoContent;
+use Serendipity\Test\TestCase;
 
 
 final class NoContentTest extends TestCase

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation;
 
-use Serendipity\Infrastructure\Testing\TestCase;
 use Serendipity\Presentation\OutputFormatter;
+use Serendipity\Test\TestCase;
 
 class OutputFormatterTest extends TestCase
 {

@@ -10,7 +10,7 @@ use Hyperf\HttpMessage\Server\Response;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ResponseInterface;
 use Serendipity\Infrastructure\Http\Exception\Handler\ValidationExceptionHandler;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 use Throwable;
 
 class ValidationExceptionHandlerTest extends TestCase

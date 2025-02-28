@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Collection\Support;
 
 use Serendipity\Domain\Collection\AbstractCollection;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class AbstractCollectionTest extends TestCase
 {

@@ -6,7 +6,7 @@ namespace Serendipity\Test\Domain\Support;
 
 use InvalidArgumentException;
 use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class ValuesTest extends TestCase
 {

@@ -13,8 +13,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Infrastructure\Adapter\Output;
 use Serendipity\Infrastructure\Http\Middleware\AppMiddleware;
-use Serendipity\Infrastructure\Testing\TestCase;
 use Serendipity\Presentation\Output\NoContent;
+use Serendipity\Test\TestCase;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Swow\Psr7\Message\ServerRequestPlusInterface;
 

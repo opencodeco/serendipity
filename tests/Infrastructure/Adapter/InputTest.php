@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter;
 
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class InputTest extends TestCase
 {

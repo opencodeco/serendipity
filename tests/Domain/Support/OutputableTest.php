@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Support;
 
 use Serendipity\Domain\Support\Outputable;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class OutputableTest extends TestCase
 {

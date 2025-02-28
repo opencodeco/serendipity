@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Persistence\Factory;
 
 use Hyperf\Contract\ConfigInterface;
 use Serendipity\Infrastructure\Persistence\Factory\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 final class SleekDBDatabaseFactoryTest extends TestCase
 {

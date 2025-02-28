@@ -6,8 +6,8 @@ namespace Serendipity\Test\Infrastructure\Persistence\Serializing;
 
 use Serendipity\Infrastructure\Persistence\Converter\FromDatabaseToArray;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalSerializerFactory;
-use Serendipity\Infrastructure\Testing\TestCase;
 use Serendipity\Test\Infrastructure\Stub;
+use Serendipity\Test\TestCase;
 
 final class RelationalSerializerFactoryTest extends TestCase
 {

@@ -8,7 +8,7 @@ use Hyperf\Command\Event\AfterExecute;
 use Hyperf\Coordinator\Constants;
 use Hyperf\Coordinator\CoordinatorManager;
 use Serendipity\Infrastructure\Listener\ResumeExitCoordinatorListener;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class ResumeExitCoordinatorListenerTest extends TestCase
 {

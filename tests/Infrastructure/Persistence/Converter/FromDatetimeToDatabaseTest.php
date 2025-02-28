@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Persistence\Converter;
 
 use DateTime;
 use Serendipity\Infrastructure\Persistence\Converter\FromDatetimeToDatabase;
-use Serendipity\Infrastructure\Testing\TestCase;
+use Serendipity\Test\TestCase;
 
 class FromDatetimeToDatabaseTest extends TestCase
 {
