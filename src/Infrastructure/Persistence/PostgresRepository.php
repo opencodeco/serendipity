@@ -11,7 +11,6 @@ use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Persistence\Serializing\RelationalSerializerFactory;
-
 use Throwable;
 
 use function Serendipity\Type\Cast\toString;

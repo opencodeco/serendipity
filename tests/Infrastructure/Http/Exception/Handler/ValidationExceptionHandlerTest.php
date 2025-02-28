@@ -13,7 +13,7 @@ use Serendipity\Infrastructure\Http\Exception\Handler\ValidationExceptionHandler
 use Serendipity\Test\TestCase;
 use Throwable;
 
-final classValidationExceptionHandlerTest extends TestCase
+final class ValidationExceptionHandlerTest extends TestCase
 {
     public function testHandleShouldReturnValidationErrors(): void
     {
