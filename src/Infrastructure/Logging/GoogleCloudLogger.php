@@ -4,63 +4,64 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Logging;
 
-use Google\Cloud\Logging\PsrLogger;
+use Google\Cloud\Logging\Logger;
 use Psr\Log\LoggerInterface;
 use Stringable;
 
 class GoogleCloudLogger implements LoggerInterface
 {
-    public function __construct(private readonly PsrLogger $driver)
+    public function __construct(private readonly Logger $driver)
     {
     }
 
     public function emergency(Stringable|string $message, array $context = []): void
     {
-        $this->driver->emergency($message, $this->severity($context, 'emergency'));
+        $this->log('emergency', $message, $context);
     }
 
     public function alert(Stringable|string $message, array $context = []): void
     {
-        $this->driver->alert($message, $this->severity($context, 'alert'));
+        $this->log('alert', $message, $context);
     }
 
     public function critical(Stringable|string $message, array $context = []): void
     {
-        $this->driver->critical($message, $this->severity($context, 'critical'));
+        $this->log('critical', $message, $context);
     }
 
     public function error(Stringable|string $message, array $context = []): void
     {
-        $this->driver->error($message, $this->severity($context, 'error'));
+        $this->log('error', $message, $context);
     }
 
     public function warning(Stringable|string $message, array $context = []): void
     {
-        $this->driver->warning($message, $this->severity($context, 'warning'));
+        $this->log('warning', $message, $context);
     }
 
     public function notice(Stringable|string $message, array $context = []): void
     {
-        $this->driver->notice($message, $this->severity($context, 'notice'));
+        $this->log('notice', $message, $context);
     }
 
     public function info(Stringable|string $message, array $context = []): void
     {
-        $this->driver->info($message, $this->severity($context, 'info'));
+        $this->log('info', $message, $context);
     }
 
     public function debug(Stringable|string $message, array $context = []): void
     {
-        $this->driver->debug($message, $this->severity($context, 'debug'));
+        $this->log('debug', $message, $context);
     }
 
     public function log($level, Stringable|string $message, array $context = []): void
     {
-        $this->driver->log($level, $message, $this->severity($context, 'log'));
-    }
-
-    private function severity(array $context, string $severity): array
-    {
-        return array_merge(['severity' => $severity], $context);
+        $options = [
+            'severity' => Logger::EMERGENCY,
+            'context' => $context,
+        ];
+        $entry = $this->driver->entry($message, $options);
+        $this->driver->write($entry);
+        printf(sprintf("[%s] '%s" . PHP_EOL, $level, $message));
     }
 }
