@@ -84,7 +84,7 @@ final class InputTest extends TestCase
 
     public function testShouldGetValueFromParams(): void
     {
-        $param = $this->faker()->uuid();
+        $param = $this->generator()->uuid();
         $params = ['param' => $param];
         $input = $this->make(
             Input::class,

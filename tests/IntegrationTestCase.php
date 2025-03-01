@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test;
 
 use Serendipity\Hyperf\Testing\PostgresHelper;
-use Serendipity\Testing\HasResource;
+use Serendipity\Testing\CanAssertResource;
 use Serendipity\Testing\Resource\SleekDBHelper;
 
 /**
@@ -13,7 +13,7 @@ use Serendipity\Testing\Resource\SleekDBHelper;
  */
 class IntegrationTestCase extends TestCase
 {
-    use HasResource;
+    use CanAssertResource;
 
     protected function setUp(): void
     {

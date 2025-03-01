@@ -11,11 +11,14 @@ use Serendipity\Testing\Resource\Helper;
 use Throwable;
 
 use function Serendipity\Type\Json\encode;
+use function array_key_first;
+use function count;
+use function sprintf;
 
 /**
  * @phpstan-ignore trait.unused
  */
-trait HasResource
+trait CanAssertResource
 {
     /**
      * @var array<string,Helper>

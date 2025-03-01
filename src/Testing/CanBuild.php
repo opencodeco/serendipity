@@ -9,9 +9,9 @@ use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 /**
  * @phpstan-ignore trait.unused
  */
-trait HasBuilder
+trait CanBuild
 {
-    protected ?Builder $builder = null;
+    private ?Builder $builder = null;
 
     protected function builder(): Builder
     {

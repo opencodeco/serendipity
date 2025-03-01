@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Serendipity\Test;
 
 use PHPUnit\Framework\TestCase as PHPUnit;
-use Serendipity\Hyperf\Testing\HasInput;
-use Serendipity\Hyperf\Testing\HasMaker;
-use Serendipity\Testing\HasBuilder;
-use Serendipity\Testing\HasFaker;
+use Serendipity\Hyperf\Testing\CanMakeInput;
+use Serendipity\Hyperf\Testing\CanMake;
+use Serendipity\Testing\CanBuild;
+use Serendipity\Testing\CanFake;
 
 class TestCase extends PHPUnit
 {
-    use HasMaker;
-    use HasFaker;
-    use HasBuilder;
-    use HasInput;
+    use CanMake;
+    use CanFake;
+    use CanBuild;
+    use CanMakeInput;
 
     protected function tearDown(): void
     {

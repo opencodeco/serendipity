@@ -15,15 +15,9 @@ use Serendipity\Infrastructure\CaseConvention;
 
 use function Serendipity\Type\String\toSnakeCase;
 
-/**
- * @template T
- * @extends Generator<T>
- *
- * @phpstan-ignore generics.noParent
- */
 class Faker
 {
-    protected readonly Generator $engine;
+    public readonly Generator $generator;
 
     /**
      * @SuppressWarnings(StaticAccess)
@@ -32,12 +26,12 @@ class Faker
         public readonly CaseConvention $case = CaseConvention::SNAKE,
         public readonly array $converters = [],
     ) {
-        $this->engine = Factory::create('pt_BR');
+        $this->generator = Factory::create('pt_BR');
     }
 
     public function __call(string $name, array $arguments): mixed
     {
-        return $this->engine->__call($name, $arguments);
+        return $this->generator->__call($name, $arguments);
     }
 
     /**

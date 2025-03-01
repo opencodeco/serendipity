@@ -12,7 +12,7 @@ final class NoContentTest extends TestCase
 {
     public function testShouldHaveIdOnContent(): void
     {
-        $word = $this->faker()->word();
+        $word = $this->generator()->word();
         $properties = ['word' => $word];
         $output = new NoContent($properties);
         $this->assertNull($output->values());

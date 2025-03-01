@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * @phpstan-ignore trait.unused
  */
-trait HasInput
+trait CanMakeInput
 {
     /**
      * @SuppressWarnings(StaticAccess)

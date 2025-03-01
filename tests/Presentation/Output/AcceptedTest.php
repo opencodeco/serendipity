@@ -11,7 +11,7 @@ final class AcceptedTest extends TestCase
 {
     public function testShouldHaveTokenOnContent(): void
     {
-        $token = $this->faker()->uuid();
+        $token = $this->generator()->uuid();
         $output = new Accepted($token);
         $this->assertEquals($token, $output->values()->get('token'));
     }

@@ -9,7 +9,7 @@ use function Hyperf\Support\make;
 /**
  * @phpstan-ignore trait.unused
  */
-trait HasMaker
+trait CanMake
 {
     /**
      * @template T of mixed
