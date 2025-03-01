@@ -9,6 +9,9 @@ use Throwable;
 
 use function Serendipity\Type\Cast\toString;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait HasPostgresUniqueConstraint
 {
     protected function detectUniqueKeyViolation(Throwable $exception): ?UniqueKeyViolationException

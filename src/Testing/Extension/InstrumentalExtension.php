@@ -6,6 +6,9 @@ namespace Serendipity\Testing\Extension;
 
 use Serendipity\Infrastructure\Database\Instrumental;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait InstrumentalExtension
 {
     private ?Instrumental $instrument = null;

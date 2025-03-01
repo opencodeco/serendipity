@@ -19,7 +19,7 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
     /**
      * @var Serializer<Game>
      */
-    protected readonly Serializer $serializer;
+    protected Serializer $serializer;
 
     public function __construct(
         Instrumental $generator,

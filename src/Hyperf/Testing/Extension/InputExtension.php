@@ -11,6 +11,9 @@ use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\HttpServer\Router\Handler;
 use Psr\Http\Message\ServerRequestInterface;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait InputExtension
 {
     private bool $isRequestSetUp = false;

@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository;
 
+use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
 
 use function Serendipity\Type\Cast\toArray;
 
 class Repository
 {
-    protected readonly Serializer $serializer;
+    protected Serializer $serializer;
 
     /**
-     * @template T of mixed
+     * @template T of Collection
      * @param class-string<T> $collection
-     * @param array<string, mixed> $result
+     * @param mixed $result
      *
      * @return T
      */

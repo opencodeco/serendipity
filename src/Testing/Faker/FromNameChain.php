@@ -32,7 +32,7 @@ final class FromNameChain extends Chain
     {
         $name = $parameter->getName();
         try {
-            return new Value($this->instrument->format($name));
+            return new Value($this->generator->format($name));
         } catch (Throwable) {
         }
 

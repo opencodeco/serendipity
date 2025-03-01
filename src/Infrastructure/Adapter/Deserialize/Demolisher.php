@@ -11,6 +11,7 @@ use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Engine;
 
 use function get_object_vars;
+use function Serendipity\Type\Cast\toArray;
 
 class Demolisher extends Engine
 {
@@ -37,7 +38,7 @@ class Demolisher extends Engine
     public function extractValues(object $instance): array
     {
         if ($instance instanceof Message) {
-            return $instance->content()?->toArray() ?? [];
+            return toArray($instance->content() ?? []);
         }
         return get_object_vars($instance);
     }

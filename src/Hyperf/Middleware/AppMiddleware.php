@@ -57,7 +57,7 @@ class AppMiddleware extends Hyperf
             return $output->setBody(new SwooleStream());
         }
 
-        $body = $response->content()?->toArray();
+        $body = $response->content();
         $contents = $this->formatter->format($body);
         return $output->setBody(new SwooleStream($contents));
     }

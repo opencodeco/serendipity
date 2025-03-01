@@ -14,6 +14,9 @@ use function count;
 use function Serendipity\Type\Json\encode;
 use function sprintf;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait ResourceExtension
 {
     /**
