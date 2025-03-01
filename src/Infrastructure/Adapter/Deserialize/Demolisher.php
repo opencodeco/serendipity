@@ -37,7 +37,7 @@ class Demolisher extends Engine
     public function extractValues(object $instance): array
     {
         if ($instance instanceof Message) {
-            return $instance->values()?->toArray() ?? [];
+            return $instance->content()?->toArray() ?? [];
         }
         return get_object_vars($instance);
     }

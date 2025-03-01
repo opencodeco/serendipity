@@ -17,8 +17,8 @@ trait HasPostgresUniqueConstraint
     protected function detectUniqueKeyViolation(Throwable $exception): ?UniqueKeyViolationException
     {
         $message = $exception->getMessage();
-        $pattern = '/duplicate key value violates unique constraint\s+?' .
-            '"([^"]+)".*\(([^)]+)\)=\(([^)]+)\) already exists\./m';
+        $pattern = '/duplicate key value violates unique constraint\s+?'
+            . '"([^"]+)".*\(([^)]+)\)=\(([^)]+)\) already exists\./m';
         if (! preg_match($pattern, $message, $matches)) {
             return null;
         }

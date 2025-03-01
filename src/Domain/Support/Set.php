@@ -28,7 +28,7 @@ final readonly class Set
         if (count($keys) !== count($filtered)) {
             throw new InvalidArgumentException('All keys must be strings.');
         }
-        /** @phpstan-ignore assign.propertyType */
+        /* @phpstan-ignore assign.propertyType */
         $this->data = $data;
     }
 

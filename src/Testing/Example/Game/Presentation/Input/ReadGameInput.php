@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Hyperf\Testing\Presentation;
+namespace Serendipity\Testing\Example\Game\Presentation\Input;
 
 use Serendipity\Presentation\Input;
 
-final class HealthInput extends Input
+class ReadGameInput extends Input
 {
     public function rules(): array
     {
         return [
-            'message' => 'sometimes|string',
+            'id' => 'required|string',
         ];
     }
 }

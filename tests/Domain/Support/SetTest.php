@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Support;
 
 use InvalidArgumentException;
-use Serendipity\Domain\Support\Set;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Support\Set;
 
+/**
+ * @internal
+ */
 final class SetTest extends TestCase
 {
     public function testCreateFromArray(): void

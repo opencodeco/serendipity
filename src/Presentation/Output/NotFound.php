@@ -8,7 +8,7 @@ use Serendipity\Presentation\Output;
 
 use function sprintf;
 
-class NotFound extends Output
+final class NotFound extends Output
 {
     public function __construct(string $missing, int|string $what)
     {
@@ -16,5 +16,10 @@ class NotFound extends Output
             'Missing' => sprintf('"%s" identified by "%s" not found', $missing, $what),
         ];
         parent::__construct($properties);
+    }
+
+    public static function createFrom(string $missing, int|string $what): NotFound
+    {
+        return new self($missing, $what);
     }
 }

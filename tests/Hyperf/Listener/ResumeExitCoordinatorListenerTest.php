@@ -7,9 +7,12 @@ namespace Serendipity\Test\Hyperf\Listener;
 use Hyperf\Command\Event\AfterExecute;
 use Hyperf\Coordinator\Constants;
 use Hyperf\Coordinator\CoordinatorManager;
-use Serendipity\Hyperf\Listener\ResumeExitCoordinatorListener;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Hyperf\Listener\ResumeExitCoordinatorListener;
 
+/**
+ * @internal
+ */
 final class ResumeExitCoordinatorListenerTest extends TestCase
 {
     public function testShouldListenToAfterExecuteEvent(): void

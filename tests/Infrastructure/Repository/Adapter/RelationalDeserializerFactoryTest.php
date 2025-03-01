@@ -6,12 +6,15 @@ namespace Serendipity\Test\Infrastructure\Repository\Adapter;
 
 use DateTime;
 use DateTimeImmutable;
+use PHPUnit\Framework\TestCase;
+use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\FromArrayToDatabase;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatetimeToDatabase;
-use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Test\Infrastructure\Stub;
-use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 final class RelationalDeserializerFactoryTest extends TestCase
 {
     public function testShouldCreateDeserializer(): void

@@ -7,11 +7,14 @@ namespace Serendipity\Test\Infrastructure\Logger;
 use Exception;
 use Google\Cloud\Logging\Entry;
 use Google\Cloud\Logging\Logger;
-use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
 
 use function Hyperf\Collection\data_get;
 
+/**
+ * @internal
+ */
 final class GoogleCloudLoggerTest extends TestCase
 {
     private Logger $logger;

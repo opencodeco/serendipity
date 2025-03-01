@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 
-use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 
+/**
+ * @internal
+ */
 final class DoNothingChainTest extends TestCase
 {
     final public function testResolveValue(): void

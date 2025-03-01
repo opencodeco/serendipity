@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter;
 
+use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Adapter\Serializer;
 use Serendipity\Test\Infrastructure\Stub;
-use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 final class SerializerTest extends TestCase
 {
     private Serializer $serializer;

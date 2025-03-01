@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Adapter;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Contract\Message;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Deserializer;
 use Serendipity\Test\Infrastructure\Stub;
-use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 final class DeserializerTest extends TestCase
 {
     public function testShouldNotDeserializeInvalidType(): void
@@ -48,17 +51,12 @@ final class DeserializerTest extends TestCase
                 return new Set([]);
             }
 
-            public function values(): ?Set
+            public function content(): Set
             {
                 return new Set(['name' => 'John Doe', 'age' => 30]);
             }
 
             public function property(string $key, mixed $default = null): mixed
-            {
-                return null;
-            }
-
-            public function value(string $key, mixed $default = null): mixed
             {
                 return null;
             }

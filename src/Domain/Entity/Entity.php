@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Entity;
 
-use Serendipity\Domain\Support\Set;
+use JsonSerializable;
+use Serendipity\Domain\Contract\Exportable;
 
-class Entity
+class Entity implements Exportable, JsonSerializable
 {
-    public function expose(): Set
+    public function export(): array
     {
-        return Set::createFrom(get_object_vars($this));
+        return get_object_vars($this);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->export();
     }
 }

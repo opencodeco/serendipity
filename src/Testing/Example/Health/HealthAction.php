@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Hyperf\Testing\Presentation;
+namespace Serendipity\Testing\Example\Health;
 
 readonly class HealthAction
 {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Repository;
 
 use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Infrastructure\Database\Instrument;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
@@ -15,7 +16,7 @@ abstract class PostgresRepository
     protected readonly RelationalDatabase $database;
 
     public function __construct(
-        protected readonly Generator $generator,
+        protected readonly Instrument $generator,
         protected readonly RelationalDeserializerFactory $deserializerFactory,
         protected readonly RelationalSerializerFactory $serializerFactory,
         RelationalDatabaseFactory $relationalDatabaseFactory,

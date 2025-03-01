@@ -7,26 +7,29 @@ namespace Serendipity\Test\Presentation;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Presentation\Output;
 
+/**
+ * @internal
+ */
 class OutputTest extends TestCase
 {
     public function testShouldHasPropertiesAsEmptyArrayAndValuesNull(): void
     {
-        $output = Output::createFrom();
+        $output = new Output();
         $this->assertEquals([], $output->properties()->toArray());
-        $this->assertNull($output->values());
+        $this->assertNull($output->content());
     }
 
     public function testShouldHasProperties(): void
     {
-        $output = Output::createFrom(['foo' => 'bar']);
+        $output = new Output(['foo' => 'bar']);
         $this->assertEquals(['foo' => 'bar'], $output->properties()->toArray());
         $this->assertEquals('bar', $output->property('foo'));
     }
 
     public function testShouldHasValues(): void
     {
-        $output = Output::createFrom(values: ['foo' => 'bar']);
-        $this->assertEquals(['foo' => 'bar'], $output->values()->toArray());
+        $output = new Output(values: ['foo' => 'bar']);
+        $this->assertEquals(['foo' => 'bar'], $output->content()->toArray());
         $this->assertEquals('bar', $output->value('foo'));
     }
 }

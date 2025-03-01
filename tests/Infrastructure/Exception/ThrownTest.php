@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Exception;
 
 use Exception;
-use Serendipity\Hyperf\Testing\CanMake;
-use Serendipity\Infrastructure\Exception\Thrown;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Testing\CanFake;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
+use Serendipity\Infrastructure\Exception\Thrown;
+use Serendipity\Testing\Extension\FakerExtension;
 
+/**
+ * @internal
+ */
 class ThrownTest extends TestCase
 {
-    use CanMake;
-    use CanFake;
+    use MakeExtension;
+    use FakerExtension;
 
     public function testShouldCreateFrom(): void
     {

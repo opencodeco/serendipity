@@ -65,4 +65,9 @@ class Input extends HyperfFormRequest implements Message
         }
         return $params;
     }
+
+    public function content(): Set
+    {
+        return $this->values();
+    }
 }

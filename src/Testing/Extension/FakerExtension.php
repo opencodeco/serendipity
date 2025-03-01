@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing;
+namespace Serendipity\Testing\Extension;
 
 use Faker\Generator;
 use Serendipity\Testing\Faker\Faker;
@@ -10,7 +10,7 @@ use Serendipity\Testing\Faker\Faker;
 /**
  * @phpstan-ignore trait.unused
  */
-trait CanFake
+trait FakerExtension
 {
     private ?Faker $faker = null;
 
@@ -24,7 +24,7 @@ trait CanFake
 
     protected function generator(): Generator
     {
-        return $this->faker()->generator;
+        return $this->faker()->generator();
     }
 
     abstract protected function make(string $class, array $args = []): mixed;

@@ -8,15 +8,18 @@ use Hyperf\Contract\MessageBag;
 use Hyperf\Contract\ValidatorInterface;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\Validation\ValidationException;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Hyperf\Exception\ValidationExceptionHandler;
 use Serendipity\Infrastructure\Http\JsonFormatter;
-use PHPUnit\Framework\TestCase;
 use Throwable;
 
 use function Serendipity\Type\Json\decode;
 
+/**
+ * @internal
+ */
 final class ValidationExceptionHandlerTest extends TestCase
 {
     public function testHandleShouldReturnValidationErrors(): void

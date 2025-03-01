@@ -9,6 +9,9 @@ use Serendipity\Infrastructure\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 use stdClass;
 
+/**
+ * @internal
+ */
 final class JsonFormatterTest extends TestCase
 {
     public function testShouldFormatSuccess(): void

@@ -7,8 +7,8 @@ namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Domain\Support\Value;
 
 use function array_key_exists;
 use function class_exists;

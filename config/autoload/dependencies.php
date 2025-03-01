@@ -9,6 +9,10 @@ use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
 use Serendipity\Hyperf\Logging\EnvironmentLoggerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
+use Serendipity\Testing\Example\Game\Domain\Repository\GameCommandRepository;
+use Serendipity\Testing\Example\Game\Domain\Repository\GameQueryRepository;
+use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDBGameCommandRepository;
+use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDBGameQueryRepository;
 
 use function Hyperf\Support\env;
 use function Serendipity\Type\Cast\toArray;
@@ -24,4 +28,7 @@ return [
         return new SleekDBDatabaseFactory($options);
     },
     RelationalDatabaseFactory::class => HyperfDatabaseFactory::class,
+
+    GameCommandRepository::class => SleekDBGameCommandRepository::class,
+    GameQueryRepository::class => SleekDBGameQueryRepository::class,
 ];

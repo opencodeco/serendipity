@@ -5,16 +5,22 @@ declare(strict_types=1);
 namespace Serendipity\Domain\Collection;
 
 use DomainException;
+use Serendipity\Domain\Contract\Exportable;
 
 /**
  * @template T
  * @extends AbstractCollection<T>
  */
-abstract class Collection extends AbstractCollection
+abstract class Collection extends AbstractCollection implements Exportable
 {
     final public function __construct()
     {
         parent::__construct([]);
+    }
+
+    public function export(): array
+    {
+        return $this->data;
     }
 
     final public function push(mixed $datum): void

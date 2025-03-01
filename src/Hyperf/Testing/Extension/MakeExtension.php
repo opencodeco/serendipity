@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Hyperf\Testing;
+namespace Serendipity\Hyperf\Testing\Extension;
 
 use function Hyperf\Support\make;
 
 /**
  * @phpstan-ignore trait.unused
  */
-trait CanMake
+trait MakeExtension
 {
     /**
      * @template T of mixed

@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository;
 
-use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Infrastructure\Repository\Generator;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Infrastructure\Database\Instrument;
 
+/**
+ * @internal
+ */
 final class GeneratorTest extends TestCase
 {
     final public function testId(): void
     {
-        $generator = new Generator();
+        $generator = new Instrument();
         $id = $generator->id();
         $this->assertIsString($id);
         $this->assertGreaterThanOrEqual(4, strlen($id));
@@ -21,7 +24,7 @@ final class GeneratorTest extends TestCase
 
     final public function testNow(): void
     {
-        $generator = new Generator();
+        $generator = new Instrument();
         $now = $generator->now();
         $this->assertIsString($now);
     }
@@ -30,7 +33,7 @@ final class GeneratorTest extends TestCase
     {
         $this->expectException(GeneratingException::class);
         $this->expectExceptionMessage('Error generating "id": "maxLength: cannot be less than 4 or greater than 32."');
-        $generator = new Generator(0);
+        $generator = new Instrument(0);
         $generator->id();
     }
 }

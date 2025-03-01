@@ -9,8 +9,8 @@ use ReflectionEnum;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionParameter;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Domain\Support\Value;
 
 class WhenEnumUseBackedChain extends Chain
 {

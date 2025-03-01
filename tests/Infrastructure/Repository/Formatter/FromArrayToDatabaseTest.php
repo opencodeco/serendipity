@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository\Formatter;
 
-use Serendipity\Infrastructure\Repository\Formatter\FromArrayToDatabase;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Infrastructure\Repository\Formatter\FromArrayToDatabase;
 
+/**
+ * @internal
+ */
 final class FromArrayToDatabaseTest extends TestCase
 {
     final public function testConvertArrayToString(): void

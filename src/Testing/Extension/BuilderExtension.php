@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing;
+namespace Serendipity\Testing\Extension;
 
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 
 /**
  * @phpstan-ignore trait.unused
  */
-trait CanBuild
+trait BuilderExtension
 {
     private ?Builder $builder = null;
 

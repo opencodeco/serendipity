@@ -6,9 +6,12 @@ namespace Serendipity\Test\Hyperf\Logging;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
-use Serendipity\Hyperf\Logging\EnvironmentLoggerFactory;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Hyperf\Logging\EnvironmentLoggerFactory;
 
+/**
+ * @internal
+ */
 final class EnvironmentLoggerFactoryTest extends TestCase
 {
     private StdoutLoggerInterface $stdoutLogger;

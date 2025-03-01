@@ -21,8 +21,7 @@ class HyperfDatabase implements RelationalDatabase
     }
 
     /**
-     * Open transaction (Support transaction nesting)
-     * @return void
+     * Open transaction (Support transaction nesting).
      */
     public function beginTransaction(): void
     {
@@ -30,8 +29,7 @@ class HyperfDatabase implements RelationalDatabase
     }
 
     /**
-     * Commit transaction (Support transaction nesting)
-     * @return void
+     * Commit transaction (Support transaction nesting).
      */
     public function commit(): void
     {
@@ -39,8 +37,7 @@ class HyperfDatabase implements RelationalDatabase
     }
 
     /**
-     * Rollback transaction (Support transaction nesting)
-     * @return void
+     * Rollback transaction (Support transaction nesting).
      */
     public function rollback(): void
     {
@@ -48,10 +45,7 @@ class HyperfDatabase implements RelationalDatabase
     }
 
     /**
-     * Insert data, return the primary key ID, non-auto-incrementing primary key returns 0
-     * @param string $query
-     * @param array $bindings
-     * @return int
+     * Insert data, return the primary key ID, non-auto-incrementing primary key returns 0.
      */
     public function insert(string $query, array $bindings = []): int
     {
@@ -59,10 +53,7 @@ class HyperfDatabase implements RelationalDatabase
     }
 
     /**
-     * Execute SQL to return the number of rows affected
-     * @param string $query
-     * @param array $bindings
-     * @return int
+     * Execute SQL to return the number of rows affected.
      */
     public function execute(string $query, array $bindings = []): int
     {
@@ -70,10 +61,7 @@ class HyperfDatabase implements RelationalDatabase
     }
 
     /**
-     * Query SQL, return a list of result sets
-     * @param string $query
-     * @param array $bindings
-     * @return array
+     * Query SQL, return a list of result sets.
      */
     public function query(string $query, array $bindings = []): array
     {
@@ -81,10 +69,7 @@ class HyperfDatabase implements RelationalDatabase
     }
 
     /**
-     * Query SQL to return the first row of the result set
-     * @param string $query
-     * @param array $bindings
-     * @return Set
+     * Query SQL to return the first row of the result set.
      */
     public function fetch(string $query, array $bindings = []): Set
     {
@@ -92,9 +77,7 @@ class HyperfDatabase implements RelationalDatabase
     }
 
     /**
-     * Specify the database to connect to
-     * @param Closure $closure
-     * @return void
+     * Specify the database to connect to.
      */
     public function run(Closure $closure): void
     {

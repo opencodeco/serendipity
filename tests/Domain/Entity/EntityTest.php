@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Domain\Entity;
 
-use Serendipity\Domain\Entity\Entity;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Entity\Entity;
 
+/**
+ * @internal
+ */
 final class EntityTest extends TestCase
 {
     public function testShouldExposeValues(): void
@@ -15,6 +18,6 @@ final class EntityTest extends TestCase
             protected string $value = 'none';
         };
 
-        $this->assertEquals(['value' => 'none'], $entity->expose()->toArray());
+        $this->assertEquals(['value' => 'none'], $entity->export()->toArray());
     }
 }

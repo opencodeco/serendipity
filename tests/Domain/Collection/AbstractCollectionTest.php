@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Domain\Collection;
 
-use Serendipity\Domain\Collection\AbstractCollection;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Collection\AbstractCollection;
 
+/**
+ * @internal
+ */
 final class AbstractCollectionTest extends TestCase
 {
     public function testShouldRewind(): void

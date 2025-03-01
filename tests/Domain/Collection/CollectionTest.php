@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Collection;
 
 use DomainException;
+use PHPUnit\Framework\TestCase;
 use Serendipity\Test\Domain\Collection\CollectionTestMock as Collection;
 use Serendipity\Test\Domain\Collection\CollectionTestMockStub as Stub;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
+/**
+ * @internal
+ */
 final class CollectionTest extends TestCase
 {
     public function testShouldCreateFromArray(): void

@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing;
+namespace Serendipity\Testing\Extension;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsTrue;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Testing\Resource\Helper;
-use Throwable;
 
-use function Serendipity\Type\Json\encode;
 use function array_key_first;
 use function count;
+use function Serendipity\Type\Json\encode;
 use function sprintf;
 
 /**
  * @phpstan-ignore trait.unused
  */
-trait CanAssertResource
+trait ResourceExtension
 {
     /**
      * @var array<string,Helper>
@@ -26,11 +25,15 @@ trait CanAssertResource
     private array $helpers = [];
 
     /**
-     * @var array<string,string>|null
+     * @var null|array<string,string>
      */
     private ?array $resources = [];
 
-    protected function setUpHelper(string $alias, Helper $helper): void
+    abstract public static function fail(string $message = ''): never;
+
+    abstract public static function assertThat(mixed $value, Constraint $constraint, string $message = ''): void;
+
+    protected function setUpResourceHelper(string $alias, Helper $helper): void
     {
         $this->helpers[$alias] = $helper;
     }
@@ -41,6 +44,8 @@ trait CanAssertResource
             $this->resources[$resource] = $alias;
             $helper = $this->helpers[$alias];
             $helper->truncate($resource);
+            $this->registerTearDown(fn () => $helper->truncate($resource));
+            return;
         }
         static::fail('Helper not defined');
     }
@@ -50,17 +55,6 @@ trait CanAssertResource
         $resource = $this->detect($resource);
         $helper = $this->select($resource);
         return $helper->seed($type, $resource, $override);
-    }
-
-    protected function tearDownResources(): void
-    {
-        try {
-            foreach ($this->helpers as $resource => $helper) {
-                $helper->truncate($resource);
-            }
-        } catch (Throwable $e) {
-            static::fail($e->getMessage());
-        }
     }
 
     protected function assertHas(array $filters, ?string $resource = null): void
@@ -98,6 +92,8 @@ trait CanAssertResource
         static::assertThat($tallied === $expected, new IsTrue(), $message);
     }
 
+    abstract protected function registerTearDown(callable $callback): void;
+
     private function tally(string $resource, array $filters): int
     {
         $resource = $this->detect($resource);
@@ -107,7 +103,8 @@ trait CanAssertResource
 
     private function select(string $resource): Helper
     {
-        $helper = $this->helpers[$resource] ?? null;
+        $alias = $this->resources[$resource] ?? null;
+        $helper = $this->helpers[$alias] ?? null;
         if ($helper instanceof Helper) {
             return $helper;
         }
@@ -128,10 +125,4 @@ trait CanAssertResource
         }
         static::fail('Resource not defined');
     }
-
-    abstract public static function fail(string $message = ''): never;
-
-    abstract public static function assertThat(mixed $value, Constraint $constraint, string $message = ''): void;
-
-    abstract protected function registerTearDown(callable $callback): void;
 }

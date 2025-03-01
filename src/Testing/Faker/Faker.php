@@ -17,7 +17,7 @@ use function Serendipity\Type\String\toSnakeCase;
 
 class Faker
 {
-    public readonly Generator $generator;
+    protected readonly Generator $generator;
 
     /**
      * @SuppressWarnings(StaticAccess)
@@ -32,6 +32,11 @@ class Faker
     public function __call(string $name, array $arguments): mixed
     {
         return $this->generator->__call($name, $arguments);
+    }
+
+    public function generator(): Generator
+    {
+        return $this->generator;
     }
 
     /**

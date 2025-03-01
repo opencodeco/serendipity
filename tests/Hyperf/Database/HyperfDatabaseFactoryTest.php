@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Serendipity\Test\Hyperf\Database;
 
 use Hyperf\DB\DB as Database;
-use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Hyperf\Testing\CanMake;
+use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 
+/**
+ * @internal
+ */
 final class HyperfDatabaseFactoryTest extends TestCase
 {
-    use CanMake;
+    use MakeExtension;
 
     public function testShouldCreateDatabaseConnection(): void
     {

@@ -7,6 +7,9 @@ namespace Serendipity\Test\Domain\Support;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Support\Value;
 
+/**
+ * @internal
+ */
 final class ValueTest extends TestCase
 {
     public function testShouldHaveContent(): void

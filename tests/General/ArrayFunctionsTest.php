@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Type;
+namespace Serendipity\Test\General;
 
 use PHPUnit\Framework\TestCase;
 
@@ -11,6 +11,9 @@ use function Serendipity\Type\Util\extractBool;
 use function Serendipity\Type\Util\extractInt;
 use function Serendipity\Type\Util\extractString;
 
+/**
+ * @internal
+ */
 final class ArrayFunctionsTest extends TestCase
 {
     public function testExtractArrayReturnsArrayWhenPropertyExists(): void

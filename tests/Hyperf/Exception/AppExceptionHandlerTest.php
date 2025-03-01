@@ -6,6 +6,7 @@ namespace Serendipity\Test\Hyperf\Exception;
 
 use Exception;
 use Hyperf\HttpMessage\Server\Response;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Hyperf\Exception\AppExceptionHandler;
@@ -13,8 +14,10 @@ use Serendipity\Infrastructure\Exception\Thrown;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
 use Serendipity\Infrastructure\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
-use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 final class AppExceptionHandlerTest extends TestCase
 {
     private LoggerInterface $logger;

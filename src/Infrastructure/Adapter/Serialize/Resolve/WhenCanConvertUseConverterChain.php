@@ -6,8 +6,8 @@ namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
 
 use ReflectionNamedType;
 use ReflectionParameter;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Domain\Support\Value;
 
 class WhenCanConvertUseConverterChain extends Chain
 {

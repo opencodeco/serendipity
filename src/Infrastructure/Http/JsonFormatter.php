@@ -16,9 +16,7 @@ use function sprintf;
 class JsonFormatter implements Formatter
 {
     /**
-     * @param mixed $value
      * @param Type $option
-     * @return string
      */
     public function format(mixed $value, mixed $option = null): string
     {

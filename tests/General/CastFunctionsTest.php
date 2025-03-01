@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Type;
+namespace Serendipity\Test\General;
 
 use PHPUnit\Framework\TestCase;
 
@@ -11,6 +11,9 @@ use function Serendipity\Type\Cast\toBool;
 use function Serendipity\Type\Cast\toInt;
 use function Serendipity\Type\Cast\toString;
 
+/**
+ * @internal
+ */
 final class CastFunctionsTest extends TestCase
 {
     public function testToArrayReturnsArrayWhenValueIsArray(): void

@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Database\Document;
 
 use Hyperf\Contract\ConfigInterface;
-use Serendipity\Hyperf\Testing\CanMake;
-use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
+use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 
+/**
+ * @internal
+ */
 final class SleekDBDatabaseFactoryTest extends TestCase
 {
-    use CanMake;
+    use MakeExtension;
 
     public function testShouldCreateStore(): void
     {

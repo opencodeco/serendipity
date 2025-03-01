@@ -5,25 +5,26 @@ declare(strict_types=1);
 namespace Serendipity\Test\Presentation;
 
 use Serendipity\Domain\Support\Set;
-use Serendipity\Hyperf\Testing\CanMake;
-use Serendipity\Hyperf\Testing\CanMakeInput;
+use Serendipity\Hyperf\Testing\Extension\InputExtension;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Input;
-use PHPUnit\Framework\TestCase;
-use Serendipity\Testing\CanFake;
+use Serendipity\Test\Testing\ExtensibleTestCase;
+use Serendipity\Testing\Extension\FakerExtension;
 
-final class InputTest extends TestCase
+/**
+ * @internal
+ */
+final class InputTest extends ExtensibleTestCase
 {
-    use CanMake;
-    use CanMakeInput;
-    use CanFake;
+    use MakeExtension;
+    use InputExtension;
+    use FakerExtension;
 
-    protected function tearDown(): void
+    protected function setUp(): void
     {
-        parent::tearDown();
+        parent::setUp();
 
-        gc_collect_cycles();
-
-        $this->reset();
+        $this->setUpInput();
     }
 
     public function testShouldAuthorize(): void

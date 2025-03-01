@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Hyperf\Testing;
+namespace Serendipity\Hyperf\Testing\Extension;
 
 use FastRoute\Dispatcher;
 use Hyperf\Context\Context;
@@ -14,14 +14,16 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * @phpstan-ignore trait.unused
  */
-trait CanMakeInput
+trait InputExtension
 {
     private bool $isRequestSetUp = false;
+
+    abstract public static function fail(string $message = ''): never;
 
     /**
      * @SuppressWarnings(StaticAccess)
      */
-    protected function setUpRequest(): void
+    protected function setUpInput(): void
     {
         $this->reset(true);
         $this->registerTearDown(fn () => $this->reset(false));
@@ -80,8 +82,6 @@ trait CanMakeInput
     }
 
     abstract protected function make(string $class, array $args = []): mixed;
-
-    abstract public static function fail(string $message = ''): never;
 
     abstract protected function registerTearDown(callable $callback): void;
 }

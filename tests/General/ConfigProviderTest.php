@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test;
+namespace Serendipity\Test\General;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\ConfigProvider;
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
 
+/**
+ * @internal
+ */
 class ConfigProviderTest extends TestCase
 {
     public function testBeSuccessfully(): void

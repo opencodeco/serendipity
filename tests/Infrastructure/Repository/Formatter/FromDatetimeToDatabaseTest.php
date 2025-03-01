@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Repository\Formatter;
 
 use DateTime;
-use Serendipity\Infrastructure\Repository\Formatter\FromDatetimeToDatabase;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Infrastructure\Repository\Formatter\FromDatetimeToDatabase;
 
+/**
+ * @internal
+ */
 final class FromDatetimeToDatabaseTest extends TestCase
 {
     final public function testConvertDatetimeToString(): void

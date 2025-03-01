@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Adapter\Serialize;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 use function Serendipity\Type\Json\encode;
 
+/**
+ * @internal
+ */
 final class BuilderTest extends TestCase
 {
     final public function testMapWithValidValues(): void

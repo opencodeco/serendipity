@@ -9,12 +9,12 @@ use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\CaseConvention;
-use Serendipity\Infrastructure\Repository\Generator;
+use Serendipity\Infrastructure\Database\Instrument;
 use Throwable;
 
 final class FromNameChain extends Chain
 {
-    private readonly Generator $generator;
+    private readonly Instrument $instrument;
 
     public function __construct(
         CaseConvention $case = CaseConvention::SNAKE,
@@ -22,7 +22,7 @@ final class FromNameChain extends Chain
     ) {
         parent::__construct($case, $converters);
 
-        $this->generator = $this->make(Generator::class);
+        $this->instrument = $this->make(Instrument::class);
     }
 
     /**
@@ -32,13 +32,13 @@ final class FromNameChain extends Chain
     {
         $name = $parameter->getName();
         try {
-            return new Value($this->generator->format($name));
+            return new Value($this->instrument->format($name));
         } catch (Throwable) {
         }
 
         return match ($name) {
-            'id' => new Value($this->generator->id()),
-            'updatedAt', 'createdAt' => new Value($this->generator->now()),
+            'id' => new Value($this->instrument->id()),
+            'updatedAt', 'createdAt' => new Value($this->instrument->now()),
             default => parent::resolve($parameter, $preset),
         };
     }

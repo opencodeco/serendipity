@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 
-use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use stdClass;
 
+/**
+ * @internal
+ */
 final class DependencyChainTest extends TestCase
 {
     final public function testResolveObject(): void

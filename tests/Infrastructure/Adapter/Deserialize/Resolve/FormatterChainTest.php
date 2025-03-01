@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\ConverterChain;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
 use function Serendipity\Type\Json\encode;
 
+/**
+ * @internal
+ */
 final class FormatterChainTest extends TestCase
 {
     #[TestWith([10.5])]

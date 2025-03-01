@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository;
 
+use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Hyperf\Database\HyperfDatabase;
 use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
 use Serendipity\Infrastructure\Adapter\Deserializer;
+use Serendipity\Infrastructure\Database\Instrument;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
-use Serendipity\Infrastructure\Repository\Generator;
-use PHPUnit\Framework\TestCase;
 use stdClass;
 
+/**
+ * @internal
+ */
 final class PostgresRepositoryTest extends TestCase
 {
     private PostgresRepositoryTestMock $repository;
@@ -26,7 +29,7 @@ final class PostgresRepositoryTest extends TestCase
     {
         parent::setUp();
 
-        $generator = $this->createMock(Generator::class);
+        $generator = $this->createMock(Instrument::class);
         $this->deserializer = $this->createMock(Deserializer::class);
 
         $this->deserializerFactory = $this->createMock(RelationalDeserializerFactory::class);

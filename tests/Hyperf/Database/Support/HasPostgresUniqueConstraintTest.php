@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Serendipity\Hyperf\Database\Support\HasPostgresUniqueConstraint;
 
+/**
+ * @internal
+ */
 class HasPostgresUniqueConstraintTest extends TestCase
 {
     use HasPostgresUniqueConstraint;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Repository;
+namespace Serendipity\Infrastructure\Database;
 
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -10,7 +10,7 @@ use Serendipity\Domain\Exception\GeneratingException;
 use Throwable;
 use Visus\Cuid2\Cuid2;
 
-class Generator
+class Instrument
 {
     public function __construct(public readonly int $length = 10)
     {

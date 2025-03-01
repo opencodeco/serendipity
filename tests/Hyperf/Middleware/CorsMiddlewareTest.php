@@ -6,12 +6,15 @@ namespace Serendipity\Test\Hyperf\Middleware;
 
 use Hyperf\Context\Context;
 use Hyperf\Contract\ConfigInterface;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Hyperf\Middleware\CorsMiddleware;
-use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 final class CorsMiddlewareTest extends TestCase
 {
     public function testShouldAllowCors(): void

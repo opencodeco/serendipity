@@ -85,7 +85,7 @@
     </rule>
     <rule ref="rulesets/naming.xml/ShortClassName">
         <properties>
-            <property name="exceptions" value="Id"/>
+            <property name="exceptions" value="Id,Ok"/>
         </properties>
     </rule>
     <rule ref="rulesets/naming.xml/LongVariable">
