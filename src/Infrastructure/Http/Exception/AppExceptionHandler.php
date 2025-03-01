@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Http\Exception\Handler;
+namespace Serendipity\Infrastructure\Http\Exception;
 
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Serendipity\Infrastructure\Http\Support\JsonFormatter;
+use Serendipity\Infrastructure\Exception\ThrownFactory;
+use Serendipity\Infrastructure\Exception\Type;
+use Serendipity\Infrastructure\Http\Formatter\JsonFormatter;
 use Throwable;
 
 use function array_map;
@@ -27,33 +29,27 @@ class AppExceptionHandler extends ExceptionHandler
 
     public function __construct(
         private readonly LoggerInterface $logger,
+        private readonly ThrownFactory $factory,
         private readonly JsonFormatter $formatter,
     ) {
     }
 
     public function handle(Throwable $throwable, ResponseInterface $response): MessageInterface|ResponseInterface
     {
-        $message = sprintf(
-            '[AppExceptionHandler] "%s" in `%s` at `%s`',
-            $throwable->getMessage(),
-            $throwable->getFile(),
-            $throwable->getLine()
-        );
-        $context = [
-            'message' => $throwable->getMessage(),
-            'file' => $throwable->getFile(),
-            'line' => $throwable->getLine(),
-            'code' => $throwable->getCode(),
-            'kind' => $throwable::class,
-            'trace' => $throwable->getTraceAsString(),
-        ];
+        $thrown = $this->factory->make($throwable);
 
-        $this->logger->alert($message, $context);
+        $message = sprintf('[AppExceptionHandler] %s', $thrown->resume());
+        $context = $thrown->context();
 
-        $statusCode = $this->extractCode($throwable);
+        match ($thrown->type) {
+            Type::INVALID_INPUT => $this->logger->notice($message, $context),
+            default => $this->logger->alert($message, $context),
+        };
 
-        return $response->withStatus($statusCode)
-            ->withBody(new SwooleStream($this->formatter->format($statusCode, $context)));
+        $code = $this->code($throwable);
+        $contents = $this->formatter->format($context, $thrown->type);
+        return $response->withStatus($code)
+            ->withBody(new SwooleStream($contents));
     }
 
     public function isValid(Throwable $throwable): bool
@@ -62,8 +58,9 @@ class AppExceptionHandler extends ExceptionHandler
         return ! in_array($throwable::class, $haystack, true);
     }
 
-    private function extractCode(Throwable $throwable): int
+    public function code(Throwable $throwable): int
     {
-        return ($code = $throwable->getCode()) >= 400 && $code < 600 ? toInt($code) : 500;
+        $code = toInt($throwable->getCode());
+        return ($code < 400 || $code > 599) ? 500 : $code;
     }
 }

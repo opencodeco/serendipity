@@ -14,6 +14,6 @@ final class CreatedTest extends TestCase
     {
         $id = $this->faker->engine->uuid();
         $output = new Created($id);
-        $this->assertEquals($id, $output->content()->get('id'));
+        $this->assertEquals($id, $output->values()->get('id'));
     }
 }

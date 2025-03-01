@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Persistence;
 
-use Serendipity\Infrastructure\Persistence\Factory\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Persistence\Generator;
+use Serendipity\Infrastructure\Repository\Factory\SleekDBDatabaseFactory;
+use Serendipity\Infrastructure\Repository\Generator;
 use Serendipity\Test\TestCase;
 
 final class SleekDBRepositoryTest extends TestCase

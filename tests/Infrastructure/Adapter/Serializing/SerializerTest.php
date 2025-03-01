@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter\Serializing;
 
-use Serendipity\Infrastructure\Adapter\Serializing\Serializer;
+use Serendipity\Infrastructure\Adapter\Serializer;
 use Serendipity\Test\Infrastructure\Stub;
 use Serendipity\Test\TestCase;
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Serendipity\Test;
 
 use PHPUnit\Framework\TestCase as PHPUnit;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
-use Serendipity\Infrastructure\Testing\HelperFactory;
+use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 use Serendipity\Infrastructure\Testing\Faker\Faker;
+use Serendipity\Infrastructure\Testing\HelperFactory;
 
 class TestCase extends PHPUnit
 {

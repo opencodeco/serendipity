@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Persistence\Converter;
 
-use Serendipity\Infrastructure\Persistence\Converter\FromDatabaseToArray;
+use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
 use Serendipity\Test\TestCase;
 
 final class FromDatabaseToArrayTest extends TestCase
@@ -13,7 +13,7 @@ final class FromDatabaseToArrayTest extends TestCase
     {
         $converter = new FromDatabaseToArray();
         $string = '{"key":"value"}';
-        $result = $converter->convert($string);
+        $result = $converter->format($string);
 
         $this->assertIsArray($result);
         $this->assertEquals(['key' => 'value'], $result);
@@ -23,7 +23,7 @@ final class FromDatabaseToArrayTest extends TestCase
     {
         $converter = new FromDatabaseToArray();
         $array = ['key' => 'value'];
-        $result = $converter->convert($array);
+        $result = $converter->format($array);
 
         $this->assertIsArray($result);
         $this->assertEquals($array, $result);
@@ -33,7 +33,7 @@ final class FromDatabaseToArrayTest extends TestCase
     {
         $converter = new FromDatabaseToArray();
         $invalidValue = 123;
-        $result = $converter->convert($invalidValue);
+        $result = $converter->format($invalidValue);
 
         $this->assertNull($result);
     }

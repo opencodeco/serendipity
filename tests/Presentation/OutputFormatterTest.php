@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation;
 
-use Serendipity\Presentation\OutputFormatter;
+use Serendipity\Infrastructure\Http\Formatter\JsonFormatter;
 use Serendipity\Test\TestCase;
 
 final class OutputFormatterTest extends TestCase
 {
-    use OutputFormatter;
+    use JsonFormatter;
 
     public function testShouldReturnSuccessPayload(): void
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter\Serializing\Deserialize\Resolve;
 
-use Serendipity\Infrastructure\Adapter\Serializing\Deserialize\Resolve\DependencyChain;
+use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use Serendipity\Test\TestCase;
 use stdClass;
 

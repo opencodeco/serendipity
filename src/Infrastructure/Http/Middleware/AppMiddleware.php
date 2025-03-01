@@ -12,8 +12,8 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Serendipity\Domain\Contract\Result;
-use Serendipity\Presentation\OutputFormatter;
+use Serendipity\Domain\Contract\Message;
+use Serendipity\Infrastructure\Http\Formatter\JsonFormatter;
 use Swow\Psr7\Message\ResponsePlusInterface;
 
 use function is_string;
@@ -22,9 +22,9 @@ use function sprintf;
 
 class AppMiddleware extends Hyperf
 {
-    use OutputFormatter;
-
     private readonly ConfigInterface $config;
+
+    private readonly JsonFormatter $formatter;
 
     /**
      * @throws ContainerExceptionInterface
@@ -35,12 +35,13 @@ class AppMiddleware extends Hyperf
         parent::__construct($container, 'http');
 
         $this->config = $container->get(ConfigInterface::class);
+        $this->formatter = $container->get(JsonFormatter::class);
     }
 
     protected function handleFound(Dispatched $dispatched, ServerRequestInterface $request): mixed
     {
         $response = parent::handleFound($dispatched, $request);
-        if (! $response instanceof Result) {
+        if (! $response instanceof Message) {
             return $response;
         }
 
@@ -56,12 +57,12 @@ class AppMiddleware extends Hyperf
             return $output->setBody(new SwooleStream());
         }
 
-        $body = $response->content()?->toArray();
-        $contents = $this->toPayload($statusCode, $body);
+        $body = $response->values()?->toArray();
+        $contents = $this->formatter->format($body, $statusCode);
         return $output->setBody(new SwooleStream($contents));
     }
 
-    private function normalizeStatusCode(Result $response): int
+    private function normalizeStatusCode(Message $response): int
     {
         $statusCode = toInt($this->config->get(sprintf('http.result.%s.status', $response::class)));
         if ($statusCode === 0) {
@@ -70,7 +71,7 @@ class AppMiddleware extends Hyperf
         return $statusCode;
     }
 
-    private function configureHeaders(Result $response, ResponsePlusInterface $output): ResponsePlusInterface
+    private function configureHeaders(Message $response, ResponsePlusInterface $output): ResponsePlusInterface
     {
         $properties = $response->properties()->toArray();
         foreach ($properties as $key => $value) {

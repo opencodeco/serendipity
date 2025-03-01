@@ -15,7 +15,7 @@ final class NoContentTest extends TestCase
         $word = $this->faker->engine->word();
         $properties = ['word' => $word];
         $output = new NoContent($properties);
-        $this->assertNull($output->content());
+        $this->assertNull($output->values());
         $this->assertEquals($properties, $output->properties()->toArray());
     }
 }

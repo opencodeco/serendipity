@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Persistence;
 
-use Serendipity\Infrastructure\Persistence\SleekDBRepository;
+use Serendipity\Infrastructure\Repository\SleekDBRepository;
 
 class SleekDBRepositoryTestMock extends SleekDBRepository
 {

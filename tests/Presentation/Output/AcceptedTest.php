@@ -13,6 +13,6 @@ final class AcceptedTest extends TestCase
     {
         $token = $this->faker->engine->uuid();
         $output = new Accepted($token);
-        $this->assertEquals($token, $output->content()->get('token'));
+        $this->assertEquals($token, $output->values()->get('token'));
     }
 }

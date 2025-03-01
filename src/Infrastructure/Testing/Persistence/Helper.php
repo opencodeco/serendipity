@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Testing\Persistence;
 
 use ReflectionException;
-use Serendipity\Domain\Contract\DeserializerFactory;
-use Serendipity\Domain\Contract\SerializerFactory;
+use Serendipity\Domain\Contract\Adapter\DeserializerFactory;
+use Serendipity\Domain\Contract\Adapter\SerializerFactory;
 use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\Testing\Faker\Faker;
 

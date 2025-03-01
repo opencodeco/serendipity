@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Persistence\Serializing;
 
-use Serendipity\Infrastructure\Persistence\Converter\FromDatabaseToArray;
-use Serendipity\Infrastructure\Persistence\Serializing\RelationalSerializerFactory;
+use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
+use Serendipity\Infrastructure\Repository\Serializing\RelationalSerializerFactory;
 use Serendipity\Test\Infrastructure\Stub;
 use Serendipity\Test\TestCase;
 

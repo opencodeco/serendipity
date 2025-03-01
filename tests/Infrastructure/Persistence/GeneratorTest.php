@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Persistence;
 
 use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Infrastructure\Persistence\Generator;
+use Serendipity\Infrastructure\Repository\Generator;
 use Serendipity\Test\TestCase;
 
 final class GeneratorTest extends TestCase

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Persistence;
 
-use Serendipity\Infrastructure\Persistence\PostgresRepository;
+use Serendipity\Infrastructure\Repository\PostgresRepository;
 
 class PostgresRepositoryTestMock extends PostgresRepository
 {

@@ -9,7 +9,7 @@ use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Values;
 use Serendipity\Infrastructure\CaseConvention;
-use Serendipity\Infrastructure\Persistence\Generator;
+use Serendipity\Infrastructure\Repository\Generator;
 use Throwable;
 
 final class GenerateFromNameChain extends Chain

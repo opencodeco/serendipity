@@ -6,11 +6,11 @@ namespace Serendipity\Test\Infrastructure\Persistence;
 
 use Hyperf\DB\DB;
 use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Infrastructure\Adapter\Serializing\Deserializer;
-use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
-use Serendipity\Infrastructure\Persistence\Generator;
-use Serendipity\Infrastructure\Persistence\Serializing\RelationalDeserializerFactory;
-use Serendipity\Infrastructure\Persistence\Serializing\RelationalSerializerFactory;
+use Serendipity\Infrastructure\Adapter\Deserializer;
+use Serendipity\Infrastructure\Repository\Factory\HyperfDBFactory;
+use Serendipity\Infrastructure\Repository\Generator;
+use Serendipity\Infrastructure\Repository\Serializing\RelationalDeserializerFactory;
+use Serendipity\Infrastructure\Repository\Serializing\RelationalSerializerFactory;
 use Serendipity\Test\TestCase;
 use stdClass;
 

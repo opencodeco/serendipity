@@ -6,9 +6,9 @@ namespace Serendipity\Test\Infrastructure\Persistence\Serializing;
 
 use DateTime;
 use DateTimeImmutable;
-use Serendipity\Infrastructure\Persistence\Converter\FromArrayToDatabase;
-use Serendipity\Infrastructure\Persistence\Converter\FromDatetimeToDatabase;
-use Serendipity\Infrastructure\Persistence\Serializing\RelationalDeserializerFactory;
+use Serendipity\Infrastructure\Repository\Formatter\FromArrayToDatabase;
+use Serendipity\Infrastructure\Repository\Formatter\FromDatetimeToDatabase;
+use Serendipity\Infrastructure\Repository\Serializing\RelationalDeserializerFactory;
 use Serendipity\Test\Infrastructure\Stub;
 use Serendipity\Test\TestCase;
 

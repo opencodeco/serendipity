@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Persistence\Converter;
 
 use DateTime;
-use Serendipity\Infrastructure\Persistence\Converter\FromDatetimeToDatabase;
+use Serendipity\Infrastructure\Repository\Formatter\FromDatetimeToDatabase;
 use Serendipity\Test\TestCase;
 
 final class FromDatetimeToDatabaseTest extends TestCase
@@ -14,7 +14,7 @@ final class FromDatetimeToDatabaseTest extends TestCase
     {
         $converter = new FromDatetimeToDatabase();
         $datetime = new DateTime('2023-01-01T00:00:00+00:00');
-        $result = $converter->convert($datetime);
+        $result = $converter->format($datetime);
 
         $this->assertIsString($result);
         $this->assertEquals('2023-01-01T00:00:00+00:00', $result);
@@ -24,7 +24,7 @@ final class FromDatetimeToDatabaseTest extends TestCase
     {
         $converter = new FromDatetimeToDatabase();
         $string = '2023-01-01T00:00:00+00:00';
-        $result = $converter->convert($string);
+        $result = $converter->format($string);
 
         $this->assertIsString($result);
         $this->assertEquals($string, $result);
@@ -34,7 +34,7 @@ final class FromDatetimeToDatabaseTest extends TestCase
     {
         $converter = new FromDatetimeToDatabase();
         $invalidValue = 123;
-        $result = $converter->convert($invalidValue);
+        $result = $converter->format($invalidValue);
 
         $this->assertNull($result);
     }

@@ -15,7 +15,7 @@ final class NotFoundTest extends TestCase
         $what = $this->faker->engine->uuid();
         $properties = ['Missing' => sprintf('"%s" identified by "%s" not found', $missing, $what)];
         $output = new NotFound($missing, $what);
-        $this->assertNull($output->content());
+        $this->assertNull($output->values());
         $this->assertEquals($properties, $output->properties()->toArray());
     }
 }

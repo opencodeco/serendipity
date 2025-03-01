@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Adapter\Serializing\Serialize;
 
 use DateTime;
-use Serendipity\Domain\Exception\Mapping\NotResolved;
-use Serendipity\Domain\Exception\MappingException;
+use Serendipity\Domain\Exception\Adapter\NotResolved;
+use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Adapter\Serializing\Serialize\Builder;
+use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 use Serendipity\Infrastructure\CaseConvention;
-use Serendipity\Infrastructure\Persistence\Converter\FromDatabaseToArray;
+use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
 use Serendipity\Test\TestCase;
 use stdClass;
 
@@ -86,7 +86,7 @@ final class BuilderTest extends TestCase
         try {
             $mapper = new Builder();
             $mapper->build($entityClass, Values::createFrom($values));
-        } catch (MappingException $e) {
+        } catch (AdapterException $e) {
             $errors = $e->getUnresolved();
             $this->assertContainsOnlyInstancesOf(NotResolved::class, $errors);
             $messages = [
@@ -116,7 +116,7 @@ final class BuilderTest extends TestCase
 
     final public function testMapWithReflectionError(): void
     {
-        $this->expectException(MappingException::class);
+        $this->expectException(AdapterException::class);
         $this->expectExceptionMessage('Class "NonExistentClass" does not exist');
 
         $values = [
@@ -133,7 +133,7 @@ final class BuilderTest extends TestCase
 
     final public function testMapWithReflectionInvalidArgsError(): void
     {
-        $this->expectException(MappingException::class);
+        $this->expectException(AdapterException::class);
 
         $values = [];
 

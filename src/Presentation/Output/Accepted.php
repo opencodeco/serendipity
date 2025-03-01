@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation\Output;
 
-use Serendipity\Infrastructure\Adapter\Output;
+use Serendipity\Presentation\Output;
 
 class Accepted extends Output
 {

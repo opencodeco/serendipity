@@ -7,9 +7,9 @@ namespace Serendipity\Infrastructure\Testing\Persistence;
 use Hyperf\DB\DB as Database;
 use ReflectionException;
 use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Persistence\Factory\HyperfDBFactory;
-use Serendipity\Infrastructure\Persistence\Serializing\RelationalDeserializerFactory;
-use Serendipity\Infrastructure\Persistence\Serializing\RelationalSerializerFactory;
+use Serendipity\Infrastructure\Repository\Factory\HyperfDBFactory;
+use Serendipity\Infrastructure\Repository\Serializing\RelationalDeserializerFactory;
+use Serendipity\Infrastructure\Repository\Serializing\RelationalSerializerFactory;
 use Serendipity\Infrastructure\Testing\Faker\Faker;
 
 use function array_filter;
