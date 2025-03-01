@@ -8,7 +8,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 
 use function array_key_exists;
 use function class_exists;
@@ -20,7 +20,7 @@ class WhenRecursiveUseBuildChain extends Chain
     /**
      * @throws ReflectionException
      */
-    public function resolve(ReflectionParameter $parameter, Values $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $values): Value
     {
         $name = $this->name($parameter);
         $class = $this->resolveDependencyClass($parameter);
@@ -41,7 +41,7 @@ class WhenRecursiveUseBuildChain extends Chain
     /**
      * @param array<ReflectionParameter> $parameters
      */
-    protected function parseParametersToValues(array $parameters, mixed $value): Values
+    protected function parseParametersToValues(array $parameters, mixed $value): Set
     {
         $input = toArray($value, [$value]);
         $values = [];
@@ -51,7 +51,7 @@ class WhenRecursiveUseBuildChain extends Chain
                 $values[$name] = $input[$name] ?? $input[$index];
             }
         }
-        return Values::createFrom($values);
+        return Set::createFrom($values);
     }
 
     /**
@@ -74,7 +74,7 @@ class WhenRecursiveUseBuildChain extends Chain
      * @param class-string<T> $class
      * @throws ReflectionException
      */
-    private function resolveDependencyArgs(string $class, mixed $value): ?Values
+    private function resolveDependencyArgs(string $class, mixed $value): ?Set
     {
         $reflectionClass = new ReflectionClass($class);
         $constructor = $reflectionClass->getConstructor();

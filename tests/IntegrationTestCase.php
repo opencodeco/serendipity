@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Test;
 
-use Serendipity\Domain\Support\Values;
-use Serendipity\Infrastructure\Testing\Persistence\Helper;
-use Serendipity\Infrastructure\Testing\Persistence\PostgresHelper;
-use Serendipity\Infrastructure\Testing\Persistence\SleekDBHelper;
+use Serendipity\Domain\Support\Set;
+use Serendipity\Testing\Persistence\Helper;
+use Serendipity\Testing\Persistence\PostgresHelper;
+use Serendipity\Testing\Persistence\SleekDBHelper;
 use Throwable;
 
 use function Serendipity\Type\Json\encode;
@@ -46,7 +46,7 @@ class IntegrationTestCase extends TestCase
         $this->truncate();
     }
 
-    protected function seed(string $type, array $override = [], ?string $resource = null): Values
+    protected function seed(string $type, array $override = [], ?string $resource = null): Set
     {
         if ($this->helper === null) {
             $this->fail('Helper not defined. Please define the helper property.');
@@ -58,7 +58,7 @@ class IntegrationTestCase extends TestCase
         return match ($this->helper) {
             'sleek' => $this->sleek->seed($type, $resource, $override),
             'postgres' => $this->postgres->seed($type, $resource, $override),
-            default => Values::createFrom([]),
+            default => Set::createFrom([]),
         };
     }
 

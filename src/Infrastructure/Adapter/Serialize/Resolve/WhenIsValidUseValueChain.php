@@ -7,11 +7,11 @@ namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\Adapter\Type;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 
 class WhenIsValidUseValueChain extends Chain
 {
-    public function resolve(ReflectionParameter $parameter, Values $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $values): Value
     {
         $type = $parameter->getType();
         $name = $this->name($parameter);

@@ -71,7 +71,7 @@ abstract class PostgresRepository
     /**
      * @param array<string> $fields
      */
-    protected function values(array $fields): string
+    protected function wildcards(array $fields): string
     {
         return implode(', ', array_fill(0, count($fields), '?'));
     }
@@ -79,8 +79,8 @@ abstract class PostgresRepository
     protected function detectUniqueKeyViolation(QueryException|Throwable $exception): ?UniqueKeyViolationException
     {
         $message = $exception->getMessage();
-        $pattern = '/duplicate key value violates unique constraint '
-            . '"([^"]+)"\s+DETAIL:\s+Key \(([^)]+)\)=\(([^)]+)\) already exists\./m';
+        $pattern = '/duplicate key value violates unique constraint\s+?' .
+            '"([^"]+)".*\(([^)]+)\)=\(([^)]+)\) already exists\./m';
         if (! preg_match($pattern, $message, $matches)) {
             return null;
         }

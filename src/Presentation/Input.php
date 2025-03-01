@@ -9,7 +9,7 @@ use Hyperf\Validation\Request\FormRequest;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 
 use function array_keys;
 use function array_merge;
@@ -18,30 +18,52 @@ use function Hyperf\Collection\data_get;
 /**
  * @see https://hyperf.wiki/3.1/#/en/validation?id=form-request-validation
  */
-abstract class Input extends FormRequest implements Message
+class Input extends FormRequest implements Message
 {
-    private readonly Values $values;
-
     public function __construct(
         ContainerInterface $container,
-        array $values = [],
+        private readonly Set $properties = new Set([]),
+        private readonly Set $values = new Set([]),
+        private readonly array $rules = [],
+        private readonly bool $authorize = true,
     ) {
         parent::__construct($container);
-
-        $this->values = Values::createFrom($values);
     }
 
     public function authorize(): bool
     {
-        return true;
+        return $this->authorize;
+    }
+
+    public function rules(): array
+    {
+        return $this->rules;
+    }
+
+    final public function properties(): Set
+    {
+        if (Context::has(ServerRequestInterface::class)) {
+            $headers = $this->getHeaders();
+            $headers = $this->normalizeHeaders($headers);
+            return $this->properties->along($headers);
+        }
+        return $this->properties;
+    }
+
+    final public function property(string $key, mixed $default = null): ?string
+    {
+        return data_get($this->properties()->toArray(), $key, $default);
     }
 
     /**
-     * @deprecated Use `value(string $key, mixed $default = null): mixed` instead
+     * @SuppressWarnings(StaticAccess)
      */
-    final public function input(string $key, mixed $default = null): mixed
+    final public function values(): Set
     {
-        return $this->value($key, $default);
+        if (Context::has(ServerRequestInterface::class)) {
+            return $this->values->along($this->validated());
+        }
+        return $this->values;
     }
 
     /**
@@ -56,24 +78,21 @@ abstract class Input extends FormRequest implements Message
     }
 
     /**
-     * @SuppressWarnings(StaticAccess)
+     * @deprecated Use `value(string $key, mixed $default = null): mixed` instead
      */
-    final public function values(): Values
+    final public function post(?string $key = null, mixed $default = null): mixed
     {
-        if (Context::has(ServerRequestInterface::class)) {
-            return $this->values->along($this->validated());
+        if ($key === null) {
+            return $this->values()->toArray();
         }
-        return $this->values;
+        return $this->value($key, $default);
     }
 
     /**
      * @deprecated Use `value(string $key, mixed $default = null): mixed` instead
      */
-    public function post(?string $key = null, mixed $default = null): mixed
+    final public function input(string $key, mixed $default = null): mixed
     {
-        if ($key === null) {
-            return $this->values()->toArray();
-        }
         return $this->value($key, $default);
     }
 
@@ -98,5 +117,13 @@ abstract class Input extends FormRequest implements Message
             }
         }
         return $params;
+    }
+
+    private function normalizeHeaders(array $headers): array
+    {
+        return array_map(
+            fn (mixed $value) => is_array($value) ? implode('; ', $value) : $value,
+            $headers
+        );
     }
 }

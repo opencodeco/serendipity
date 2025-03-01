@@ -11,8 +11,8 @@ final class NotFoundTest extends TestCase
 {
     public function testShouldHaveMissingOnContent(): void
     {
-        $missing = $this->faker->engine->word();
-        $what = $this->faker->engine->uuid();
+        $missing = $this->generator()->word();
+        $what = $this->generator()->uuid();
         $properties = ['Missing' => sprintf('"%s" identified by "%s" not found', $missing, $what)];
         $output = new NotFound($missing, $what);
         $this->assertNull($output->values());

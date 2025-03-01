@@ -6,7 +6,7 @@ namespace Serendipity\Domain\Exception;
 
 use InvalidArgumentException;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 use Throwable;
 
 use function array_map;
@@ -20,7 +20,7 @@ final class AdapterException extends InvalidArgumentException
      * @param array<NotResolved> $unresolved
      */
     public function __construct(
-        public readonly Values $values,
+        public readonly Set $values,
         private readonly array $unresolved = [],
         ?Throwable $error = null,
     ) {

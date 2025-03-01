@@ -26,10 +26,7 @@ readonly class EnvironmentLoggerFactory
         }
 
         $projectId = toString($this->config->get('logger.gcloud.project_id', 'unknown'));
-        $config = [
-            'projectId' => $projectId,
-        ];
-        $logging = new LoggingClient($config);
+        $logging = new LoggingClient(['projectId' => $projectId]);
         $options = [];
         if ($this->config->get('logger.gcloud.batch', false)) {
             $options = [

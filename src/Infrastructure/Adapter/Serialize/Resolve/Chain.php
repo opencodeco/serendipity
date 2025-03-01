@@ -8,7 +8,7 @@ use ReflectionParameter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\Adapter\Type;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 
 abstract class Chain extends Builder
@@ -21,7 +21,7 @@ abstract class Chain extends Builder
         return $chain;
     }
 
-    public function resolve(ReflectionParameter $parameter, Values $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $values): Value
     {
         if (isset($this->previous)) {
             return $this->previous->resolve($parameter, $values);
@@ -34,7 +34,7 @@ abstract class Chain extends Builder
         $this->previous = $previous;
     }
 
-    protected function notResolved(Type $type, ReflectionParameter $parameter, Values $values): Value
+    protected function notResolved(Type $type, ReflectionParameter $parameter, Set $values): Value
     {
         $field = $parameter->getName();
         $value = $values->has($field) ? new Value($values->get($field)) : null;

@@ -14,7 +14,7 @@ use Serendipity\Test\TestCase;
 
 final class CorsMiddlewareTest extends TestCase
 {
-    final public function testShouldAllowCors(): void
+    public function testShouldAllowCors(): void
     {
         $response = $this->createMock(ResponseInterface::class);
         $response->method('withHeader')
@@ -41,7 +41,7 @@ final class CorsMiddlewareTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    final public function testShouldAllowCorsWhenResponseIsNotInstanceOfResponseInterface(): void
+    public function testShouldAllowCorsWhenResponseIsNotInstanceOfResponseInterface(): void
     {
         $response = $this->createMock(ResponseInterface::class);
         $response->method('withHeader')

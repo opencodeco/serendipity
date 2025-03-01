@@ -8,14 +8,14 @@ use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\Adapter\Type;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 
 class WhenNoValueUseDefaultChain extends Chain
 {
     /**
      * @throws ReflectionException
      */
-    public function resolve(ReflectionParameter $parameter, Values $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $values): Value
     {
         $name = $this->name($parameter);
         if ($values->has($name)) {
@@ -27,7 +27,7 @@ class WhenNoValueUseDefaultChain extends Chain
     /**
      * @throws ReflectionException
      */
-    public function resolveNoValue(ReflectionParameter $parameter, Values $values): Value
+    public function resolveNoValue(ReflectionParameter $parameter, Set $values): Value
     {
         if ($parameter->isOptional() || $parameter->isDefaultValueAvailable()) {
             return new Value($parameter->getDefaultValue());

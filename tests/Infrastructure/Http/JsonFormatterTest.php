@@ -9,7 +9,7 @@ use Serendipity\Infrastructure\Exception\Type;
 use Serendipity\Infrastructure\Http\Formatter\JsonFormatter;
 use stdClass;
 
-class JsonFormatterTest extends TestCase
+final class JsonFormatterTest extends TestCase
 {
     public function testShouldFormatSuccess(): void
     {

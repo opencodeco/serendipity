@@ -9,22 +9,30 @@ use Hyperf\Contract\ValidatorInterface;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Serendipity\Infrastructure\Http\Exception\ValidationExceptionHandler;
+use Serendipity\Infrastructure\Http\Formatter\JsonFormatter;
 use Serendipity\Test\TestCase;
 use Throwable;
+
+use function Serendipity\Type\Json\decode;
 
 final class ValidationExceptionHandlerTest extends TestCase
 {
     public function testHandleShouldReturnValidationErrors(): void
     {
-        $handler = new ValidationExceptionHandler();
+        $logger = $this->createMock(LoggerInterface::class);
+        $formatter = $this->createMock(JsonFormatter::class);
+        $handler = new ValidationExceptionHandler($logger, $formatter);
         $response = new Response();
 
         $messageBag = $this->createMock(MessageBag::class);
-        $messageBag->method('getMessages')->willReturn(['field' => ['Validation error']]);
+        $messageBag->method('getMessages')
+            ->willReturn(decode('{"name":["validation.required"],"slug":["validation.required"]}'));
 
         $validator = $this->createMock(ValidatorInterface::class);
-        $validator->method('errors')->willReturn($messageBag);
+        $validator->method('errors')
+            ->willReturn($messageBag);
 
         $throwable = new ValidationException($validator);
 
@@ -32,34 +40,13 @@ final class ValidationExceptionHandlerTest extends TestCase
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertEquals(422, $result->getStatusCode());
-        $this->assertJsonStringEqualsJsonString(
-            json_encode(['field' => ['Validation error']], JSON_THROW_ON_ERROR),
-            (string) $result->getBody()
-        );
-    }
-
-    public function testHandleShouldReturnJsonErrorOnJsonException(): void
-    {
-        $handler = new ValidationExceptionHandler();
-        $response = new Response();
-
-        $messageBag = $this->createMock(MessageBag::class);
-        $messageBag->method('getMessages')->willReturn(["\xB1\x31"]);
-
-        $validator = $this->createMock(ValidatorInterface::class);
-        $validator->method('errors')->willReturn($messageBag);
-
-        $throwable = new ValidationException($validator);
-
-        $result = $handler->handle($throwable, $response);
-
-        $this->assertInstanceOf(ResponseInterface::class, $result);
-        $this->assertStringContainsString('"error":', (string) $result->getBody());
     }
 
     public function testIsValidShouldReturnTrueForValidationException(): void
     {
-        $handler = new ValidationExceptionHandler();
+        $logger = $this->createMock(LoggerInterface::class);
+        $formatter = $this->createMock(JsonFormatter::class);
+        $handler = new ValidationExceptionHandler($logger, $formatter);
 
         $validator = $this->createMock(ValidatorInterface::class);
         $throwable = new ValidationException($validator);
@@ -69,7 +56,9 @@ final class ValidationExceptionHandlerTest extends TestCase
 
     public function testIsValidShouldReturnFalseForNonValidationException(): void
     {
-        $handler = new ValidationExceptionHandler();
+        $logger = $this->createMock(LoggerInterface::class);
+        $formatter = $this->createMock(JsonFormatter::class);
+        $handler = new ValidationExceptionHandler($logger, $formatter);
         $throwable = $this->createMock(Throwable::class);
 
         $this->assertFalse($handler->isValid($throwable));

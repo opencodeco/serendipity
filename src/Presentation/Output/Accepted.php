@@ -10,6 +10,6 @@ class Accepted extends Output
 {
     public function __construct(int|string $token)
     {
-        parent::__construct(content: ['token' => $token]);
+        parent::__construct(values: ['token' => $token]);
     }
 }

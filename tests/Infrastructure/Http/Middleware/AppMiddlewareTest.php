@@ -20,7 +20,7 @@ use Swow\Psr7\Message\ServerRequestPlusInterface;
 
 final class AppMiddlewareTest extends TestCase
 {
-    final public function testShouldRenderOutputResponse(): void
+    public function testShouldRenderOutputResponse(): void
     {
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')
@@ -56,7 +56,7 @@ final class AppMiddlewareTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    final public function testShouldRenderWithoutOutput(): void
+    public function testShouldRenderWithoutOutput(): void
     {
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')
@@ -82,8 +82,7 @@ final class AppMiddlewareTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    /** @noinspection TestingUnfriendlyApisInspection */
-    final public function testShouldRenderNoContentResponse(): void
+    public function testShouldRenderNoContentResponse(): void
     {
         $config = $this->createMock(ConfigInterface::class);
         $config->expects($this->once())

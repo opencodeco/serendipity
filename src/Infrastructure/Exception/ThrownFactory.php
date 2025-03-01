@@ -39,7 +39,7 @@ class ThrownFactory
 
     private function type(string $throwable): Type
     {
-        $type = $this->config->get(sprintf('exception.types.%s', $throwable));
+        $type = $this->config->get(sprintf('exception.classification.%s', $throwable));
         if ($type instanceof Type) {
             return $type;
         }

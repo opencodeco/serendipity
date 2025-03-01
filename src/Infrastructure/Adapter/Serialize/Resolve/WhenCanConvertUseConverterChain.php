@@ -7,11 +7,11 @@ namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
 use ReflectionNamedType;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 
 class WhenCanConvertUseConverterChain extends Chain
 {
-    public function resolve(ReflectionParameter $parameter, Values $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $values): Value
     {
         $type = $parameter->getType();
         if (! $type instanceof ReflectionNamedType) {

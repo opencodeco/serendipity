@@ -10,14 +10,14 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 
 class WhenEnumUseBackedChain extends Chain
 {
     /**
      * @throws ReflectionException
      */
-    public function resolve(ReflectionParameter $parameter, Values $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $values): Value
     {
         $parameterType = $parameter->getType();
         if (! $parameterType instanceof ReflectionNamedType) {
@@ -40,7 +40,7 @@ class WhenEnumUseBackedChain extends Chain
     private function resolveEnumValue(
         BackedEnum|string $enum,
         ReflectionParameter $parameter,
-        Values $values
+        Set $values
     ): Value {
         $value = $values->get($this->name($parameter));
         if (! is_int($value) && ! is_string($value)) {

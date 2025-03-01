@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter;
 
 use Serendipity\Domain\Contract\Adapter\Serializer as Contract;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 use Serendipity\Infrastructure\CaseConvention;
 
@@ -31,6 +31,6 @@ class Serializer extends Builder implements Contract
      */
     public function serialize(array $datum): mixed
     {
-        return $this->build($this->type, Values::createFrom($datum));
+        return $this->build($this->type, Set::createFrom($datum));
     }
 }

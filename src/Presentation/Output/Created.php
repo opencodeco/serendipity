@@ -10,6 +10,6 @@ final class Created extends Output
 {
     public function __construct(string $id)
     {
-        parent::__construct(content: ['id' => $id]);
+        parent::__construct(values: ['id' => $id]);
     }
 }

@@ -5,28 +5,28 @@ declare(strict_types=1);
 namespace Serendipity\Presentation;
 
 use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 
 class Output implements Message
 {
-    private readonly Values $properties;
+    private readonly Set $properties;
 
-    private readonly ?Values $content;
+    private readonly ?Set $values;
 
     public function __construct(
         array $properties = [],
-        ?array $content = null
+        ?array $values = null
     ) {
-        $this->properties = Values::createFrom($properties);
-        $this->content = $content === null ? null : Values::createFrom($content);
+        $this->properties = Set::createFrom($properties);
+        $this->values = $values === null ? null : Set::createFrom($values);
     }
 
-    public static function createFrom(array $properties, ?array $content): self
+    public static function createFrom(array $properties = [], ?array $values = null): self
     {
-        return new self($properties, $content);
+        return new self($properties, $values);
     }
 
-    public function properties(): Values
+    public function properties(): Set
     {
         return $this->properties;
     }
@@ -36,9 +36,9 @@ class Output implements Message
         return $this->properties->get($key, $default);
     }
 
-    public function values(): ?Values
+    public function values(): ?Set
     {
-        return $this->content;
+        return $this->values;
     }
 
     public function value(string $key, mixed $default = null): mixed

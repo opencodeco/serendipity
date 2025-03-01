@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Entity;
 
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 
 class Entity
 {
-    public function expose(): Values
+    public function expose(): Set
     {
-        return Values::createFrom(get_object_vars($this));
+        return Set::createFrom(get_object_vars($this));
     }
 }

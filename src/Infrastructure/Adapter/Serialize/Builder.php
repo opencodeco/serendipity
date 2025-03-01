@@ -7,7 +7,7 @@ namespace Serendipity\Infrastructure\Adapter\Serialize;
 use ReflectionClass;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
-use Serendipity\Domain\Support\Values;
+use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\Consolidator;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\WhenCanConvertUseConverterChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\WhenEnumUseBackedChain;
@@ -25,7 +25,7 @@ class Builder extends Engine
      * @return T
      * @throws AdapterException
      */
-    public function build(string $class, Values $values): mixed
+    public function build(string $class, Set $values): mixed
     {
         try {
             $reflectionClass = new ReflectionClass($class);
@@ -48,7 +48,7 @@ class Builder extends Engine
     /**
      * @param array<ReflectionParameter> $parameters
      */
-    private function resolveArgs(array $parameters, Values $values): array
+    private function resolveArgs(array $parameters, Set $values): array
     {
         $consolidator = new Consolidator();
         foreach ($parameters as $parameter) {
