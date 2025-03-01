@@ -9,7 +9,7 @@ use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Hyperf\Database\HyperfDatabase;
 use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
 use Serendipity\Infrastructure\Adapter\Deserializer;
-use Serendipity\Infrastructure\Database\Instrument;
+use Serendipity\Infrastructure\Database\Instrumental;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use stdClass;
@@ -29,7 +29,7 @@ final class PostgresRepositoryTest extends TestCase
     {
         parent::setUp();
 
-        $generator = $this->createMock(Instrument::class);
+        $generator = $this->createMock(Instrumental::class);
         $this->deserializer = $this->createMock(Deserializer::class);
 
         $this->deserializerFactory = $this->createMock(RelationalDeserializerFactory::class);

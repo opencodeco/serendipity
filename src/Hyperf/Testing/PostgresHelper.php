@@ -41,6 +41,7 @@ final class PostgresHelper extends Helper
 
     public function truncate(string $resource): void
     {
+        /** @noinspection SqlNoDataSourceInspection */
         $this->database->execute(sprintf('delete from %s where true', $resource));
     }
 
@@ -57,6 +58,7 @@ final class PostgresHelper extends Helper
         $columns = implode(',', $fields);
         $values = str_repeat('?,', count($fields) - 1) . '?';
 
+        /** @noinspection SqlNoDataSourceInspection, SqlResolve */
         $query = sprintf('insert into "%s" (%s) values (%s)', $resource, $columns, $values);
         $bindings = array_values($data);
 
@@ -74,6 +76,7 @@ final class PostgresHelper extends Helper
         };
         $wildcards = array_map($callback, array_keys($filters), array_values($filters));
         $where = implode(' and ', $wildcards);
+        /** @noinspection SqlNoDataSourceInspection */
         $query = sprintf(
             'select count(*) as count from %s where %s',
             sprintf('"%s"', $resource),

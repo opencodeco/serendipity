@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Repository;
 
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Database\Instrument;
+use Serendipity\Infrastructure\Database\Instrumental;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\InvalidConfigurationException;
 use SleekDB\Exceptions\IOException;
@@ -21,7 +21,7 @@ abstract class SleekDBRepository
      * @throws InvalidConfigurationException
      */
     public function __construct(
-        protected readonly Instrument $generator,
+        protected readonly Instrumental $generator,
         SleekDBDatabaseFactory $databaseFactory,
     ) {
         $this->database = $databaseFactory->make($this->resource());

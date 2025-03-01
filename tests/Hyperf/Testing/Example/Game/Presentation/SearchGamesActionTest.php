@@ -33,6 +33,7 @@ final class SearchGamesActionTest extends PresentationTestCase
 
         $this->assertInstanceOf(Ok::class, $actual);
         $this->assertCount(3, $actual->content());
+        $this->assertEquals($slug, $actual->content()->slug);
     }
 
     public function testShouldReturnEmptyArray(): void

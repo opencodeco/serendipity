@@ -7,7 +7,7 @@ namespace Serendipity\Testing\Example\Game\Infrastructure\Repository;
 use Serendipity\Domain\Contract\Adapter\Serializer;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Database\Instrument;
+use Serendipity\Infrastructure\Database\Instrumental;
 use Serendipity\Testing\Example\Game\Domain\Collection\GameCollection;
 use Serendipity\Testing\Example\Game\Domain\Entity\Game;
 use Serendipity\Testing\Example\Game\Domain\Repository\GameQueryRepository;
@@ -24,7 +24,7 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
     protected readonly Serializer $serializer;
 
     public function __construct(
-        Instrument $generator,
+        Instrumental $generator,
         SleekDBDatabaseFactory $databaseFactory,
         SerializerFactory $serializerFactory,
     ) {

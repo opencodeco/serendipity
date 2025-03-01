@@ -6,9 +6,6 @@ namespace Serendipity\Hyperf\Testing\Extension;
 
 use function Hyperf\Support\make;
 
-/**
- * @phpstan-ignore trait.unused
- */
 trait MakeExtension
 {
     /**

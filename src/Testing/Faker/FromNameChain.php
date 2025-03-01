@@ -9,12 +9,12 @@ use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\CaseConvention;
-use Serendipity\Infrastructure\Database\Instrument;
+use Serendipity\Infrastructure\Database\Instrumental;
 use Throwable;
 
 final class FromNameChain extends Chain
 {
-    private readonly Instrument $instrument;
+    private readonly Instrumental $instrument;
 
     public function __construct(
         CaseConvention $case = CaseConvention::SNAKE,
@@ -22,7 +22,7 @@ final class FromNameChain extends Chain
     ) {
         parent::__construct($case, $converters);
 
-        $this->instrument = $this->make(Instrument::class);
+        $this->instrument = $this->make(Instrumental::class);
     }
 
     /**

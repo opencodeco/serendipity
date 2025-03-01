@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Repository;
 
 use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Infrastructure\Database\Instrument;
+use Serendipity\Infrastructure\Database\Instrumental;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
@@ -16,7 +16,7 @@ abstract class PostgresRepository
     protected readonly RelationalDatabase $database;
 
     public function __construct(
-        protected readonly Instrument $generator,
+        protected readonly Instrumental $generator,
         protected readonly RelationalDeserializerFactory $deserializerFactory,
         protected readonly RelationalSerializerFactory $serializerFactory,
         RelationalDatabaseFactory $relationalDatabaseFactory,
@@ -27,21 +27,21 @@ abstract class PostgresRepository
     /**
      * @param array<string> $fields
      * @param array<string,mixed> $default
-     * @param array<string,string> $generate
+     * @param array<string,string> $instrument
      * @throws GeneratingException
      */
     protected function bindings(
         object $instance,
         array $fields,
         array $default = [],
-        array $generate = ['created_at' => 'now', 'updated_at' => 'now']
+        array $instrument = ['created_at' => 'now', 'updated_at' => 'now']
     ): array {
         $values = $this->deserializerFactory->make($instance::class)
             ->deserialize($instance);
 
         $values = array_merge($default, $values);
 
-        foreach ($generate as $field => $type) {
+        foreach ($instrument as $field => $type) {
             $value = match ($type) {
                 'now' => $this->generator->now(),
                 'id' => $this->generator->id(),
