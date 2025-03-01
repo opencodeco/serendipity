@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Domain\Exception;
 
 use InvalidArgumentException;
-use Serendipity\Domain\Exception\Mapping\NotResolved;
+use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Values;
 use Throwable;
 
@@ -14,7 +14,7 @@ use function count;
 use function implode;
 use function sprintf;
 
-final class MappingException extends InvalidArgumentException
+final class AdapterException extends InvalidArgumentException
 {
     /**
      * @param array<NotResolved> $unresolved

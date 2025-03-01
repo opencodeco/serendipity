@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serendipity\Domain\Collection;
 
 use DomainException;
-use Serendipity\Domain\Contract\Serializer;
 
 /**
  * @template T
@@ -13,37 +12,12 @@ use Serendipity\Domain\Contract\Serializer;
  */
 abstract class Collection extends AbstractCollection
 {
-    final private function __construct(protected readonly Serializer $serializer)
+    final public function __construct()
     {
         parent::__construct([]);
     }
 
-    /**
-     * @param array<array<string, mixed>> $data
-     * @return static<T>
-     */
-    final public static function createFrom(array $data, Serializer $serializer): static
-    {
-        $collection = new static($serializer);
-        foreach ($data as $datum) {
-            if (is_array($datum)) {
-                $collection->append($datum);
-                continue;
-            }
-            $collection->push($datum);
-        }
-        return $collection;
-    }
-
-    /**
-     * @param array<string, mixed> $datum
-     */
-    final protected function append(array $datum): void
-    {
-        $this->data[] = $this->serializer->serialize($datum);
-    }
-
-    final protected function push(mixed $datum): void
+    final public function push(mixed $datum): void
     {
         $this->data[] = $this->validate($datum);
     }

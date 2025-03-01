@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Exception\Mapping;
+namespace Serendipity\Domain\Exception\Adapter;
 
 use function sprintf;
 

@@ -7,13 +7,12 @@ namespace Serendipity\Domain\Collection;
 use Closure;
 use Countable;
 use Iterator;
-use Serendipity\Domain\Support\Outputable;
 
 /**
  * @template T
  * @template-implements Iterator<T>
  */
-abstract class AbstractCollection extends Outputable implements Iterator, Countable
+abstract class AbstractCollection implements Iterator, Countable
 {
     private int $cursor = 0;
 

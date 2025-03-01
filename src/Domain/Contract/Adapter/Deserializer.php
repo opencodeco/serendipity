@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Contract;
+namespace Serendipity\Domain\Contract\Adapter;
 
 /**
  * @template T of object

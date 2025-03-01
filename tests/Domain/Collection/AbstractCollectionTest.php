@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Domain\Collection\Support;
+namespace Serendipity\Test\Domain\Collection;
 
 use Serendipity\Domain\Collection\AbstractCollection;
 use Serendipity\Test\TestCase;
 
 final class AbstractCollectionTest extends TestCase
 {
-    final public function testShouldRewind(): void
+    public function testShouldRewind(): void
     {
         $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
@@ -25,7 +25,7 @@ final class AbstractCollectionTest extends TestCase
         $this->assertEquals(1, $collection->current());
     }
 
-    final public function testShouldReturnKey(): void
+    public function testShouldReturnKey(): void
     {
         $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
@@ -39,7 +39,7 @@ final class AbstractCollectionTest extends TestCase
         $this->assertEquals(1, $collection->key());
     }
 
-    final public function testShouldReturnNext(): void
+    public function testShouldReturnNext(): void
     {
         $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
@@ -53,7 +53,7 @@ final class AbstractCollectionTest extends TestCase
         $this->assertEquals(1, $collection->key());
     }
 
-    final public function testShouldReturnValid(): void
+    public function testShouldReturnValid(): void
     {
         $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
@@ -67,7 +67,7 @@ final class AbstractCollectionTest extends TestCase
         $this->assertTrue($collection->valid());
     }
 
-    final public function testShouldReturnCount(): void
+    public function testShouldReturnCount(): void
     {
         $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
@@ -79,7 +79,7 @@ final class AbstractCollectionTest extends TestCase
         $this->assertEquals(3, $collection->count());
     }
 
-    final public function testShouldReturnRows(): void
+    public function testShouldReturnRows(): void
     {
         $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
@@ -96,7 +96,7 @@ final class AbstractCollectionTest extends TestCase
         $this->assertEquals(3, $collection->length());
     }
 
-    final public function testShouldReturnAll(): void
+    public function testShouldReturnAll(): void
     {
         $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
@@ -108,7 +108,7 @@ final class AbstractCollectionTest extends TestCase
         $this->assertEquals([1, 2, 3], $collection->all());
     }
 
-    final public function testShouldReturnMap(): void
+    public function testShouldReturnMap(): void
     {
         $collection = new class ([1, 2, 3]) extends AbstractCollection {
             public function current(): mixed
