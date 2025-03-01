@@ -12,6 +12,9 @@ use Throwable;
 
 use function Serendipity\Type\Json\encode;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait HasResource
 {
     /**
@@ -29,10 +32,12 @@ trait HasResource
         $this->helpers[$alias] = $helper;
     }
 
-    protected function setUpResource(string $resource, string $helper): void
+    protected function setUpResource(string $resource, string $alias): void
     {
-        if (isset($this->helpers[$helper])) {
-            $this->resources[$resource] = $helper;
+        if (isset($this->helpers[$alias])) {
+            $this->resources[$resource] = $alias;
+            $helper = $this->helpers[$alias];
+            $helper->truncate($resource);
         }
         static::fail('Helper not defined');
     }

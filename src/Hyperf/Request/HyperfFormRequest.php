@@ -55,6 +55,17 @@ abstract class HyperfFormRequest extends FormRequest
     }
 
     /**
+     * @template T of mixed
+     * @param T $default
+     *
+     * @return T
+     */
+    final public function value(string $key, mixed $default = null): mixed
+    {
+        return $this->retrieve($this->values(), $key, $default);
+    }
+
+    /**
      * @deprecated Use `value(string $key, mixed $default = null): mixed` instead
      */
     final public function input(string $key, mixed $default = null): mixed

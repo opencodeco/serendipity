@@ -39,18 +39,8 @@ class Input extends HyperfFormRequest implements Message
 
     final public function property(string $key, mixed $default = null): ?string
     {
-        return $this->retrieve($this->properties(), $key, $default);
-    }
-
-    /**
-     * @template T of mixed
-     * @param T $default
-     *
-     * @return T
-     */
-    final public function value(string $key, mixed $default = null): mixed
-    {
-        return $this->retrieve($this->values(), $key, $default);
+        $retrieved = $this->retrieve($this->properties(), $key, $default);
+        return is_string($retrieved) ? $retrieved : null;
     }
 
     protected function validationData(): array

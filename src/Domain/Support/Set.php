@@ -23,9 +23,12 @@ final readonly class Set
         if (! is_array($data)) {
             throw new InvalidArgumentException('Values must be an array.');
         }
-        if (! $this->isAssociative($data)) {
+        $keys = array_keys($data);
+        $filtered = array_filter($keys, 'is_string');
+        if (count($keys) !== count($filtered)) {
             throw new InvalidArgumentException('All keys must be strings.');
         }
+        /** @phpstan-ignore assign.propertyType */
         $this->data = $data;
     }
 
@@ -60,12 +63,5 @@ final readonly class Set
     public function has(string $field): bool
     {
         return array_key_exists($field, $this->data);
-    }
-
-    private function isAssociative(array $data): bool
-    {
-        $keys = array_keys($data);
-        $filtered = array_filter($keys, 'is_string');
-        return count($keys) === count($filtered);
     }
 }

@@ -34,7 +34,7 @@ abstract class Helper
      */
     final protected function fake(string $type, array $override): array
     {
-        $fake = $this->faker->build($type);
+        $fake = $this->faker->fake($type);
         $instance = $this->serializerFactory->make($type)->serialize($fake->toArray());
         $datum = $this->deserializerFactory->make($type)->deserialize($instance);
         return array_merge($datum, $override);

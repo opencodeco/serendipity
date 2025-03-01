@@ -10,6 +10,7 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
 
 use function Serendipity\Type\Cast\toArray;
+use function Serendipity\Type\Cast\toInt;
 
 class HyperfDatabase implements RelationalDatabase
 {
@@ -54,18 +55,18 @@ class HyperfDatabase implements RelationalDatabase
      */
     public function insert(string $query, array $bindings = []): int
     {
-        return $this->database->insert($query, $bindings);
+        return toInt($this->database->insert($query, $bindings));
     }
 
     /**
      * Execute SQL to return the number of rows affected
      * @param string $query
      * @param array $bindings
-     * @return mixed
+     * @return int
      */
     public function execute(string $query, array $bindings = []): int
     {
-        return $this->database->execute($query, $bindings);
+        return toInt($this->database->execute($query, $bindings));
     }
 
     /**

@@ -17,7 +17,7 @@ class JsonFormatter implements Formatter
 {
     /**
      * @param mixed $value
-     * @param int $option
+     * @param Type $option
      * @return string
      */
     public function format(mixed $value, mixed $option = null): string

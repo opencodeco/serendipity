@@ -6,6 +6,9 @@ namespace Serendipity\Testing;
 
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 
+/**
+ * @phpstan-ignore trait.unused
+ */
 trait HasBuilder
 {
     protected ?Builder $builder = null;
