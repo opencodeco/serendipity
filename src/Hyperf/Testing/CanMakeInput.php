@@ -16,11 +16,20 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 trait CanMakeInput
 {
+    private bool $isRequestSetUp = false;
+
     /**
      * @SuppressWarnings(StaticAccess)
      */
-    protected function tearDownRequest(): void
+    protected function setUpRequest(): void
     {
+        $this->reset(true);
+        $this->registerTearDown(fn () => $this->reset(false));
+    }
+
+    protected function reset(bool $isRequestSetUp): void
+    {
+        $this->isRequestSetUp = $isRequestSetUp;
         Context::destroy(ServerRequestInterface::class);
         Context::destroy('http.request.parsedData');
     }
@@ -39,14 +48,17 @@ trait CanMakeInput
         string $method = 'POST',
         string $uri = '/',
     ): mixed {
-        $this->setUpRequest($parsedBody, $queryParams, $params, $headers, $method, $uri);
-        return $this->make($class);
+        if ($this->isRequestSetUp) {
+            $this->setUpRequestContext($parsedBody, $queryParams, $params, $headers, $method, $uri);
+            return $this->make($class);
+        }
+        static::fail('Request is not set up.');
     }
 
     /**
      * @SuppressWarnings(StaticAccess)
      */
-    final protected function setUpRequest(
+    final protected function setUpRequestContext(
         array $parsedBody = [],
         array $queryParams = [],
         array $params = [],
@@ -68,4 +80,8 @@ trait CanMakeInput
     }
 
     abstract protected function make(string $class, array $args = []): mixed;
+
+    abstract public static function fail(string $message = ''): never;
+
+    abstract protected function registerTearDown(callable $callback): void;
 }

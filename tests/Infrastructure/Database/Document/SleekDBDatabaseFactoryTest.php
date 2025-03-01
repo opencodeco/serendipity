@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Database\Document;
 
 use Hyperf\Contract\ConfigInterface;
+use Serendipity\Hyperf\Testing\CanMake;
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class SleekDBDatabaseFactoryTest extends TestCase
 {
+    use CanMake;
+
     public function testShouldCreateStore(): void
     {
         $config = $this->make(ConfigInterface::class);

@@ -9,7 +9,7 @@ use Serendipity\Domain\Contract\Message;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Deserializer;
 use Serendipity\Test\Infrastructure\Stub;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class DeserializerTest extends TestCase
 {

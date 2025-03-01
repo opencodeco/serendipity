@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Domain\Type;
+namespace Serendipity\Test\Type;
 
 use PHPUnit\Framework\TestCase;
 

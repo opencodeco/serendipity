@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation\Output;
 
+use Serendipity\Hyperf\Testing\CanMake;
 use Serendipity\Presentation\Output\Accepted;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
+use Serendipity\Testing\CanFake;
 
 final class AcceptedTest extends TestCase
 {
+    use CanMake;
+    use CanFake;
+
     public function testShouldHaveTokenOnContent(): void
     {
         $token = $this->generator()->uuid();

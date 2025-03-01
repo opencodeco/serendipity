@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class DependencyChainTest extends TestCase

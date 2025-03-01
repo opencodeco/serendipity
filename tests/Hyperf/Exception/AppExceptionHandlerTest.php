@@ -13,7 +13,7 @@ use Serendipity\Infrastructure\Exception\Thrown;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
 use Serendipity\Infrastructure\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class AppExceptionHandlerTest extends TestCase
 {

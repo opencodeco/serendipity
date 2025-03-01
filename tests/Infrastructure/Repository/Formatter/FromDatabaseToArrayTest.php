@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Repository\Formatter;
 
 use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class FromDatabaseToArrayTest extends TestCase
 {

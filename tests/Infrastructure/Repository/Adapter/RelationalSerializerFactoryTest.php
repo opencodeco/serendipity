@@ -7,7 +7,7 @@ namespace Serendipity\Test\Infrastructure\Repository\Adapter;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Test\Infrastructure\Stub;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class RelationalSerializerFactoryTest extends TestCase
 {

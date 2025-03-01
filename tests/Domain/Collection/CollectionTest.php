@@ -7,7 +7,7 @@ namespace Serendipity\Test\Domain\Collection;
 use DomainException;
 use Serendipity\Test\Domain\Collection\CollectionTestMock as Collection;
 use Serendipity\Test\Domain\Collection\CollectionTestMockStub as Stub;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class CollectionTest extends TestCase

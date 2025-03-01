@@ -132,4 +132,6 @@ trait CanAssertResource
     abstract public static function fail(string $message = ''): never;
 
     abstract public static function assertThat(mixed $value, Constraint $constraint, string $message = ''): void;
+
+    abstract protected function registerTearDown(callable $callback): void;
 }

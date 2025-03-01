@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Hyperf\Middleware\CorsMiddleware;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class CorsMiddlewareTest extends TestCase
 {

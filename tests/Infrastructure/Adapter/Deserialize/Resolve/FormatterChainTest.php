@@ -7,7 +7,7 @@ namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 use PHPUnit\Framework\Attributes\TestWith;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\ConverterChain;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 use function Serendipity\Type\Json\encode;

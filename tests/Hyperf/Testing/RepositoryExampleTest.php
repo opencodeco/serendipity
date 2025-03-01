@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test;
+namespace Serendipity\Test\Hyperf\Testing;
 
+use PHPUnit\Framework\TestCase;
 use Serendipity\Hyperf\Testing\PostgresHelper;
 use Serendipity\Testing\CanAssertResource;
 use Serendipity\Testing\Resource\SleekDBHelper;
 
-/**
- * @SuppressWarnings(ExcessiveClassLength)
- */
-class IntegrationTestCase extends TestCase
+class RepositoryExampleTest extends TestCase
 {
     use CanAssertResource;
 

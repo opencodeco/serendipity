@@ -8,7 +8,7 @@ use Hyperf\Command\Event\AfterExecute;
 use Hyperf\Coordinator\Constants;
 use Hyperf\Coordinator\CoordinatorManager;
 use Serendipity\Hyperf\Listener\ResumeExitCoordinatorListener;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class ResumeExitCoordinatorListenerTest extends TestCase
 {

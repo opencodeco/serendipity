@@ -11,7 +11,7 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 use function Serendipity\Type\Json\encode;

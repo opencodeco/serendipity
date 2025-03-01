@@ -14,9 +14,6 @@ use function Serendipity\Type\Cast\toArray;
 
 class ConfigProvider
 {
-    /**
-     * @SuppressWarnings(ExcessiveMethodLength)
-     */
     public function __invoke(): array
     {
         return [

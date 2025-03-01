@@ -11,7 +11,7 @@ use Serendipity\Infrastructure\Adapter\Deserializer;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Infrastructure\Repository\Generator;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class PostgresRepositoryTest extends TestCase

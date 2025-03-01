@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Hyperf\Exception\ValidationExceptionHandler;
 use Serendipity\Infrastructure\Http\JsonFormatter;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use Throwable;
 
 use function Serendipity\Type\Json\decode;

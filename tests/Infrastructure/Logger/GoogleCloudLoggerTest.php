@@ -8,7 +8,7 @@ use Exception;
 use Google\Cloud\Logging\Entry;
 use Google\Cloud\Logging\Logger;
 use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 use function Hyperf\Collection\data_get;
 

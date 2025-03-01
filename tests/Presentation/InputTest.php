@@ -5,11 +5,27 @@ declare(strict_types=1);
 namespace Serendipity\Test\Presentation;
 
 use Serendipity\Domain\Support\Set;
+use Serendipity\Hyperf\Testing\CanMake;
+use Serendipity\Hyperf\Testing\CanMakeInput;
 use Serendipity\Presentation\Input;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
+use Serendipity\Testing\CanFake;
 
 final class InputTest extends TestCase
 {
+    use CanMake;
+    use CanMakeInput;
+    use CanFake;
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        gc_collect_cycles();
+
+        $this->reset();
+    }
+
     public function testShouldAuthorize(): void
     {
         $input = $this->make(Input::class, ['authorize' => false]);
@@ -44,7 +60,7 @@ final class InputTest extends TestCase
                 ],
             ]
         );
-        $this->setUpRequest($parsedBody);
+        $this->setUpRequestContext($parsedBody);
         $this->assertEquals('cool', $input->value('datum'));
         $this->assertEquals($parsedBody, $input->values()->toArray());
     }
@@ -65,7 +81,7 @@ final class InputTest extends TestCase
     {
         $headers = ['header' => 'cool'];
         $input = $this->input(class: Input::class, headers: $headers);
-        $this->setUpRequest(headers: $headers);
+        $this->setUpRequestContext(headers: $headers);
         $this->assertEquals('cool', $input->property('header'));
         $this->assertEquals($headers, $input->properties()->toArray());
     }
@@ -95,7 +111,7 @@ final class InputTest extends TestCase
             ]
         );
 
-        $this->setUpRequest(params: $params);
+        $this->setUpRequestContext(params: $params);
         $this->assertEquals($param, $input->value('param'));
     }
 

@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Repository\Formatter;
 
 use DateTime;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatetimeToDatabase;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class FromDatetimeToDatabaseTest extends TestCase
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Entity;
 
 use Serendipity\Domain\Entity\Entity;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class EntityTest extends TestCase
 {

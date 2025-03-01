@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Collection;
 
 use Serendipity\Domain\Collection\AbstractCollection;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class AbstractCollectionTest extends TestCase
 {

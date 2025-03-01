@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Adapter;
 
 use Serendipity\Infrastructure\Adapter\Serializer;
 use Serendipity\Test\Infrastructure\Stub;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class SerializerTest extends TestCase
 {

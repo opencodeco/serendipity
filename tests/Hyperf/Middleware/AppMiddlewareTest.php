@@ -14,7 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Hyperf\Middleware\AppMiddleware;
 use Serendipity\Presentation\Output;
 use Serendipity\Presentation\Output\NoContent;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Swow\Psr7\Message\ServerRequestPlusInterface;
 

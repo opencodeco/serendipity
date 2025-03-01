@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Repository;
 
 use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Infrastructure\Repository\Generator;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class GeneratorTest extends TestCase
 {

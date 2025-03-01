@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Repository;
 
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use Serendipity\Infrastructure\Repository\Generator;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class SleekDBRepositoryTest extends TestCase
 {

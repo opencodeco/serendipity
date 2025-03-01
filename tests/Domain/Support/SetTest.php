@@ -6,7 +6,7 @@ namespace Serendipity\Test\Domain\Support;
 
 use InvalidArgumentException;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 
 final class SetTest extends TestCase
 {
