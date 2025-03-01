@@ -21,7 +21,7 @@ abstract class Engine
 {
     public function __construct(
         public readonly CaseConvention $case = CaseConvention::SNAKE,
-        public readonly array $converters = [],
+        public readonly array $formatters = [],
     ) {
     }
 
@@ -46,7 +46,7 @@ abstract class Engine
 
     protected function conversor(string $type): ?Formatter
     {
-        $converter = $this->converters[$type] ?? null;
+        $converter = $this->formatters[$type] ?? null;
         return $converter instanceof Formatter ? $converter : null;
     }
 

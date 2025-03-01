@@ -16,6 +16,6 @@ final class SerializerFactoryTest extends TestCase
         $serializer = $factory->make(Stub::class);
 
         $this->assertEquals(Stub::class, $serializer->type);
-        $this->assertEquals([], $serializer->converters);
+        $this->assertEquals([], $serializer->formatters);
     }
 }

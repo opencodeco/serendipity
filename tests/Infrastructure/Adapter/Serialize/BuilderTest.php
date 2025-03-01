@@ -31,7 +31,7 @@ final class BuilderTest extends TestCase
             'enum' => 'one',
         ];
 
-        $mapper = new Builder(converters: [
+        $mapper = new Builder(formatters: [
             'array' => new FromDatabaseToArray(),
         ]);
         $instance = $mapper->build($entityClass, Set::createFrom($values));

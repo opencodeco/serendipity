@@ -52,6 +52,16 @@ final class DeserializerTest extends TestCase
             {
                 return new Set(['name' => 'John Doe', 'age' => 30]);
             }
+
+            public function property(string $key, mixed $default = null): mixed
+            {
+                return null;
+            }
+
+            public function value(string $key, mixed $default = null): mixed
+            {
+                return null;
+            }
         };
 
         $deserializer = new Deserializer($mapped::class);

@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Http;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Exception\Type;
-use Serendipity\Infrastructure\Http\Formatter\JsonFormatter;
+use Serendipity\Infrastructure\Http\JsonFormatter;
 use stdClass;
 
 final class JsonFormatterTest extends TestCase

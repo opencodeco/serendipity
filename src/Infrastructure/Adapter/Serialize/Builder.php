@@ -55,7 +55,7 @@ class Builder extends Engine
             $resolved = (new WhenIsValidUseValueChain($this->case))
                 ->then(new WhenRecursiveUseBuildChain($this->case))
                 ->then(new WhenEnumUseBackedChain($this->case))
-                ->then(new WhenCanConvertUseConverterChain($this->case, $this->converters))
+                ->then(new WhenCanConvertUseConverterChain($this->case, $this->formatters))
                 ->then(new WhenNoValueUseDefaultChain($this->case))
                 ->resolve($parameter, $values);
 

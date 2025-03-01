@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository;
 
-use Hyperf\DB\DB as Database;
-use Hyperf\DB\Exception\QueryException;
 use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Domain\Exception\UniqueKeyViolationException;
-use Serendipity\Infrastructure\Repository\Factory\HyperfDBFactory;
-use Serendipity\Infrastructure\Repository\Serializing\RelationalDeserializerFactory;
-use Serendipity\Infrastructure\Repository\Serializing\RelationalSerializerFactory;
-use Throwable;
-
-use function Serendipity\Type\Cast\toString;
+use Serendipity\Hyperf\Database\HyperfDatabase;
+use Serendipity\Hyperf\Database\HyperfDBFactory;
+use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
+use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 
 abstract class PostgresRepository
 {
-    protected readonly Database $database;
+    protected readonly HyperfDatabase $database;
 
     public function __construct(
         protected readonly Generator $generator,
@@ -74,19 +69,5 @@ abstract class PostgresRepository
     protected function wildcards(array $fields): string
     {
         return implode(', ', array_fill(0, count($fields), '?'));
-    }
-
-    protected function detectUniqueKeyViolation(QueryException|Throwable $exception): ?UniqueKeyViolationException
-    {
-        $message = $exception->getMessage();
-        $pattern = '/duplicate key value violates unique constraint\s+?' .
-            '"([^"]+)".*\(([^)]+)\)=\(([^)]+)\) already exists\./m';
-        if (! preg_match($pattern, $message, $matches)) {
-            return null;
-        }
-        $resource = toString($matches[1]);
-        $key = toString($matches[2]);
-        $value = toString($matches[3]);
-        return new UniqueKeyViolationException($key, $value, $resource, $exception);
     }
 }

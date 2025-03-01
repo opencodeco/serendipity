@@ -26,7 +26,7 @@ class Demolisher extends Engine
 
             $resolved = (new DoNothingChain($this->case))
                 ->then(new DependencyChain($this->case))
-                ->then(new ConverterChain($this->case, $this->converters))
+                ->then(new ConverterChain($this->case, $this->formatters))
                 ->resolve($value);
 
             $data[$name] = $resolved->content;

@@ -4,30 +4,27 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation;
 
-use Hyperf\Context\Context;
-use Hyperf\Validation\Request\FormRequest;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Serendipity\Domain\Contract\Message;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Hyperf\Request\HyperfFormRequest;
 
 use function array_keys;
 use function array_merge;
-use function Hyperf\Collection\data_get;
 
 /**
  * @see https://hyperf.wiki/3.1/#/en/validation?id=form-request-validation
  */
-class Input extends FormRequest implements Message
+class Input extends HyperfFormRequest implements Message
 {
     public function __construct(
         ContainerInterface $container,
-        private readonly Set $properties = new Set([]),
-        private readonly Set $values = new Set([]),
-        private readonly array $rules = [],
-        private readonly bool $authorize = true,
+        Set $properties = new Set([]),
+        Set $values = new Set([]),
+        protected readonly array $rules = [],
+        protected readonly bool $authorize = true,
     ) {
-        parent::__construct($container);
+        parent::__construct($container, $properties, $values);
     }
 
     public function authorize(): bool
@@ -40,30 +37,9 @@ class Input extends FormRequest implements Message
         return $this->rules;
     }
 
-    final public function properties(): Set
-    {
-        if (Context::has(ServerRequestInterface::class)) {
-            $headers = $this->getHeaders();
-            $headers = $this->normalizeHeaders($headers);
-            return $this->properties->along($headers);
-        }
-        return $this->properties;
-    }
-
     final public function property(string $key, mixed $default = null): ?string
     {
-        return data_get($this->properties()->toArray(), $key, $default);
-    }
-
-    /**
-     * @SuppressWarnings(StaticAccess)
-     */
-    final public function values(): Set
-    {
-        if (Context::has(ServerRequestInterface::class)) {
-            return $this->values->along($this->validated());
-        }
-        return $this->values;
+        return $this->retrieve($this->properties(), $key, $default);
     }
 
     /**
@@ -74,26 +50,7 @@ class Input extends FormRequest implements Message
      */
     final public function value(string $key, mixed $default = null): mixed
     {
-        return data_get($this->values()->toArray(), $key, $default);
-    }
-
-    /**
-     * @deprecated Use `value(string $key, mixed $default = null): mixed` instead
-     */
-    final public function post(?string $key = null, mixed $default = null): mixed
-    {
-        if ($key === null) {
-            return $this->values()->toArray();
-        }
-        return $this->value($key, $default);
-    }
-
-    /**
-     * @deprecated Use `value(string $key, mixed $default = null): mixed` instead
-     */
-    final public function input(string $key, mixed $default = null): mixed
-    {
-        return $this->value($key, $default);
+        return $this->retrieve($this->values(), $key, $default);
     }
 
     protected function validationData(): array
@@ -117,13 +74,5 @@ class Input extends FormRequest implements Message
             }
         }
         return $params;
-    }
-
-    private function normalizeHeaders(array $headers): array
-    {
-        return array_map(
-            fn (mixed $value) => is_array($value) ? implode('; ', $value) : $value,
-            $headers
-        );
     }
 }
