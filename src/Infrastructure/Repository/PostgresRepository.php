@@ -11,7 +11,7 @@ use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 
-abstract class PostgresRepository
+abstract class PostgresRepository extends Repository
 {
     protected readonly RelationalDatabase $database;
 

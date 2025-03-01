@@ -11,7 +11,7 @@ use SleekDB\Exceptions\InvalidConfigurationException;
 use SleekDB\Exceptions\IOException;
 use SleekDB\Store;
 
-abstract class SleekDBRepository
+abstract class SleekDBRepository extends Repository
 {
     protected readonly Store $database;
 

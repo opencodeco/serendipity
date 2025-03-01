@@ -50,13 +50,13 @@ trait ResourceExtension
     protected function seed(string $type, array $override = [], ?string $resource = null): Set
     {
         $resource = $this->detect($resource);
-        $helper = $this->select($resource);
+        $helper = $this->helper($resource);
         return $helper->seed($type, $resource, $override);
     }
 
     protected function assertHas(array $filters, ?string $resource = null): void
     {
-        $tallied = $this->tally($resource, $filters);
+        $tallied = $this->tally($filters, $resource);
         $message = sprintf(
             "Expected to find at least one item in resource '%s' with filters '%s'",
             $resource,
@@ -67,7 +67,7 @@ trait ResourceExtension
 
     protected function assertHasNot(array $filters, ?string $resource = null): void
     {
-        $tallied = $this->tally($resource, $filters);
+        $tallied = $this->tally($filters, $resource);
         $message = sprintf(
             "Expected to not find any item in resource '%s' with filters '%s'",
             $resource,
@@ -78,7 +78,7 @@ trait ResourceExtension
 
     protected function assertHasExactly(int $expected, array $filters, ?string $resource = null): void
     {
-        $tallied = $this->tally($resource, $filters);
+        $tallied = $this->tally($filters, $resource);
         $message = sprintf(
             "Expected to find %d items in resource '%s' with filters '%s', but found %d",
             $expected,
@@ -91,14 +91,14 @@ trait ResourceExtension
 
     abstract protected function registerTearDown(callable $callback): void;
 
-    private function tally(string $resource, array $filters): int
+    private function tally(array $filters, ?string $resource = null): int
     {
         $resource = $this->detect($resource);
-        $helper = $this->select($resource);
+        $helper = $this->helper($resource);
         return $helper->count($resource, $filters);
     }
 
-    private function select(string $resource): Helper
+    private function helper(string $resource): Helper
     {
         $alias = $this->resources[$resource] ?? null;
         $helper = $this->helpers[$alias] ?? null;

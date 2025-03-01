@@ -16,6 +16,8 @@ use SleekDB\Exceptions\InvalidConfigurationException;
 use SleekDB\Exceptions\IOException;
 use SleekDB\Exceptions\JsonException as SleekDBJsonExceptionAlias;
 
+use function Serendipity\Type\Cast\toArray;
+
 final class SleekDBHelper extends Helper
 {
     public function __construct(
@@ -64,6 +66,7 @@ final class SleekDBHelper extends Helper
     public function count(string $resource, array $filters = []): int
     {
         $database = $this->factory->make($resource);
-        return count($database->findBy($filters));
+        $array = toArray($database->findBy($filters));
+        return count($array);
     }
 }

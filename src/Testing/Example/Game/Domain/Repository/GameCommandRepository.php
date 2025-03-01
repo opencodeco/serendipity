@@ -13,4 +13,6 @@ interface GameCommandRepository
      * @throws GeneratingException
      */
     public function persist(GameCommand $game): string;
+
+    public function destroy(string $id): bool;
 }

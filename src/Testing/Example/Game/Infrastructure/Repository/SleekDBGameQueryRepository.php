@@ -14,8 +14,6 @@ use Serendipity\Testing\Example\Game\Domain\Repository\GameQueryRepository;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\IOException;
 
-use function Serendipity\Type\Cast\toArray;
-
 class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQueryRepository
 {
     /**
@@ -52,18 +50,21 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
      * @throws IOException
      * @throws InvalidArgumentException
      */
-    public function getGames(array $filters): GameCollection
+    public function getGames(array $filters = []): GameCollection
     {
+        if (empty($filters)) {
+            return $this->hydrate(
+                GameCollection::class,
+                $this->database->findAll()
+            );
+        }
         $criteria = [];
         foreach ($filters as $key => $value) {
             $criteria[] = [$key, '=', $value];
         }
-        /** @var array<array<string, mixed>> $data */
-        $data = toArray($this->database->findBy($criteria));
-        $collection = new GameCollection();
-        foreach ($data as $datum) {
-            $collection->push($this->serializer->serialize($datum));
-        }
-        return $collection;
+        return $this->hydrate(
+            GameCollection::class,
+            $this->database->findBy($criteria)
+        );
     }
 }

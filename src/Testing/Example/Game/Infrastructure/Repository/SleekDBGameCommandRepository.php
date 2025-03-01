@@ -50,4 +50,13 @@ class SleekDBGameCommandRepository extends SleekDBGameRepository implements Game
         $this->database->insert($datum);
         return $id;
     }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws IOException
+     */
+    public function destroy(string $id): bool
+    {
+        return (bool) $this->database->deleteBy(['id', '=', $id]);
+    }
 }

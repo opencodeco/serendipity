@@ -7,7 +7,6 @@ namespace Serendipity\Test\Hyperf\Testing\Example\Game\Infrastructure;
 use Serendipity\Test\Hyperf\Testing\Example\Game\InfrastructureTestCase;
 use Serendipity\Testing\Example\Game\Domain\Entity\Game;
 use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDBGameQueryRepository;
-
 use Serendipity\Testing\Extension\InstrumentalExtension;
 
 use function Hyperf\Collection\collect;
@@ -45,7 +44,11 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureTestCase
 
     public function testGetGamesContainsExpectedGames(): void
     {
+        $this->seed(Game::class);
+        $this->seed(Game::class);
         $values = $this->seed(Game::class);
+        $this->seed(Game::class);
+        $this->seed(Game::class);
 
         $repository = $this->make(SleekDBGameQueryRepository::class);
         $all = $repository->getGames()->all();
@@ -53,6 +56,22 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureTestCase
             ->filter(fn ($game) => $game->id === $values->get('id'))
             ->count();
         $this->assertEquals(1, $count);
+    }
+
+    public function testGetGamesContainsExpectedSlug(): void
+    {
+        $slug = $this->generator()->slug();
+        $this->seed(Game::class);
+        $this->seed(Game::class);
+        $values = $this->seed(Game::class, ['slug' => $slug]);
+        $this->seed(Game::class);
+        $this->seed(Game::class);
+
+        $repository = $this->make(SleekDBGameQueryRepository::class);
+        $game = $repository
+            ->getGames(['id' => $values->get('id')])
+            ->current();
+        $this->assertEquals($slug, $game->slug);
     }
 
     public function testGetGamesReturnsEmptyCollectionWhenNoGames(): void
