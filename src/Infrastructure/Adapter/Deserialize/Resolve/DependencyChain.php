@@ -17,14 +17,9 @@ class DependencyChain extends Chain
         if (! is_object($value)) {
             return parent::resolve($value);
         }
-        if ($this->isNotEnum($value::class)) {
-            return new Value($this->demolish($value));
+        if ($value instanceof BackedEnum) {
+            return new Value($value->value);
         }
-        return new Value($value->value);
-    }
-
-    private function isNotEnum(string $enum): bool
-    {
-        return ! is_subclass_of($enum, BackedEnum::class) || ! enum_exists($enum);
+        return new Value($this->demolish($value));
     }
 }

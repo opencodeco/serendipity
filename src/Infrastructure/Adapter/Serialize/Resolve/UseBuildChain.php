@@ -15,7 +15,7 @@ use function class_exists;
 use function is_string;
 use function Serendipity\Type\Cast\toArray;
 
-class WhenRecursiveUseBuildChain extends Chain
+class UseBuildChain extends Chain
 {
     /**
      * @throws ReflectionException
@@ -28,7 +28,7 @@ class WhenRecursiveUseBuildChain extends Chain
             return parent::resolve($parameter, $values);
         }
         $value = $values->get($name);
-        if (is_object($value) && is_subclass_of($value::class, $class)) {
+        if ($values instanceof $class) {
             return new Value($value);
         }
         $args = $this->resolveDependencyArgs($class, $value);

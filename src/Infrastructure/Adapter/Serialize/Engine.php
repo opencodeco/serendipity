@@ -44,10 +44,10 @@ abstract class Engine
         return [];
     }
 
-    protected function conversor(string $type): ?Formatter
+    protected function formatter(string $type): ?Formatter
     {
-        $converter = $this->formatters[$type] ?? null;
-        return $converter instanceof Formatter ? $converter : null;
+        $formatter = $this->formatters[$type] ?? null;
+        return $formatter instanceof Formatter ? $formatter : null;
     }
 
     protected function name(ReflectionParameter|string $field): string

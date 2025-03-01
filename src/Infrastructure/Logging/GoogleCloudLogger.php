@@ -89,15 +89,10 @@ class GoogleCloudLogger implements LoggerInterface
         try {
             $this->driver->write(new Entry($context));
             return;
-        } catch (Throwable $throwable) {
+        } catch (Throwable $error) {
         }
-        $error = sprintf(
-            '"%s" in `%s` at `%s`',
-            $throwable->getMessage(),
-            $throwable->getFile(),
-            $throwable->getLine()
-        );
-        $stdout = sprintf('[GoogleCloudLogger][%s] %s: %s (%s)', $severity, $message, encode($context), $error);
+        $detail = sprintf('"%s" in `%s` at `%s`', $error->getMessage(), $error->getFile(), $error->getLine());
+        $stdout = sprintf('[GoogleCloudLogger][%s] %s: %s (%s)', $severity, $message, encode($context), $detail);
         printf("%s\n", $stdout);
     }
 
@@ -105,13 +100,7 @@ class GoogleCloudLogger implements LoggerInterface
     {
         return [
             'timestamp' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-            'logName' => sprintf(
-                'projects/%s/logs/%s%%2F%s-%s',
-                $this->serviceName,
-                $this->projectId,
-                'env',
-                $this->env,
-            ),
+            'logName' => $this->logName(),
             'severity' => $severity,
             'jsonPayload' => $context,
             'resource' => [
@@ -124,5 +113,10 @@ class GoogleCloudLogger implements LoggerInterface
                 'type' => $this->type,
             ],
         ];
+    }
+
+    private function logName(): string
+    {
+        return sprintf('projects/%s/logs/%s%%2F%s-%s', $this->serviceName, $this->projectId, 'env', $this->env);
     }
 }

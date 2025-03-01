@@ -15,7 +15,7 @@ class ConverterChain extends Chain
     public function resolve(mixed $value): Value
     {
         $type = $this->extractType($value);
-        $conversor = $this->conversor($type);
+        $conversor = $this->formatter($type);
         if ($conversor === null) {
             return parent::resolve($value);
         }

@@ -22,6 +22,9 @@ abstract class HyperfFormRequest extends FormRequest
         parent::__construct($container);
     }
 
+    /**
+     * @SuppressWarnings(StaticAccess)
+     */
     final public function properties(): Set
     {
         if (Context::has(ServerRequestInterface::class)) {

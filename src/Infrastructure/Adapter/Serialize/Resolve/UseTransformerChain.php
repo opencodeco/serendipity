@@ -9,7 +9,7 @@ use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-class WhenCanConvertUseConverterChain extends Chain
+class UseTransformerChain extends Chain
 {
     public function resolve(ReflectionParameter $parameter, Set $values): Value
     {
@@ -17,7 +17,7 @@ class WhenCanConvertUseConverterChain extends Chain
         if (! $type instanceof ReflectionNamedType) {
             return parent::resolve($parameter, $values);
         }
-        $conversor = $this->conversor($type->getName());
+        $conversor = $this->formatter($type->getName());
         if ($conversor === null) {
             return parent::resolve($parameter, $values);
         }

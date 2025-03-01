@@ -29,6 +29,9 @@ trait InputExtension
         $this->registerTearDown(fn () => $this->reset(false));
     }
 
+    /**
+     * @SuppressWarnings(StaticAccess)
+     */
     protected function reset(bool $isRequestSetUp): void
     {
         $this->isRequestSetUp = $isRequestSetUp;
