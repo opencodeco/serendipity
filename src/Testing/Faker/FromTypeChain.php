@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker\Generate;
+namespace Serendipity\Testing\Faker;
 
 use DateMalformedStringException;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use ReflectionParameter;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Domain\Support\Value;
 use Throwable;
 
-final class GenerateFromTypeChain extends Chain
+final class FromTypeChain extends Chain
 {
     /**
      * @throws DateMalformedStringException

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Persistence;
+namespace Serendipity\Testing\Resource;
 
 use ReflectionException;
 use Serendipity\Domain\Support\Set;
@@ -56,6 +56,11 @@ final class SleekDBHelper extends Helper
         return new Set(array_merge($data, ['_id' => $generatedId]));
     }
 
+    /**
+     * @throws IOException
+     * @throws InvalidConfigurationException
+     * @throws InvalidArgumentException
+     */
     public function count(string $resource, array $filters = []): int
     {
         $database = $this->factory->make($resource);

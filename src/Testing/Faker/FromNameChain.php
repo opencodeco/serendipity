@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker\Generate;
+namespace Serendipity\Testing\Faker;
 
 use ReflectionParameter;
 use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Infrastructure\Repository\Generator;
 use Throwable;
 
-final class GenerateFromNameChain extends Chain
+final class FromNameChain extends Chain
 {
     private readonly Generator $generator;
 

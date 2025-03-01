@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Repository;
 
 use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Hyperf\Database\HyperfDatabase;
+use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 
 abstract class PostgresRepository
 {
-    protected readonly HyperfDatabase $database;
+    protected readonly RelationalDatabase $database;
 
     public function __construct(
         protected readonly Generator $generator,

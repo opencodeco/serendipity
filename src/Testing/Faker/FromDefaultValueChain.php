@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker\Generate;
+namespace Serendipity\Testing\Faker;
 
 use ReflectionException;
 use ReflectionParameter;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Domain\Support\Value;
 
-final class GenerateFromDefaultValueChain extends Chain
+final class FromDefaultValueChain extends Chain
 {
     /**
      * @throws ReflectionException

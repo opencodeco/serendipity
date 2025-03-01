@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker\Generate;
+namespace Serendipity\Testing\Faker;
 
 use BackedEnum;
 use Random\RandomException;
 use ReflectionNamedType;
 use ReflectionParameter;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Domain\Support\Value;
 
-final class GenerateFromEnumChain extends Chain
+final class FromEnumChain extends Chain
 {
     /**
      * @throws RandomException

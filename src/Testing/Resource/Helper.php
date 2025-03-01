@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Persistence;
+namespace Serendipity\Testing\Resource;
 
 use ReflectionException;
 use Serendipity\Domain\Contract\Adapter\DeserializerFactory;
@@ -34,7 +34,7 @@ abstract class Helper
      */
     final protected function fake(string $type, array $override): array
     {
-        $fake = $this->faker->fake($type);
+        $fake = $this->faker->build($type);
         $instance = $this->serializerFactory->make($type)->serialize($fake->toArray());
         $datum = $this->deserializerFactory->make($type)->deserialize($instance);
         return array_merge($datum, $override);

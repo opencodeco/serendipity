@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Persistence;
+namespace Serendipity\Hyperf\Testing;
 
-use Hyperf\DB\DB as Database;
 use ReflectionException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
+use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Testing\Faker\Faker;
+use Serendipity\Testing\Resource\Helper;
 
 use function array_filter;
 use function array_keys;
@@ -25,17 +26,17 @@ use function str_repeat;
 
 final class PostgresHelper extends Helper
 {
-    private readonly Database $database;
+    private readonly RelationalDatabase $database;
 
     public function __construct(
         Faker $faker,
         RelationalSerializerFactory $serializerFactory,
         RelationalDeserializerFactory $deserializerFactory,
-        HyperfDatabaseFactory $hyperfDBFactory,
+        HyperfDatabaseFactory $hyperfDatabaseFactory,
     ) {
         parent::__construct($faker, $serializerFactory, $deserializerFactory);
 
-        $this->database = $hyperfDBFactory->make('postgres');
+        $this->database = $hyperfDatabaseFactory->make('postgres');
     }
 
     public function truncate(string $resource): void

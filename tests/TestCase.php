@@ -5,16 +5,24 @@ declare(strict_types=1);
 namespace Serendipity\Test;
 
 use PHPUnit\Framework\TestCase as PHPUnit;
-use Serendipity\Testing\HelperFactory;
+use Serendipity\Hyperf\Testing\HasInput;
+use Serendipity\Hyperf\Testing\HasMaker;
+use Serendipity\Testing\HasBuilder;
+use Serendipity\Testing\HasFaker;
 
 class TestCase extends PHPUnit
 {
-    use HelperFactory;
+    use HasMaker;
+    use HasFaker;
+    use HasBuilder;
+    use HasInput;
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $this->collectGarbage();
+        gc_collect_cycles();
+
+        $this->tearDownRequest();
     }
 }

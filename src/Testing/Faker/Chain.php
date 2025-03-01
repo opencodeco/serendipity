@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker\Generate;
+namespace Serendipity\Testing\Faker;
 
 use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
 use RuntimeException;
-use Serendipity\Domain\Support\Value;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Testing\Faker\Faker;
+use Serendipity\Domain\Support\Value;
 
 use function Hyperf\Support\make;
 

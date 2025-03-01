@@ -44,7 +44,7 @@ final class InputTest extends TestCase
                 ],
             ]
         );
-        $this->makeRequestContext($parsedBody);
+        $this->setUpRequest($parsedBody);
         $this->assertEquals('cool', $input->value('datum'));
         $this->assertEquals($parsedBody, $input->values()->toArray());
     }
@@ -65,7 +65,7 @@ final class InputTest extends TestCase
     {
         $headers = ['header' => 'cool'];
         $input = $this->input(class: Input::class, headers: $headers);
-        $this->makeRequestContext(headers: $headers);
+        $this->setUpRequest(headers: $headers);
         $this->assertEquals('cool', $input->property('header'));
         $this->assertEquals($headers, $input->properties()->toArray());
     }
@@ -84,7 +84,7 @@ final class InputTest extends TestCase
 
     public function testShouldGetValueFromParams(): void
     {
-        $param = $this->generator()->uuid();
+        $param = $this->faker()->uuid();
         $params = ['param' => $param];
         $input = $this->make(
             Input::class,
@@ -95,7 +95,7 @@ final class InputTest extends TestCase
             ]
         );
 
-        $this->makeRequestContext(params: $params);
+        $this->setUpRequest(params: $params);
         $this->assertEquals($param, $input->value('param'));
     }
 

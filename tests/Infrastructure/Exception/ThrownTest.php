@@ -33,7 +33,7 @@ class ThrownTest extends TestCase
 
     public function testShouldResume(): void
     {
-        $exception = new Exception($this->generator()->sentence(3));
+        $exception = new Exception($this->faker()->sentence(3));
         $thrown = Thrown::createFrom($exception);
         $this->assertStringContainsString($exception->getMessage(), $thrown->resume());
     }
