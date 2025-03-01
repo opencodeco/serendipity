@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Logger;
+namespace Serendipity\Infrastructure\Logging;
 
 use DateTimeImmutable;
 use DateTimeInterface;

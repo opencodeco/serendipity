@@ -6,7 +6,10 @@ namespace Serendipity\Hyperf\Database;
 
 use Closure;
 use Hyperf\DB\DB as Database;
+use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
+
+use function Serendipity\Type\Cast\toArray;
 
 class HyperfDatabase implements RelationalDatabase
 {
@@ -16,43 +19,84 @@ class HyperfDatabase implements RelationalDatabase
     ) {
     }
 
-    public function beginTransaction(): mixed
+    /**
+     * Open transaction (Support transaction nesting)
+     * @return void
+     */
+    public function beginTransaction(): void
     {
-        return $this->database->beginTransaction();
+        $this->database->beginTransaction();
     }
 
-    public function commit(): mixed
+    /**
+     * Commit transaction (Support transaction nesting)
+     * @return void
+     */
+    public function commit(): void
     {
-        return $this->database->commit();
+        $this->database->commit();
     }
 
-    public function rollback(): mixed
+    /**
+     * Rollback transaction (Support transaction nesting)
+     * @return void
+     */
+    public function rollback(): void
     {
-        return $this->database->rollback();
+        $this->database->rollback();
     }
 
-    public function insert(string $query, array $bindings = []): mixed
+    /**
+     * Insert data, return the primary key ID, non-auto-incrementing primary key returns 0
+     * @param string $query
+     * @param array $bindings
+     * @return int
+     */
+    public function insert(string $query, array $bindings = []): int
     {
         return $this->database->insert($query, $bindings);
     }
 
-    public function execute(string $query, array $bindings = []): mixed
+    /**
+     * Execute SQL to return the number of rows affected
+     * @param string $query
+     * @param array $bindings
+     * @return mixed
+     */
+    public function execute(string $query, array $bindings = []): int
     {
         return $this->database->execute($query, $bindings);
     }
 
-    public function query(string $query, array $bindings = []): mixed
+    /**
+     * Query SQL, return a list of result sets
+     * @param string $query
+     * @param array $bindings
+     * @return array
+     */
+    public function query(string $query, array $bindings = []): array
     {
-        return $this->database->query($query, $bindings);
+        return toArray($this->database->query($query, $bindings));
     }
 
-    public function fetch(string $query, array $bindings = []): mixed
+    /**
+     * Query SQL to return the first row of the result set
+     * @param string $query
+     * @param array $bindings
+     * @return Set
+     */
+    public function fetch(string $query, array $bindings = []): Set
     {
-        return $this->database->fetch($query, $bindings);
+        return Set::createFrom($this->database->fetch($query, $bindings) ?? []);
     }
 
-    public function run(Closure $closure): mixed
+    /**
+     * Specify the database to connect to
+     * @param Closure $closure
+     * @return void
+     */
+    public function run(Closure $closure): void
     {
-        return $this->database->run($closure);
+        $this->database->run($closure);
     }
 }

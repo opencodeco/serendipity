@@ -8,7 +8,7 @@ use Google\Cloud\Logging\LoggingClient;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Psr\Log\LoggerInterface;
-use Serendipity\Infrastructure\Logger\GoogleCloudLogger;
+use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
 
 use function Serendipity\Type\Cast\toString;
 

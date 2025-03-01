@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Testing;
 
+use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\IsTrue;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Testing\Resource\Helper;
 use Throwable;
@@ -22,27 +24,24 @@ trait HasResource
      */
     private ?array $resources = [];
 
-    protected function helper(string $alias, Helper $helper): void
+    protected function setUpHelper(string $alias, Helper $helper): void
     {
         $this->helpers[$alias] = $helper;
     }
 
-    protected function resource(string $resource, string $helper): void
+    protected function setUpResource(string $resource, string $helper): void
     {
         if (isset($this->helpers[$helper])) {
             $this->resources[$resource] = $helper;
         }
-        $this->fail('Helper not defined');
+        static::fail('Helper not defined');
     }
 
     protected function seed(string $type, array $override = [], ?string $resource = null): Set
     {
         $resource = $this->detect($resource);
-        $helper = $this->helpers[$resource] ?? null;
-        if ($helper instanceof Helper) {
-            return $helper->seed($type, $resource, $override);
-        }
-        $this->fail('Helper not defined');
+        $helper = $this->select($resource);
+        return $helper->seed($type, $resource, $override);
     }
 
     protected function tearDownResources(): void
@@ -52,20 +51,59 @@ trait HasResource
                 $helper->truncate($resource);
             }
         } catch (Throwable $e) {
-            $this->fail($e->getMessage());
+            static::fail($e->getMessage());
         }
     }
 
-    protected function assertHas(array $filters, ?string $resource = null, ?string $helper = null): void
+    protected function assertHas(array $filters, ?string $resource = null): void
     {
-        $resource ??= $this->resource ?? '';
-        $count = $this->countWithHelper($resource, $filters, $helper);
+        $tallied = $this->tally($resource, $filters);
         $message = sprintf(
             "Expected to find at least one item in resource '%s' with filters '%s'",
             $resource,
             encode($filters),
         );
-        $this->assertTrue($count > 0, $message);
+        static::assertThat($tallied > 0, new IsTrue(), $message);
+    }
+
+    protected function assertHasNot(array $filters, ?string $resource = null): void
+    {
+        $tallied = $this->tally($resource, $filters);
+        $message = sprintf(
+            "Expected to not find any item in resource '%s' with filters '%s'",
+            $resource,
+            encode($filters),
+        );
+        static::assertThat($tallied === 0, new IsTrue(), $message);
+    }
+
+    protected function assertHasExactly(int $expected, array $filters, ?string $resource = null): void
+    {
+        $tallied = $this->tally($resource, $filters);
+        $message = sprintf(
+            "Expected to find %d items in resource '%s' with filters '%s', but found %d",
+            $expected,
+            $resource,
+            encode($filters),
+            $tallied
+        );
+        static::assertThat($tallied === $expected, new IsTrue(), $message);
+    }
+
+    private function tally(string $resource, array $filters): int
+    {
+        $resource = $this->detect($resource);
+        $helper = $this->select($resource);
+        return $helper->count($resource, $filters);
+    }
+
+    private function select(string $resource): Helper
+    {
+        $helper = $this->helpers[$resource] ?? null;
+        if ($helper instanceof Helper) {
+            return $helper;
+        }
+        static::fail('Helper not defined');
     }
 
     private function detect(?string $resource): string
@@ -80,8 +118,10 @@ trait HasResource
         if (count($this->resources) === 1) {
             return array_key_first($this->resources);
         }
-        $this->fail('Resource not defined');
+        static::fail('Resource not defined');
     }
 
-    abstract protected function fail(string $string): never;
+    abstract public static function fail(string $message = ''): never;
+
+    abstract public static function assertThat(mixed $value, Constraint $constraint, string $message = ''): void;
 }

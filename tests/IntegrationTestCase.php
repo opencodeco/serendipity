@@ -19,10 +19,12 @@ class IntegrationTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->helper('sleek', $this->make(SleekDBHelper::class));
-        $this->helper('postgres', $this->make(PostgresHelper::class));
+        $this->setUpHelper('sleek', $this->make(SleekDBHelper::class));
+        $this->setUpHelper('postgres', $this->make(PostgresHelper::class));
 
-        $this->resource('games', 'postgres');
+        $this->setUpResource('games', 'postgres');
+
+        $this->setUpResource('games', 'sleek');
     }
 
     protected function tearDown(): void

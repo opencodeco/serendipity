@@ -8,19 +8,19 @@ use Closure;
 
 interface RelationalDatabase
 {
-    public function beginTransaction(): mixed;
+    public function beginTransaction(): void;
 
-    public function commit(): mixed;
+    public function commit(): void;
 
-    public function rollback(): mixed;
+    public function rollback(): void;
 
-    public function insert(string $query, array $bindings = []): mixed;
+    public function insert(string $query, array $bindings = []): int;
 
-    public function execute(string $query, array $bindings = []): mixed;
+    public function execute(string $query, array $bindings = []): int;
 
-    public function query(string $query, array $bindings = []): mixed;
+    public function query(string $query, array $bindings = []): array;
 
     public function fetch(string $query, array $bindings = []): mixed;
 
-    public function run(Closure $closure): mixed;
+    public function run(Closure $closure): void;
 }
