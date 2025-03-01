@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Infrastructure\Http\Exception\Handler;
+namespace Serendipity\Test\Infrastructure\Http\Exception;
 
 use Hyperf\Contract\MessageBag;
 use Hyperf\Contract\ValidatorInterface;
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ResponseInterface;
-use Serendipity\Infrastructure\Http\Exception\Handler\ValidationExceptionHandler;
+use Serendipity\Infrastructure\Http\Exception\ValidationExceptionHandler;
 use Serendipity\Test\TestCase;
 use Throwable;
 

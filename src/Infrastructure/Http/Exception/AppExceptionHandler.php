@@ -9,7 +9,7 @@ use Hyperf\HttpMessage\Stream\SwooleStream;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Serendipity\Presentation\OutputFormatter;
+use Serendipity\Infrastructure\Http\Support\JsonFormatter;
 use Throwable;
 
 use function array_map;
@@ -20,15 +20,15 @@ use function sprintf;
 
 class AppExceptionHandler extends ExceptionHandler
 {
-    use OutputFormatter;
-
     /**
      * @var array<string>
      */
     private array $ignored = [];
 
-    public function __construct(private readonly LoggerInterface $logger)
-    {
+    public function __construct(
+        private readonly LoggerInterface $logger,
+        private readonly JsonFormatter $formatter,
+    ) {
     }
 
     public function handle(Throwable $throwable, ResponseInterface $response): MessageInterface|ResponseInterface
@@ -48,12 +48,12 @@ class AppExceptionHandler extends ExceptionHandler
             'trace' => $throwable->getTraceAsString(),
         ];
 
-        $this->logger->emergency($message, $context);
+        $this->logger->alert($message, $context);
 
         $statusCode = $this->extractCode($throwable);
 
         return $response->withStatus($statusCode)
-            ->withBody(new SwooleStream($this->toPayload($statusCode, $context)));
+            ->withBody(new SwooleStream($this->formatter->format($statusCode, $context)));
     }
 
     public function isValid(Throwable $throwable): bool
