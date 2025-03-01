@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Exception\Adapter;
 
-enum NotResolvedType
+enum Type
 {
     case INVALID;
     case REQUIRED;
