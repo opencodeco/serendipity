@@ -43,6 +43,11 @@ class Input extends HyperfFormRequest implements Message
         return is_string($retrieved) ? $retrieved : null;
     }
 
+    public function content(): Set
+    {
+        return $this->values();
+    }
+
     protected function validationData(): array
     {
         $data = parent::validationData();
@@ -64,10 +69,5 @@ class Input extends HyperfFormRequest implements Message
             }
         }
         return $params;
-    }
-
-    public function content(): Set
-    {
-        return $this->values();
     }
 }

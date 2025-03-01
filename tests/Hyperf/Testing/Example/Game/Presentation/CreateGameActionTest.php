@@ -10,6 +10,9 @@ use Serendipity\Testing\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Testing\Example\Game\Presentation\Action\CreateGameAction;
 use Serendipity\Testing\Example\Game\Presentation\Input\CreateGameInput;
 
+/**
+ * @internal
+ */
 class CreateGameActionTest extends PresentationTestCase
 {
     protected function setUp(): void

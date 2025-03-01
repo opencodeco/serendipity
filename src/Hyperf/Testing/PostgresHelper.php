@@ -41,7 +41,7 @@ final class PostgresHelper extends Helper
 
     public function truncate(string $resource): void
     {
-        /** @noinspection SqlNoDataSourceInspection */
+        /* @noinspection SqlNoDataSourceInspection */
         $this->database->execute(sprintf('delete from %s where true', $resource));
     }
 

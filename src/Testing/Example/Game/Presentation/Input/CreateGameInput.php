@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Testing\Example\Game\Presentation\Input;
 
-
 use Serendipity\Presentation\Input;
 
 class CreateGameInput extends Input

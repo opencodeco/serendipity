@@ -11,6 +11,9 @@ use Serendipity\Testing\Example\Game\Domain\Entity\Game;
 use Serendipity\Testing\Example\Game\Presentation\Action\ReadGameAction;
 use Serendipity\Testing\Example\Game\Presentation\Input\ReadGameInput;
 
+/**
+ * @internal
+ */
 class ReadGameActionTest extends PresentationTestCase
 {
     protected function setUp(): void

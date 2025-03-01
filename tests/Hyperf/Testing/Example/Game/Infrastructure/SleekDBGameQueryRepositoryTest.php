@@ -11,6 +11,9 @@ use Serendipity\Testing\Extension\InstrumentalExtension;
 
 use function Hyperf\Collection\collect;
 
+/**
+ * @internal
+ */
 class SleekDBGameQueryRepositoryTest extends InfrastructureTestCase
 {
     use InstrumentalExtension;
