@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Exception;
 
 use Exception;
-use Hyperf\Contract\ConfigInterface;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
 use Serendipity\Infrastructure\Exception\Type;
@@ -15,15 +14,10 @@ final class ThrownFactoryTest extends TestCase
     public function testShouldMakeThrown(): void
     {
         // Arrange
-        $config = $this->createMock(ConfigInterface::class);
-        $factory = new ThrownFactory($config);
+        $factory = new ThrownFactory([]);
         $throwable = new Exception('_|_');
 
         // Act
-        $config
-            ->expects($this->once())
-            ->method('get')
-            ->willReturn(null);
         $thrown = $factory->make($throwable);
 
         // Assert
@@ -33,15 +27,11 @@ final class ThrownFactoryTest extends TestCase
     public function testShouldMakeThrownWithTypeFromConfig(): void
     {
         // Arrange
-        $config = $this->createMock(ConfigInterface::class);
-        $factory = new ThrownFactory($config);
         $throwable = new Exception();
+        $classification = [$throwable::class => Type::INVALID_INPUT];
+        $factory = new ThrownFactory($classification);
 
         // Act
-        $config
-            ->expects($this->once())
-            ->method('get')
-            ->willReturn(Type::INVALID_INPUT);
         $thrown = $factory->make($throwable);
 
         // Assert
@@ -51,8 +41,7 @@ final class ThrownFactoryTest extends TestCase
     public function testShouldMakeThrownWithPrevious(): void
     {
         // Arrange
-        $config = $this->createMock(ConfigInterface::class);
-        $factory = new ThrownFactory($config);
+        $factory = new ThrownFactory([]);
         $throwable = new Exception(
             message: '1',
             previous: new Exception(

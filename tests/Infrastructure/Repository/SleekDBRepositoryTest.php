@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository;
 
-use Serendipity\Infrastructure\Repository\Factory\SleekDBDatabaseFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use Serendipity\Infrastructure\Repository\Generator;
 use Serendipity\Test\TestCase;
 

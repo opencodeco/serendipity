@@ -7,7 +7,7 @@ namespace Serendipity\Testing\Persistence;
 use Hyperf\DB\DB as Database;
 use ReflectionException;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Hyperf\Database\HyperfDBFactory;
+use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Testing\Faker\Faker;
@@ -31,7 +31,7 @@ final class PostgresHelper extends Helper
         Faker $faker,
         RelationalSerializerFactory $serializerFactory,
         RelationalDeserializerFactory $deserializerFactory,
-        HyperfDBFactory $hyperfDBFactory,
+        HyperfDatabaseFactory $hyperfDBFactory,
     ) {
         parent::__construct($faker, $serializerFactory, $deserializerFactory);
 

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Repository\Factory;
+namespace Serendipity\Infrastructure\Database\Document;
 
-use Hyperf\Contract\ConfigInterface;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\InvalidConfigurationException;
 use SleekDB\Exceptions\IOException;
@@ -15,7 +14,7 @@ use function Serendipity\Type\Cast\toString;
 
 class SleekDBDatabaseFactory
 {
-    public function __construct(private readonly ConfigInterface $config)
+    public function __construct(private readonly array $options)
     {
     }
 
@@ -26,9 +25,8 @@ class SleekDBDatabaseFactory
      */
     public function make(string $resource): Store
     {
-        $config = toArray($this->config->get('databases.sleek'));
-        $path = toString($config['path'] ?? '');
-        $configuration = toArray($config['configuration'] ?? []);
+        $path = toString($this->options['path'] ?? '');
+        $configuration = toArray($this->options['configuration'] ?? []);
         return new Store($resource, $path, $configuration);
     }
 }

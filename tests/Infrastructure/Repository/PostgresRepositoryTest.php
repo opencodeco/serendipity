@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Repository;
 
 use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Hyperf\Database\HyperfDatabase;
-use Serendipity\Hyperf\Database\HyperfDBFactory;
+use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
 use Serendipity\Infrastructure\Adapter\Deserializer;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
@@ -32,7 +32,7 @@ final class PostgresRepositoryTest extends TestCase
         $this->deserializerFactory = $this->createMock(RelationalDeserializerFactory::class);
         $serializerFactory = $this->createMock(RelationalSerializerFactory::class);
 
-        $hyperfDBFactory = $this->createMock(HyperfDBFactory::class);
+        $hyperfDBFactory = $this->createMock(HyperfDatabaseFactory::class);
         $hyperfDBFactory->expects($this->once())
             ->method('make')
             ->willReturn($this->createMock(HyperfDatabase::class));
@@ -78,7 +78,6 @@ final class PostgresRepositoryTest extends TestCase
         );
     }
 
-
     public function testShouldRenderColumns(): void
     {
         $this->assertEquals(
@@ -86,7 +85,6 @@ final class PostgresRepositoryTest extends TestCase
             $this->repository->exposeColumns(['field_one', 'field_two'])
         );
     }
-
 
     public function testShouldRenderValues(): void
     {

@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Repository;
 
-use Hyperf\DB\Exception\QueryException;
-use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Serendipity\Infrastructure\Repository\PostgresRepository;
-use Throwable;
 
 class PostgresRepositoryTestMock extends PostgresRepository
 {
@@ -28,10 +25,5 @@ class PostgresRepositoryTestMock extends PostgresRepository
     public function exposeWildcards(array $fields): string
     {
         return $this->wildcards($fields);
-    }
-
-    public function exposeDetectUniqueKeyViolation(QueryException|Throwable $exception): ?UniqueKeyViolationException
-    {
-        return $this->detectUniqueKeyViolation($exception);
     }
 }

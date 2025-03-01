@@ -6,13 +6,9 @@ namespace Serendipity\Hyperf\Database;
 
 use Closure;
 use Hyperf\DB\DB as Database;
-use Hyperf\DB\Exception\QueryException;
-use Serendipity\Domain\Exception\UniqueKeyViolationException;
-use Throwable;
+use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
 
-use function Serendipity\Type\Cast\toString;
-
-class HyperfDatabase
+class HyperfDatabase implements RelationalDatabase
 {
     public function __construct(
         public readonly string $connection,
@@ -58,19 +54,5 @@ class HyperfDatabase
     public function run(Closure $closure): mixed
     {
         return $this->database->run($closure);
-    }
-
-    public function detectUniqueKeyViolation(QueryException|Throwable $exception): ?UniqueKeyViolationException
-    {
-        $message = $exception->getMessage();
-        $pattern = '/duplicate key value violates unique constraint\s+?' .
-            '"([^"]+)".*\(([^)]+)\)=\(([^)]+)\) already exists\./m';
-        if (! preg_match($pattern, $message, $matches)) {
-            return null;
-        }
-        $resource = toString($matches[1]);
-        $key = toString($matches[2]);
-        $value = toString($matches[3]);
-        return new UniqueKeyViolationException($key, $value, $resource, $exception);
     }
 }

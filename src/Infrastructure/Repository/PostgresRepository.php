@@ -6,7 +6,7 @@ namespace Serendipity\Infrastructure\Repository;
 
 use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Hyperf\Database\HyperfDatabase;
-use Serendipity\Hyperf\Database\HyperfDBFactory;
+use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 
@@ -18,9 +18,9 @@ abstract class PostgresRepository
         protected readonly Generator $generator,
         protected readonly RelationalDeserializerFactory $deserializerFactory,
         protected readonly RelationalSerializerFactory $serializerFactory,
-        HyperfDBFactory $hyperfDBFactory,
+        RelationalDatabaseFactory $relationalDatabaseFactory,
     ) {
-        $this->database = $hyperfDBFactory->make('postgres');
+        $this->database = $relationalDatabaseFactory->make('postgres');
     }
 
     /**

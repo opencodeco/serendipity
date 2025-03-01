@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Exception;
 
 use DateTimeImmutable;
-use Hyperf\Contract\ConfigInterface;
 use Throwable;
 
 class ThrownFactory
 {
-    public function __construct(private readonly ConfigInterface $config)
+    public function __construct(private readonly array $classification)
     {
     }
 
@@ -39,7 +38,7 @@ class ThrownFactory
 
     private function type(string $throwable): Type
     {
-        $type = $this->config->get(sprintf('exception.classification.%s', $throwable));
+        $type = $this->classification[$throwable] ?? null;
         if ($type instanceof Type) {
             return $type;
         }

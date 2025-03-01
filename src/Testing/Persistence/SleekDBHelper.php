@@ -8,7 +8,7 @@ use ReflectionException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
-use Serendipity\Infrastructure\Repository\Factory\SleekDBDatabaseFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use Serendipity\Testing\Faker\Faker;
 use SleekDB\Exceptions\IdNotAllowedException;
 use SleekDB\Exceptions\InvalidArgumentException;

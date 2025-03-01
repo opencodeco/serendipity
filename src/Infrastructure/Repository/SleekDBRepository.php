@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository;
 
-use Serendipity\Infrastructure\Repository\Factory\SleekDBDatabaseFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\InvalidConfigurationException;
 use SleekDB\Exceptions\IOException;
