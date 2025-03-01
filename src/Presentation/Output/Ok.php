@@ -10,22 +10,22 @@ use Serendipity\Presentation\Output;
 
 final class Ok extends Output
 {
-    public function __construct(?array $values, array $properties = [])
+    public function __construct(mixed $content, array $properties = [])
     {
-        parent::__construct($properties, $values);
+        parent::__construct($content, $properties);
     }
 
-    public static function createFrom(array|Message|Exportable $data = null, array $properties = []): Ok
+    public static function createFrom(mixed $content = null, array $properties = []): Ok
     {
-        if (is_array($data) || $data === null) {
-            return new self($data, $properties);
+        if ($content instanceof Message) {
+            return new self(
+                $content->content(),
+                array_merge($content->properties()->toArray(), $properties)
+            );
         }
-        if ($data instanceof Message) {
-            return new self($data->content()->toArray(), array_merge($data->properties()->toArray(), $properties));
+        if ($content instanceof Exportable) {
+            return new self($content->export(), $properties);
         }
-        if ($data instanceof Exportable) {
-            return new self($data->export(), $properties);
-        }
-        return new self(null, $properties);
+        return new self($content, $properties);
     }
 }

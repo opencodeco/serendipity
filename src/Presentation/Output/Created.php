@@ -10,6 +10,11 @@ final class Created extends Output
 {
     public function __construct(string $id)
     {
-        parent::__construct(values: ['id' => $id]);
+        parent::__construct(content: $id, properties: ['id' => $id]);
+    }
+
+    public static function createFrom(string $id): Created
+    {
+        return new self($id);
     }
 }

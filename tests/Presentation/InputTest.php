@@ -69,6 +69,7 @@ final class InputTest extends ExtensibleTestCase
     public function testShouldGetValueFromValues(): void
     {
         $array = ['datum' => 'cool'];
+        /** @var Input $input */
         $input = $this->make(
             Input::class,
             [
@@ -76,6 +77,7 @@ final class InputTest extends ExtensibleTestCase
             ]
         );
         $this->assertEquals($array, $input->values()->toArray());
+        $this->assertSame($input->content(), $input->values());
     }
 
     public function testShouldGetPropertyFromHeaders(): void

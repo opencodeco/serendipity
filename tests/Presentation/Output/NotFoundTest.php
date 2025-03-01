@@ -22,7 +22,7 @@ final class NotFoundTest extends TestCase
         $missing = $this->generator()->word();
         $what = $this->generator()->uuid();
         $properties = ['Missing' => sprintf('"%s" identified by "%s" not found', $missing, $what)];
-        $output = new NotFound($missing, $what);
+        $output = NotFound::createFrom($missing, $what);
         $this->assertNull($output->content());
         $this->assertEquals($properties, $output->properties()->toArray());
     }

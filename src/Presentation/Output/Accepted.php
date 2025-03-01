@@ -6,10 +6,15 @@ namespace Serendipity\Presentation\Output;
 
 use Serendipity\Presentation\Output;
 
-class Accepted extends Output
+final class Accepted extends Output
 {
-    public function __construct(int|string $token)
+    public function __construct(int|string $content)
     {
-        parent::__construct(values: ['token' => $token]);
+        parent::__construct(content: $content, properties: ['token' => $content]);
+    }
+
+    public static function createFrom(string $trackingId): Accepted
+    {
+        return new self($trackingId);
     }
 }

@@ -21,15 +21,14 @@ class OutputTest extends TestCase
 
     public function testShouldHasProperties(): void
     {
-        $output = new Output(['foo' => 'bar']);
+        $output = new Output(null, ['foo' => 'bar']);
         $this->assertEquals(['foo' => 'bar'], $output->properties()->toArray());
         $this->assertEquals('bar', $output->property('foo'));
     }
 
     public function testShouldHasValues(): void
     {
-        $output = new Output(values: ['foo' => 'bar']);
-        $this->assertEquals(['foo' => 'bar'], $output->content()->toArray());
-        $this->assertEquals('bar', $output->value('foo'));
+        $output = new Output(content: ['foo' => 'bar'], properties: ['foo' => 'bar']);
+        $this->assertEquals(['foo' => 'bar'], $output->content());
     }
 }

@@ -15,7 +15,7 @@ final class NotFound extends Output
         $properties = [
             'Missing' => sprintf('"%s" identified by "%s" not found', $missing, $what),
         ];
-        parent::__construct($properties);
+        parent::__construct(null, $properties);
     }
 
     public static function createFrom(string $missing, int|string $what): NotFound

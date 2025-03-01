@@ -6,5 +6,5 @@ namespace Serendipity\Domain\Contract;
 
 interface Exportable
 {
-    public function export(): array;
+    public function export(): mixed;
 }

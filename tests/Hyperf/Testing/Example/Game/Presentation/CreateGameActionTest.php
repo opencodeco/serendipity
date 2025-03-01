@@ -26,6 +26,6 @@ class CreateGameActionTest extends PresentationTestCase
         $action = $this->make(CreateGameAction::class);
         $result = $action($input);
         $this->assertInstanceOf(Accepted::class, $result);
-        $this->assertNotEmpty($result->content()->get('token'));
+        $this->assertIsString($result->content());
     }
 }

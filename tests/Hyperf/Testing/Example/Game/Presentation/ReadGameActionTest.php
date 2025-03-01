@@ -30,7 +30,8 @@ class ReadGameActionTest extends PresentationTestCase
         $actual = $action($input);
 
         $this->assertInstanceOf(Ok::class, $actual);
-        $this->assertSame($values->get('name'), $actual->content()->get('name'));
+        $this->assertSame($values->get('id'), $actual->content()->id);
+        $this->assertSame($values->get('name'), $actual->content()->name);
     }
 
     final public function testShouldReturnNotFound(): void

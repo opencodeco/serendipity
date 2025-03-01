@@ -27,6 +27,6 @@ readonly class CreateGameAction
     {
         $game = $this->builder->build(GameCommand::class, $input->values());
         $id = $this->gameCommandRepository->persist($game);
-        return new Accepted($id);
+        return Accepted::createFrom($id);
     }
 }

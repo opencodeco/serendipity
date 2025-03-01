@@ -18,6 +18,6 @@ final class EntityTest extends TestCase
             protected string $value = 'none';
         };
 
-        $this->assertEquals(['value' => 'none'], $entity->export()->toArray());
+        $this->assertEquals((object) ['value' => 'none'], $entity->jsonSerialize());
     }
 }

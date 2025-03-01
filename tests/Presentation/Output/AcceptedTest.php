@@ -20,7 +20,8 @@ final class AcceptedTest extends TestCase
     public function testShouldHaveTokenOnContent(): void
     {
         $token = $this->generator()->uuid();
-        $output = new Accepted($token);
-        $this->assertEquals($token, $output->content()->get('token'));
+        $output = Accepted::createFrom($token);
+        $this->assertEquals($token, $output->content());
+        $this->assertEquals(['token' => $token], $output->properties()->toArray());
     }
 }

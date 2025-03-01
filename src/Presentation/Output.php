@@ -11,14 +11,11 @@ class Output implements Message
 {
     private readonly Set $properties;
 
-    private readonly mixed $values;
-
     public function __construct(
-        array $properties = [],
-        ?array $values = null
+        private readonly mixed $content = null,
+        array $properties = []
     ) {
         $this->properties = Set::createFrom($properties);
-        $this->values = $values === null ? null : Set::createFrom($values);
     }
 
     public function properties(): Set
@@ -33,11 +30,6 @@ class Output implements Message
 
     public function content(): mixed
     {
-        return $this->values;
-    }
-
-    public function value(string $key, mixed $default = null): mixed
-    {
-        return $this->content()?->get($key, $default);
+        return $this->content;
     }
 }

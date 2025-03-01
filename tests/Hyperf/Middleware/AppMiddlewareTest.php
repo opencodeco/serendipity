@@ -40,7 +40,7 @@ final class AppMiddlewareTest extends TestCase
             'Invalid-Property' => 1,
             'Custom-Property' => 'CustomValue',
         ];
-        $output = new Output($properties);
+        $output = new Output(null, $properties);
 
         $request->method('getAttribute')
             ->willReturn(
