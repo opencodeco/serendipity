@@ -7,7 +7,7 @@ namespace Serendipity\Test\Hyperf\Testing\Example\Game\Infrastructure;
 use Serendipity\Test\Hyperf\Testing\Example\Game\InfrastructureTestCase;
 use Serendipity\Testing\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Testing\Example\Game\Domain\Entity\Game;
-use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDBGameCommandRepository;
+use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameCommandRepository;
 use Serendipity\Testing\Extension\BuilderExtension;
 
 /**

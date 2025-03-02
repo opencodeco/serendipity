@@ -6,27 +6,35 @@ namespace Serendipity\Infrastructure\Repository;
 
 use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
+use Serendipity\Domain\Entity\Entity;
 
-use function Serendipity\Type\Cast\toArray;
-
-class Repository
+abstract class Repository
 {
-    protected Serializer $serializer;
+    /**
+     * @template T of Entity
+     * @param Serializer<T> $serializer
+     * @return null|T
+     */
+    protected function entity(Serializer $serializer, array $data): mixed
+    {
+        if (empty($data)) {
+            return null;
+        }
+        $datum = array_shift($data);
+        return $serializer->serialize($datum);
+    }
 
     /**
      * @template T of Collection
      * @param class-string<T> $collection
-     * @param mixed $result
      *
      * @return T
      */
-    protected function hydrate(string $collection, mixed $result): mixed
+    protected function collection(Serializer $serializer, array $data, string $collection): mixed
     {
         $instance = new $collection();
-        /** @var array<array<string, mixed>> $data */
-        $data = toArray($result);
         foreach ($data as $datum) {
-            $instance->push($this->serializer->serialize($datum));
+            $instance->push($serializer->serialize($datum));
         }
         return $instance;
     }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        colors="true"
+        testdox="true"
+        cacheDirectory=".phpunit/cache"
+        cacheResultFile=".phpunit/result.cache"
+        displayDetailsOnTestsThatTriggerWarnings="true"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
+        displayDetailsOnTestsThatTriggerErrors="true"
+        failOnDeprecation="true"
+        failOnRisky="true"
+        failOnWarning="true"
+        beStrictAboutTestsThatDoNotTestAnything="false"
+>
+    <coverage disableCodeCoverageIgnore="true">
+        <report>
+            <clover outputFile=".phpunit/clover.xml"/>
+        </report>
+    </coverage>
+
+    <logging>
+        <junit outputFile=".phpunit/logging.xml"/>
+    </logging>
+
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+    </source>
+
+    <extensions>
+        <bootstrap class="RobinIngelbrecht\PHPUnitPrettyPrint\PhpUnitExtension">
+            <parameter name="displayProfiling" value="true"/>
+            <parameter name="displayMemory" value="true"/>
+        </bootstrap>
+    </extensions>
+</phpunit>

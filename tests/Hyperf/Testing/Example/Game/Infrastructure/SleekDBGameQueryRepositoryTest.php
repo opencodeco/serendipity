@@ -6,7 +6,7 @@ namespace Serendipity\Test\Hyperf\Testing\Example\Game\Infrastructure;
 
 use Serendipity\Test\Hyperf\Testing\Example\Game\InfrastructureTestCase;
 use Serendipity\Testing\Example\Game\Domain\Entity\Game;
-use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDBGameQueryRepository;
+use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameQueryRepository;
 use Serendipity\Testing\Extension\InstrumentalExtension;
 
 use function Hyperf\Collection\collect;

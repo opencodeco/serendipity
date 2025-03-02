@@ -9,11 +9,11 @@ use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\Consolidator;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseTransformerChain;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\WhenEnumUseBackedChain;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\WhenIsValidUseValueChain;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\WhenNoValueUseDefaultChain;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseBackedEnumValueChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseBuildChain;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseDefaultChain;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseTransformerChain;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseValidatedValueChain;
 use Throwable;
 
 class Builder extends Engine
@@ -52,11 +52,11 @@ class Builder extends Engine
     {
         $consolidator = new Consolidator();
         foreach ($parameters as $parameter) {
-            $resolved = (new WhenIsValidUseValueChain($this->case))
+            $resolved = (new UseValidatedValueChain($this->case))
                 ->then(new UseBuildChain($this->case))
-                ->then(new WhenEnumUseBackedChain($this->case))
+                ->then(new UseBackedEnumValueChain($this->case))
                 ->then(new UseTransformerChain($this->case, $this->formatters))
-                ->then(new WhenNoValueUseDefaultChain($this->case))
+                ->then(new UseDefaultChain($this->case))
                 ->resolve($parameter, $values);
 
             $consolidator->consolidate($resolved);

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Example\Game\Infrastructure\Repository;
+namespace Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDB;
 
-use Serendipity\Domain\Contract\Adapter\Serializer;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use Serendipity\Infrastructure\Database\Instrumental;
@@ -14,21 +13,16 @@ use Serendipity\Testing\Example\Game\Domain\Repository\GameQueryRepository;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\IOException;
 
+use function Serendipity\Type\Cast\toArray;
+
 class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQueryRepository
 {
-    /**
-     * @var Serializer<Game>
-     */
-    protected Serializer $serializer;
-
     public function __construct(
         Instrumental $generator,
         SleekDBDatabaseFactory $databaseFactory,
-        SerializerFactory $serializerFactory,
+        protected readonly SerializerFactory $serializerFactory,
     ) {
         parent::__construct($generator, $databaseFactory);
-
-        $this->serializer = $serializerFactory->make(Game::class);
     }
 
     /**
@@ -37,13 +31,9 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
      */
     public function getGame(string $id): ?Game
     {
-        $data = $this->database->findBy(['id', '=', $id]);
-        if (empty($data)) {
-            return null;
-        }
-        /** @var array<string, mixed> $datum */
-        $datum = $data[0];
-        return $this->serializer->serialize($datum);
+        $data = toArray($this->database->findBy(['id', '=', $id]));
+        $serializer = $this->serializerFactory->make(Game::class);
+        return $this->entity($serializer, $data);
     }
 
     /**
@@ -52,19 +42,16 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
      */
     public function getGames(array $filters = []): GameCollection
     {
+        $serializer = $this->serializerFactory->make(Game::class);
         if (empty($filters)) {
-            return $this->hydrate(
-                GameCollection::class,
-                $this->database->findAll()
-            );
+            $data = toArray($this->database->findAll());
+            return $this->collection($serializer, $data, GameCollection::class);
         }
         $criteria = [];
         foreach ($filters as $key => $value) {
             $criteria[] = [$key, '=', $value];
         }
-        return $this->hydrate(
-            GameCollection::class,
-            $this->database->findBy($criteria)
-        );
+        $data = toArray($this->database->findBy($criteria));
+        return $this->collection($serializer, $data, GameCollection::class);
     }
 }

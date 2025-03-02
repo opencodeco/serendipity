@@ -16,7 +16,7 @@ abstract class PostgresRepository extends Repository
     protected readonly RelationalDatabase $database;
 
     public function __construct(
-        protected readonly Instrumental $generator,
+        protected readonly Instrumental $instrumental,
         protected readonly RelationalDeserializerFactory $deserializerFactory,
         protected readonly RelationalSerializerFactory $serializerFactory,
         RelationalDatabaseFactory $relationalDatabaseFactory,
@@ -43,8 +43,8 @@ abstract class PostgresRepository extends Repository
 
         foreach ($instrument as $field => $type) {
             $value = match ($type) {
-                'now' => $this->generator->now(),
-                'id' => $this->generator->id(),
+                'now' => $this->instrumental->now(),
+                'id' => $this->instrumental->id(),
                 default => throw new GeneratingException($type)
             };
             $values[$field] = $value;

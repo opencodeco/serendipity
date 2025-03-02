@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Example\Game\Infrastructure\Repository;
+namespace Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDB;
 
 use Serendipity\Infrastructure\Repository\SleekDBRepository;
 

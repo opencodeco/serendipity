@@ -1,0 +1,63 @@
+parameters:
+  paths:
+    - ./app
+
+  layers:
+    # Define the layers of your application
+    - name: Application
+      collectors:
+        - type: className
+          regex: ^App\\Application\\.*|^Serendipity\\Application\\.*
+
+    - name: Domain
+      collectors:
+        - type: className
+          regex: ^App\\Domain\\.*|^Serendipity\\Domain\\.*
+
+    - name: Infrastructure
+      collectors:
+        - type: className
+          regex: ^App\\Infrastructure\\.*|^Serendipity\\Infrastructure\\.*
+
+    - name: Presentation
+      collectors:
+        - type: className
+          regex: ^App\\Presentation\\.*|^Serendipity\\Presentation\\.*
+
+    - name: Native
+      collectors:
+        - type: className
+          regex: ^\w+$|^(DS|Decimal)\\.*$
+
+    - name: Vendor
+      collectors:
+        - type: className
+          regex:
+            ^GuzzleHttp\\Client$|\
+            ^GuzzleHttp\\Exception\\GuzzleException$|\
+            ^GuzzleHttp\\Psr7\\Response$|\
+            ^Hyperf\\Contract\\ConfigInterface$|\
+            ^Hyperf\\DB\\Exception\\QueryException$|\
+            ^Hyperf\\Guzzle\\ClientFactory$
+
+    - name: Validation
+      collectors:
+        - type: className
+          regex:
+            ^Hyperf\\Validation\\Rule$
+
+  ruleset:
+    Application:
+      - Domain
+      - Native
+    Domain:
+      - Native
+    Infrastructure:
+      - Domain
+      - Native
+      - Vendor
+    Presentation:
+      - Application
+      - Domain
+      - Infrastructure
+      - Validation

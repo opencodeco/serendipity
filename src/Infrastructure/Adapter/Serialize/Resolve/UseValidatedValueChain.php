@@ -9,7 +9,7 @@ use Serendipity\Domain\Exception\Adapter\Type;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-class WhenIsValidUseValueChain extends Chain
+class UseValidatedValueChain extends Chain
 {
     public function resolve(ReflectionParameter $parameter, Set $values): Value
     {

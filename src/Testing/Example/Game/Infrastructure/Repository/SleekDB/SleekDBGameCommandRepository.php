@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Example\Game\Infrastructure\Repository;
+namespace Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDB;
 
 use Serendipity\Domain\Contract\Adapter\Deserializer;
 use Serendipity\Domain\Exception\GeneratingException;

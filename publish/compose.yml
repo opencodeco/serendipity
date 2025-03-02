@@ -1,0 +1,34 @@
+services:
+  app:
+    container_name: template_name-app
+    image: devitools/hyperf:8.3-dev
+    volumes:
+      - ./:/opt/www
+    environment:
+      - SCAN_CACHEABLE=false
+      - STDOUT_LOG_LEVEL=alert,critical,emergency,error,warning,notice,info,debug
+    networks:
+      - template_name-network
+    restart: on-failure
+
+  postgres:
+    profiles:
+      - postgres
+    container_name: template_name-postgres
+    image: postgres:16.2
+    tty: true
+    environment:
+      - POSTGRES_USER=${POSTGRES_DB_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD:-root}
+      - POSTGRES_DB=${POSTGRES_DB_NAME:-database}
+    volumes:
+      - template_name-postgres-data:/var/lib/postgresql/data
+    networks:
+      - template_name-network
+
+volumes:
+  template_name-postgres-data:
+
+networks:
+  template_name-network:
+    name: template_name-network

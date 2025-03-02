@@ -10,7 +10,7 @@ use Serendipity\Domain\Exception\Adapter\Type;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-class WhenNoValueUseDefaultChain extends Chain
+class UseDefaultChain extends Chain
 {
     /**
      * @throws ReflectionException

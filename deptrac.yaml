@@ -7,22 +7,22 @@ parameters:
     - name: Application
       collectors:
         - type: className
-          regex: ^App\\Application.*
+          regex: ^Serendipity\\Application\\.*
 
     - name: Domain
       collectors:
         - type: className
-          regex: ^App\\Domain.*
+          regex: ^Serendipity\\Domain\\.*
 
     - name: Infrastructure
       collectors:
         - type: className
-          regex: ^App\\Infrastructure.*
+          regex: ^Serendipity\\Infrastructure\\.*
 
     - name: Presentation
       collectors:
         - type: className
-          regex: ^App\\Presentation.*
+          regex: ^Serendipity\\Presentation\\.*
 
     # Define the supported global layers
     - name: Contract
@@ -60,6 +60,7 @@ parameters:
       collectors:
         - type: className
           regex:
+            ^Serendipity\\Hyperf\\Request\\HyperfFormRequest$|\
             ^Psr\\Container\\ContainerInterface$|\
             ^Psr\\Http\\Message\\ServerRequestInterface$|\
             ^Hyperf\\Context\\Context$|\
@@ -84,3 +85,6 @@ parameters:
       - Domain
       - Infrastructure
       - Validation
+    Validation:
+      - Domain
+      - Native

@@ -3,18 +3,17 @@
     errorLevel="8"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
-    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    xsi:schemaLocation="https://getpsalm.org/schema/config/vendor/vimeo/psalm/config.xsd"
     findUnusedBaselineEntry="true"
     findUnusedPsalmSuppress="true"
     disableSuppressAll="true"
     findUnusedCode="false"
 >
     <projectFiles>
-        <directory name="src" />
+        <directory name="app" />
         <directory name="config" />
         <ignoreFiles>
             <directory name="vendor" />
-            <file name="config/autoload/server.php" />
         </ignoreFiles>
     </projectFiles>
     <enableExtensions>
