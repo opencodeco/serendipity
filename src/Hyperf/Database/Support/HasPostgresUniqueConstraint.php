@@ -9,16 +9,12 @@ use Throwable;
 
 use function Serendipity\Type\Cast\toString;
 
-/**
- * @phpstan-ignore trait.unused
- */
 trait HasPostgresUniqueConstraint
 {
     protected function detectUniqueKeyViolation(Throwable $exception): ?UniqueKeyViolationException
     {
         $message = $exception->getMessage();
-        $pattern = '/duplicate key value violates unique constraint\s+?'
-            . '"([^"]+)".*\(([^)]+)\)=\(([^)]+)\) already exists\./m';
+        $pattern = '/duplicate key value violates unique constraint\s+?"([^"]+)"\s+.*\(([^)]+)\)=\(([^)]+)\).*/m';
         if (! preg_match($pattern, $message, $matches)) {
             return null;
         }
