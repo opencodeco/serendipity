@@ -12,7 +12,7 @@ use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-class UseBackedEnumValueChain extends Chain
+class BackedEnumValueChain extends Chain
 {
     /**
      * @throws ReflectionException

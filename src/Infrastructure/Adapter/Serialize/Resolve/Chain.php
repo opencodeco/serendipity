@@ -34,10 +34,10 @@ abstract class Chain extends Builder
         $this->previous = $previous;
     }
 
-    protected function notResolved(Type $type, ReflectionParameter $parameter, Set $values): Value
+    protected function notResolved(Type $type, ReflectionParameter $parameter, Set $set): Value
     {
         $field = $parameter->getName();
-        $value = $values->has($field) ? new Value($values->get($field)) : null;
+        $value = $set->has($field) ? new Value($set->get($field)) : null;
         return new Value(new NotResolved($type, $field, $value));
     }
 }

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Infrastructure\Adapter\Serialize;
 
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Value;
 
-class Consolidator
+class Coordinator
 {
     /**
      * @var array mixed[]
@@ -19,7 +19,7 @@ class Consolidator
      */
     private array $errors = [];
 
-    public function consolidate(Value $resolved): void
+    public function compute(Value $resolved): void
     {
         if ($resolved->content instanceof NotResolved) {
             $this->errors[] = $resolved->content;

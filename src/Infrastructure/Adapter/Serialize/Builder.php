@@ -9,11 +9,11 @@ use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\Consolidator;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\BackedEnumValueChain;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\FormatValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\NoValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseBackedEnumValueChain;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\TypeMatched;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseBuildChain;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseTransformerChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseValidatedValueChain;
 use Throwable;
 
@@ -30,12 +30,10 @@ class Builder extends Engine
     {
         try {
             $target = $this->target($class);
-
             if (empty($target->parameters)) {
                 return new $class();
             }
             $parameters = $target->parameters;
-
             $args = $this->resolveArgs($parameters, $values);
             return $target->reflection->newInstanceArgs($args);
         } catch (AdapterException $e) {
@@ -63,21 +61,22 @@ class Builder extends Engine
      */
     private function resolveArgs(array $parameters, Set $values): array
     {
-        $consolidator = new Consolidator();
+        $coordinator = new Coordinator();
         foreach ($parameters as $parameter) {
             $resolved = (new UseValidatedValueChain($this->case))
                 ->then(new UseBuildChain($this->case))
-                ->then(new UseBackedEnumValueChain($this->case))
-                ->then(new UseTransformerChain($this->case, $this->formatters))
+                ->then(new BackedEnumValueChain($this->case))
+                ->then(new FormatValue($this->case, $this->formatters))
+                ->then(new TypeMatched($this->case))
                 ->then(new NoValue($this->case))
                 ->resolve($parameter, $values);
 
-            $consolidator->consolidate($resolved);
+            $coordinator->compute($resolved);
         }
 
-        if (empty($consolidator->errors())) {
-            return $consolidator->args();
+        if (empty($coordinator->errors())) {
+            return $coordinator->args();
         }
-        throw new AdapterException($values, $consolidator->errors());
+        throw new AdapterException($values, $coordinator->errors());
     }
 }

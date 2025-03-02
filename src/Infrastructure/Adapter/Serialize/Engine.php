@@ -44,10 +44,17 @@ abstract class Engine
         return [];
     }
 
-    protected function formatter(string $type): ?Formatter
+    protected function formatter(string $type): ?callable
     {
         $formatter = $this->formatters[$type] ?? null;
-        return $formatter instanceof Formatter ? $formatter : null;
+        return match (true) {
+            $formatter instanceof Formatter => fn (mixed $value, mixed $option = null): mixed => $formatter->format(
+                $value,
+                $option
+            ),
+            is_callable($formatter) => $formatter,
+            default => null,
+        };
     }
 
     protected function name(ReflectionParameter|string $field): string

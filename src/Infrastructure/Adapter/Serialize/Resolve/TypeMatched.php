@@ -23,7 +23,7 @@ class TypeMatched extends Chain
         return parent::resolve($parameter, $set);
     }
 
-    private function resolveTypeMatched(ReflectionParameter $parameter, Set $set): Value
+    protected function resolveTypeMatched(ReflectionParameter $parameter, Set $set): Value
     {
         $field = $this->name($parameter);
         $value = $set->get($field);
@@ -32,10 +32,8 @@ class TypeMatched extends Chain
         return $resolved ?? parent::resolve($parameter, $set);
     }
 
-    private function resolveReflectionParameterType(
-        ReflectionType|null $type,
-        mixed $value
-    ): ?Value {
+    private function resolveReflectionParameterType(?ReflectionType $type, mixed $value): ?Value
+    {
         return match (true) {
             $type instanceof ReflectionNamedType => $this->resolveNamedType($type, $value),
             $type instanceof ReflectionUnionType => $this->resolveUnionType($type, $value),
