@@ -25,7 +25,6 @@ class PostgresGameQueryRepository extends PostgresRepository implements GameQuer
     {
         /* @noinspection SqlNoDataSourceInspection, SqlResolve */
         $query = 'select "id", "created_at", "updated_at", "name", "slug", "data" from "games"';
-        /** @var array<array<string, mixed>> $result */
         $data = $this->database->query($query);
         $serializer = $this->serializerFactory->make(Game::class);
         return $this->collection($serializer, $data, GameCollection::class);

@@ -20,6 +20,7 @@ abstract class Repository
         if (empty($data)) {
             return null;
         }
+        /* @phpstan-ignore argument.type */
         $datum = array_shift($data);
         return $serializer->serialize($datum);
     }
@@ -34,6 +35,7 @@ abstract class Repository
     {
         $instance = new $collection();
         foreach ($data as $datum) {
+            /* @phpstan-ignore argument.type */
             $instance->push($serializer->serialize($datum));
         }
         return $instance;

@@ -37,6 +37,9 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
 
     public function destroy(string $id): bool
     {
-        // TODO: Implement destroy() method.
+        /* @noinspection SqlNoDataSourceInspection, SqlResolve */
+        $query = 'delete from "games" where "id" = ?';
+        $affected = $this->database->execute($query, [$id]);
+        return $affected > 0;
     }
 }
