@@ -40,14 +40,14 @@ final class AdapterException extends InvalidArgumentException
      */
     private function parse(array $notResolved, ?Throwable $error = null): string
     {
-        if ($error !== null) {
-            return $error->getMessage();
+        if ($error === null) {
+            return sprintf(
+                'Mapping failed with %d error(s). The errors are: "%s"',
+                count($notResolved),
+                implode('", "', $this->merge($notResolved)),
+            );
         }
-        return sprintf(
-            'Mapping failed with %d error(s). The errors are: "%s"',
-            count($notResolved),
-            implode('", "', $this->merge($notResolved)),
-        );
+        return $error->getMessage();
     }
 
     /**
