@@ -12,19 +12,16 @@ use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-class BackedEnumValueChain extends Chain
+class BackedEnumValue extends Chain
 {
     /**
      * @throws ReflectionException
      */
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $parameterType = $parameter->getType();
-        if (! $parameterType instanceof ReflectionNamedType) {
-            return parent::resolve($parameter, $set);
-        }
-        $enum = $parameterType->getName();
-        if ($this->isNotEnum($enum)) {
+        $type = $parameter->getType();
+        $enum = $type?->getName();
+        if (! $type instanceof ReflectionNamedType || ! enum_exists($enum)) {
             return parent::resolve($parameter, $set);
         }
         $value = $set->get($this->name($parameter));
@@ -54,10 +51,5 @@ class BackedEnumValueChain extends Chain
             return new Value($enum::from($value));
         }
         return parent::resolve($parameter, $values);
-    }
-
-    private function isNotEnum(string $enum): bool
-    {
-        return ! is_subclass_of($enum, BackedEnum::class) || ! enum_exists($enum);
     }
 }

@@ -19,13 +19,13 @@ class Coordinator
      */
     private array $errors = [];
 
-    public function compute(Value $resolved): void
+    public function compute(Value $value): void
     {
-        if ($resolved->content instanceof NotResolved) {
-            $this->errors[] = $resolved->content;
+        if ($value->content instanceof NotResolved) {
+            $this->errors[] = $value->content;
             return;
         }
-        $this->args[] = $resolved->content;
+        $this->args[] = $value->content;
     }
 
     /**

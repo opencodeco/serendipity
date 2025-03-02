@@ -25,7 +25,7 @@ final class AdapterException extends InvalidArgumentException
         ?Throwable $error = null,
     ) {
         parent::__construct(
-            message: $this->parse($unresolved, $error),
+            message: $this->extractMessageFrom($unresolved, $error),
             previous: $error,
         );
     }
@@ -38,7 +38,7 @@ final class AdapterException extends InvalidArgumentException
     /**
      * @param array<NotResolved> $notResolved
      */
-    private function parse(array $notResolved, ?Throwable $error = null): string
+    private function extractMessageFrom(array $notResolved, ?Throwable $error = null): string
     {
         if ($error === null) {
             return sprintf(

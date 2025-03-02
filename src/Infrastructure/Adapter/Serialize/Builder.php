@@ -9,7 +9,7 @@ use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\BackedEnumValueChain;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\BackedEnumValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\FormatValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\NoValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\TypeMatched;
@@ -65,7 +65,7 @@ class Builder extends Engine
         foreach ($parameters as $parameter) {
             $resolved = (new UseValidatedValueChain($this->case))
                 ->then(new UseBuildChain($this->case))
-                ->then(new BackedEnumValueChain($this->case))
+                ->then(new BackedEnumValue($this->case))
                 ->then(new FormatValue($this->case, $this->formatters))
                 ->then(new TypeMatched($this->case))
                 ->then(new NoValue($this->case))
