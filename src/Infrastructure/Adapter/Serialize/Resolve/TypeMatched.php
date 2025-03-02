@@ -32,7 +32,7 @@ class TypeMatched extends Chain
         return $resolved ?? parent::resolve($parameter, $set);
     }
 
-    private function resolveReflectionParameterType(?ReflectionType $type, mixed $value): ?Value
+    protected function resolveReflectionParameterType(?ReflectionType $type, mixed $value): ?Value
     {
         return match (true) {
             $type instanceof ReflectionNamedType => $this->resolveNamedType($type, $value),
@@ -42,16 +42,16 @@ class TypeMatched extends Chain
         };
     }
 
-    private function resolveNamedType(ReflectionNamedType $type, mixed $value): ?Value
+    protected function resolveNamedType(ReflectionNamedType $type, mixed $value): ?Value
     {
         $builtin = $type->isBuiltin();
         $actual = $type->getName();
         return ($builtin)
-            ? $this->resolveBuiltinType($actual, $value)
-            : $this->resolveInstanceType($actual, $value);
+            ? $this->resolveNamedTypeBuiltin($actual, $value)
+            : $this->resolveNamedTypeInstanceOf($actual, $value);
     }
 
-    private function resolveBuiltinType(string $actual, mixed $value): ?Value
+    private function resolveNamedTypeBuiltin(string $actual, mixed $value): ?Value
     {
         $current = $this->detectType($value);
         return ($actual === $current)
@@ -59,14 +59,14 @@ class TypeMatched extends Chain
             : null;
     }
 
-    private function resolveInstanceType(string $actual, mixed $value): ?Value
+    private function resolveNamedTypeInstanceOf(string $actual, mixed $value): ?Value
     {
         return ($value instanceof $actual)
             ? new Value($value)
             : null;
     }
 
-    private function resolveUnionType(ReflectionUnionType $type, mixed $value): ?Value
+    protected function resolveUnionType(ReflectionUnionType $type, mixed $value): ?Value
     {
         $types = $type->getTypes();
         foreach ($types as $nested) {
@@ -78,7 +78,7 @@ class TypeMatched extends Chain
         return null;
     }
 
-    private function resolveIntersectionType(ReflectionIntersectionType $type, mixed $value): ?Value
+    protected function resolveIntersectionType(ReflectionIntersectionType $type, mixed $value): ?Value
     {
         $types = $type->getTypes();
         foreach ($types as $nested) {
