@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\FromArrayToDatabase;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatetimeToDatabase;
-use Serendipity\Test\Infrastructure\Stub;
+use Serendipity\Test\Testing\Stub\Stub;
 
 /**
  * @internal

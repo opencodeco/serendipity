@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Infrastructure;
+namespace Serendipity\Test\Testing\Stub\Type;
 
-enum Enumeration: string
+enum BackedEnumeration: string
 {
     case FOO = 'foo';
     case BAR = 'bar';

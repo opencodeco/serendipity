@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Adapter;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
-use Serendipity\Test\Infrastructure\Stub;
+use Serendipity\Test\Testing\Stub\Stub;
 
 /**
  * @internal

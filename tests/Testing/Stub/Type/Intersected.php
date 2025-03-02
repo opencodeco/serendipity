@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Infrastructure\Adapter\Serialize;
+namespace Serendipity\Test\Testing\Stub\Type;
 
 use Countable;
 use Iterator;
 use RuntimeException;
 
-class BuilderTestStubEdgeCaseIntersection implements Iterator, Countable
+class Intersected implements Iterator, Countable
 {
     public function current(): mixed
     {

@@ -10,18 +10,18 @@ use Serendipity\Domain\Exception\Adapter\Type;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-class UseDefaultChain extends Chain
+class NoValue extends Chain
 {
     /**
      * @throws ReflectionException
      */
-    public function resolve(ReflectionParameter $parameter, Set $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
         $name = $this->name($parameter);
-        if ($values->has($name)) {
-            return parent::resolve($parameter, $values);
+        if ($set->has($name)) {
+            return parent::resolve($parameter, $set);
         }
-        return $this->resolveNoValue($parameter, $values);
+        return $this->resolveNoValue($parameter, $set);
     }
 
     /**

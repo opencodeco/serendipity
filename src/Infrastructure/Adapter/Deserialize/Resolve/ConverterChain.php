@@ -24,7 +24,7 @@ class ConverterChain extends Chain
 
     private function extractType(mixed $value): string
     {
-        $type = $this->type($value);
+        $type = $this->detectType($value);
         if ($type === 'object' && is_object($value)) {
             $type = $value::class;
         }

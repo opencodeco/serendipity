@@ -7,7 +7,7 @@ namespace Serendipity\Test\Infrastructure\Repository\Adapter;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
-use Serendipity\Test\Infrastructure\Stub;
+use Serendipity\Test\Testing\Stub\Stub;
 
 /**
  * @internal

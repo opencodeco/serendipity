@@ -21,12 +21,12 @@ abstract class Chain extends Builder
         return $chain;
     }
 
-    public function resolve(ReflectionParameter $parameter, Set $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
         if (isset($this->previous)) {
-            return $this->previous->resolve($parameter, $values);
+            return $this->previous->resolve($parameter, $set);
         }
-        return $this->notResolved(Type::INVALID, $parameter, $values);
+        return $this->notResolved(Type::INVALID, $parameter, $set);
     }
 
     protected function previous(Chain $previous): void

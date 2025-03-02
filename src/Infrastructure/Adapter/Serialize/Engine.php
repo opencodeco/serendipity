@@ -59,13 +59,14 @@ abstract class Engine
         };
     }
 
-    protected function type(mixed $value): ?string
+    protected function detectType(mixed $value): ?string
     {
         $type = gettype($value);
         return match ($type) {
             'double' => 'float',
             'integer' => 'int',
             'boolean' => 'bool',
+            'NULL' => 'null',
             default => $type,
         };
     }

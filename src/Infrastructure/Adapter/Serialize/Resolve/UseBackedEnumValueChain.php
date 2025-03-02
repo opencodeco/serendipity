@@ -17,21 +17,21 @@ class UseBackedEnumValueChain extends Chain
     /**
      * @throws ReflectionException
      */
-    public function resolve(ReflectionParameter $parameter, Set $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
         $parameterType = $parameter->getType();
         if (! $parameterType instanceof ReflectionNamedType) {
-            return parent::resolve($parameter, $values);
+            return parent::resolve($parameter, $set);
         }
         $enum = $parameterType->getName();
         if ($this->isNotEnum($enum)) {
-            return parent::resolve($parameter, $values);
+            return parent::resolve($parameter, $set);
         }
-        $value = $values->get($this->name($parameter));
+        $value = $set->get($this->name($parameter));
         if ($value instanceof $enum) {
             return new Value($value);
         }
-        return $this->resolveEnumValue($enum, $parameter, $values);
+        return $this->resolveEnumValue($enum, $parameter, $set);
     }
 
     /**
@@ -46,7 +46,7 @@ class UseBackedEnumValueChain extends Chain
         if (! is_int($value) && ! is_string($value)) {
             return parent::resolve($parameter, $values);
         }
-        $valueType = $this->type($value);
+        $valueType = $this->detectType($value);
         /** @phpstan-ignore argument.type */
         $reflectionEnum = new ReflectionEnum($enum);
         $backingType = $reflectionEnum->getBackingType()?->getName();

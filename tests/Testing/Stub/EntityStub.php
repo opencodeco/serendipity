@@ -2,23 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Infrastructure\Adapter\Serialize;
+namespace Serendipity\Test\Testing\Stub;
 
 use DateTime;
 use Serendipity\Domain\Entity\Entity;
+use Serendipity\Test\Testing\Stub\Type\SingleBacked;
 
-class BuilderTestStubWithConstructor extends Entity
+class EntityStub extends Entity
 {
     public function __construct(
         public readonly int $id,
         public readonly float $price,
         public readonly string $name,
         public readonly bool $isActive,
-        public readonly BuilderTestStubWithNoConstructor $more,
+        public readonly NoConstructor $more,
         public readonly ?DateTime $createdAt,
-        public readonly ?BuilderTestStubWithNoParameters $no,
+        public readonly ?NoParameters $no,
         public readonly array $tags = [],
-        public readonly BuilderTestEnum $enum = BuilderTestEnum::ONE,
+        public readonly SingleBacked $enum = SingleBacked::ONE,
         ?string $foo = null,
     ) {
     }

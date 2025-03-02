@@ -11,17 +11,17 @@ use Serendipity\Domain\Support\Value;
 
 class UseTransformerChain extends Chain
 {
-    public function resolve(ReflectionParameter $parameter, Set $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
         $type = $parameter->getType();
         if (! $type instanceof ReflectionNamedType) {
-            return parent::resolve($parameter, $values);
+            return parent::resolve($parameter, $set);
         }
         $conversor = $this->formatter($type->getName());
         if ($conversor === null) {
-            return parent::resolve($parameter, $values);
+            return parent::resolve($parameter, $set);
         }
-        $value = $conversor->format($values->get($this->name($parameter)));
+        $value = $conversor->format($set->get($this->name($parameter)));
         return new Value($value);
     }
 }

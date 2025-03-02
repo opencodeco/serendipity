@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter\Serialize;
 
 use ReflectionClass;
+use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\Consolidator;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\NoValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseBackedEnumValueChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseBuildChain;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseDefaultChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseTransformerChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseValidatedValueChain;
 use Throwable;
@@ -28,21 +29,33 @@ class Builder extends Engine
     public function build(string $class, Set $values): mixed
     {
         try {
-            $reflectionClass = new ReflectionClass($class);
-            $constructor = $reflectionClass->getConstructor();
+            $target = $this->target($class);
 
-            if ($constructor === null) {
+            if (empty($target->parameters)) {
                 return new $class();
             }
+            $parameters = $target->parameters;
 
-            $parameters = $constructor->getParameters();
             $args = $this->resolveArgs($parameters, $values);
-            return $reflectionClass->newInstanceArgs($args);
+            return $target->reflection->newInstanceArgs($args);
         } catch (AdapterException $e) {
             throw $e;
         } catch (Throwable $error) {
             throw new AdapterException(values: $values, error: $error);
         }
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $class
+     * @return Target
+     * @throws ReflectionException
+     */
+    public function target(string $class): Target
+    {
+        $reflection = new ReflectionClass($class);
+        $constructor = $reflection->getConstructor();
+        return new Target($reflection, $constructor?->getParameters() ?? []);
     }
 
     /**
@@ -56,7 +69,7 @@ class Builder extends Engine
                 ->then(new UseBuildChain($this->case))
                 ->then(new UseBackedEnumValueChain($this->case))
                 ->then(new UseTransformerChain($this->case, $this->formatters))
-                ->then(new UseDefaultChain($this->case))
+                ->then(new NoValue($this->case))
                 ->resolve($parameter, $values);
 
             $consolidator->consolidate($resolved);

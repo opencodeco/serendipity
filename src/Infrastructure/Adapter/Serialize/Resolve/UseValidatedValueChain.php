@@ -11,12 +11,12 @@ use Serendipity\Domain\Support\Value;
 
 class UseValidatedValueChain extends Chain
 {
-    public function resolve(ReflectionParameter $parameter, Set $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
         $type = $parameter->getType();
         $name = $this->name($parameter);
 
-        $value = $values->get($name);
+        $value = $set->get($name);
         if ($type === null) {
             return new Value($value);
         }
@@ -27,12 +27,12 @@ class UseValidatedValueChain extends Chain
                 return new Value($value);
             }
         }
-        return $this->notResolved(Type::INVALID, $parameter, $values);
+        return $this->notResolved(Type::INVALID, $parameter, $set);
     }
 
     private function isValidType(mixed $value, string $expected): bool
     {
-        $type = $this->type($value);
+        $type = $this->detectType($value);
         return $type === $expected || ($type === 'object' && $value instanceof $expected);
     }
 }

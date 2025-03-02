@@ -20,20 +20,20 @@ class UseBuildChain extends Chain
     /**
      * @throws ReflectionException
      */
-    public function resolve(ReflectionParameter $parameter, Set $values): Value
+    public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
         $name = $this->name($parameter);
         $class = $this->resolveDependencyClass($parameter);
         if ($class === null) {
-            return parent::resolve($parameter, $values);
+            return parent::resolve($parameter, $set);
         }
-        $value = $values->get($name);
-        if ($values instanceof $class) {
+        $value = $set->get($name);
+        if ($set instanceof $class) {
             return new Value($value);
         }
         $args = $this->resolveDependencyArgs($class, $value);
         if ($args === null) {
-            return parent::resolve($parameter, $values);
+            return parent::resolve($parameter, $set);
         }
         return new Value($this->build($class, $args));
     }
