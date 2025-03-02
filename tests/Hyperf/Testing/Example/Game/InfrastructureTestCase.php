@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Hyperf\Testing\Example\Game;
 
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
+use Serendipity\Hyperf\Testing\PostgresHelper;
 use Serendipity\Test\Testing\ExtensibleTestCase;
 use Serendipity\Testing\Extension\FakerExtension;
 use Serendipity\Testing\Extension\ResourceExtension;
@@ -24,6 +25,6 @@ class InfrastructureTestCase extends ExtensibleTestCase
         parent::setUp();
 
         $this->setUpResourceHelper('sleek', $this->make(SleekDBHelper::class));
-        $this->setUpResource('games', 'sleek');
+        $this->setUpResourceHelper('postgres', $this->make(PostgresHelper::class));
     }
 }

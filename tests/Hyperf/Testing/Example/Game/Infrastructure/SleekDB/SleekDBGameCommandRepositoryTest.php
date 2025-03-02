@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Hyperf\Testing\Example\Game\Infrastructure;
+namespace Serendipity\Test\Hyperf\Testing\Example\Game\Infrastructure\SleekDB;
 
 use Serendipity\Test\Hyperf\Testing\Example\Game\InfrastructureTestCase;
 use Serendipity\Testing\Example\Game\Domain\Entity\Command\GameCommand;
@@ -16,6 +16,13 @@ use Serendipity\Testing\Extension\BuilderExtension;
 class SleekDBGameCommandRepositoryTest extends InfrastructureTestCase
 {
     use BuilderExtension;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setUpResource('games', 'sleek');
+    }
 
     public function testShouldPersistSuccessfully(): void
     {

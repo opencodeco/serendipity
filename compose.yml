@@ -18,11 +18,13 @@ services:
     image: postgres:16.2
     tty: true
     environment:
-      - POSTGRES_USER=${POSTGRES_DB_USERNAME:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD:-root}
+      - POSTGRES_USER=${POSTGRES_DB_USERNAME:-username}
+      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD:-password}
       - POSTGRES_DB=${POSTGRES_DB_NAME:-database}
     volumes:
       - serendipity-postgres-data:/var/lib/postgresql/data
+    ports:
+      - '9503:5432'
     networks:
       - serendipity-network
 

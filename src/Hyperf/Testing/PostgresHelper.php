@@ -83,7 +83,11 @@ final class PostgresHelper extends Helper
             $where
         );
         $bindings = array_values(array_filter($filters, static fn (mixed $value) => $value !== null));
-        $result = toArray($this->database->fetch($query, $bindings));
-        return (int) extractNumeric($result, 'count', 0);
+        $result = $this->database->query($query, $bindings);
+        if (empty($result)) {
+            return 0;
+        }
+        $data = array_shift($result);
+        return (int) ($data['count'] ?? 0);
     }
 }

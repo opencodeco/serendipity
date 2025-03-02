@@ -11,7 +11,9 @@ use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
 use Serendipity\Testing\Example\Game\Domain\Repository\GameCommandRepository;
 use Serendipity\Testing\Example\Game\Domain\Repository\GameQueryRepository;
+
 use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameCommandRepository;
+
 use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameQueryRepository;
 
 use function Hyperf\Support\env;

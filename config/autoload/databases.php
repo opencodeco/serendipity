@@ -7,25 +7,24 @@ use SleekDB\Query;
 use function Hyperf\Support\env;
 use function Serendipity\Type\Cast\toBool;
 use function Serendipity\Type\Cast\toFloat;
-use function Serendipity\Type\Cast\toString;
 
 $connections = [
     'postgres' => [
         'driver' => 'pgsql',
         'host' => env('DB_POSTGRES_HOST', 'postgres'),
-        'username' => env('DB_POSTGRES_USERNAME', 'postgres'),
-        'password' => env('DB_POSTGRES_PASSWORD', 'root'),
+        'username' => env('DB_POSTGRES_USERNAME', 'username'),
+        'password' => env('DB_POSTGRES_PASSWORD', 'password'),
         'port' => env('DB_POSTGRES_PORT', 5432),
         'read' => [
             'host' => env('DB_POSTGRES_HOST', 'postgres'),
-            'username' => env('DB_POSTGRES_USERNAME', 'postgres'),
-            'password' => env('DB_POSTGRES_PASSWORD', 'root'),
+            'username' => env('DB_POSTGRES_USERNAME', 'username'),
+            'password' => env('DB_POSTGRES_PASSWORD', 'password'),
             'port' => env('DB_POSTGRES_PORT', 5432),
         ],
         'write' => [
             'host' => env('DB_PGSQL_READ_HOST', env('DB_POSTGRES_HOST', 'postgres')),
-            'username' => env('DB_PGSQL_READ_USERNAME', env('DB_POSTGRES_USERNAME', 'postgres')),
-            'password' => env('DB_PGSQL_READ_PASSWORD', env('DB_POSTGRES_PASSWORD', 'root')),
+            'username' => env('DB_PGSQL_READ_USERNAME', env('DB_POSTGRES_USERNAME', 'username')),
+            'password' => env('DB_PGSQL_READ_PASSWORD', env('DB_POSTGRES_PASSWORD', 'password')),
             'port' => env('DB_PGSQL_READ_PORT', env('DB_POSTGRES_PORT', 5432)),
         ],
         'database' => env('DB_POSTGRES_NAME', 'database'),
@@ -90,7 +89,7 @@ $connections = [
         ],
     ],
     'sleek' => [
-        'path' => sprintf('%s/%s', dirname(__DIR__, 2), toString(env('DB_SLEEK_PATH', 'storage/.sleekdb'))),
+        'path' => sprintf('%s/%s', dirname(__DIR__, 2), env('DB_SLEEK_PATH', 'storage/.sleekdb')),
         'configuration' => [
             'auto_cache' => toBool(env('DB_SLEEK_AUTO_CACHE', true)),
             'cache_lifetime' => env('DB_SLEEK_CACHE_LIFETIME'),

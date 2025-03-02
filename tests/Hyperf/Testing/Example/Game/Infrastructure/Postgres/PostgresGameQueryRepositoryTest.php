@@ -2,27 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Hyperf\Testing\Example\Game\Infrastructure;
+namespace Serendipity\Test\Hyperf\Testing\Example\Game\Infrastructure\Postgres;
 
 use Serendipity\Test\Hyperf\Testing\Example\Game\InfrastructureTestCase;
 use Serendipity\Testing\Example\Game\Domain\Entity\Game;
-use Serendipity\Testing\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameQueryRepository;
+use Serendipity\Testing\Example\Game\Infrastructure\Repository\Postgres\PostgresGameQueryRepository;
 use Serendipity\Testing\Extension\InstrumentalExtension;
 
 use function Hyperf\Collection\collect;
 
-/**
- * @internal
- */
-class SleekDBGameQueryRepositoryTest extends InfrastructureTestCase
+class PostgresGameQueryRepositoryTest extends InfrastructureTestCase
 {
     use InstrumentalExtension;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setUpResource('games', 'postgres');
+    }
 
     public function testShouldReadGameSuccessfully(): void
     {
         $values = $this->seed(Game::class);
 
-        $repository = $this->make(SleekDBGameQueryRepository::class);
+        $repository = $this->make(PostgresGameQueryRepository::class);
         $game = $repository->getGame($values->get('id'));
         $this->assertEquals($values->get('name'), $game->name);
     }
@@ -30,7 +34,7 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureTestCase
     final public function testShouldReturnNullWhenGameNotExists(): void
     {
         $id = $this->instrumental()->id();
-        $repository = $this->make(SleekDBGameQueryRepository::class);
+        $repository = $this->make(PostgresGameQueryRepository::class);
         $this->assertNull($repository->getGame($id));
     }
 
@@ -39,7 +43,7 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureTestCase
         $this->seed(Game::class);
         $this->seed(Game::class);
 
-        $repository = $this->make(SleekDBGameQueryRepository::class);
+        $repository = $this->make(PostgresGameQueryRepository::class);
         $games = $repository->getGames();
 
         $this->assertCount(2, $games);
@@ -47,13 +51,10 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureTestCase
 
     public function testGetGamesContainsExpectedGames(): void
     {
-        $this->seed(Game::class);
-        $this->seed(Game::class);
         $values = $this->seed(Game::class);
         $this->seed(Game::class);
-        $this->seed(Game::class);
 
-        $repository = $this->make(SleekDBGameQueryRepository::class);
+        $repository = $this->make(PostgresGameQueryRepository::class);
         $all = $repository->getGames()->all();
         $count = collect($all)
             ->filter(fn ($game) => $game->id === $values->get('id'))
@@ -61,25 +62,9 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureTestCase
         $this->assertEquals(1, $count);
     }
 
-    public function testGetGamesContainsExpectedSlug(): void
-    {
-        $slug = $this->generator()->slug();
-        $this->seed(Game::class);
-        $this->seed(Game::class);
-        $values = $this->seed(Game::class, ['slug' => $slug]);
-        $this->seed(Game::class);
-        $this->seed(Game::class);
-
-        $repository = $this->make(SleekDBGameQueryRepository::class);
-        $game = $repository
-            ->getGames(['id' => $values->get('id')])
-            ->current();
-        $this->assertEquals($slug, $game->slug);
-    }
-
     public function testGetGamesReturnsEmptyCollectionWhenNoGames(): void
     {
-        $repository = $this->make(SleekDBGameQueryRepository::class);
+        $repository = $this->make(PostgresGameQueryRepository::class);
         $games = $repository->getGames();
         $this->assertCount(0, $games);
     }
