@@ -24,7 +24,7 @@ class FormatValue extends TypeMatched
         if ($formatter === null) {
             return parent::resolve($parameter, $set);
         }
-        $field = $this->name($parameter);
+        $field = $this->casedName($parameter);
         $value = $set->get($field);
         $content = $formatter($value, $set);
         $new = $set->with($field, $content);
@@ -36,6 +36,6 @@ class FormatValue extends TypeMatched
         $name = $this->formatTypeName($type);
         return $name === null
             ? null
-            : $this->formatter($name);
+            : $this->selectFormatter($name);
     }
 }

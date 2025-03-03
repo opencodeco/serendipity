@@ -35,7 +35,7 @@ abstract class Chain extends Builder
         if (isset($this->previous)) {
             return $this->previous->resolve($parameter, $set);
         }
-        return $this->notResolvedAsInvalid($parameter, $set);
+        return $this->notResolvedAsInvalid($set->get($this->casedName($parameter)));
     }
 
     protected function previous(Chain $previous): void
@@ -43,39 +43,35 @@ abstract class Chain extends Builder
         $this->previous = $previous;
     }
 
-    protected function notResolved(string $message, Set $set): Value
+    protected function notResolved(string $message, mixed $value = null): Value
     {
         $field = implode('.', $this->path);
-        $value = $set->has($field)
-            ? new Value($set->get($field))
-            : null;
         return new Value(new NotResolved($message, $field, $value));
     }
 
-    protected function notResolvedAsRequired(ReflectionParameter $parameter, Set $set): Value
+    protected function notResolvedAsRequired(): Value
     {
-        $message = sprintf("The value for '%s' is required and was not given.", $parameter->getName());
-        return $this->notResolved($message, $set);
+        $field = implode('.', $this->path);
+        $message = sprintf("The value for '%s' is required and was not given.", $field);
+        return $this->notResolved($message);
     }
 
-    protected function notResolvedAsInvalid(ReflectionParameter $parameter, Set $set): Value
+    protected function notResolvedAsInvalid(mixed $value): Value
     {
-        $message = sprintf("The value given for '%s' is invalid and can't be resolved.", $parameter->getName());
-        return $this->notResolved($message, $set);
+        $field = implode('.', $this->path);
+        $message = sprintf("The value given for '%s' is invalid and can't be resolved.", $field);
+        return $this->notResolved($message, $value);
     }
 
-    protected function notResolvedAsTypeMismatch(
-        ReflectionParameter $parameter,
-        Set $set,
-        string $expected,
-        string $actual
-    ): Value {
+    protected function notResolvedAsTypeMismatch(string $expected, string $actual, mixed $value): Value
+    {
+        $field = implode('.', $this->path);
         $message = sprintf(
             "The value for '%s' must be of type '%s' and '%s' was given.",
-            $parameter->getName(),
+            $field,
             $expected,
             $actual,
         );
-        return $this->notResolved($message, $set);
+        return $this->notResolved($message, $value);
     }
 }

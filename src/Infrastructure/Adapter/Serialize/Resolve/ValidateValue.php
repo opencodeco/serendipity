@@ -12,19 +12,19 @@ class ValidateValue extends TypeMatched
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $field = $this->name($parameter);
+        $field = $this->casedName($parameter);
         if ($set->hasNot($field)) {
-            return $this->notResolvedAsRequired($parameter, $set);
+            return $this->notResolvedAsRequired();
         }
+
         $type = $parameter->getType();
         $value = $set->get($field);
         $resolved = $this->resolveReflectionParameterType($type, $value);
         return $resolved
             ?? $this->notResolvedAsTypeMismatch(
-                $parameter,
-                $set,
                 $this->formatTypeName($type),
                 $this->detectType($value),
+                $value,
             );
     }
 }

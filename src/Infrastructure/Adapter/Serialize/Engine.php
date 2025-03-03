@@ -25,26 +25,7 @@ abstract class Engine
     ) {
     }
 
-    /**
-     * @return array<class-string<object>|string>
-     */
-    protected function normalizeType(?ReflectionType $type): array
-    {
-        if ($type instanceof ReflectionNamedType) {
-            return [$type->getName()];
-        }
-        if ($type instanceof ReflectionIntersectionType || $type instanceof ReflectionUnionType) {
-            /** @var array<ReflectionNamedType> $reflectionNamedTypes */
-            $reflectionNamedTypes = $type->getTypes();
-            return array_map(
-                fn (ReflectionIntersectionType|ReflectionNamedType $type) => $type->getName(),
-                $reflectionNamedTypes
-            );
-        }
-        return [];
-    }
-
-    protected function formatter(string $type): ?callable
+    protected function selectFormatter(string $type): ?callable
     {
         $formatter = $this->formatters[$type] ?? null;
         return match (true) {
@@ -57,7 +38,7 @@ abstract class Engine
         };
     }
 
-    protected function name(ReflectionParameter|string $field): string
+    protected function casedName(ReflectionParameter|string $field): string
     {
         $name = is_string($field) ? $field : $field->getName();
         return match ($this->case) {

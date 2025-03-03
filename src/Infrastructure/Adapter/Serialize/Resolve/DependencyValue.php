@@ -67,9 +67,13 @@ class DependencyValue extends TypeMatched
         $input = toArray($value, [$value]);
         $values = [];
         foreach ($parameters as $index => $parameter) {
-            $name = $this->name($parameter);
-            if (array_key_exists($name, $input) || array_key_exists($index, $input)) {
-                $values[$name] = $input[$name] ?? $input[$index];
+            $name = $this->casedName($parameter);
+            if (array_key_exists($name, $input)) {
+                $values[$name] = $input[$name];
+                continue;
+            }
+            if (array_key_exists($index, $input)) {
+                $values[$name] = $input[$index];
             }
         }
         return Set::createFrom($values);

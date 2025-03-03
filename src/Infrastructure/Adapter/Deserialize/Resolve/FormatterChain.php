@@ -15,7 +15,7 @@ class FormatterChain extends Chain
     public function resolve(mixed $value): Value
     {
         $type = $this->extractType($value);
-        $conversor = $this->formatter($type);
+        $conversor = $this->selectFormatter($type);
         if ($conversor === null) {
             return parent::resolve($value);
         }

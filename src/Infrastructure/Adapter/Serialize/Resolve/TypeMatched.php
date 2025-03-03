@@ -16,7 +16,7 @@ class TypeMatched extends Chain
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $field = $this->name($parameter);
+        $field = $this->casedName($parameter);
         if (! $set->has($field)) {
             return parent::resolve($parameter, $set);
         }

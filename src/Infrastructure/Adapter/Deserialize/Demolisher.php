@@ -23,7 +23,7 @@ class Demolisher extends Engine
         $values = $this->extractValues($instance);
         $data = [];
         foreach ($values as $field => $value) {
-            $name = $this->name($field);
+            $name = $this->casedName($field);
 
             $resolved = (new DoNothingChain($this->case))
                 ->then(new DependencyChain($this->case))

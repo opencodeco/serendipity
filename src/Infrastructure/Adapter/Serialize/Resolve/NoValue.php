@@ -16,7 +16,7 @@ class NoValue extends Chain
      */
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $name = $this->name($parameter);
+        $name = $this->casedName($parameter);
         if ($set->has($name)) {
             return parent::resolve($parameter, $set);
         }
@@ -34,6 +34,6 @@ class NoValue extends Chain
         if ($parameter->allowsNull()) {
             return new Value(null);
         }
-        return $this->notResolvedAsRequired($parameter, $set);
+        return $this->notResolvedAsRequired();
     }
 }
