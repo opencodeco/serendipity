@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 
 use DateTime;
 use DateTimeImmutable;
@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\DependencyValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\Complex;
@@ -20,7 +20,7 @@ use Serendipity\Test\Testing\Stub\NoConstructor;
 use Serendipity\Testing\Extension\FakerExtension;
 use stdClass;
 
-class DependencyValueTest extends TestCase
+final class DependencyValueTest extends TestCase
 {
     use MakeExtension;
     use FakerExtension;
@@ -28,7 +28,7 @@ class DependencyValueTest extends TestCase
     public function testShouldHandleDependency(): void
     {
         $chain = new DependencyValue();
-        $target = $chain->target(Command::class);
+        $target = $chain->extractTarget(Command::class);
         $parameters = $target->parameters;
 
         $set = Set::createFrom([
@@ -50,7 +50,7 @@ class DependencyValueTest extends TestCase
     public function testShouldHandleDependencyComplex(): void
     {
         $chain = new DependencyValue();
-        $target = $chain->target(Complex::class);
+        $target = $chain->extractTarget(Complex::class);
         $parameters = $target->parameters;
 
         $generator = $this->generator();
@@ -70,11 +70,12 @@ class DependencyValueTest extends TestCase
                 'date_time_interface' => new DateTime('2021-01-01'),
             ],
             'builtin' => [
-                'string' => $generator->word(),
-                'int' => $generator->numberBetween(1, 100),
-                'bool' => $generator->boolean(),
-                'array' => $generator->words(),
-                'null' => null,
+                $generator->word(),
+                $generator->numberBetween(1, 100),
+                $generator->randomFloat(),
+                $generator->boolean(),
+                $generator->words(),
+                null,
             ],
         ]);
 
@@ -84,11 +85,11 @@ class DependencyValueTest extends TestCase
             $builtin,
         ] = $parameters;
 
-//        $resolved = $chain->resolve($entity, $set);
-//        $this->assertInstanceOf(EntityStub::class, $resolved->content);
+        $resolved = $chain->resolve($entity, $set);
+        $this->assertInstanceOf(EntityStub::class, $resolved->content);
 
-//        $resolved = $chain->resolve($native, $set);
-//        $this->assertInstanceOf(Native::class, $resolved->content);
+        $resolved = $chain->resolve($native, $set);
+        $this->assertInstanceOf(Native::class, $resolved->content);
 
         $resolved = $chain->resolve($builtin, $set);
         $this->assertInstanceOf(Builtin::class, $resolved->content);

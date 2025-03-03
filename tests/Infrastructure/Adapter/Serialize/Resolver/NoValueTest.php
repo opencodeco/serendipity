@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\NoValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\NoValue;
 use Serendipity\Test\Testing\Stub\NullableAndOptional;
 
 final class NoValueTest extends TestCase
@@ -14,7 +14,7 @@ final class NoValueTest extends TestCase
     public function testNoValueSuccessfully(): void
     {
         $noValue = new NoValue();
-        $target = $noValue->target(NullableAndOptional::class);
+        $target = $noValue->extractTarget(NullableAndOptional::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);

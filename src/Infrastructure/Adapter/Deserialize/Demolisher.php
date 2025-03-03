@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter\Deserialize;
 
 use Serendipity\Domain\Contract\Message;
-use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
+use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Engine;
 
 use function get_object_vars;

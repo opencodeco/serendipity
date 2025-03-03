@@ -24,7 +24,7 @@ class FormatterChain extends Chain
 
     private function extractType(mixed $value): string
     {
-        $type = $this->detectType($value);
+        $type = $this->detectValueType($value);
         if ($type === 'object' && is_object($value)) {
             $type = $value::class;
         }

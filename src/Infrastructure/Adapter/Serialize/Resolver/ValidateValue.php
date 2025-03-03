@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Infrastructure\Adapter\Serialize\Resolver;
 
 use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
 
-class ValidateValue extends TypeMatched
+class ValidateValue extends ResolverTyped
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
@@ -23,7 +24,7 @@ class ValidateValue extends TypeMatched
         return $resolved
             ?? $this->notResolvedAsTypeMismatch(
                 $this->formatTypeName($type),
-                $this->detectType($value),
+                $this->detectValueType($value),
                 $value,
             );
     }

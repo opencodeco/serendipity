@@ -2,19 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Infrastructure\Adapter\Serialize;
 
 use ReflectionParameter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
-use Serendipity\Domain\Exception\Adapter\Type;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 use Serendipity\Infrastructure\CaseConvention;
 
-abstract class Chain extends Builder
+abstract class Resolver extends Builder
 {
-    protected ?Chain $previous = null;
+    protected ?Resolver $previous = null;
 
     public function __construct(
         CaseConvention $case = CaseConvention::SNAKE,
@@ -24,7 +22,7 @@ abstract class Chain extends Builder
         parent::__construct($case, $formatters);
     }
 
-    final public function then(Chain $chain): Chain
+    final public function then(Resolver $chain): Resolver
     {
         $chain->previous($this);
         return $chain;
@@ -38,7 +36,7 @@ abstract class Chain extends Builder
         return $this->notResolvedAsInvalid($set->get($this->casedName($parameter)));
     }
 
-    protected function previous(Chain $previous): void
+    protected function previous(Resolver $previous): void
     {
         $this->previous = $previous;
     }
@@ -59,7 +57,7 @@ abstract class Chain extends Builder
     protected function notResolvedAsInvalid(mixed $value): Value
     {
         $field = implode('.', $this->path);
-        $message = sprintf("The value given for '%s' is invalid and can't be resolved.", $field);
+        $message = sprintf("The value given for '%s' is not supported.", $field);
         return $this->notResolved($message, $value);
     }
 

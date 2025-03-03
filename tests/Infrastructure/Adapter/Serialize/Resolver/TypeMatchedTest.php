@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 
 use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\TypeMatched;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\TypeMatched;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\EntityStub;
 use Serendipity\Test\Testing\Stub\Intersection;
@@ -29,7 +29,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedBuiltinSuccessfully(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(Builtin::class);
+        $target = $typeMatched->extractTarget(Builtin::class);
         $parameters = $target->parameters;
 
         $this->assertCount(6, $parameters);
@@ -74,7 +74,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedNativeSuccessfully(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(Native::class);
+        $target = $typeMatched->extractTarget(Native::class);
         $parameters = $target->parameters;
 
         $this->assertCount(5, $parameters);
@@ -106,7 +106,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedNotNativeSuccessfully(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(NotNative::class);
+        $target = $typeMatched->extractTarget(NotNative::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);
@@ -139,7 +139,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedIntersectionSuccessfully(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(Intersection::class);
+        $target = $typeMatched->extractTarget(Intersection::class);
         $parameters = $target->parameters;
 
         $this->assertCount(1, $parameters);
@@ -157,7 +157,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedUnionSuccessfully(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(Union::class);
+        $target = $typeMatched->extractTarget(Union::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);
@@ -187,7 +187,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedShouldNotResolveNoValue(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(Intersection::class);
+        $target = $typeMatched->extractTarget(Intersection::class);
         $parameters = $target->parameters;
 
         $this->assertCount(1, $parameters);
@@ -202,7 +202,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedShouldNotResolveInvalidForIntersection(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(Intersection::class);
+        $target = $typeMatched->extractTarget(Intersection::class);
         $parameters = $target->parameters;
 
         $this->assertCount(1, $parameters);
@@ -219,7 +219,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedShouldNotResolveInvalidForUnion(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(Union::class);
+        $target = $typeMatched->extractTarget(Union::class);
         $parameters = $target->parameters;
 
         $set = Set::createFrom([
@@ -235,7 +235,7 @@ final class TypeMatchedTest extends TestCase
     public function testTypeMatchedShouldResolveVariety(): void
     {
         $typeMatched = new TypeMatched();
-        $target = $typeMatched->target(Variety::class);
+        $target = $typeMatched->extractTarget(Variety::class);
         $parameters = $target->parameters;
 
         $this->assertCount(4, $parameters);

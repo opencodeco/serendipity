@@ -14,8 +14,8 @@ use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
 use Serendipity\Test\Testing\Stub\EntityStub;
 use Serendipity\Test\Testing\Stub\NoConstructor;
-use Serendipity\Test\Testing\Stub\Type\SingleBacked;
 use Serendipity\Test\Testing\Stub\Type\Intersected;
+use Serendipity\Test\Testing\Stub\Type\SingleBacked;
 use Serendipity\Test\Testing\Stub\Variety;
 use stdClass;
 
@@ -94,14 +94,15 @@ final class BuilderTest extends TestCase
         try {
             $mapper = new Builder();
             $mapper->build($entityClass, Set::createFrom($values));
-        } catch (AdapterException $e) {
-            $errors = $e->getUnresolved();
+        } catch (AdapterException $exception) {
+            $errors = $exception->getUnresolved();
             $this->assertContainsOnlyInstancesOf(NotResolved::class, $errors);
             $messages = [
-                "The value for 'id' is not of the expected type.",
-                "The value for 'price' is required and was not provided.",
-                "The value for 'more' is not of the expected type.",
-                "The value for 'enum' is not of the expected type.",
+                "The value for 'id' must be of type 'int' and 'string' was given.",
+                "The value for 'price' is required and was not given.",
+                "The value for 'more' must be of type 'Serendipity\Test\Testing\Stub\NoConstructor' and 'DateTime' was given.",
+                "The value for 'no' must be of type 'Serendipity\Test\Testing\Stub\NoParameters' and 'string' was given.",
+                "The value for 'enum' must be of type 'Serendipity\Test\Testing\Stub\Type\SingleBacked' and 'bool' was given.",
             ];
             foreach ($messages as $message) {
                 if ($this->hasErrorMessage($errors, $message)) {
@@ -175,10 +176,33 @@ final class BuilderTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $instance->getWhatever());
     }
 
+    public function testEdgeTypeCasesFailure(): void
+    {
+        $values = [];
+
+        $builder = new Builder(CaseConvention::NONE);
+        $this->expectException(AdapterException::class);
+        $this->expectExceptionMessage(
+            'Adapter failed with 5 error(s). The errors are: ' .
+            '"The value for \'union\' is required and was not given.", ' .
+            '"The value for \'intersection\' is required and was not given.", ' .
+            '"The value for \'nested\' is required and was not given.", ' .
+            '"The value for \'whatever\' is required and was not given."'
+        );
+//        $this->expectExceptionMessage(
+//            'Adapter failed with 5 error(s). The errors are: ' .
+//            '"The value for \'nested.id\' must be of type \'int\' and \'string\' was given.", ' .
+//            '"The value for \'nested.isActive\' must be of type \'bool\' and \'int\' was given.", ' .
+//            '"The value for \'nested.more\' is required and was not given."'
+//        );
+
+        $builder->build(Variety::class, Set::createFrom($values));
+    }
+
     private function hasErrorMessage(array $errors, string $message): bool
     {
         foreach ($errors as $error) {
-            if ($error->message() === $message) {
+            if ($error->message === $message) {
                 return true;
             }
         }

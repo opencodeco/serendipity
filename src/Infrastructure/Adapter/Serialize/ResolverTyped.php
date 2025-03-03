@@ -2,30 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Infrastructure\Adapter\Serialize;
 
 use ReflectionIntersectionType;
 use ReflectionNamedType;
-use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-class TypeMatched extends Chain
+abstract class ResolverTyped extends Resolver
 {
-    public function resolve(ReflectionParameter $parameter, Set $set): Value
-    {
-        $field = $this->casedName($parameter);
-        if (! $set->has($field)) {
-            return parent::resolve($parameter, $set);
-        }
-        $type = $parameter->getType();
-        $value = $set->get($field);
-        $resolved = $this->resolveReflectionParameterType($type, $value);
-        return $resolved ?? parent::resolve($parameter, $set);
-    }
-
     protected function resolveReflectionParameterType(?ReflectionType $type, mixed $value): ?Value
     {
         return match (true) {
@@ -45,15 +31,15 @@ class TypeMatched extends Chain
             : $this->resolveNamedTypeInstanceOf($actual, $value);
     }
 
-    private function resolveNamedTypeBuiltin(string $actual, mixed $value): ?Value
+    protected function resolveNamedTypeBuiltin(string $actual, mixed $value): ?Value
     {
-        $current = $this->detectType($value);
+        $current = $this->detectValueType($value);
         return ($actual === $current)
             ? new Value($value)
             : null;
     }
 
-    private function resolveNamedTypeInstanceOf(string $actual, mixed $value): ?Value
+    protected function resolveNamedTypeInstanceOf(string $actual, mixed $value): ?Value
     {
         return ($value instanceof $actual)
             ? new Value($value)

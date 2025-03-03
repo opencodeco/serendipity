@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Infrastructure\Adapter\Serialize\Resolver;
 
-use ReflectionIntersectionType;
-use ReflectionNamedType;
 use ReflectionParameter;
-use ReflectionType;
-use ReflectionUnionType;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
 
-class FormatValue extends TypeMatched
+class FormatValue extends ResolverTyped
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
@@ -20,22 +17,20 @@ class FormatValue extends TypeMatched
         if ($type === null) {
             return parent::resolve($parameter, $set);
         }
-        $formatter = $this->select($type);
+
+        $expected = $this->formatTypeName($type);
+        $formatter = $this->selectFormatter($expected);
         if ($formatter === null) {
             return parent::resolve($parameter, $set);
         }
+
         $field = $this->casedName($parameter);
         $value = $set->get($field);
-        $content = $formatter($value, $set);
-        $new = $set->with($field, $content);
-        return parent::resolve($parameter, $new);
-    }
 
-    private function select(?ReflectionType $type): ?callable
-    {
-        $name = $this->formatTypeName($type);
-        return $name === null
-            ? null
-            : $this->selectFormatter($name);
+        $content = $formatter($value, $set);
+
+        $resolved = $this->resolveReflectionParameterType($type, $content);
+        return $resolved ??
+            $this->notResolvedAsTypeMismatch($expected, $this->detectValueType($content), $content);
     }
 }

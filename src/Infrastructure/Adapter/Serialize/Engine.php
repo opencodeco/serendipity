@@ -47,7 +47,7 @@ abstract class Engine
         };
     }
 
-    protected function detectType(mixed $value): string
+    protected function detectValueType(mixed $value): string
     {
         $type = gettype($value);
         $type = match ($type) {

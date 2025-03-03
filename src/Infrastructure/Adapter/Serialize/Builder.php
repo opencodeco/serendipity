@@ -9,12 +9,12 @@ use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\BackedEnumValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\FormatValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\NoValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\TypeMatched;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\DependencyValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\ValidateValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\FormatValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\NoValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\TypeMatched;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\ValidateValue;
 use Throwable;
 
 class Builder extends Engine
@@ -29,7 +29,7 @@ class Builder extends Engine
     public function build(string $class, Set $set, array $path = []): mixed
     {
         try {
-            $target = $this->target($class);
+            $target = $this->extractTarget($class);
             if (empty($target->parameters)) {
                 return new $class();
             }
@@ -49,7 +49,7 @@ class Builder extends Engine
      * @return Target
      * @throws ReflectionException
      */
-    public function target(string $class): Target
+    public function extractTarget(string $class): Target
     {
         $reflection = new ReflectionClass($class);
         $constructor = $reflection->getConstructor();

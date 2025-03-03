@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
+namespace Serendipity\Infrastructure\Adapter\Serialize\Resolver;
 
 use ReflectionException;
 use ReflectionIntersectionType;
@@ -12,14 +12,39 @@ use ReflectionType;
 use ReflectionUnionType;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
 
 use function array_key_exists;
 use function class_exists;
+use function count;
 use function enum_exists;
 use function Serendipity\Type\Cast\toArray;
 
-class DependencyValue extends TypeMatched
+class DependencyValue extends ResolverTyped
 {
+    /**
+     * @throws ReflectionException
+     */
+    public function resolve(ReflectionParameter $parameter, Set $set): Value
+    {
+        $field = $this->casedName($parameter);
+        if (! $set->has($field)) {
+            return parent::resolve($parameter, $set);
+        }
+        return $this->resolveDependencyValue($parameter, $set, $field);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    final protected function resolveDependencyValue(ReflectionParameter $parameter, Set $set, string $field): Value
+    {
+        $type = $parameter->getType();
+        $value = $set->get($field);
+        $resolved = $this->resolveReflectionParameterType($type, $value);
+        return $resolved ?? parent::resolve($parameter, $set);
+    }
+
     /**
      * @throws ReflectionException
      */
@@ -54,8 +79,12 @@ class DependencyValue extends TypeMatched
      */
     private function resolveNamedTypeClass(string $class, mixed $value): ?Value
     {
-        $target = $this->target($class);
-        $set = $this->convertValueToSet($target->parameters, $value);
+        $target = $this->extractTarget($class);
+        $parameters = $target->parameters;
+        if ($value !== null && count($parameters) === 0) {
+            return null;
+        }
+        $set = $this->convertValueToSet($parameters, $value);
         return new Value($this->build($class, $set, $this->path));
     }
 
