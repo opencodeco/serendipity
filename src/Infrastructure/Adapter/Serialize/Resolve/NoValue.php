@@ -6,7 +6,6 @@ namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
 
 use ReflectionException;
 use ReflectionParameter;
-use Serendipity\Domain\Exception\Adapter\Type;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
@@ -27,7 +26,7 @@ class NoValue extends Chain
     /**
      * @throws ReflectionException
      */
-    public function resolveNoValue(ReflectionParameter $parameter, Set $values): Value
+    public function resolveNoValue(ReflectionParameter $parameter, Set $set): Value
     {
         if ($parameter->isOptional() || $parameter->isDefaultValueAvailable()) {
             return new Value($parameter->getDefaultValue());
@@ -35,6 +34,6 @@ class NoValue extends Chain
         if ($parameter->allowsNull()) {
             return new Value(null);
         }
-        return $this->notResolved(Type::REQUIRED, $parameter, $values);
+        return $this->notResolvedAsRequired($parameter, $set);
     }
 }

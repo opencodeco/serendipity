@@ -120,7 +120,7 @@ final class BackedEnumValueTest extends TestCase
 
         $set = Set::createFrom([
             'backed' => 1,
-            'enum' => Enumeration::TWO,
+            'enum' => SingleBacked::ONE,
         ]);
 
         $value = $resolver->resolve($backed, $set);

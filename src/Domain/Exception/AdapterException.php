@@ -42,7 +42,7 @@ final class AdapterException extends InvalidArgumentException
     {
         if ($error === null) {
             return sprintf(
-                'Mapping failed with %d error(s). The errors are: "%s"',
+                'Adapter failed with %d error(s). The errors are: "%s"',
                 count($notResolved),
                 implode('", "', $this->merge($notResolved)),
             );
@@ -56,6 +56,6 @@ final class AdapterException extends InvalidArgumentException
      */
     private function merge(array $errors): array
     {
-        return array_map(fn (NotResolved $error) => $error->message(), $errors);
+        return array_map(fn (NotResolved $error) => $error->message, $errors);
     }
 }

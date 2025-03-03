@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter\Deserialize;
 
 use Serendipity\Domain\Contract\Message;
-use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\ConverterChain;
+use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 use Serendipity\Infrastructure\Adapter\Serialize\Engine;
@@ -27,7 +27,7 @@ class Demolisher extends Engine
 
             $resolved = (new DoNothingChain($this->case))
                 ->then(new DependencyChain($this->case))
-                ->then(new ConverterChain($this->case, $this->formatters))
+                ->then(new FormatterChain($this->case, $this->formatters))
                 ->resolve($value);
 
             $data[$name] = $resolved->content;

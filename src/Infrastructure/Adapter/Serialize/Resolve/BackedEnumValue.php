@@ -7,41 +7,11 @@ namespace Serendipity\Infrastructure\Adapter\Serialize\Resolve;
 use BackedEnum;
 use ReflectionEnum;
 use ReflectionException;
-use ReflectionIntersectionType;
 use ReflectionNamedType;
-use ReflectionParameter;
-use ReflectionType;
-use ReflectionUnionType;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-class BackedEnumValue extends TypeMatched
+class BackedEnumValue extends DependencyValue
 {
-    /**
-     * @throws ReflectionException
-     */
-    public function resolve(ReflectionParameter $parameter, Set $set): Value
-    {
-        $field = $this->name($parameter);
-        $value = $set->get($field);
-        $type = $parameter->getType();
-        $resolved = $this->resolveReflectionParameterType($type, $value);
-        return $resolved ?? parent::resolve($parameter, $set);
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    protected function resolveReflectionParameterType(?ReflectionType $type, mixed $value): ?Value
-    {
-        return match (true) {
-            $type instanceof ReflectionNamedType => $this->resolveNamedType($type, $value),
-            $type instanceof ReflectionUnionType => $this->resolveUnionType($type, $value),
-            $type instanceof ReflectionIntersectionType => $this->resolveIntersectionType($type, $value),
-            default => null,
-        };
-    }
-
     /**
      * @throws ReflectionException
      */

@@ -7,7 +7,7 @@ namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Contract\Formatter;
-use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\ConverterChain;
+use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
 use stdClass;
 
 use function Serendipity\Type\Json\encode;
@@ -23,7 +23,7 @@ final class FormatterChainTest extends TestCase
     #[TestWith([new stdClass()])]
     public function testResolveWithoutConverter(mixed $value): void
     {
-        $chain = new ConverterChain();
+        $chain = new FormatterChain();
         $result = $chain->resolve($value);
 
         $this->assertSame($value, $result->content);
@@ -37,7 +37,7 @@ final class FormatterChainTest extends TestCase
                 return encode($value);
             }
         };
-        $chain = new ConverterChain(formatters: ['array' => $converter]);
+        $chain = new FormatterChain(formatters: ['array' => $converter]);
         $value = ['key' => 'value'];
         $result = $chain->resolve($value);
 

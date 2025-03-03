@@ -16,18 +16,12 @@ class TypeMatched extends Chain
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $name = $this->name($parameter);
-        if ($set->has($name)) {
-            return $this->resolveTypeMatched($parameter, $set);
-        }
-        return parent::resolve($parameter, $set);
-    }
-
-    protected function resolveTypeMatched(ReflectionParameter $parameter, Set $set): Value
-    {
         $field = $this->name($parameter);
-        $value = $set->get($field);
+        if (! $set->has($field)) {
+            return parent::resolve($parameter, $set);
+        }
         $type = $parameter->getType();
+        $value = $set->get($field);
         $resolved = $this->resolveReflectionParameterType($type, $value);
         return $resolved ?? parent::resolve($parameter, $set);
     }

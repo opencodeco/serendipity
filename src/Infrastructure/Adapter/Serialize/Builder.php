@@ -13,8 +13,8 @@ use Serendipity\Infrastructure\Adapter\Serialize\Resolve\BackedEnumValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\FormatValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\NoValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolve\TypeMatched;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseBuildChain;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolve\UseValidatedValueChain;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\DependencyValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolve\ValidateValue;
 use Throwable;
 
 class Builder extends Engine
@@ -26,7 +26,7 @@ class Builder extends Engine
      * @return T
      * @throws AdapterException
      */
-    public function build(string $class, Set $values): mixed
+    public function build(string $class, Set $set, array $path = []): mixed
     {
         try {
             $target = $this->target($class);
@@ -34,12 +34,12 @@ class Builder extends Engine
                 return new $class();
             }
             $parameters = $target->parameters;
-            $args = $this->resolveArgs($parameters, $values);
+            $args = $this->resolveArgs($parameters, $set, $path);
             return $target->reflection->newInstanceArgs($args);
         } catch (AdapterException $e) {
             throw $e;
         } catch (Throwable $error) {
-            throw new AdapterException(values: $values, error: $error);
+            throw new AdapterException(values: $set, error: $error);
         }
     }
 
@@ -59,17 +59,20 @@ class Builder extends Engine
     /**
      * @param array<ReflectionParameter> $parameters
      */
-    private function resolveArgs(array $parameters, Set $values): array
+    private function resolveArgs(array $parameters, Set $set, array $path): array
     {
         $coordinator = new Coordinator();
         foreach ($parameters as $parameter) {
-            $resolved = (new UseValidatedValueChain($this->case))
-                ->then(new UseBuildChain($this->case))
-                ->then(new BackedEnumValue($this->case))
-                ->then(new FormatValue($this->case, $this->formatters))
-                ->then(new TypeMatched($this->case))
-                ->then(new NoValue($this->case))
-                ->resolve($parameter, $values);
+            $case = $this->case;
+            $formatters = $this->formatters;
+            $local = [...$path, $parameter->getName()];
+            $resolved = (new ValidateValue(case: $case, path: $local))
+                ->then(new DependencyValue(case: $case, path: $local))
+                ->then(new BackedEnumValue(case: $case, path: $local))
+                ->then(new FormatValue($case, $formatters, $local))
+                ->then(new TypeMatched(case: $case, path: $local))
+                ->then(new NoValue(case: $case, path: $local))
+                ->resolve($parameter, $set);
 
             $coordinator->compute($resolved);
         }
@@ -77,6 +80,6 @@ class Builder extends Engine
         if (empty($coordinator->errors())) {
             return $coordinator->args();
         }
-        throw new AdapterException($values, $coordinator->errors());
+        throw new AdapterException($set, $coordinator->errors());
     }
 }

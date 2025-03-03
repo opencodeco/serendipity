@@ -64,4 +64,9 @@ final readonly class Set
     {
         return array_key_exists($field, $this->data);
     }
+
+    public function hasNot(string $field): bool
+    {
+        return ! $this->has($field);
+    }
 }
