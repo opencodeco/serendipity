@@ -10,6 +10,7 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
+use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
@@ -37,8 +38,11 @@ class DependencyValue extends ResolverTyped
     /**
      * @throws ReflectionException
      */
-    final protected function resolveDependencyValue(ReflectionParameter $parameter, Set $set, string $field): Value
-    {
+    final protected function resolveDependencyValue(
+        ReflectionParameter $parameter,
+        Set $set,
+        string $field
+    ): Value {
         $type = $parameter->getType();
         $value = $set->get($field);
         $resolved = $this->resolveReflectionParameterType($type, $value);
@@ -85,7 +89,12 @@ class DependencyValue extends ResolverTyped
             return null;
         }
         $set = $this->convertValueToSet($parameters, $value);
-        return new Value($this->build($class, $set, $this->path));
+        try {
+            $content = $this->make($class, $set, $this->path);
+            return new Value($content);
+        } catch (AdapterException $exception) {
+            return $this->notResolved($exception->getUnresolved(), $value);
+        }
     }
 
     /**

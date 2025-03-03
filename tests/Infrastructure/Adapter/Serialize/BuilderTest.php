@@ -183,18 +183,35 @@ final class BuilderTest extends TestCase
         $builder = new Builder(CaseConvention::NONE);
         $this->expectException(AdapterException::class);
         $this->expectExceptionMessage(
+            'Adapter failed with 3 error(s). The errors are: ' .
+            '"The value for \'union\' is required and was not given.", ' .
+            '"The value for \'intersection\' is required and was not given.", ' .
+            '"The value for \'nested\' is required and was not given."'
+        );
+        $builder->build(Variety::class, Set::createFrom($values));
+    }
+
+    public function testEdgeTypeCasesFailureNested(): void
+    {
+        $values = [
+            'nested' => [
+                'id' => '1',
+                'price' => 19.99,
+                'name' => 'Test',
+                'isActive' => 1,
+            ],
+        ];
+
+        $builder = new Builder(CaseConvention::NONE);
+        $this->expectException(AdapterException::class);
+        $this->expectExceptionMessage(
             'Adapter failed with 5 error(s). The errors are: ' .
             '"The value for \'union\' is required and was not given.", ' .
             '"The value for \'intersection\' is required and was not given.", ' .
-            '"The value for \'nested\' is required and was not given.", ' .
-            '"The value for \'whatever\' is required and was not given."'
+            '"The value for \'nested.id\' must be of type \'int\' and \'string\' was given.", ' .
+            '"The value for \'nested.isActive\' must be of type \'bool\' and \'int\' was given.", ' .
+            '"The value for \'nested.more\' is required and was not given."'
         );
-//        $this->expectExceptionMessage(
-//            'Adapter failed with 5 error(s). The errors are: ' .
-//            '"The value for \'nested.id\' must be of type \'int\' and \'string\' was given.", ' .
-//            '"The value for \'nested.isActive\' must be of type \'bool\' and \'int\' was given.", ' .
-//            '"The value for \'nested.more\' is required and was not given."'
-//        );
 
         $builder->build(Variety::class, Set::createFrom($values));
     }

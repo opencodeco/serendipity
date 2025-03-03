@@ -6,6 +6,7 @@ namespace Serendipity\Infrastructure\Adapter\Serialize;
 
 use ReflectionParameter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
+use Serendipity\Domain\Exception\Adapter\NotResolvedCollection;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\CaseConvention;
@@ -41,10 +42,13 @@ abstract class Resolver extends Builder
         $this->previous = $previous;
     }
 
-    protected function notResolved(string $message, mixed $value = null): Value
+    protected function notResolved(string|array $unresolved, mixed $value = null): Value
     {
+        if (is_array($unresolved)) {
+            return new Value(new NotResolvedCollection($unresolved, $this->path, $value));
+        }
         $field = implode('.', $this->path);
-        return new Value(new NotResolved($message, $field, $value));
+        return new Value(new NotResolved($unresolved, $field, $value));
     }
 
     protected function notResolvedAsRequired(): Value

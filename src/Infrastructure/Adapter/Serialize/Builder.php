@@ -29,15 +29,9 @@ class Builder extends Engine
     public function build(string $class, Set $set, array $path = []): mixed
     {
         try {
-            $target = $this->extractTarget($class);
-            if (empty($target->parameters)) {
-                return new $class();
-            }
-            $parameters = $target->parameters;
-            $args = $this->resolveArgs($parameters, $set, $path);
-            return $target->reflection->newInstanceArgs($args);
-        } catch (AdapterException $e) {
-            throw $e;
+            return $this->make($class, $set, $path);
+        } catch (AdapterException $error) {
+            throw $error;
         } catch (Throwable $error) {
             throw new AdapterException(values: $set, error: $error);
         }
@@ -46,10 +40,33 @@ class Builder extends Engine
     /**
      * @template T of object
      * @param class-string<T> $class
+     *
+     * @return T
+     * @throws ReflectionException
+     */
+    protected function make(string $class, Set $set, array $path = []): mixed
+    {
+        $target = $this->extractTarget($class);
+        $parameters = $target->parameters;
+        if (empty($parameters)) {
+            return new $class();
+        }
+
+        $formula = new Formula();
+        $this->resolveFormula($formula, $parameters, $set, $path);
+        if (empty($formula->errors())) {
+            return $target->reflection->newInstanceArgs($formula->args());
+        }
+        throw new AdapterException($set, $formula->errors());
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $class
      * @return Target
      * @throws ReflectionException
      */
-    public function extractTarget(string $class): Target
+    protected function extractTarget(string $class): Target
     {
         $reflection = new ReflectionClass($class);
         $constructor = $reflection->getConstructor();
@@ -59,9 +76,8 @@ class Builder extends Engine
     /**
      * @param array<ReflectionParameter> $parameters
      */
-    private function resolveArgs(array $parameters, Set $set, array $path): array
+    private function resolveFormula(Formula $formula, array $parameters, Set $set, array $path): void
     {
-        $coordinator = new Coordinator();
         foreach ($parameters as $parameter) {
             $case = $this->case;
             $formatters = $this->formatters;
@@ -74,12 +90,7 @@ class Builder extends Engine
                 ->then(new NoValue(case: $case, path: $local))
                 ->resolve($parameter, $set);
 
-            $coordinator->compute($resolved);
+            $formula->compute($resolved);
         }
-
-        if (empty($coordinator->errors())) {
-            return $coordinator->args();
-        }
-        throw new AdapterException($set, $coordinator->errors());
     }
 }

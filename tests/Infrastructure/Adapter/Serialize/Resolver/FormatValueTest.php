@@ -64,7 +64,7 @@ final class FormatValueTest extends TestCase
         $value = $chain->resolve($float, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
         $this->assertEquals(
-            "The value for '' must be of type 'float' and 'stdClass' was given.",
+            "The value for '*' must be of type 'float' and 'stdClass' was given.",
             $value->content->message
         );
 
