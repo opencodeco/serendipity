@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Serialize;
 
-use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
@@ -46,7 +45,7 @@ class Builder extends Engine
      */
     protected function make(string $class, Set $set, array $path = []): mixed
     {
-        $target = $this->extractTarget($class);
+        $target = Target::createFrom($class);
         $parameters = $target->parameters;
         if (empty($parameters)) {
             return new $class();
@@ -58,19 +57,6 @@ class Builder extends Engine
             return $target->reflection->newInstanceArgs($formula->args());
         }
         throw new AdapterException($set, $formula->errors());
-    }
-
-    /**
-     * @template T of object
-     * @param class-string<T> $class
-     * @return Target
-     * @throws ReflectionException
-     */
-    protected function extractTarget(string $class): Target
-    {
-        $reflection = new ReflectionClass($class);
-        $constructor = $reflection->getConstructor();
-        return new Target($reflection, $constructor?->getParameters() ?? []);
     }
 
     /**

@@ -14,6 +14,7 @@ use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
+use Serendipity\Infrastructure\Adapter\Serialize\Target;
 
 use function array_key_exists;
 use function class_exists;
@@ -83,7 +84,7 @@ class DependencyValue extends ResolverTyped
      */
     private function resolveNamedTypeClass(string $class, mixed $value): ?Value
     {
-        $target = $this->extractTarget($class);
+        $target = Target::createFrom($class);
         $parameters = $target->parameters;
         if ($value !== null && count($parameters) === 0) {
             return null;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Serialize;
 
+use ReflectionClass;
+use ReflectionException;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
@@ -23,6 +25,19 @@ abstract class Engine
         public readonly CaseConvention $case = CaseConvention::SNAKE,
         public readonly array $formatters = [],
     ) {
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $class
+     * @return Target
+     * @throws ReflectionException
+     */
+    public function extractTarget(string $class): Target
+    {
+        $reflection = new ReflectionClass($class);
+        $constructor = $reflection->getConstructor();
+        return new Target($reflection, $constructor?->getParameters() ?? []);
     }
 
     protected function selectFormatter(string $type): ?callable

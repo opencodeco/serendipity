@@ -8,14 +8,15 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\ValidateValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 
 final class ValidateValueTest extends TestCase
 {
     public function testShouldValidateValueRequired(): void
     {
-        $chain = new ValidateValue(path: ['string']);
-        $target = $chain->extractTarget(Builtin::class);
+        $resolver = new ValidateValue(path: ['string']);
+        $target = Target::createFrom(Builtin::class);
         $parameters = $target->parameters;
 
         $this->assertCount(6, $parameters);
@@ -24,15 +25,15 @@ final class ValidateValueTest extends TestCase
 
         [0 => $string] = $parameters;
 
-        $value = $chain->resolve($string, $set);
+        $value = $resolver->resolve($string, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
         $this->assertEquals("The value for 'string' is required and was not given.", $value->content->message);
     }
 
     public function testShouldValidateValueMismatch(): void
     {
-        $chain = new ValidateValue(path: ['int']);
-        $target = $chain->extractTarget(Builtin::class);
+        $resolver = new ValidateValue(path: ['int']);
+        $target = Target::createFrom(Builtin::class);
         $parameters = $target->parameters;
 
         $this->assertCount(6, $parameters);
@@ -41,7 +42,7 @@ final class ValidateValueTest extends TestCase
 
         [1 => $int] = $parameters;
 
-        $value = $chain->resolve($int, $set);
+        $value = $resolver->resolve($int, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
         $this->assertEquals(
             "The value for 'int' must be of type 'int' and 'string' was given.",

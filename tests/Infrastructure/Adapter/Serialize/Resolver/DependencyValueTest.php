@@ -11,6 +11,7 @@ use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\Complex;
@@ -27,8 +28,8 @@ final class DependencyValueTest extends TestCase
 
     public function testShouldHandleDependency(): void
     {
-        $chain = new DependencyValue();
-        $target = $chain->extractTarget(Command::class);
+        $resolver = new DependencyValue();
+        $target = Target::createFrom(Command::class);
         $parameters = $target->parameters;
 
         $set = Set::createFrom([
@@ -40,17 +41,17 @@ final class DependencyValueTest extends TestCase
             13 => $dob,
         ] = $parameters;
 
-        $resolved = $chain->resolve($signupDate, $set);
+        $resolved = $resolver->resolve($signupDate, $set);
         $this->assertInstanceOf(DateTimeImmutable::class, $resolved->content);
 
-        $resolved = $chain->resolve($dob, $set);
+        $resolved = $resolver->resolve($dob, $set);
         $this->assertInstanceOf(NotResolved::class, $resolved->content);
     }
 
     public function testShouldHandleDependencyComplex(): void
     {
-        $chain = new DependencyValue();
-        $target = $chain->extractTarget(Complex::class);
+        $resolver = new DependencyValue();
+        $target = Target::createFrom(Complex::class);
         $parameters = $target->parameters;
 
         $generator = $this->generator();
@@ -85,13 +86,13 @@ final class DependencyValueTest extends TestCase
             $builtin,
         ] = $parameters;
 
-        $resolved = $chain->resolve($entity, $set);
+        $resolved = $resolver->resolve($entity, $set);
         $this->assertInstanceOf(EntityStub::class, $resolved->content);
 
-        $resolved = $chain->resolve($native, $set);
+        $resolved = $resolver->resolve($native, $set);
         $this->assertInstanceOf(Native::class, $resolved->content);
 
-        $resolved = $chain->resolve($builtin, $set);
+        $resolved = $resolver->resolve($builtin, $set);
         $this->assertInstanceOf(Builtin::class, $resolved->content);
     }
 }

@@ -7,14 +7,15 @@ namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\NoValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\NullableAndOptional;
 
 final class NoValueTest extends TestCase
 {
     public function testNoValueSuccessfully(): void
     {
-        $noValue = new NoValue();
-        $target = $noValue->extractTarget(NullableAndOptional::class);
+        $resolver = new NoValue();
+        $target = Target::createFrom(NullableAndOptional::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);
@@ -27,13 +28,13 @@ final class NoValueTest extends TestCase
             $optional,
         ] = $parameters;
 
-        $value = $noValue->resolve($nullable, $empty);
+        $value = $resolver->resolve($nullable, $empty);
         $this->assertNull($value->content);
 
-        $value = $noValue->resolve($union, $empty);
+        $value = $resolver->resolve($union, $empty);
         $this->assertNull($value->content);
 
-        $value = $noValue->resolve($optional, $empty);
+        $value = $resolver->resolve($optional, $empty);
         $this->assertSame(10, $value->content);
     }
 }

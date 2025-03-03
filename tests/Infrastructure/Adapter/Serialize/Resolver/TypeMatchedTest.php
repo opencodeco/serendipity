@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\TypeMatched;
+use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\EntityStub;
 use Serendipity\Test\Testing\Stub\Intersection;
@@ -28,8 +29,8 @@ final class TypeMatchedTest extends TestCase
 {
     public function testTypeMatchedBuiltinSuccessfully(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(Builtin::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(Builtin::class);
         $parameters = $target->parameters;
 
         $this->assertCount(6, $parameters);
@@ -52,29 +53,29 @@ final class TypeMatchedTest extends TestCase
             $null,
         ] = $parameters;
 
-        $value = $typeMatched->resolve($string, $set);
+        $value = $resolver->resolve($string, $set);
         $this->assertSame('string', $value->content);
 
-        $value = $typeMatched->resolve($int, $set);
+        $value = $resolver->resolve($int, $set);
         $this->assertSame(10, $value->content);
 
-        $value = $typeMatched->resolve($float, $set);
+        $value = $resolver->resolve($float, $set);
         $this->assertSame(10.1, $value->content);
 
-        $value = $typeMatched->resolve($bool, $set);
+        $value = $resolver->resolve($bool, $set);
         $this->assertTrue($value->content);
 
-        $value = $typeMatched->resolve($array, $set);
+        $value = $resolver->resolve($array, $set);
         $this->assertSame(['a', 'b', 'c'], $value->content);
 
-        $value = $typeMatched->resolve($null, $set);
+        $value = $resolver->resolve($null, $set);
         $this->assertNull($value->content);
     }
 
     public function testTypeMatchedNativeSuccessfully(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(Native::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(Native::class);
         $parameters = $target->parameters;
 
         $this->assertCount(5, $parameters);
@@ -93,20 +94,20 @@ final class TypeMatchedTest extends TestCase
             $dateTimeImmutable,
         ] = $parameters;
 
-        $value = $typeMatched->resolve($callable, $set);
+        $value = $resolver->resolve($callable, $set);
         $this->assertIsCallable($value->content);
 
-        $value = $typeMatched->resolve($stdClass, $set);
+        $value = $resolver->resolve($stdClass, $set);
         $this->assertInstanceOf(stdClass::class, $value->content);
 
-        $value = $typeMatched->resolve($dateTimeImmutable, $set);
+        $value = $resolver->resolve($dateTimeImmutable, $set);
         $this->assertInstanceOf(DateTimeImmutable::class, $value->content);
     }
 
     public function testTypeMatchedNotNativeSuccessfully(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(NotNative::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(NotNative::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);
@@ -126,20 +127,20 @@ final class TypeMatchedTest extends TestCase
             $stub,
         ] = $parameters;
 
-        $value = $typeMatched->resolve($backed, $set);
+        $value = $resolver->resolve($backed, $set);
         $this->assertEquals(BackedEnumeration::BAZ, $value->content);
 
-        $value = $typeMatched->resolve($enumeration, $set);
+        $value = $resolver->resolve($enumeration, $set);
         $this->assertEquals(Enumeration::ONE, $value->content);
 
-        $value = $typeMatched->resolve($stub, $set);
+        $value = $resolver->resolve($stub, $set);
         $this->assertInstanceOf(Stub::class, $value->content);
     }
 
     public function testTypeMatchedIntersectionSuccessfully(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(Intersection::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(Intersection::class);
         $parameters = $target->parameters;
 
         $this->assertCount(1, $parameters);
@@ -150,14 +151,14 @@ final class TypeMatchedTest extends TestCase
 
         [$intersected] = $parameters;
 
-        $value = $typeMatched->resolve($intersected, $set);
+        $value = $resolver->resolve($intersected, $set);
         $this->assertInstanceOf(Intersected::class, $value->content);
     }
 
     public function testTypeMatchedUnionSuccessfully(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(Union::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(Union::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);
@@ -174,20 +175,20 @@ final class TypeMatchedTest extends TestCase
             $native,
         ] = $parameters;
 
-        $value = $typeMatched->resolve($builtin, $set);
+        $value = $resolver->resolve($builtin, $set);
         $this->assertSame(23, $value->content);
 
-        $value = $typeMatched->resolve($nullable, $set);
+        $value = $resolver->resolve($nullable, $set);
         $this->assertNull($value->content);
 
-        $value = $typeMatched->resolve($native, $set);
+        $value = $resolver->resolve($native, $set);
         $this->assertInstanceOf(stdClass::class, $value->content);
     }
 
     public function testTypeMatchedShouldNotResolveNoValue(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(Intersection::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(Intersection::class);
         $parameters = $target->parameters;
 
         $this->assertCount(1, $parameters);
@@ -195,14 +196,14 @@ final class TypeMatchedTest extends TestCase
         $set = Set::createFrom([]);
 
         [$intersected] = $parameters;
-        $value = $typeMatched->resolve($intersected, $set);
+        $value = $resolver->resolve($intersected, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
     }
 
     public function testTypeMatchedShouldNotResolveInvalidForIntersection(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(Intersection::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(Intersection::class);
         $parameters = $target->parameters;
 
         $this->assertCount(1, $parameters);
@@ -212,14 +213,14 @@ final class TypeMatchedTest extends TestCase
         ]);
 
         [$intersected] = $parameters;
-        $value = $typeMatched->resolve($intersected, $set);
+        $value = $resolver->resolve($intersected, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
     }
 
     public function testTypeMatchedShouldNotResolveInvalidForUnion(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(Union::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(Union::class);
         $parameters = $target->parameters;
 
         $set = Set::createFrom([
@@ -228,14 +229,14 @@ final class TypeMatchedTest extends TestCase
 
         [$builtin] = $parameters;
 
-        $value = $typeMatched->resolve($builtin, $set);
+        $value = $resolver->resolve($builtin, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
     }
 
     public function testTypeMatchedShouldResolveVariety(): void
     {
-        $typeMatched = new TypeMatched();
-        $target = $typeMatched->extractTarget(Variety::class);
+        $resolver = new TypeMatched();
+        $target = Target::createFrom(Variety::class);
         $parameters = $target->parameters;
 
         $this->assertCount(4, $parameters);
@@ -262,16 +263,16 @@ final class TypeMatchedTest extends TestCase
             $whatever,
         ] = $parameters;
 
-        $value = $typeMatched->resolve($union, $set);
+        $value = $resolver->resolve($union, $set);
         $this->assertSame(23, $value->content);
 
-        $value = $typeMatched->resolve($intersection, $set);
+        $value = $resolver->resolve($intersection, $set);
         $this->assertInstanceOf(Intersected::class, $value->content);
 
-        $value = $typeMatched->resolve($nested, $set);
+        $value = $resolver->resolve($nested, $set);
         $this->assertInstanceOf(EntityStub::class, $value->content);
 
-        $value = $typeMatched->resolve($whatever, $set);
+        $value = $resolver->resolve($whatever, $set);
         $this->assertInstanceOf(stdClass::class, $value->content);
     }
 }

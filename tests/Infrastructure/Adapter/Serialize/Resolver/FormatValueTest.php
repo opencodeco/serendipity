@@ -9,6 +9,7 @@ use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\FormatValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\EntityStub;
 use Serendipity\Test\Testing\Stub\NoConstructor;
@@ -35,8 +36,8 @@ final class FormatValueTest extends TestCase
             },
             'float' => fn () => new stdClass(),
         ];
-        $chain = new FormatValue(formatters: $formatters, path: ['*']);
-        $target = $chain->extractTarget(Builtin::class);
+        $resolver = new FormatValue(formatters: $formatters, path: ['*']);
+        $target = Target::createFrom(Builtin::class);
         $parameters = $target->parameters;
 
         $this->assertCount(6, $parameters);
@@ -55,20 +56,20 @@ final class FormatValueTest extends TestCase
             $bool,
         ] = $parameters;
 
-        $value = $chain->resolve($string, $set);
+        $value = $resolver->resolve($string, $set);
         $this->assertSame('10', $value->content);
 
-        $value = $chain->resolve($int, $set);
+        $value = $resolver->resolve($int, $set);
         $this->assertSame(10, $value->content);
 
-        $value = $chain->resolve($float, $set);
+        $value = $resolver->resolve($float, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
         $this->assertEquals(
             "The value for '*' must be of type 'float' and 'stdClass' was given.",
             $value->content->message
         );
 
-        $value = $chain->resolve($bool, $set);
+        $value = $resolver->resolve($bool, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
         $this->assertEquals("The value given for '*' is not supported.", $value->content->message);
     }
@@ -80,8 +81,8 @@ final class FormatValueTest extends TestCase
             'Countable&Iterator' => fn () => new Intersected(),
             EntityStub::class => fn (array $value) => new EntityStub(...$value),
         ];
-        $chain = new FormatValue(formatters: $formatters, path: ['*']);
-        $target = $chain->extractTarget(Variety::class);
+        $resolver = new FormatValue(formatters: $formatters, path: ['*']);
+        $target = Target::createFrom(Variety::class);
         $parameters = $target->parameters;
 
         $this->assertCount(4, $parameters);
@@ -108,20 +109,20 @@ final class FormatValueTest extends TestCase
             $whatever,
         ] = $parameters;
 
-        $value = $chain->resolve($union, $set);
+        $value = $resolver->resolve($union, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
         $this->assertEquals(
             "The value for '*' must be of type 'int|string' and 'bool' was given.",
             $value->content->message
         );
 
-        $value = $chain->resolve($intersection, $set);
+        $value = $resolver->resolve($intersection, $set);
         $this->assertInstanceOf(Intersected::class, $value->content);
 
-        $value = $chain->resolve($nested, $set);
+        $value = $resolver->resolve($nested, $set);
         $this->assertInstanceOf(EntityStub::class, $value->content);
 
-        $value = $chain->resolve($whatever, $set);
+        $value = $resolver->resolve($whatever, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
         $this->assertEquals("The value given for '*' is not supported.", $value->content->message);
     }

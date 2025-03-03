@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\EnumVariety;
 use Serendipity\Test\Testing\Stub\NotNative;
 use Serendipity\Test\Testing\Stub\Type\BackedEnumeration;
@@ -19,7 +20,7 @@ final class BackedEnumValueTest extends TestCase
     public function testShouldHandleBackedEnumValue(): void
     {
         $resolver = new BackedEnumValue();
-        $target = $resolver->extractTarget(NotNative::class);
+        $target = Target::createFrom(NotNative::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);
@@ -44,7 +45,7 @@ final class BackedEnumValueTest extends TestCase
     public function testShouldNotResolveInvalidValue(): void
     {
         $resolver = new BackedEnumValue();
-        $target = $resolver->extractTarget(NotNative::class);
+        $target = Target::createFrom(NotNative::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);
@@ -73,7 +74,7 @@ final class BackedEnumValueTest extends TestCase
     public function testShouldNotResolveInvalidUnionAndIntersection(): void
     {
         $resolver = new BackedEnumValue();
-        $target = $resolver->extractTarget(EnumVariety::class);
+        $target = Target::createFrom(EnumVariety::class);
         $parameters = $target->parameters;
 
         $this->assertCount(4, $parameters);
@@ -108,7 +109,7 @@ final class BackedEnumValueTest extends TestCase
     public function testShouldNotResolveTypeMismatch(): void
     {
         $resolver = new BackedEnumValue();
-        $target = $resolver->extractTarget(NotNative::class);
+        $target = Target::createFrom(NotNative::class);
         $parameters = $target->parameters;
 
         $this->assertCount(3, $parameters);
