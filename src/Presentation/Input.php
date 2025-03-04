@@ -24,7 +24,13 @@ class Input extends HyperfFormRequest implements Message
         ContainerInterface $container,
         Set $properties = new Set([]),
         Set $values = new Set([]),
+        /**
+         * @var array<string, string|array>
+         */
         protected readonly array $rules = [],
+        /**
+         * @var array<string, callable(): mixed>
+         */
         protected readonly array $mappings = [],
         protected readonly bool $authorize = true,
     ) {
@@ -36,6 +42,9 @@ class Input extends HyperfFormRequest implements Message
         return $this->authorize;
     }
 
+    /**
+     * @return array<string, string|array>
+     */
     public function rules(): array
     {
         return $this->rules;
@@ -53,7 +62,7 @@ class Input extends HyperfFormRequest implements Message
     }
 
     /**
-     * @return array<string, callable>
+     * @return array<string, callable(): mixed>
      */
     protected function mappings(): array
     {
