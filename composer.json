@@ -101,7 +101,7 @@
     "lint:phpstan": "phpstan analyse --memory-limit 512M",
     "lint:deptrac": "deptrac analyse --report-uncovered --fail-on-uncovered",
     "lint:phpmd": "phpmd src ansi phpmd.xml",
-    "lint:rector": "rector --dry-run",
+    "lint:rector": "rector process --dry-run",
     "lint:psalm": "psalm",
     "lint": [
       "composer lint:phpcs",
