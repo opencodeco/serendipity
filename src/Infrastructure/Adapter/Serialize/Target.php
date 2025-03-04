@@ -18,7 +18,6 @@ final class Target
     /**
      * @template T of object
      * @param class-string<T> $class
-     * @return Target
      * @throws ReflectionException
      */
     public static function createFrom(string $class): Target

@@ -11,6 +11,9 @@ use Serendipity\Infrastructure\Adapter\Serialize\Resolver\ValidateValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 
+/**
+ * @internal
+ */
 final class ValidateValueTest extends TestCase
 {
     public function testShouldValidateValueRequired(): void

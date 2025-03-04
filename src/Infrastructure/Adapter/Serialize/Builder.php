@@ -37,11 +37,12 @@ class Builder extends Engine
     }
 
     /**
-     * @template Generic of object
-     * @param class-string<Generic> $class
+     * @template T of object
+     * @param class-string<T> $class
      *
-     * @return Generic
+     * @return T
      * @throws ReflectionException
+     * @throws AdapterException
      */
     protected function make(string $class, Set $set, array $path = []): mixed
     {

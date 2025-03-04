@@ -77,24 +77,6 @@ class DependencyValue extends ResolverTyped
     }
 
     /**
-     * @throws ReflectionException
-     */
-    private function resolveNamedTypeClass(string $class, mixed $value): ?Value
-    {
-        $parameters = Target::createFrom($class)->parameters();
-        if ($value !== null && count($parameters) === 0) {
-            return null;
-        }
-        $set = $this->convertValueToSet($parameters, $value);
-        try {
-            $content = $this->make($class, $set, $this->path);
-            return new Value($content);
-        } catch (AdapterException $exception) {
-            return $this->notResolved($exception->getUnresolved(), $value);
-        }
-    }
-
-    /**
      * @param array<ReflectionParameter> $parameters
      */
     protected function convertValueToSet(array $parameters, mixed $value): Set
@@ -112,5 +94,23 @@ class DependencyValue extends ResolverTyped
             }
         }
         return Set::createFrom($values);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function resolveNamedTypeClass(string $class, mixed $value): ?Value
+    {
+        $parameters = Target::createFrom($class)->parameters();
+        if ($value !== null && count($parameters) === 0) {
+            return null;
+        }
+        $set = $this->convertValueToSet($parameters, $value);
+        try {
+            $content = $this->make($class, $set, $this->path);
+            return new Value($content);
+        } catch (AdapterException $exception) {
+            return $this->notResolved($exception->getUnresolved(), $value);
+        }
     }
 }

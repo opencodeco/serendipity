@@ -19,7 +19,7 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
 
     /**
      * @throws GeneratingException
-     * @throws UniqueKeyViolationException|Exception
+     * @throws Exception|UniqueKeyViolationException
      */
     public function persist(GameCommand $game): string
     {

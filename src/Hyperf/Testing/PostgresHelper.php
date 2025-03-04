@@ -16,11 +16,11 @@ use Serendipity\Testing\Resource\Helper;
 use function array_filter;
 use function array_keys;
 use function array_map;
+use function array_shift;
 use function array_values;
 use function count;
 use function implode;
 use function Serendipity\Type\Cast\toArray;
-use function Serendipity\Type\Util\extractNumeric;
 use function sprintf;
 use function str_repeat;
 
@@ -87,7 +87,7 @@ final class PostgresHelper extends Helper
         if (empty($result)) {
             return 0;
         }
-        $data = array_shift($result);
+        $data = toArray(array_shift($result));
         return (int) ($data['count'] ?? 0);
     }
 }

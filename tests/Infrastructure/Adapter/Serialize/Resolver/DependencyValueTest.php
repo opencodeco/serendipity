@@ -24,6 +24,9 @@ use Serendipity\Test\Testing\Stub\Union;
 use Serendipity\Testing\Extension\FakerExtension;
 use stdClass;
 
+/**
+ * @internal
+ */
 final class DependencyValueTest extends TestCase
 {
     use MakeExtension;

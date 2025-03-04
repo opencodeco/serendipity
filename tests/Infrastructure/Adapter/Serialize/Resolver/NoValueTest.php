@@ -10,6 +10,9 @@ use Serendipity\Infrastructure\Adapter\Serialize\Resolver\NoValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\NullableAndOptional;
 
+/**
+ * @internal
+ */
 final class NoValueTest extends TestCase
 {
     public function testNoValueSuccessfully(): void

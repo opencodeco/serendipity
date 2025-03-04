@@ -12,8 +12,8 @@ class EnumVariety
     public function __construct(
         public readonly Enumeration $enum,
         public readonly BackedEnumeration $backed,
-        public readonly Enumeration|BackedEnumeration $union,
-        public readonly Enumeration&BackedEnumeration $intersection,
+        public readonly BackedEnumeration|Enumeration $union,
+        public readonly BackedEnumeration&Enumeration $intersection,
     ) {
     }
 }

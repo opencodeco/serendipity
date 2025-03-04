@@ -15,6 +15,9 @@ use Serendipity\Test\Testing\Stub\Type\BackedEnumeration;
 use Serendipity\Test\Testing\Stub\Type\Enumeration;
 use Serendipity\Test\Testing\Stub\Type\SingleBacked;
 
+/**
+ * @internal
+ */
 final class BackedEnumValueTest extends TestCase
 {
     public function testShouldHandleBackedEnumValue(): void

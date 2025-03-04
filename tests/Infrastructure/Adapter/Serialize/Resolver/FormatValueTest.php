@@ -17,6 +17,9 @@ use Serendipity\Test\Testing\Stub\Type\Intersected;
 use Serendipity\Test\Testing\Stub\Variety;
 use stdClass;
 
+/**
+ * @internal
+ */
 final class FormatValueTest extends TestCase
 {
     public function testFormatValueBuiltinSuccessfully(): void
@@ -97,7 +100,7 @@ final class FormatValueTest extends TestCase
                 true,
                 new NoConstructor(),
                 null,
-                null
+                null,
             ],
             'whatever' => new stdClass(),
         ]);

@@ -7,6 +7,7 @@ use SleekDB\Query;
 use function Hyperf\Support\env;
 use function Serendipity\Type\Cast\toBool;
 use function Serendipity\Type\Cast\toFloat;
+use function Serendipity\Type\Cast\toString;
 
 $connections = [
     'postgres' => [
@@ -89,7 +90,7 @@ $connections = [
         ],
     ],
     'sleek' => [
-        'path' => sprintf('%s/%s', dirname(__DIR__, 2), env('DB_SLEEK_PATH', 'storage/.sleekdb')),
+        'path' => sprintf('%s/%s', dirname(__DIR__, 2), toString(env('DB_SLEEK_PATH', 'storage/.sleekdb'))),
         'configuration' => [
             'auto_cache' => toBool(env('DB_SLEEK_AUTO_CACHE', true)),
             'cache_lifetime' => env('DB_SLEEK_CACHE_LIFETIME'),

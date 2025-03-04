@@ -10,9 +10,9 @@ use stdClass;
 class Union
 {
     public function __construct(
-        public readonly string|int $builtin,
-        public readonly string|int|null $nullable,
-        public readonly stdClass|DateTimeInterface $native,
+        public readonly int|string $builtin,
+        public readonly null|int|string $nullable,
+        public readonly DateTimeInterface|stdClass $native,
     ) {
     }
 }

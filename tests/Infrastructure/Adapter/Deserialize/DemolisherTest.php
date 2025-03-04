@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 
+/**
+ * @internal
+ */
 final class DemolisherTest extends TestCase
 {
     public function testShouldDemolish(): void

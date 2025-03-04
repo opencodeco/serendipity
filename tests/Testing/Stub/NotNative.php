@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Testing\Stub;
 
-
 use Serendipity\Test\Testing\Stub\Type\BackedEnumeration;
 use Serendipity\Test\Testing\Stub\Type\Enumeration;
 

@@ -42,7 +42,7 @@ abstract class Resolver extends Builder
         $this->previous = $previous;
     }
 
-    protected function notResolved(string|array $unresolved, mixed $value = null): Value
+    protected function notResolved(array|string $unresolved, mixed $value = null): Value
     {
         if (is_array($unresolved)) {
             return new Value(new NotResolvedCollection($unresolved, $this->path, $value));

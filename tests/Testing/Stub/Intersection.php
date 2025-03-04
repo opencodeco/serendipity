@@ -9,7 +9,7 @@ use Iterator;
 
 class Intersection
 {
-    public function __construct(public readonly Iterator&Countable $intersected)
+    public function __construct(public readonly Countable&Iterator $intersected)
     {
     }
 }

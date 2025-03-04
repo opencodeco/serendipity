@@ -25,6 +25,9 @@ use Serendipity\Test\Testing\Stub\Union;
 use Serendipity\Test\Testing\Stub\Variety;
 use stdClass;
 
+/**
+ * @internal
+ */
 final class TypeMatchedTest extends TestCase
 {
     public function testTypeMatchedBuiltinSuccessfully(): void
@@ -118,7 +121,7 @@ final class TypeMatchedTest extends TestCase
             'stub' => new Stub(
                 'string',
                 10
-            )
+            ),
         ]);
 
         [

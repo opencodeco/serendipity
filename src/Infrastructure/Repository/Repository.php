@@ -8,11 +8,15 @@ use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
 use Serendipity\Domain\Entity\Entity;
 
+use function Serendipity\Type\Cast\toArray;
+
 abstract class Repository
 {
     /**
      * @template T of Entity
      * @param Serializer<T> $serializer
+     * @param array<array<string,mixed>> $data
+     *
      * @return null|T
      */
     protected function entity(Serializer $serializer, array $data): mixed
@@ -21,13 +25,14 @@ abstract class Repository
             return null;
         }
         /* @phpstan-ignore argument.type */
-        $datum = array_shift($data);
+        $datum = toArray(array_shift($data));
         return $serializer->serialize($datum);
     }
 
     /**
      * @template T of Collection
      * @param class-string<T> $collection
+     * @param array<array<string,mixed>> $data
      *
      * @return T
      */

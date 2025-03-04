@@ -9,6 +9,8 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
 
+use function Serendipity\Type\Cast\toString;
+
 class FormatValue extends ResolverTyped
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
@@ -18,7 +20,7 @@ class FormatValue extends ResolverTyped
             return parent::resolve($parameter, $set);
         }
 
-        $expected = $this->formatTypeName($type);
+        $expected = toString($this->formatTypeName($type));
         $formatter = $this->selectFormatter($expected);
         if ($formatter === null) {
             return parent::resolve($parameter, $set);
@@ -30,7 +32,7 @@ class FormatValue extends ResolverTyped
         $content = $formatter($value, $set);
 
         $resolved = $this->resolveReflectionParameterType($type, $content);
-        return $resolved ??
-            $this->notResolvedAsTypeMismatch($expected, $this->detectValueType($content), $content);
+        return $resolved
+            ?? $this->notResolvedAsTypeMismatch($expected, $this->detectValueType($content), $content);
     }
 }

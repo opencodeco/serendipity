@@ -57,7 +57,7 @@ abstract class Engine
             'NULL' => 'null',
             default => $type,
         };
-        if ($type === 'object') {
+        if ($type === 'object' && is_object($value)) {
             return $value::class;
         }
         return $type;
@@ -75,8 +75,6 @@ abstract class Engine
 
     /**
      * @param array<ReflectionType> $types
-     * @param string $separator
-     * @return string
      */
     private function joinReflectionTypeNames(array $types, string $separator): string
     {

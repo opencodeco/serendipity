@@ -106,9 +106,9 @@ final class BuilderTest extends TestCase
             $messages = [
                 "The value for 'id' must be of type 'int' and 'string' was given.",
                 "The value for 'price' is required and was not given.",
-                "The value for 'more' must be of type 'Serendipity\Test\Testing\Stub\NoConstructor' and 'DateTime' was given.",
-                "The value for 'no' must be of type 'Serendipity\Test\Testing\Stub\NoParameters' and 'string' was given.",
-                "The value for 'enum' must be of type 'Serendipity\Test\Testing\Stub\Type\SingleBacked' and 'bool' was given.",
+                "The value for 'more' must be of type 'Serendipity\\Test\\Testing\\Stub\\NoConstructor' and 'DateTime' was given.",
+                "The value for 'no' must be of type 'Serendipity\\Test\\Testing\\Stub\\NoParameters' and 'string' was given.",
+                "The value for 'enum' must be of type 'Serendipity\\Test\\Testing\\Stub\\Type\\SingleBacked' and 'bool' was given.",
             ];
             foreach ($messages as $message) {
                 if ($this->hasErrorMessage($errors, $message)) {
@@ -189,10 +189,10 @@ final class BuilderTest extends TestCase
         $builder = new Builder(CaseConvention::NONE);
         $this->expectException(AdapterException::class);
         $this->expectExceptionMessage(
-            'Adapter failed with 3 error(s). The errors are: ' .
-            '"The value for \'union\' is required and was not given.", ' .
-            '"The value for \'intersection\' is required and was not given.", ' .
-            '"The value for \'nested\' is required and was not given."'
+            'Adapter failed with 3 error(s). The errors are: '
+            . '"The value for \'union\' is required and was not given.", '
+            . '"The value for \'intersection\' is required and was not given.", '
+            . '"The value for \'nested\' is required and was not given."'
         );
         $builder->build(Variety::class, Set::createFrom($values));
     }
@@ -211,12 +211,12 @@ final class BuilderTest extends TestCase
         $builder = new Builder();
         $this->expectException(AdapterException::class);
         $this->expectExceptionMessage(
-            'Adapter failed with 5 error(s). The errors are: ' .
-            '"The value for \'union\' is required and was not given.", ' .
-            '"The value for \'intersection\' is required and was not given.", ' .
-            '"The value for \'nested.id\' must be of type \'int\' and \'string\' was given.", ' .
-            '"The value for \'nested.isActive\' must be of type \'bool\' and \'int\' was given.", ' .
-            '"The value for \'nested.more\' is required and was not given."'
+            'Adapter failed with 5 error(s). The errors are: '
+            . '"The value for \'union\' is required and was not given.", '
+            . '"The value for \'intersection\' is required and was not given.", '
+            . '"The value for \'nested.id\' must be of type \'int\' and \'string\' was given.", '
+            . '"The value for \'nested.isActive\' must be of type \'bool\' and \'int\' was given.", '
+            . '"The value for \'nested.more\' is required and was not given."'
         );
 
         $builder->build(Variety::class, Set::createFrom($values));
@@ -256,9 +256,9 @@ final class BuilderTest extends TestCase
 
         $this->expectException(AdapterException::class);
         $this->expectExceptionMessage(
-            'Adapter failed with 2 error(s). The errors are: ' .
-            '"The value for \'deepDown.deepDeepDown.stub.more\' is required and was not given.", ' .
-            '"The value for \'deepDown.builtin.float\' must be of type \'float\' and \'string\' was given."'
+            'Adapter failed with 2 error(s). The errors are: '
+            . '"The value for \'deepDown.deepDeepDown.stub.more\' is required and was not given.", '
+            . '"The value for \'deepDown.builtin.float\' must be of type \'float\' and \'string\' was given."'
         );
         $builder = new Builder();
         $builder->build(Deep::class, Set::createFrom($values));
