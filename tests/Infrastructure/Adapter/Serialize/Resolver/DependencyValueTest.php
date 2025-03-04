@@ -125,6 +125,6 @@ final class DependencyValueTest extends TestCase
         [$intersected] = $parameters;
 
         $resolved = $resolver->resolve($intersected, $set);
-        $this->assertInstanceOf(DateTimeInterface::class, $resolved->content);
+        $this->assertInstanceOf(NotResolved::class, $resolved->content);
     }
 }

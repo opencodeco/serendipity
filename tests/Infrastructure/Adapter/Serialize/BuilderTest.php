@@ -166,7 +166,7 @@ final class BuilderTest extends TestCase
             'whatever' => new stdClass(),
         ];
 
-        $mapper = new Builder(CaseConvention::NONE);
+        $mapper = new Builder();
         $instance = $mapper->build(Variety::class, Set::createFrom($values));
 
         $this->assertInstanceOf(Variety::class, $instance);
