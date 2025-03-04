@@ -68,7 +68,7 @@ final class PostgresHelper extends Helper
 
     public function count(string $resource, array $filters): int
     {
-        $callback = static function (string $key, mixed $value) {
+        $callback = static function (string $key, mixed $value): string {
             if ($value === null) {
                 return sprintf('"%s" is null', $key);
             }

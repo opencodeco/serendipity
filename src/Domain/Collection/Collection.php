@@ -23,7 +23,7 @@ abstract class Collection extends AbstractCollection implements Exportable
         return $this->data;
     }
 
-    final public function push(mixed $datum): void
+    final public function push(object $datum): void
     {
         $this->data[] = $this->validate($datum);
     }
