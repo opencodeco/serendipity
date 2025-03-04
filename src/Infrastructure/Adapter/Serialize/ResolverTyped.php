@@ -24,6 +24,9 @@ abstract class ResolverTyped extends Resolver
 
     protected function resolveNamedType(ReflectionNamedType $type, mixed $value): ?Value
     {
+        if ($value === null && $type->allowsNull()) {
+            return new Value($value);
+        }
         $builtin = $type->isBuiltin();
         $actual = $type->getName();
         return ($builtin)

@@ -9,9 +9,11 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\TypeMatched;
 use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
+use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\EntityStub;
 use Serendipity\Test\Testing\Stub\Intersection;
 use Serendipity\Test\Testing\Stub\Native;
@@ -23,6 +25,7 @@ use Serendipity\Test\Testing\Stub\Type\Enumeration;
 use Serendipity\Test\Testing\Stub\Type\Intersected;
 use Serendipity\Test\Testing\Stub\Union;
 use Serendipity\Test\Testing\Stub\Variety;
+use Serendipity\Testing\Extension\FakerExtension;
 use stdClass;
 
 /**
@@ -30,6 +33,9 @@ use stdClass;
  */
 final class TypeMatchedTest extends TestCase
 {
+    use MakeExtension;
+    use FakerExtension;
+
     public function testTypeMatchedBuiltinSuccessfully(): void
     {
         $resolver = new TypeMatched();
@@ -277,5 +283,33 @@ final class TypeMatchedTest extends TestCase
 
         $value = $resolver->resolve($whatever, $set);
         $this->assertInstanceOf(stdClass::class, $value->content);
+    }
+
+    public function testTypeMatchedShouldResolveVNullableFilledWithNull(): void
+    {
+        $resolver = new TypeMatched(path: ['*']);
+        $target = Target::createFrom(Command::class);
+        $parameters = $target->parameters();
+
+        $set = Set::createFrom([
+            'email' => $this->generator()->email(),
+            'first_name' => null,
+            'dob' => null,
+        ]);
+
+        [
+            0 => $email,
+            3 => $firstName,
+            13 => $dob,
+        ] = $parameters;
+
+        $value = $resolver->resolve($email, $set);
+        $this->assertIsString($value->content);
+
+        $value = $resolver->resolve($firstName, $set);
+        $this->assertNull($value->content);
+
+        $value = $resolver->resolve($dob, $set);
+        $this->assertNull($value->content);
     }
 }
