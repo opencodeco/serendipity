@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Adapter\Deserialize;
 
+use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
@@ -38,7 +39,10 @@ class Demolisher extends Engine
     public function extractValues(object $instance): array
     {
         if ($instance instanceof Message) {
-            return toArray($instance->content() ?? []);
+            return toArray($instance->content());
+        }
+        if ($instance instanceof Exportable) {
+            return toArray($instance->export());
         }
         return get_object_vars($instance);
     }

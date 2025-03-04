@@ -51,7 +51,7 @@ class Builder extends Engine
         $target = Target::createFrom($class);
         $parameters = $target->parameters();
         if (empty($parameters)) {
-            /** @phpstan-ignore return.type */
+            /* @phpstan-ignore return.type */
             return $target->reflection()->newInstance();
         }
 
@@ -60,7 +60,7 @@ class Builder extends Engine
         $this->resolveFormula($formula, $parameters, $set, $path);
 
         if (empty($formula->errors())) {
-            /** @phpstan-ignore return.type */
+            /* @phpstan-ignore return.type */
             return $target->reflection()->newInstanceArgs($formula->args());
         }
         throw new AdapterException($set, $formula->errors());

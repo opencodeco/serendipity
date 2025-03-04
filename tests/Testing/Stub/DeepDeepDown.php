@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Testing\Stub;
 
-final class DeepDeepDown
+final readonly class DeepDeepDown
 {
     public function __construct(
-        public readonly EntityStub $stub,
-        public readonly Builtin $builtin,
+        public EntityStub $stub,
+        public Builtin $builtin,
     ) {
     }
 }

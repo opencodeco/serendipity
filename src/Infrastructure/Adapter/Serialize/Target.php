@@ -11,17 +11,17 @@ use ReflectionParameter;
 /**
  * @template T of object
  */
-final class Target
+final readonly class Target
 {
     public function __construct(
         /**
          * @var ReflectionClass<T> $reflection
          */
-        private readonly ReflectionClass $reflection,
+        private ReflectionClass $reflection,
         /**
          * @var array<ReflectionParameter> $parameters
          */
-        private readonly array $parameters = [],
+        private array $parameters = [],
     ) {
     }
 
