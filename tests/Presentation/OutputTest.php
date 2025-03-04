@@ -23,6 +23,7 @@ class OutputTest extends TestCase
     {
         $output = new Output(null, ['foo' => 'bar']);
         $this->assertEquals(['foo' => 'bar'], $output->properties()->toArray());
+        $this->assertEquals($output->toArray()['properties'], $output->properties()->toArray());
         $this->assertEquals('bar', $output->property('foo'));
     }
 
@@ -30,5 +31,6 @@ class OutputTest extends TestCase
     {
         $output = new Output(content: ['foo' => 'bar'], properties: ['foo' => 'bar']);
         $this->assertEquals(['foo' => 'bar'], $output->content());
+        $this->assertEquals($output->toArray()['content'], $output->content());
     }
 }

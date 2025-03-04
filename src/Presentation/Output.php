@@ -32,4 +32,12 @@ class Output implements Message
     {
         return $this->content;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'properties' => $this->properties->toArray(),
+            'content' => $this->content,
+        ];
+    }
 }
