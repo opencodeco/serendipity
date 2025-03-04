@@ -29,7 +29,7 @@ class Input extends HyperfFormRequest implements Message
          */
         protected readonly array $rules = [],
         /**
-         * @var array<string, callable(): mixed>
+         * @var array<string, callable(mixed $value): mixed>
          */
         protected readonly array $mappings = [],
         protected readonly bool $authorize = true,
@@ -62,7 +62,7 @@ class Input extends HyperfFormRequest implements Message
     }
 
     /**
-     * @return array<string, callable(): mixed>
+     * @return array<string, callable(mixed $value): mixed>
      */
     protected function mappings(): array
     {
@@ -109,6 +109,7 @@ class Input extends HyperfFormRequest implements Message
             $value = $formatter($previous);
             data_set($mapped, $target, $value);
         }
+        /* @phpstan-ignore return.type */
         return $mapped;
     }
 
