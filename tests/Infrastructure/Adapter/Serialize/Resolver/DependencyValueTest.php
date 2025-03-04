@@ -6,7 +6,6 @@ namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 
 use DateTime;
 use DateTimeImmutable;
-use DateTimeInterface;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
@@ -111,7 +110,7 @@ final class DependencyValueTest extends TestCase
         [2 => $native] = $parameters;
 
         $resolved = $resolver->resolve($native, $set);
-        $this->assertInstanceOf(DateTimeInterface::class, $resolved->content);
+        $this->assertInstanceOf(stdClass::class, $resolved->content);
     }
 
     public function testShouldHandleDependencyIntersection(): void

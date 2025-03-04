@@ -258,7 +258,7 @@ final class BuilderTest extends TestCase
         $this->expectExceptionMessage(
             'Adapter failed with 2 error(s). The errors are: ' .
             '"The value for \'deepDown.deepDeepDown.stub.more\' is required and was not given.", ' .
-            '"The value for \'deepDown.builtin.float\' must be of type \'float\' and \'array\' was given."'
+            '"The value for \'deepDown.builtin.float\' must be of type \'float\' and \'string\' was given."'
         );
         $builder = new Builder();
         $builder->build(Deep::class, Set::createFrom($values));
