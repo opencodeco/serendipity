@@ -25,7 +25,7 @@ class Input extends HyperfFormRequest implements Message
         Set $properties = new Set([]),
         Set $values = new Set([]),
         /**
-         * @var array<string, string|array>
+         * @var array<string, array|string>
          */
         protected readonly array $rules = [],
         /**
@@ -43,7 +43,7 @@ class Input extends HyperfFormRequest implements Message
     }
 
     /**
-     * @return array<string, string|array>
+     * @return array<string, array|string>
      */
     public function rules(): array
     {
@@ -93,7 +93,7 @@ class Input extends HyperfFormRequest implements Message
         return $params;
     }
 
-    protected function extractMapped(array $data): array
+    private function extractMapped(array $data): array
     {
         $mappings = $this->mappings();
         $mapped = [];
