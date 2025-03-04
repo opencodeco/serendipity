@@ -88,6 +88,7 @@ final class PostgresHelper extends Helper
             return 0;
         }
         $data = toArray(array_shift($result));
-        return (int) ($data['count'] ?? 0);
+        $count = $data['count'] ?? 0;
+        return (int) $count;
     }
 }
