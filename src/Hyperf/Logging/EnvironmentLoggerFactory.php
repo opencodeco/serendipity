@@ -20,9 +20,11 @@ readonly class EnvironmentLoggerFactory
     ) {
     }
 
-    public function make(string $env = 'dev'): LoggerInterface
-    {
-        if ($env === 'dev') {
+    public function make(
+        string $env = 'dev',
+        array $production = ['prd', 'hom', 'liv', 'stg'],
+    ): LoggerInterface {
+        if (! in_array($env, $production, true)) {
             return $this->stdoutLogger;
         }
 
