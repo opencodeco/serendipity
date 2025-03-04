@@ -26,7 +26,9 @@ final readonly class Target
     }
 
     /**
-     * @param class-string<T> $class
+     * @template U of object
+     * @param class-string<U> $class
+     * @return Target<U>
      * @throws ReflectionException
      */
     public static function createFrom(string $class): Target
