@@ -10,6 +10,7 @@ use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Input;
 use Serendipity\Test\Testing\ExtensibleTestCase;
 use Serendipity\Testing\Extension\FakerExtension;
+use UnexpectedValueException;
 
 /**
  * @internal
@@ -134,5 +135,91 @@ final class InputTest extends ExtensibleTestCase
     {
         $input = $this->make(Input::class, ['values' => Set::createFrom(['test' => 'cool'])]);
         $this->assertEquals('cool', $input->input('test'));
+    }
+
+    public function testShouldUseMappingsToGetValues(): void
+    {
+        $mappings = [
+            'source.0.field:name' => 'strtoupper',
+            'source.1.field:description' => fn (mixed $value) => sprintf('cool: %s', $value),
+            'deep.deep.down:not_found' => 'trim',
+        ];
+        $parsedBody = [
+            'source' => [
+                [
+                    'field' => 'my value',
+                ],
+                [
+                    'field' => 'nice',
+                ],
+            ],
+        ];
+        $rules = [
+            'name' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ];
+        $args = [
+            'rules' => $rules,
+            'mappings' => $mappings,
+        ];
+        $input = $this->input(class: Input::class, parsedBody: $parsedBody, args: $args);
+
+        $actual = $input->value('name');
+        $this->assertEquals('MY VALUE', $actual);
+
+        $actual = $input->value('description');
+        $this->assertEquals('cool: nice', $actual);
+    }
+
+    public function testShouldRaiseErrorOnMappingsSetupMisconfiguration(): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage("Mapping left side (setup) must be a string, got 'integer'");
+
+        $mappings = [
+            fn (mixed $value) => sprintf('cool: %s', $value),
+        ];
+        $parsedBody = [
+            'source' => [
+                0 => [
+                    'field' => 'My value',
+                ],
+            ],
+        ];
+        $rules = [
+            'target' => ['required', 'string'],
+        ];
+        $args = [
+            'rules' => $rules,
+            'mappings' => $mappings,
+        ];
+        $input = $this->input(class: Input::class, parsedBody: $parsedBody, args: $args);
+        $input->values();
+    }
+
+    public function testShouldRaiseErrorOnMappingsFormatterMisconfiguration(): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage("Mapping right side (formatter) must be a callable, got 'string'");
+
+        $mappings = [
+            'source.0.field:target' => 'not a callable',
+        ];
+        $parsedBody = [
+            'source' => [
+                0 => [
+                    'field' => 'My value',
+                ],
+            ],
+        ];
+        $rules = [
+            'target' => ['required', 'string'],
+        ];
+        $args = [
+            'rules' => $rules,
+            'mappings' => $mappings,
+        ];
+        $input = $this->input(class: Input::class, parsedBody: $parsedBody, args: $args);
+        $input->values();
     }
 }

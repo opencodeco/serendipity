@@ -50,12 +50,13 @@ trait InputExtension
         array $queryParams = [],
         array $params = [],
         array $headers = [],
+        array $args = [],
         string $method = 'POST',
         string $uri = '/',
     ): mixed {
         if ($this->isRequestSetUp) {
             $this->setUpRequestContext($parsedBody, $queryParams, $params, $headers, $method, $uri);
-            return $this->make($class);
+            return $this->make($class, $args);
         }
         static::fail('Request is not set up.');
     }
