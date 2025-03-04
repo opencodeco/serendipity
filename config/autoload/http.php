@@ -6,6 +6,7 @@ use Serendipity\Presentation\Output\Accepted;
 use Serendipity\Presentation\Output\Created;
 use Serendipity\Presentation\Output\NoContent;
 use Serendipity\Presentation\Output\NotFound;
+use Serendipity\Presentation\Output\Ok;
 
 use function Hyperf\Support\env;
 
@@ -20,6 +21,9 @@ return [
         ],
     ],
     'result' => [
+        Ok::class => [
+            'status' => 200,
+        ],
         Created::class => [
             'status' => 201,
         ],
