@@ -24,6 +24,7 @@ return static function (RectorConfig $config): void {
     $config->skip([
         ClassPropertyAssignToConstructorPromotionRector::class => [
             __DIR__ . '/tests/Infrastructure/Adapter/Serialize/BuilderTestStubEdgeCase.php',
+            __DIR__ . '/tests/Testing/Stub/Variety.php',
         ],
     ]);
 

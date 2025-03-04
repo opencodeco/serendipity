@@ -42,7 +42,7 @@ class Demolisher extends Engine
             return toArray($instance->content());
         }
         if ($instance instanceof Exportable) {
-            return toArray($instance->export());
+            return (array) $instance->export();
         }
         return get_object_vars($instance);
     }

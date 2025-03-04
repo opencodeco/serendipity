@@ -7,7 +7,7 @@ namespace Serendipity\Test\Testing\Stub;
 final readonly class Deep
 {
     public function __construct(
-        public string $what,
+        public mixed $what,
         public DeepDown $deepDown
     ) {
     }

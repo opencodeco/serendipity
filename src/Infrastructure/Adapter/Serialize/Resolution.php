@@ -8,7 +8,7 @@ use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\Adapter\NotResolvedCollection;
 use Serendipity\Domain\Support\Value;
 
-class Formula
+class Resolution
 {
     /**
      * @var array mixed[]
@@ -20,7 +20,7 @@ class Formula
      */
     private array $errors = [];
 
-    public function compute(Value $value): void
+    public function add(Value $value): void
     {
         if ($value->content instanceof NotResolved) {
             $this->errors[] = $value->content;

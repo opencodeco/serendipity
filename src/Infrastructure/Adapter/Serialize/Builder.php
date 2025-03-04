@@ -55,22 +55,22 @@ class Builder extends Engine
             return $target->reflection()->newInstance();
         }
 
-        $formula = new Formula();
+        $resolution = new Resolution();
 
-        $this->resolveFormula($formula, $parameters, $set, $path);
+        $this->resolveFormula($resolution, $parameters, $set, $path);
 
-        if (empty($formula->errors())) {
+        if (empty($resolution->errors())) {
             /* @phpstan-ignore return.type */
-            return $target->reflection()->newInstanceArgs($formula->args());
+            return $target->reflection()->newInstanceArgs($resolution->args());
         }
-        throw new AdapterException($set, $formula->errors());
+        throw new AdapterException($set, $resolution->errors());
     }
 
     /**
      * @param array<ReflectionParameter> $parameters
      * @param array<string> $path
      */
-    private function resolveFormula(Formula $formula, array $parameters, Set $set, array $path): void
+    private function resolveFormula(Resolution $resolution, array $parameters, Set $set, array $path): void
     {
         foreach ($parameters as $parameter) {
             $case = $this->case;
@@ -84,7 +84,7 @@ class Builder extends Engine
                 ->then(new NoValue(case: $case, path: $local))
                 ->resolve($parameter, $set);
 
-            $formula->compute($resolved);
+            $resolution->add($resolved);
         }
     }
 }

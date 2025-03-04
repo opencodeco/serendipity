@@ -33,6 +33,9 @@ abstract class ResolverTyped extends Resolver
 
     protected function resolveNamedTypeBuiltin(string $expected, mixed $value): ?Value
     {
+        if ($expected === 'mixed') {
+            return new Value($value);
+        }
         $actual = $this->detectValueType($value);
         return ($expected === $actual)
             ? new Value($value)
