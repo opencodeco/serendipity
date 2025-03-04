@@ -9,6 +9,8 @@ use Hyperf\DB\DB as Database;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
 
+use function get_object_vars;
+use function is_object;
 use function Serendipity\Type\Cast\toArray;
 use function Serendipity\Type\Cast\toInt;
 
@@ -73,7 +75,11 @@ class HyperfDatabase implements RelationalDatabase
      */
     public function fetch(string $query, array $bindings = []): Set
     {
-        return Set::createFrom($this->database->fetch($query, $bindings) ?? []);
+        $data = $this->database->fetch($query, $bindings);
+        if (is_object($data)) {
+            $data = get_object_vars($data);
+        }
+        return Set::createFrom(toArray($data));
     }
 
     /**

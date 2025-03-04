@@ -6,17 +6,26 @@ namespace Serendipity\Infrastructure\Adapter\Serialize;
 
 use ReflectionClass;
 use ReflectionException;
+use ReflectionParameter;
 
+/**
+ * @template T of object
+ */
 final class Target
 {
     public function __construct(
+        /**
+         * @var ReflectionClass<T> $reflection
+         */
         private readonly ReflectionClass $reflection,
+        /**
+         * @var array<ReflectionParameter> $parameters
+         */
         private readonly array $parameters = [],
     ) {
     }
 
     /**
-     * @template T of object
      * @param class-string<T> $class
      * @throws ReflectionException
      */
@@ -27,11 +36,17 @@ final class Target
         return new Target($reflection, $constructor?->getParameters() ?? []);
     }
 
+    /**
+     * @return ReflectionClass<T>
+     */
     public function reflection(): ReflectionClass
     {
         return $this->reflection;
     }
 
+    /**
+     * @return array<ReflectionParameter>
+     */
     public function parameters(): array
     {
         return $this->parameters;

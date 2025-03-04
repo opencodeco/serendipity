@@ -21,6 +21,7 @@ class Builder extends Engine
     /**
      * @template T of object
      * @param class-string<T> $class
+     * @param array<string> $path
      *
      * @return T
      * @throws AdapterException
@@ -39,6 +40,7 @@ class Builder extends Engine
     /**
      * @template T of object
      * @param class-string<T> $class
+     * @param array<string> $path
      *
      * @return T
      * @throws ReflectionException
@@ -49,6 +51,7 @@ class Builder extends Engine
         $target = Target::createFrom($class);
         $parameters = $target->parameters();
         if (empty($parameters)) {
+            /** @phpstan-ignore return.type */
             return $target->reflection()->newInstance();
         }
 
@@ -57,6 +60,7 @@ class Builder extends Engine
         $this->resolveFormula($formula, $parameters, $set, $path);
 
         if (empty($formula->errors())) {
+            /** @phpstan-ignore return.type */
             return $target->reflection()->newInstanceArgs($formula->args());
         }
         throw new AdapterException($set, $formula->errors());
@@ -64,6 +68,7 @@ class Builder extends Engine
 
     /**
      * @param array<ReflectionParameter> $parameters
+     * @param array<string> $path
      */
     private function resolveFormula(Formula $formula, array $parameters, Set $set, array $path): void
     {

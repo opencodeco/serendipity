@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Database\Relational;
 
 use Closure;
+use Serendipity\Domain\Support\Set;
 
 interface RelationalDatabase
 {
@@ -18,9 +19,12 @@ interface RelationalDatabase
 
     public function execute(string $query, array $bindings = []): int;
 
+    /**
+     * @return array<array<string, mixed>>
+     */
     public function query(string $query, array $bindings = []): array;
 
-    public function fetch(string $query, array $bindings = []): mixed;
+    public function fetch(string $query, array $bindings = []): Set;
 
     public function run(Closure $closure): void;
 }

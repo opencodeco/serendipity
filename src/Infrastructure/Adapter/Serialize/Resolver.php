@@ -18,6 +18,9 @@ abstract class Resolver extends Builder
     public function __construct(
         CaseConvention $case = CaseConvention::SNAKE,
         array $formatters = [],
+        /**
+         * @var array<string>
+         */
         protected readonly array $path = [],
     ) {
         parent::__construct($case, $formatters);
@@ -42,6 +45,9 @@ abstract class Resolver extends Builder
         $this->previous = $previous;
     }
 
+    /**
+     * @param array<NotResolved>|string $unresolved
+     */
     protected function notResolved(array|string $unresolved, mixed $value = null): Value
     {
         if (is_array($unresolved)) {

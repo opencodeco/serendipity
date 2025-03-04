@@ -67,7 +67,7 @@ class DependencyValue extends ResolverTyped
     {
         $builtin = $type->isBuiltin();
         $class = $type->getName();
-        if ($builtin || ! class_exists($class) || enum_exists($class)) {
+        if (! class_exists($class) || $this->isNotResolvable($class, $builtin)) {
             return null;
         }
         if ($value instanceof $class) {
@@ -97,6 +97,8 @@ class DependencyValue extends ResolverTyped
     }
 
     /**
+     * @template T of object
+     * @param class-string<T> $class
      * @throws ReflectionException
      */
     private function resolveNamedTypeClass(string $class, mixed $value): ?Value
@@ -112,5 +114,10 @@ class DependencyValue extends ResolverTyped
         } catch (AdapterException $exception) {
             return $this->notResolved($exception->getUnresolved(), $value);
         }
+    }
+
+    private function isNotResolvable(string $class, bool $builtin): bool
+    {
+        return $builtin || enum_exists($class);
     }
 }

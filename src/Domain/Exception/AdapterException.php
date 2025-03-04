@@ -16,11 +16,11 @@ use function sprintf;
 
 final class AdapterException extends InvalidArgumentException
 {
-    /**
-     * @param array<NotResolved> $unresolved
-     */
     public function __construct(
         public readonly Set $values,
+        /**
+         * @var NotResolved[] $unresolved
+         */
         private readonly array $unresolved = [],
         ?Throwable $error = null,
     ) {
@@ -30,13 +30,16 @@ final class AdapterException extends InvalidArgumentException
         );
     }
 
+    /**
+     * @return NotResolved[]
+     */
     public function getUnresolved(): array
     {
         return $this->unresolved;
     }
 
     /**
-     * @param array<NotResolved> $notResolved
+     * @param NotResolved[] $notResolved
      */
     private function extractMessageFrom(array $notResolved, ?Throwable $error = null): string
     {
@@ -51,8 +54,8 @@ final class AdapterException extends InvalidArgumentException
     }
 
     /**
-     * @param array<NotResolved> $errors
-     * @return array|string[]
+     * @param NotResolved[] $errors
+     * @return string[]
      */
     private function merge(array $errors): array
     {
