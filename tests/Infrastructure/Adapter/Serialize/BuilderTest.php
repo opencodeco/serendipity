@@ -9,14 +9,17 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
+use Serendipity\Test\Testing\Stub\Deep;
 use Serendipity\Test\Testing\Stub\EntityStub;
 use Serendipity\Test\Testing\Stub\NoConstructor;
 use Serendipity\Test\Testing\Stub\Type\Intersected;
 use Serendipity\Test\Testing\Stub\Type\SingleBacked;
 use Serendipity\Test\Testing\Stub\Variety;
+use Serendipity\Testing\Extension\FakerExtension;
 use stdClass;
 
 use function Serendipity\Type\Json\encode;
@@ -26,6 +29,9 @@ use function Serendipity\Type\Json\encode;
  */
 final class BuilderTest extends TestCase
 {
+    use MakeExtension;
+    use FakerExtension;
+
     public function testMapWithValidValues(): void
     {
         $entityClass = EntityStub::class;
@@ -214,6 +220,48 @@ final class BuilderTest extends TestCase
         );
 
         $builder->build(Variety::class, Set::createFrom($values));
+    }
+
+    public function testShouldBuildDeepDown(): void
+    {
+        $generator = $this->generator();
+        $values = [
+            'what' => $generator->word(),
+            'deep_down' => [
+                'deep_deep_down' => [
+                    'stub' => [
+                        'id' => $generator->numberBetween(1, 100),
+                        'price' => $generator->randomFloat(),
+                        'name' => $generator->name(),
+                        'is_active' => $generator->boolean(),
+                    ],
+                    'builtin' => [
+                        $generator->word(),
+                        $generator->numberBetween(1, 100),
+                        $generator->randomFloat(),
+                        $generator->boolean(),
+                        $generator->words(),
+                    ],
+                ],
+                'builtin' => [
+                    $generator->word(),
+                    $generator->numberBetween(1, 100),
+                    $generator->word(),
+                    $generator->boolean(),
+                    $generator->words(),
+                    null,
+                ],
+            ],
+        ];
+
+        $this->expectException(AdapterException::class);
+        $this->expectExceptionMessage(
+            'Adapter failed with 2 error(s). The errors are: ' .
+            '"The value for \'deepDown.deepDeepDown.stub.more\' is required and was not given.", ' .
+            '"The value for \'deepDown.builtin.float\' must be of type \'float\' and \'array\' was given."'
+        );
+        $builder = new Builder();
+        $builder->build(Deep::class, Set::createFrom($values));
     }
 
     private function hasErrorMessage(array $errors, string $message): bool
