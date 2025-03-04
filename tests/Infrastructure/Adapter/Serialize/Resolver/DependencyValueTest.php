@@ -106,7 +106,7 @@ final class DependencyValueTest extends TestCase
         $target = Target::createFrom(Union::class);
         $parameters = $target->parameters();
 
-        $set = Set::createFrom(['native' => new DateTimeImmutable()]);
+        $set = Set::createFrom(['native' => new stdClass()]);
 
         [2 => $native] = $parameters;
 

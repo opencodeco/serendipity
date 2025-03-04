@@ -65,8 +65,9 @@ class DependencyValue extends ResolverTyped
      */
     protected function resolveNamedType(ReflectionNamedType $type, mixed $value): ?Value
     {
+        $builtin = $type->isBuiltin();
         $class = $type->getName();
-        if (! $this->isResolvable($type, $value)) {
+        if ($builtin || ! class_exists($class) || enum_exists($class)) {
             return null;
         }
         if ($value instanceof $class) {
@@ -111,21 +112,5 @@ class DependencyValue extends ResolverTyped
             }
         }
         return Set::createFrom($values);
-    }
-
-    private function isResolvable(ReflectionNamedType $type, mixed $value): bool
-    {
-        $builtin = $type->isBuiltin();
-        if ($builtin) {
-            return false;
-        }
-        $class = $type->getName();
-        $implements = interface_exists($class)
-            ? array_values(class_implements($value))
-            : [];
-        if (in_array($class, $implements, true)) {
-            return true;
-        }
-        return (! class_exists($class) || enum_exists($class));
     }
 }
