@@ -23,18 +23,18 @@ abstract class Resolver extends Builder
         parent::__construct($case, $formatters);
     }
 
-    final public function then(Resolver $chain): Resolver
-    {
-        $chain->previous($this);
-        return $chain;
-    }
-
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
         if (isset($this->previous)) {
             return $this->previous->resolve($parameter, $set);
         }
         return $this->notResolvedAsInvalid($set->get($this->casedName($parameter)));
+    }
+
+    final public function then(Resolver $chain): Resolver
+    {
+        $chain->previous($this);
+        return $chain;
     }
 
     protected function previous(Resolver $previous): void

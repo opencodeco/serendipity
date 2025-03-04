@@ -37,24 +37,26 @@ class Builder extends Engine
     }
 
     /**
-     * @template T of object
-     * @param class-string<T> $class
+     * @template Generic of object
+     * @param class-string<Generic> $class
      *
-     * @return T
+     * @return Generic
      * @throws ReflectionException
      */
     protected function make(string $class, Set $set, array $path = []): mixed
     {
         $target = Target::createFrom($class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
         if (empty($parameters)) {
-            return new $class();
+            return $target->reflection()->newInstance();
         }
 
         $formula = new Formula();
+
         $this->resolveFormula($formula, $parameters, $set, $path);
+
         if (empty($formula->errors())) {
-            return $target->reflection->newInstanceArgs($formula->args());
+            return $target->reflection()->newInstanceArgs($formula->args());
         }
         throw new AdapterException($set, $formula->errors());
     }

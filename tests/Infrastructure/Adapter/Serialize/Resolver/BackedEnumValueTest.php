@@ -21,7 +21,7 @@ final class BackedEnumValueTest extends TestCase
     {
         $resolver = new BackedEnumValue();
         $target = Target::createFrom(NotNative::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(3, $parameters);
 
@@ -46,7 +46,7 @@ final class BackedEnumValueTest extends TestCase
     {
         $resolver = new BackedEnumValue();
         $target = Target::createFrom(NotNative::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(3, $parameters);
 
@@ -75,7 +75,7 @@ final class BackedEnumValueTest extends TestCase
     {
         $resolver = new BackedEnumValue();
         $target = Target::createFrom(EnumVariety::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(4, $parameters);
 
@@ -110,7 +110,7 @@ final class BackedEnumValueTest extends TestCase
     {
         $resolver = new BackedEnumValue();
         $target = Target::createFrom(NotNative::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(3, $parameters);
 

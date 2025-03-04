@@ -17,7 +17,7 @@ final class ValidateValueTest extends TestCase
     {
         $resolver = new ValidateValue(path: ['string']);
         $target = Target::createFrom(Builtin::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(6, $parameters);
 
@@ -34,7 +34,7 @@ final class ValidateValueTest extends TestCase
     {
         $resolver = new ValidateValue(path: ['int']);
         $target = Target::createFrom(Builtin::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(6, $parameters);
 

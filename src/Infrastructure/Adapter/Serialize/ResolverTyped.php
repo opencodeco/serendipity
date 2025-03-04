@@ -31,10 +31,10 @@ abstract class ResolverTyped extends Resolver
             : $this->resolveNamedTypeInstanceOf($actual, $value);
     }
 
-    protected function resolveNamedTypeBuiltin(string $actual, mixed $value): ?Value
+    protected function resolveNamedTypeBuiltin(string $expected, mixed $value): ?Value
     {
-        $current = $this->detectValueType($value);
-        return ($actual === $current)
+        $actual = $this->detectValueType($value);
+        return ($expected === $actual)
             ? new Value($value)
             : null;
     }

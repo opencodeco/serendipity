@@ -159,7 +159,7 @@ final class BuilderTest extends TestCase
                 'id' => 1,
                 'price' => 19.99,
                 'name' => 'Test',
-                'isActive' => true,
+                'is_active' => true,
                 'more' => new NoConstructor(),
                 'tags' => ['tag1', 'tag2'],
             ],
@@ -198,11 +198,11 @@ final class BuilderTest extends TestCase
                 'id' => '1',
                 'price' => 19.99,
                 'name' => 'Test',
-                'isActive' => 1,
+                'is_active' => 1,
             ],
         ];
 
-        $builder = new Builder(CaseConvention::NONE);
+        $builder = new Builder();
         $this->expectException(AdapterException::class);
         $this->expectExceptionMessage(
             'Adapter failed with 5 error(s). The errors are: ' .

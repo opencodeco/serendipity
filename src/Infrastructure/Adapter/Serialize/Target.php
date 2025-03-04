@@ -10,8 +10,8 @@ use ReflectionException;
 final class Target
 {
     public function __construct(
-        public readonly ReflectionClass $reflection,
-        public readonly array $parameters = [],
+        private readonly ReflectionClass $reflection,
+        private readonly array $parameters = [],
     ) {
     }
 
@@ -26,5 +26,15 @@ final class Target
         $reflection = new ReflectionClass($class);
         $constructor = $reflection->getConstructor();
         return new Target($reflection, $constructor?->getParameters() ?? []);
+    }
+
+    public function reflection(): ReflectionClass
+    {
+        return $this->reflection;
+    }
+
+    public function parameters(): array
+    {
+        return $this->parameters;
     }
 }

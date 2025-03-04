@@ -15,11 +15,11 @@ class FormatterChain extends Chain
     public function resolve(mixed $value): Value
     {
         $type = $this->extractType($value);
-        $conversor = $this->selectFormatter($type);
-        if ($conversor === null) {
+        $formatter = $this->selectFormatter($type);
+        if ($formatter === null) {
             return parent::resolve($value);
         }
-        return new Value($conversor($value));
+        return new Value($formatter($value));
     }
 
     private function extractType(mixed $value): string

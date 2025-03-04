@@ -31,7 +31,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Builtin::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(6, $parameters);
 
@@ -76,7 +76,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Native::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(5, $parameters);
 
@@ -108,7 +108,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(NotNative::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(3, $parameters);
 
@@ -141,7 +141,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Intersection::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(1, $parameters);
 
@@ -159,7 +159,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Union::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(3, $parameters);
 
@@ -189,7 +189,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Intersection::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(1, $parameters);
 
@@ -204,7 +204,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Intersection::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(1, $parameters);
 
@@ -221,7 +221,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Union::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $set = Set::createFrom([
             'builtin' => true,
@@ -237,7 +237,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Variety::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(4, $parameters);
 

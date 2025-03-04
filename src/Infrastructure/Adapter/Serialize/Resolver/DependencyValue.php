@@ -20,6 +20,7 @@ use function array_key_exists;
 use function class_exists;
 use function count;
 use function enum_exists;
+use function interface_exists;
 use function Serendipity\Type\Cast\toArray;
 
 class DependencyValue extends ResolverTyped
@@ -39,11 +40,8 @@ class DependencyValue extends ResolverTyped
     /**
      * @throws ReflectionException
      */
-    final protected function resolveDependencyValue(
-        ReflectionParameter $parameter,
-        Set $set,
-        string $field
-    ): Value {
+    final protected function resolveDependencyValue(ReflectionParameter $parameter, Set $set, string $field): Value
+    {
         $type = $parameter->getType();
         $value = $set->get($field);
         $resolved = $this->resolveReflectionParameterType($type, $value);
@@ -70,7 +68,7 @@ class DependencyValue extends ResolverTyped
     {
         $builtin = $type->isBuiltin();
         $class = $type->getName();
-        if ($builtin || ! class_exists($class) || enum_exists($class)) {
+        if ($builtin || (! interface_exists($class) && ! class_exists($class)) || enum_exists($class)) {
             return null;
         }
         if ($value instanceof $class) {
@@ -84,8 +82,7 @@ class DependencyValue extends ResolverTyped
      */
     private function resolveNamedTypeClass(string $class, mixed $value): ?Value
     {
-        $target = Target::createFrom($class);
-        $parameters = $target->parameters;
+        $parameters = Target::createFrom($class)->parameters();
         if ($value !== null && count($parameters) === 0) {
             return null;
         }

@@ -16,7 +16,7 @@ final class NoValueTest extends TestCase
     {
         $resolver = new NoValue();
         $target = Target::createFrom(NullableAndOptional::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(3, $parameters);
 

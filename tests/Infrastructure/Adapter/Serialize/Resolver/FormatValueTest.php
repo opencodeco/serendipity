@@ -38,7 +38,7 @@ final class FormatValueTest extends TestCase
         ];
         $resolver = new FormatValue(formatters: $formatters, path: ['*']);
         $target = Target::createFrom(Builtin::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(6, $parameters);
 
@@ -83,7 +83,7 @@ final class FormatValueTest extends TestCase
         ];
         $resolver = new FormatValue(formatters: $formatters, path: ['*']);
         $target = Target::createFrom(Variety::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $this->assertCount(4, $parameters);
 

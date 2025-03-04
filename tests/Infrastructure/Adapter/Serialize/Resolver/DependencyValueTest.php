@@ -6,6 +6,8 @@ namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Set;
@@ -16,8 +18,10 @@ use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\Complex;
 use Serendipity\Test\Testing\Stub\EntityStub;
+use Serendipity\Test\Testing\Stub\Intersection;
 use Serendipity\Test\Testing\Stub\Native;
 use Serendipity\Test\Testing\Stub\NoConstructor;
+use Serendipity\Test\Testing\Stub\Union;
 use Serendipity\Testing\Extension\FakerExtension;
 use stdClass;
 
@@ -26,15 +30,15 @@ final class DependencyValueTest extends TestCase
     use MakeExtension;
     use FakerExtension;
 
-    public function testShouldHandleDependency(): void
+    #[TestWith(['2021-01-01'])]
+    #[TestWith([new DateTimeImmutable('2021-01-01')])]
+    public function testShouldHandleDependency(mixed $value): void
     {
         $resolver = new DependencyValue();
         $target = Target::createFrom(Command::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
-        $set = Set::createFrom([
-            'signup_date' => '2021-01-01',
-        ]);
+        $set = Set::createFrom(['signup_date' => $value]);
 
         [
             2 => $signupDate,
@@ -52,7 +56,7 @@ final class DependencyValueTest extends TestCase
     {
         $resolver = new DependencyValue();
         $target = Target::createFrom(Complex::class);
-        $parameters = $target->parameters;
+        $parameters = $target->parameters();
 
         $generator = $this->generator();
         $set = Set::createFrom([
@@ -94,5 +98,33 @@ final class DependencyValueTest extends TestCase
 
         $resolved = $resolver->resolve($builtin, $set);
         $this->assertInstanceOf(Builtin::class, $resolved->content);
+    }
+
+    public function testShouldHandleDependencyUnion(): void
+    {
+        $resolver = new DependencyValue();
+        $target = Target::createFrom(Union::class);
+        $parameters = $target->parameters();
+
+        $set = Set::createFrom(['native' => new DateTimeImmutable()]);
+
+        [2 => $native] = $parameters;
+
+        $resolved = $resolver->resolve($native, $set);
+        $this->assertInstanceOf(DateTimeInterface::class, $resolved->content);
+    }
+
+    public function testShouldHandleDependencyIntersection(): void
+    {
+        $resolver = new DependencyValue();
+        $target = Target::createFrom(Intersection::class);
+        $parameters = $target->parameters();
+
+        $set = Set::createFrom(['intersected' => null]);
+
+        [$intersected] = $parameters;
+
+        $resolved = $resolver->resolve($intersected, $set);
+        $this->assertInstanceOf(DateTimeInterface::class, $resolved->content);
     }
 }
