@@ -7,6 +7,7 @@ services:
     environment:
       - SCAN_CACHEABLE=false
       - STDOUT_LOG_LEVEL=alert,critical,emergency,error,warning,notice,info,debug
+      - SONAR_TOKEN=${SONAR_TOKEN:-undefined}
     networks:
       - serendipity-network
     restart: on-failure
