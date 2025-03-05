@@ -7,6 +7,7 @@ namespace Serendipity\Infrastructure\Adapter\Serialize;
 use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
+use Serendipity\Domain\Support\Metaprogramming;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;
@@ -16,7 +17,7 @@ use Serendipity\Infrastructure\Adapter\Serialize\Resolver\TypeMatched;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\ValidateValue;
 use Throwable;
 
-class Builder extends Engine
+class Builder extends Metaprogramming
 {
     /**
      * @template T of object
@@ -57,7 +58,7 @@ class Builder extends Engine
 
         $resolution = new Resolution();
 
-        $this->resolveFormula($resolution, $parameters, $set, $path);
+        $this->resolveParameters($resolution, $parameters, $set, $path);
 
         if (empty($resolution->errors())) {
             /* @phpstan-ignore return.type */
@@ -70,18 +71,16 @@ class Builder extends Engine
      * @param array<ReflectionParameter> $parameters
      * @param array<string> $path
      */
-    private function resolveFormula(Resolution $resolution, array $parameters, Set $set, array $path): void
+    private function resolveParameters(Resolution $resolution, array $parameters, Set $set, array $path): void
     {
         foreach ($parameters as $parameter) {
-            $case = $this->case;
-            $formatters = $this->formatters;
-            $local = [...$path, $parameter->getName()];
-            $resolved = (new ValidateValue(case: $case, path: $local))
-                ->then(new DependencyValue(case: $case, path: $local))
-                ->then(new BackedEnumValue(case: $case, path: $local))
-                ->then(new FormatValue($case, $formatters, $local))
-                ->then(new TypeMatched(case: $case, path: $local))
-                ->then(new NoValue(case: $case, path: $local))
+            $nestedPath = [...$path, $parameter->getName()];
+            $resolved = (new ValidateValue(case: $this->case, path: $nestedPath))
+                ->then(new DependencyValue(case: $this->case, path: $nestedPath))
+                ->then(new BackedEnumValue(case: $this->case, path: $nestedPath))
+                ->then(new FormatValue($this->case, $this->formatters, $nestedPath))
+                ->then(new TypeMatched(case: $this->case, path: $nestedPath))
+                ->then(new NoValue(case: $this->case, path: $nestedPath))
                 ->resolve($parameter, $set);
 
             $resolution->add($resolved);

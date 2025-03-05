@@ -13,7 +13,7 @@ class TypeMatched extends ResolverTyped
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $field = $this->casedName($parameter);
+        $field = $this->formatParameterName($parameter);
         if (! $set->has($field)) {
             return parent::resolve($parameter, $set);
         }

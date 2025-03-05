@@ -26,7 +26,7 @@ class FormatValue extends ResolverTyped
             return parent::resolve($parameter, $set);
         }
 
-        $field = $this->casedName($parameter);
+        $field = $this->formatParameterName($parameter);
         $value = $set->get($field);
 
         $content = $formatter($value, $set);

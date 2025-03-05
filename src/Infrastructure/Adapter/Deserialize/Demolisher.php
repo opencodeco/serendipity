@@ -6,15 +6,15 @@ namespace Serendipity\Infrastructure\Adapter\Deserialize;
 
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
+use Serendipity\Domain\Support\Metaprogramming;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
-use Serendipity\Infrastructure\Adapter\Serialize\Engine;
 
 use function get_object_vars;
 use function Serendipity\Type\Cast\toArray;
 
-class Demolisher extends Engine
+class Demolisher extends Metaprogramming
 {
     /**
      * @return array<string, mixed>
@@ -24,7 +24,7 @@ class Demolisher extends Engine
         $values = $this->extractValues($instance);
         $data = [];
         foreach ($values as $field => $value) {
-            $name = $this->casedName($field);
+            $name = $this->formatParameterName($field);
 
             $resolved = (new DoNothingChain($this->case))
                 ->then(new DependencyChain($this->case))

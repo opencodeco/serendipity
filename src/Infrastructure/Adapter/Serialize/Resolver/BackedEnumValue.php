@@ -22,7 +22,7 @@ class BackedEnumValue extends ResolverTyped
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
         $type = $parameter->getType();
-        $value = $set->get($this->casedName($parameter));
+        $value = $set->get($this->formatParameterName($parameter));
         $resolved = $this->resolveReflectionParameterType($type, $value);
         return $resolved ?? parent::resolve($parameter, $set);
     }

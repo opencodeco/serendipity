@@ -6,11 +6,11 @@ namespace Serendipity\Testing\Faker;
 
 use Faker\Factory;
 use Faker\Generator;
-use ReflectionClass;
 use ReflectionException;
-use ReflectionMethod;
 use ReflectionParameter;
+use Serendipity\Domain\Support\Metaprogramming;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Testing\Faker\Resolver\FromDefaultValue;
 use Serendipity\Testing\Faker\Resolver\FromEnum;
@@ -18,9 +18,7 @@ use Serendipity\Testing\Faker\Resolver\FromName;
 use Serendipity\Testing\Faker\Resolver\FromPreset;
 use Serendipity\Testing\Faker\Resolver\FromType;
 
-use function Serendipity\Type\String\toSnakeCase;
-
-class Faker
+class Faker extends Metaprogramming
 {
     protected readonly Generator $generator;
 
@@ -28,10 +26,28 @@ class Faker
      * @SuppressWarnings(StaticAccess)
      */
     public function __construct(
-        public readonly CaseConvention $case = CaseConvention::SNAKE,
-        public readonly array $converters = [],
+        CaseConvention $case = CaseConvention::SNAKE,
+        array $converters = [],
     ) {
+        parent::__construct($case, $converters);
+
         $this->generator = Factory::create('pt_BR');
+    }
+
+    /**
+     * @template U of object
+     * @param class-string<U> $class
+     * @throws ReflectionException
+     */
+    public function fake(string $class, array $presets = []): Set
+    {
+        $target = Target::createFrom($class);
+        $parameters = $target->parameters();
+        if (empty($parameters)) {
+            return Set::createFrom([]);
+        }
+
+        return $this->resolveParameters($parameters, new Set($presets));
     }
 
     public function __call(string $name, array $arguments): mixed
@@ -45,26 +61,13 @@ class Faker
     }
 
     /**
-     * @template U of object
-     * @param class-string<U> $class
-     * @throws ReflectionException
+     * @param array<ReflectionParameter> $parameters
      */
-    public function fake(string $class, array $presets = []): Set
-    {
-        $preset = new Set($presets);
-        $constructor = (new ReflectionClass($class))->getConstructor();
-        if ($constructor === null) {
-            return Set::createFrom([]);
-        }
-
-        return $this->parseValues($constructor, $preset);
-    }
-
-    public function parseValues(ReflectionMethod $constructor, Set $preset): Set
+    private function resolveParameters(array $parameters, Set $preset): Set
     {
         $values = [];
-        foreach ($constructor->getParameters() as $parameter) {
-            $field = $this->normalizeName($parameter);
+        foreach ($parameters as $parameter) {
+            $field = $this->formatParameterName($parameter);
             $generated = (new FromType($this->case))
                 ->then(new FromName($this->case))
                 ->then(new FromEnum($this->case))
@@ -78,14 +81,5 @@ class Faker
             $values[$field] = $generated->content;
         }
         return Set::createFrom($values);
-    }
-
-    protected function normalizeName(ReflectionParameter $parameter): string
-    {
-        $name = $parameter->getName();
-        return match ($this->case) {
-            CaseConvention::SNAKE => toSnakeCase($name),
-            CaseConvention::NONE => $name,
-        };
     }
 }

@@ -17,7 +17,7 @@ class NoValue extends Resolver
      */
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $name = $this->casedName($parameter);
+        $name = $this->formatParameterName($parameter);
         if ($set->has($name)) {
             return parent::resolve($parameter, $set);
         }

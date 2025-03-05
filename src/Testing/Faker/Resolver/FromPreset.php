@@ -16,7 +16,7 @@ final class FromPreset extends Resolver
         if (! isset($preset)) {
             return parent::resolve($parameter, $preset);
         }
-        $field = $this->normalizeName($parameter);
+        $field = $this->formatParameterName($parameter);
         if ($preset->has($field)) {
             return new Value($preset->get($field));
         }

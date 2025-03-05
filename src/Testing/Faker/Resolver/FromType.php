@@ -8,7 +8,11 @@ use DateMalformedStringException;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use ReflectionIntersectionType;
+use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionUnionType;
+use Serendipity\Domain\Exception\MetaprogrammingException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Testing\Faker\Resolver;
@@ -44,5 +48,28 @@ final class FromType extends Resolver
     private function now(): string
     {
         return $this->generator->dateTime()->format(DateTimeInterface::ATOM);
+    }
+
+    private function extractType(ReflectionParameter $parameter): ?string
+    {
+        $type = $parameter->getType();
+        if ($type instanceof ReflectionNamedType) {
+            return $type->getName();
+        }
+        if ($type instanceof ReflectionUnionType) {
+            /** @var array<ReflectionNamedType> $reflectionNamedTypes */
+            $reflectionNamedTypes = $type->getTypes();
+            $index = $this->generator->numberBetween(0, count($reflectionNamedTypes) - 1);
+            return $reflectionNamedTypes[$index]->getName();
+        }
+        if ($type instanceof ReflectionIntersectionType) {
+            throw new MetaprogrammingException(
+                sprintf(
+                    'Intersection type not supported for parameter "%s". Please provide a preset value for it',
+                    $parameter->getName()
+                )
+            );
+        }
+        return null;
     }
 }

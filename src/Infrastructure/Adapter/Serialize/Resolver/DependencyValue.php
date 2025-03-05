@@ -29,7 +29,7 @@ class DependencyValue extends ResolverTyped
      */
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $field = $this->casedName($parameter);
+        $field = $this->formatParameterName($parameter);
         if (! $set->has($field)) {
             return parent::resolve($parameter, $set);
         }
@@ -84,7 +84,7 @@ class DependencyValue extends ResolverTyped
         $input = toArray($value, [$value]);
         $values = [];
         foreach ($parameters as $index => $parameter) {
-            $name = $this->casedName($parameter);
+            $name = $this->formatParameterName($parameter);
             if (array_key_exists($name, $input)) {
                 $values[$name] = $input[$name];
                 continue;
