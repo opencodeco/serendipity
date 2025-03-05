@@ -10,6 +10,7 @@ use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Infrastructure\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 use Swow\Psr7\Message\ResponsePlusInterface;
@@ -27,19 +28,36 @@ class ValidationExceptionHandler extends ExceptionHandler
     {
         $this->stopPropagation();
 
-        /** @var ValidationException $throwable */
-        $body = $throwable->validator->errors()->getMessages();
+        $errors = $this->extractErrors($throwable);
 
-        $this->logger->info($throwable->getMessage(), $body);
+        $this->logger->info($throwable->getMessage(), $errors);
 
         return $response
-            ->setStatus($throwable->status)
+            ->setStatus($this->extractStatus($throwable))
             ->addHeader('content-type', 'application/json; charset=utf-8')
-            ->setBody(new SwooleStream($this->formatter->format($body, Type::INVALID_INPUT)));
+            ->setBody(new SwooleStream($this->formatter->format($errors, Type::INVALID_INPUT)));
     }
 
     public function isValid(Throwable $throwable): bool
     {
-        return $throwable instanceof ValidationException;
+        return $throwable instanceof ValidationException || $throwable instanceof InvalidInputException;
+    }
+
+    private function extractErrors(Throwable $throwable): array
+    {
+        return match (true) {
+            $throwable instanceof ValidationException => $throwable->validator->errors()->getMessages(),
+            $throwable instanceof InvalidInputException => $throwable->getErrors(),
+            default => [],
+        };
+    }
+
+    public function extractStatus(Throwable $throwable): int
+    {
+        return match (true) {
+            $throwable instanceof ValidationException => $throwable->status,
+            $throwable instanceof InvalidInputException => 428,
+            default => 400,
+        };
     }
 }

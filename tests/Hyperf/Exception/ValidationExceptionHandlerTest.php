@@ -11,6 +11,7 @@ use Hyperf\Validation\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Hyperf\Exception\ValidationExceptionHandler;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 use Throwable;
@@ -43,6 +44,23 @@ final class ValidationExceptionHandlerTest extends TestCase
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
         $this->assertEquals(422, $result->getStatusCode());
+    }
+
+    public function testHandleShouldReturnInvalidInputErrors(): void
+    {
+        $logger = $this->createMock(LoggerInterface::class);
+        $formatter = $this->createMock(JsonFormatter::class);
+        $handler = new ValidationExceptionHandler($logger, $formatter);
+        $response = new Response();
+
+        $throwable = new InvalidInputException([
+            decode('{"source.0.field:target":"Mapping right side (formatter) must be a \'callable\', got \'%s\'"]}')
+        ]);
+
+        $result = $handler->handle($throwable, $response);
+
+        $this->assertInstanceOf(ResponseInterface::class, $result);
+        $this->assertEquals(428, $result->getStatusCode());
     }
 
     public function testIsValidShouldReturnTrueForValidationException(): void
