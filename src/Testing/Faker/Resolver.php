@@ -8,7 +8,7 @@ use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
-use RuntimeException;
+use Serendipity\Domain\Exception\MetaprogrammingException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
@@ -61,7 +61,7 @@ abstract class Resolver extends Faker
             return $reflectionNamedTypes[0]->getName();
         }
         if ($type instanceof ReflectionIntersectionType) {
-            throw new RuntimeException(
+            throw new MetaprogrammingException(
                 sprintf(
                     'Intersection type not supported for parameter "%s". Please provide a preset value for it',
                     $parameter->getName()
