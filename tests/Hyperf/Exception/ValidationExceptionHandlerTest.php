@@ -54,7 +54,7 @@ final class ValidationExceptionHandlerTest extends TestCase
         $response = new Response();
 
         $throwable = new InvalidInputException([
-            decode('{"source.0.field:target":"Mapping right side (formatter) must be a \'callable\', got \'%s\'"]}')
+            decode('{"source.0.field:target":"Mapping right side (formatter) must be a \'callable\', got \'%s\'"]}'),
         ]);
 
         $result = $handler->handle($throwable, $response);

@@ -52,7 +52,7 @@ class ValidationExceptionHandler extends ExceptionHandler
         };
     }
 
-    public function extractStatus(Throwable $throwable): int
+    private function extractStatus(Throwable $throwable): int
     {
         return match (true) {
             $throwable instanceof ValidationException => $throwable->status,

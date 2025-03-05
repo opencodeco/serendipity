@@ -129,7 +129,6 @@ class Input extends HyperfFormRequest implements Message
     }
 
     /**
-     * @param string $setup
      * @return array<string>
      */
     private function extractMappedFromAndTarget(string $setup): array

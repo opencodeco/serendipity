@@ -11,8 +11,6 @@ class InvalidInputException extends Exception
 {
     /**
      * @param array<string,string> $errors
-     * @param Throwable|null $previous
-     * @param int $code
      */
     public function __construct(
         private readonly array $errors,
