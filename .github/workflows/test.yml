@@ -15,16 +15,10 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Cache Docker layers
-        uses: actions/cache@v4
+      - name: Cache Docker images.
+        uses: ScribeMD/docker-cache@0.5.0
         with:
-          path: /tmp/.buildx-cache
-          key: buildx-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            buildx-${{ runner.os }}-
+          key: docker-${{ runner.os }}-${{ hashFiles(paths) }}
 
       - name: Checkout current code
         uses: actions/checkout@v4
@@ -40,10 +34,11 @@ jobs:
       - name: Put everything up
         run: make up
 
-      - uses: nick-fields/retry@v3
+      - name: Wait until 1 minute for postgres be ready to GO
+        uses: nick-fields/retry@v3
         with:
-          timeout_seconds: 15
-          max_attempts: 4
+          retry_wait_seconds: 5
+          max_attempts: 12
           command: docker compose exec postgres pg_isready
 
       - name: Configure database environment
