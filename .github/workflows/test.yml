@@ -37,6 +37,7 @@ jobs:
       - name: Wait until 1 minute for postgres be ready to GO
         uses: nick-fields/retry@v3
         with:
+          timeout_seconds: 60
           retry_wait_seconds: 5
           max_attempts: 12
           command: docker compose exec postgres pg_isready
