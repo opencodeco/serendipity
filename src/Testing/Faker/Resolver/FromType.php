@@ -14,7 +14,7 @@ use Serendipity\Domain\Support\Value;
 use Serendipity\Testing\Faker\Resolver;
 use Throwable;
 
-final class FromTypeResolver extends Resolver
+final class FromType extends Resolver
 {
     /**
      * @throws DateMalformedStringException

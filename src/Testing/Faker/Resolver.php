@@ -14,11 +14,11 @@ use Serendipity\Domain\Support\Value;
 
 use function Hyperf\Support\make;
 
-abstract class Chain extends Faker
+abstract class Resolver extends Faker
 {
-    protected ?Chain $previous = null;
+    protected ?Resolver $previous = null;
 
-    final public function then(Chain $chain): Chain
+    final public function then(Resolver $chain): Resolver
     {
         $chain->previous($this);
         return $chain;
@@ -32,7 +32,7 @@ abstract class Chain extends Faker
         return null;
     }
 
-    protected function previous(Chain $previous): void
+    final protected function previous(Resolver $previous): void
     {
         $this->previous = $previous;
     }

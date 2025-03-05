@@ -13,7 +13,7 @@ use Serendipity\Infrastructure\Database\Instrumental;
 use Serendipity\Testing\Faker\Resolver;
 use Throwable;
 
-final class FromNameResolver extends Resolver
+final class FromName extends Resolver
 {
     private readonly Instrumental $instrument;
 

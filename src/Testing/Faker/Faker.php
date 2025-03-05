@@ -12,6 +12,11 @@ use ReflectionMethod;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\CaseConvention;
+use Serendipity\Testing\Faker\Resolver\FromDefaultValue;
+use Serendipity\Testing\Faker\Resolver\FromEnum;
+use Serendipity\Testing\Faker\Resolver\FromName;
+use Serendipity\Testing\Faker\Resolver\FromPreset;
+use Serendipity\Testing\Faker\Resolver\FromType;
 
 use function Serendipity\Type\String\toSnakeCase;
 
@@ -60,11 +65,11 @@ class Faker
         $values = [];
         foreach ($constructor->getParameters() as $parameter) {
             $field = $this->normalizeName($parameter);
-            $generated = (new FromTypeChain($this->case))
-                ->then(new FromNameChain($this->case))
-                ->then(new FromEnumChain($this->case))
-                ->then(new FromDefaultValueChain($this->case))
-                ->then(new FromPresetChain($this->case))
+            $generated = (new FromType($this->case))
+                ->then(new FromName($this->case))
+                ->then(new FromEnum($this->case))
+                ->then(new FromDefaultValue($this->case))
+                ->then(new FromPreset($this->case))
                 ->resolve($parameter, $preset);
 
             if ($generated === null) {

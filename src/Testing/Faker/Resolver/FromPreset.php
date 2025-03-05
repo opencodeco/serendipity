@@ -9,7 +9,7 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Testing\Faker\Resolver;
 
-final class FromPresetResolver extends Resolver
+final class FromPreset extends Resolver
 {
     public function resolve(ReflectionParameter $parameter, ?Set $preset = null): ?Value
     {
