@@ -25,6 +25,11 @@ services:
       - serendipity-postgres-data:/var/lib/postgresql/data
     ports:
       - '9503:5432'
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+      timeout: 10s
+      retries: 12
     networks:
       - serendipity-network
 

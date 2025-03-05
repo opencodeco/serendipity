@@ -87,6 +87,12 @@ postgres: ## Start the postgres container
 migrate: ## Execute the migrations
 	@$(COMPOSE_RUNNER) run --rm --entrypoint "php bin/hyperf.php" app migrate --database=postgres
 
+
+## Quality
+
+sonar: ## Run the sonar analysis
+	@$(COMPOSE_RUNNER) run --rm --entrypoint "/bin/sonar-scanner" app -Dsonar.host.url=https://sonarcloud.io -X
+
 ##@ Docs
 
 help: ## Print the makefile help
