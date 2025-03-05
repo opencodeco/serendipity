@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Presentation;
 
+use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Input;
 use Serendipity\Test\Testing\ExtensibleTestCase;
 use Serendipity\Testing\Extension\FakerExtension;
-use UnexpectedValueException;
 
 /**
  * @internal
@@ -173,8 +173,10 @@ final class InputTest extends ExtensibleTestCase
 
     public function testShouldRaiseErrorOnMappingsSetupMisconfiguration(): void
     {
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage("Mapping left side (setup) must be a string, got 'integer'");
+        $this->expectException(InvalidInputException::class);
+        $this->expectExceptionMessage(
+            "Detected 1 errors: \"Mapping left side (setup) must be a 'string', got 'integer'\""
+        );
 
         $mappings = [
             fn (mixed $value) => sprintf('cool: %s', $value),
@@ -199,8 +201,10 @@ final class InputTest extends ExtensibleTestCase
 
     public function testShouldRaiseErrorOnMappingsFormatterMisconfiguration(): void
     {
-        $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage("Mapping right side (formatter) must be a callable, got 'string'");
+        $this->expectException(InvalidInputException::class);
+        $this->expectExceptionMessage(
+            "Detected 1 errors: \"Mapping right side (formatter) must be a 'callable', got 'string'\""
+        );
 
         $mappings = [
             'source.0.field:target' => 'not a callable',

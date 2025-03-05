@@ -6,14 +6,15 @@ namespace Serendipity\Presentation;
 
 use Psr\Container\ContainerInterface;
 use Serendipity\Domain\Contract\Message;
+use Serendipity\Domain\Exception\InvalidInputException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Request\HyperfFormRequest;
-use UnexpectedValueException;
 
 use function array_keys;
 use function array_merge;
 use function Hyperf\Collection\data_get;
 use function Hyperf\Collection\data_set;
+use function Serendipity\Type\Cast\toString;
 
 /**
  * @see https://hyperf.wiki/3.1/#/en/validation?id=form-request-validation
@@ -69,6 +70,9 @@ class Input extends HyperfFormRequest implements Message
         return $this->mappings;
     }
 
+    /**
+     * @throws InvalidInputException
+     */
     protected function validationData(): array
     {
         $data = parent::validationData();
@@ -93,15 +97,22 @@ class Input extends HyperfFormRequest implements Message
         return $params;
     }
 
+    /**
+     * @SuppressWarnings(CyclomaticComplexity)
+     * @throws InvalidInputException
+     */
     private function extractMapped(array $data): array
     {
         $mappings = $this->mappings();
+        $errors = [];
         $mapped = [];
         foreach ($mappings as $setup => $formatter) {
-            $this->validateMappingConstraints($setup, $formatter);
-            $pieces = explode(':', $setup);
-            $from = $pieces[0];
-            $target = $pieces[1] ?? $from;
+            $detected = $this->detectMisconfiguration($setup, $formatter);
+            if ($detected) {
+                $errors[toString($setup)] = $detected;
+                continue;
+            }
+            [$from, $target] = $this->extractMappedFromAndTarget($setup);
             $previous = data_get($data, $from);
             if ($previous === null) {
                 continue;
@@ -109,19 +120,40 @@ class Input extends HyperfFormRequest implements Message
             $value = $formatter($previous);
             data_set($mapped, $target, $value);
         }
-        /* @phpstan-ignore return.type */
-        return $mapped;
+
+        if (empty($errors)) {
+            /* @phpstan-ignore return.type */
+            return $mapped;
+        }
+        throw new InvalidInputException($errors);
     }
 
-    private function validateMappingConstraints(mixed $setup, mixed $formatter): void
+    /**
+     * @param string $setup
+     * @return array<string>
+     */
+    private function extractMappedFromAndTarget(string $setup): array
+    {
+        $pieces = explode(':', $setup);
+        $from = $pieces[0];
+        $target = $pieces[1] ?? $from;
+        return [toString($from), toString($target)];
+    }
+
+    /**
+     * @SuppressWarnings(CyclomaticComplexity)
+     */
+    private function detectMisconfiguration(mixed $setup, mixed $formatter): ?string
     {
         $isString = is_string($setup);
-        if (! $isString || ! is_callable($formatter)) {
-            $format = $isString
-                ? "Mapping right side (formatter) must be a callable, got '%s'"
-                : "Mapping left side (setup) must be a string, got '%s'";
-            $value = $isString ? gettype($formatter) : gettype($setup);
-            throw new UnexpectedValueException(sprintf($format, $value));
+        if ($isString && is_callable($formatter)) {
+            return null;
         }
+
+        $format = $isString
+            ? "Mapping right side (formatter) must be a 'callable', got '%s'"
+            : "Mapping left side (setup) must be a 'string', got '%s'";
+        $value = $isString ? gettype($formatter) : gettype($setup);
+        return sprintf($format, $value);
     }
 }
