@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class ExtensibleCase extends TestCase
+abstract class ExtensibleCase extends TestCase
 {
     private array $callbacks = [];
 

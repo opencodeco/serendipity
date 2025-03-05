@@ -14,7 +14,7 @@ use Serendipity\Testing\Resource\SleekDBHelper;
 /**
  * @internal
  */
-class InfrastructureCase extends ExtensibleCase
+abstract class InfrastructureCase extends ExtensibleCase
 {
     use MakeExtension;
     use FakerExtension;

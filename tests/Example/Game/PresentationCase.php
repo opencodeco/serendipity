@@ -15,7 +15,7 @@ use Serendipity\Testing\Resource\SleekDBHelper;
 /**
  * @internal
  */
-class PresentationCase extends ExtensibleCase
+abstract class PresentationCase extends ExtensibleCase
 {
     use MakeExtension;
     use FakerExtension;
