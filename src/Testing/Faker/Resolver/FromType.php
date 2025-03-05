@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker;
+namespace Serendipity\Testing\Faker\Resolver;
 
 use DateMalformedStringException;
 use DateTime;
@@ -11,9 +11,10 @@ use DateTimeInterface;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Testing\Faker\Resolver;
 use Throwable;
 
-final class FromTypeChain extends Chain
+final class FromTypeResolver extends Resolver
 {
     /**
      * @throws DateMalformedStringException

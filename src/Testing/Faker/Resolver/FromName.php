@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker;
+namespace Serendipity\Testing\Faker\Resolver;
 
 use ReflectionParameter;
 use Serendipity\Domain\Exception\GeneratingException;
@@ -10,9 +10,10 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Infrastructure\Database\Instrumental;
+use Serendipity\Testing\Faker\Resolver;
 use Throwable;
 
-final class FromNameChain extends Chain
+final class FromNameResolver extends Resolver
 {
     private readonly Instrumental $instrument;
 

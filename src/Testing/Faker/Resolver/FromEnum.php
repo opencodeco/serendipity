@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker;
+namespace Serendipity\Testing\Faker\Resolver;
 
 use BackedEnum;
 use Random\RandomException;
@@ -10,8 +10,9 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Testing\Faker\Resolver;
 
-final class FromEnumChain extends Chain
+final class FromEnum extends Resolver
 {
     /**
      * @throws RandomException

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Faker;
+namespace Serendipity\Testing\Faker\Resolver;
 
 use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Testing\Faker\Resolver;
 
-final class FromPresetChain extends Chain
+final class FromPresetResolver extends Resolver
 {
     public function resolve(ReflectionParameter $parameter, ?Set $preset = null): ?Value
     {
