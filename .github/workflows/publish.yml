@@ -14,3 +14,5 @@ jobs:
       - uses: ghalactic/github-release-from-tag@v5
         with:
           generateReleaseNotes: "true"
+          reactions: "rocket"
+          summaryEnabled: "true"
