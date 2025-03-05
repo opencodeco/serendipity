@@ -28,11 +28,11 @@ jobs:
       - name: Configure Git permissions
         run: git config --global --add safe.directory /__w/serendipity/serendipity
 
-      - name: Setup the application environment
-        run: docker compose exec app composer install
-
       - name: Put everything up
         run: docker compose --profile postgres up -d
+
+      - name: Setup the application environment
+        run: docker compose exec app composer install
 
       - name: Wait until 1 minute for postgres be ready to GO
         uses: nick-fields/retry@v3
