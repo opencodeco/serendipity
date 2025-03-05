@@ -37,9 +37,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: git config --global --add safe.directory /__w/devitools/serendipity
+      - run: git config --global --add safe.directory /__w/serendipity/serendipity
 
       - run: composer install
+
+      - uses: nick-fields/retry@v3
+        with:
+          timeout_seconds: 15
+          max_attempts: 4
+          command: docker compose exec postgres pg_isready
 
       - run: composer test
 
