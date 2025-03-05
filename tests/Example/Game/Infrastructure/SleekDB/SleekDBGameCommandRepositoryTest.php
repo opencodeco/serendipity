@@ -7,13 +7,13 @@ namespace Serendipity\Test\Example\Game\Infrastructure\SleekDB;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameCommandRepository;
-use Serendipity\Test\Example\Game\InfrastructureTestCase;
+use Serendipity\Test\Example\Game\InfrastructureCase;
 use Serendipity\Testing\Extension\BuilderExtension;
 
 /**
  * @internal
  */
-class SleekDBGameCommandRepositoryTest extends InfrastructureTestCase
+class SleekDBGameCommandRepositoryTest extends InfrastructureCase
 {
     use BuilderExtension;
 

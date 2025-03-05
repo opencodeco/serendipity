@@ -8,13 +8,13 @@ use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Infrastructure\Repository\Postgres\PostgresGameCommandRepository;
-use Serendipity\Test\Example\Game\InfrastructureTestCase;
+use Serendipity\Test\Example\Game\InfrastructureCase;
 use Serendipity\Testing\Extension\BuilderExtension;
 
 /**
  * @internal
  */
-final class PostgresGameCommandRepositoryTest extends InfrastructureTestCase
+final class PostgresGameCommandRepositoryTest extends InfrastructureCase
 {
     use BuilderExtension;
 

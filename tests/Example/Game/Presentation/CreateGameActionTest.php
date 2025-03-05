@@ -8,12 +8,12 @@ use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Presentation\Action\CreateGameAction;
 use Serendipity\Example\Game\Presentation\Input\CreateGameInput;
 use Serendipity\Presentation\Output\Accepted;
-use Serendipity\Test\Example\Game\PresentationTestCase;
+use Serendipity\Test\Example\Game\PresentationCase;
 
 /**
  * @internal
  */
-class CreateGameActionTest extends PresentationTestCase
+class CreateGameActionTest extends PresentationCase
 {
     protected function setUp(): void
     {

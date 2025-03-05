@@ -6,7 +6,7 @@ namespace Serendipity\Test\Example\Game\Infrastructure\Postgres;
 
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Infrastructure\Repository\Postgres\PostgresGameQueryRepository;
-use Serendipity\Test\Example\Game\InfrastructureTestCase;
+use Serendipity\Test\Example\Game\InfrastructureCase;
 use Serendipity\Testing\Extension\InstrumentalExtension;
 
 use function Hyperf\Collection\collect;
@@ -14,7 +14,7 @@ use function Hyperf\Collection\collect;
 /**
  * @internal
  */
-class PostgresGameQueryRepositoryTest extends InfrastructureTestCase
+class PostgresGameQueryRepositoryTest extends InfrastructureCase
 {
     use InstrumentalExtension;
 

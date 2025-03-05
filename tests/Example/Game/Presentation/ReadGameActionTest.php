@@ -9,12 +9,12 @@ use Serendipity\Example\Game\Presentation\Action\ReadGameAction;
 use Serendipity\Example\Game\Presentation\Input\ReadGameInput;
 use Serendipity\Presentation\Output\NotFound;
 use Serendipity\Presentation\Output\Ok;
-use Serendipity\Test\Example\Game\PresentationTestCase;
+use Serendipity\Test\Example\Game\PresentationCase;
 
 /**
  * @internal
  */
-class ReadGameActionTest extends PresentationTestCase
+class ReadGameActionTest extends PresentationCase
 {
     protected function setUp(): void
     {

@@ -8,13 +8,13 @@ use Serendipity\Example\Health\HealthAction;
 use Serendipity\Example\Health\HealthInput;
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
-use Serendipity\Test\Testing\ExtensibleTestCase;
+use Serendipity\Test\Testing\ExtensibleCase;
 use Serendipity\Testing\Extension\FakerExtension;
 
 /**
  * @internal
  */
-final class ActionHealthTest extends ExtensibleTestCase
+final class ActionHealthTest extends ExtensibleCase
 {
     use MakeExtension;
     use InputExtension;

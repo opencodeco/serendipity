@@ -9,13 +9,13 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Input;
-use Serendipity\Test\Testing\ExtensibleTestCase;
+use Serendipity\Test\Testing\ExtensibleCase;
 use Serendipity\Testing\Extension\FakerExtension;
 
 /**
  * @internal
  */
-final class InputTest extends ExtensibleTestCase
+final class InputTest extends ExtensibleCase
 {
     use MakeExtension;
     use InputExtension;
