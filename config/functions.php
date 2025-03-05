@@ -149,3 +149,14 @@ if (! function_exists('encode')) {
         }
     }
 }
+
+namespace Serendipity\Coroutine;
+
+use Hyperf\Coroutine\Coroutine;
+
+if (! function_exists('coroutine')) {
+    function coroutine(callable $callback): int
+    {
+        return Coroutine::create($callback);
+    }
+}

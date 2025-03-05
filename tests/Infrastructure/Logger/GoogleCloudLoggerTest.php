@@ -27,7 +27,13 @@ final class GoogleCloudLoggerTest extends TestCase
 
         $this->logger = $this->createMock(Logger::class);
 
-        $this->googleCloudLogger = new GoogleCloudLogger($this->logger, 'projectId', 'serviceName', 'test');
+        $this->googleCloudLogger = new GoogleCloudLogger(
+            driver: $this->logger,
+            projectId: 'projectId',
+            serviceName: 'serviceName',
+            env: 'test',
+            useCoroutine: false
+        );
     }
 
     public function testShouldLogMessagesCorrectly(): void
@@ -222,5 +228,30 @@ final class GoogleCloudLoggerTest extends TestCase
 
         // Assert
         $this->assertMatchesRegularExpression('/\("Test Exception" in `.*` at `.*`\)/', $output);
+    }
+
+    public function testShouldWriteLogUsingCoroutine(): void
+    {
+        // Arrange
+        $googleCloudLogger = new GoogleCloudLogger(
+            driver: $this->logger,
+            projectId: 'projectId',
+            serviceName: 'serviceName',
+            env: 'test',
+            useCoroutine: true
+        );
+
+        $message = 'Test Message';
+        $context = ['key' => 'value'];
+
+        $this->logger->expects($this->once())
+            ->method('write')
+            ->with($this->isInstanceOf(Entry::class));
+
+        // Act
+        $googleCloudLogger->debug($message, $context);
+
+        // Assert
+        // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 }
