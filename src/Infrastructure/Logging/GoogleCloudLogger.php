@@ -88,12 +88,11 @@ class GoogleCloudLogger implements LoggerInterface
     {
         try {
             $this->driver->write(new Entry($context));
-            return;
         } catch (Throwable $error) {
+            $detail = sprintf('"%s" in `%s` at `%s`', $error->getMessage(), $error->getFile(), $error->getLine());
+            $stdout = sprintf('[GoogleCloudLogger][%s] %s: %s (%s)', $severity, $message, encode($context), $detail);
+            printf("%s\n", $stdout);
         }
-        $detail = sprintf('"%s" in `%s` at `%s`', $error->getMessage(), $error->getFile(), $error->getLine());
-        $stdout = sprintf('[GoogleCloudLogger][%s] %s: %s (%s)', $severity, $message, encode($context), $detail);
-        printf("%s\n", $stdout);
     }
 
     private function payload(string $severity, array $context): array
