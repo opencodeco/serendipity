@@ -40,6 +40,12 @@ jobs:
       - name: Put everything up
         run: make up
 
+      - uses: nick-fields/retry@v3
+        with:
+          timeout_seconds: 15
+          max_attempts: 4
+          command: docker compose exec postgres pg_isready
+
       - name: Configure database environment
         run: make migrate
 
