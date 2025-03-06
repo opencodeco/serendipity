@@ -13,6 +13,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Serendipity\Domain\Exception\RepositoryException;
 
+/**
+ * @internal
+ */
 class HttpRepositoryTest extends TestCase
 {
     public function testShouldHaveContentAndProperties(): void

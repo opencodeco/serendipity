@@ -10,6 +10,9 @@ use Psr\Container\ContainerInterface;
 use Serendipity\Hyperf\Database\Document\HyperfSleekDBFactory;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 
+/**
+ * @internal
+ */
 class HyperfSleekDBFactoryTest extends TestCase
 {
     use MakeExtension;

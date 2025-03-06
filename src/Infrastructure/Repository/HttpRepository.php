@@ -28,7 +28,7 @@ abstract class HttpRepository
      */
     protected function request(string $method = 'POST', string $uri = '', array $options = []): Message
     {
-        /**
+        /*
          * @see https://docs.guzzlephp.org/en/latest/quickstart.html#exceptions
          */
         try {
