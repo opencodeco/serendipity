@@ -22,10 +22,10 @@ abstract class Resolver extends Faker
         return $resolver;
     }
 
-    public function resolve(ReflectionParameter $parameter, Set $preset): ?Value
+    public function resolve(ReflectionParameter $parameter, Set $presets): ?Value
     {
         if (isset($this->previous)) {
-            return $this->previous->resolve($parameter, $preset);
+            return $this->previous->resolve($parameter, $presets);
         }
         return null;
     }

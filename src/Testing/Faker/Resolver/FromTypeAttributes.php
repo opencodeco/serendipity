@@ -24,15 +24,15 @@ final class FromTypeAttributes extends Resolver
     /**
      * @throws GeneratingException
      */
-    public function resolve(ReflectionParameter $parameter, Set $preset): ?Value
+    public function resolve(ReflectionParameter $parameter, Set $presets): ?Value
     {
         $type = $this->extractType($parameter);
         if ($type === null) {
-            return parent::resolve($parameter, $preset);
+            return parent::resolve($parameter, $presets);
         }
 
         return $this->resolveByAttributes($parameter)
-            ?? parent::resolve($parameter, $preset);
+            ?? parent::resolve($parameter, $presets);
     }
 
     /**

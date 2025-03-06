@@ -15,7 +15,7 @@ final class FromDefaultValue extends Resolver
     /**
      * @throws ReflectionException
      */
-    public function resolve(ReflectionParameter $parameter, Set $preset): ?Value
+    public function resolve(ReflectionParameter $parameter, Set $presets): ?Value
     {
         if ($parameter->isOptional() || $parameter->isDefaultValueAvailable()) {
             return new Value($parameter->getDefaultValue());
@@ -23,6 +23,6 @@ final class FromDefaultValue extends Resolver
         if ($parameter->allowsNull()) {
             return new Value(null);
         }
-        return parent::resolve($parameter, $preset);
+        return parent::resolve($parameter, $presets);
     }
 }

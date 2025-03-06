@@ -73,7 +73,7 @@ class Faker extends Engine implements Contract
     /**
      * @param array<ReflectionParameter> $parameters
      */
-    private function resolveParameters(array $parameters, Set $preset): Set
+    private function resolveParameters(array $parameters, Set $presets): Set
     {
         $values = [];
         foreach ($parameters as $parameter) {
@@ -85,7 +85,7 @@ class Faker extends Engine implements Contract
                 ->then(new FromEnum($this->case))
                 ->then(new FromDefaultValue($this->case))
                 ->then(new FromPreset($this->case))
-                ->resolve($parameter, $preset);
+                ->resolve($parameter, $presets);
 
             if ($generated === null) {
                 continue;

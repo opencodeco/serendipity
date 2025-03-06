@@ -16,15 +16,15 @@ final class FromTypeBuiltin extends Resolver
     use MakeExtension;
     use ManagedExtension;
 
-    public function resolve(ReflectionParameter $parameter, Set $preset): ?Value
+    public function resolve(ReflectionParameter $parameter, Set $presets): ?Value
     {
         $type = $this->extractType($parameter);
         if ($type === null) {
-            return parent::resolve($parameter, $preset);
+            return parent::resolve($parameter, $presets);
         }
 
         return $this->resolveByBuiltin($type)
-            ?? parent::resolve($parameter, $preset);
+            ?? parent::resolve($parameter, $presets);
     }
 
     private function resolveByBuiltin(string $type): ?Value

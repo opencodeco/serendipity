@@ -23,15 +23,15 @@ final class FromTypeNative extends Resolver
     /**
      * @throws DateMalformedStringException
      */
-    public function resolve(ReflectionParameter $parameter, Set $preset): ?Value
+    public function resolve(ReflectionParameter $parameter, Set $presets): ?Value
     {
         $type = $this->extractType($parameter);
         if ($type === null) {
-            return parent::resolve($parameter, $preset);
+            return parent::resolve($parameter, $presets);
         }
 
         return $this->resolveByNative($type)
-            ?? parent::resolve($parameter, $preset);
+            ?? parent::resolve($parameter, $presets);
     }
 
     /**
@@ -41,7 +41,8 @@ final class FromTypeNative extends Resolver
     {
         return match ($type) {
             DateTimeImmutable::class => new Value(new DateTimeImmutable($this->now())),
-            DateTime::class => new Value(new DateTime($this->now())),
+            DateTime::class,
+            DateTimeInterface::class => new Value(new DateTime($this->now())),
             default => null,
         };
     }
