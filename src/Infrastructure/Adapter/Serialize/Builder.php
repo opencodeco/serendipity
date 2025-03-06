@@ -7,7 +7,8 @@ namespace Serendipity\Infrastructure\Adapter\Serialize;
 use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
-use Serendipity\Domain\Support\Metaprogramming;
+use Serendipity\Domain\Support\Meta\Engine;
+use Serendipity\Domain\Support\Meta\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;
@@ -17,7 +18,7 @@ use Serendipity\Infrastructure\Adapter\Serialize\Resolver\TypeMatched;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\ValidateValue;
 use Throwable;
 
-class Builder extends Metaprogramming
+class Builder extends Engine
 {
     /**
      * @template T of object
@@ -50,10 +51,10 @@ class Builder extends Metaprogramming
     protected function make(string $class, Set $set, array $path = []): mixed
     {
         $target = Target::createFrom($class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
         if (empty($parameters)) {
             /* @phpstan-ignore return.type */
-            return $target->reflection()->newInstance();
+            return $target->getReflectionClass()->newInstance();
         }
 
         $resolution = new Resolution();
@@ -62,7 +63,7 @@ class Builder extends Metaprogramming
 
         if (empty($resolution->errors())) {
             /* @phpstan-ignore return.type */
-            return $target->reflection()->newInstanceArgs($resolution->args());
+            return $target->getReflectionClass()->newInstanceArgs($resolution->args());
         }
         throw new AdapterException($set, $resolution->errors());
     }

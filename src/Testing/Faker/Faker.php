@@ -8,17 +8,17 @@ use Faker\Factory;
 use Faker\Generator;
 use ReflectionException;
 use ReflectionParameter;
-use Serendipity\Domain\Support\Metaprogramming;
+use Serendipity\Domain\Support\Meta\Engine;
+use Serendipity\Domain\Support\Meta\Target;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Testing\Faker\Resolver\FromDefaultValue;
+use Serendipity\Testing\Faker\Resolver\FromDependency;
 use Serendipity\Testing\Faker\Resolver\FromEnum;
-use Serendipity\Testing\Faker\Resolver\FromName;
 use Serendipity\Testing\Faker\Resolver\FromPreset;
 use Serendipity\Testing\Faker\Resolver\FromType;
 
-class Faker extends Metaprogramming
+class Faker extends Engine
 {
     protected readonly Generator $generator;
 
@@ -42,7 +42,7 @@ class Faker extends Metaprogramming
     public function fake(string $class, array $presets = []): Set
     {
         $target = Target::createFrom($class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
         if (empty($parameters)) {
             return Set::createFrom([]);
         }
@@ -68,8 +68,8 @@ class Faker extends Metaprogramming
         $values = [];
         foreach ($parameters as $parameter) {
             $field = $this->formatParameterName($parameter);
-            $generated = (new FromType($this->case))
-                ->then(new FromName($this->case))
+            $generated = (new FromDependency($this->case))
+                ->then(new FromType($this->case))
                 ->then(new FromEnum($this->case))
                 ->then(new FromDefaultValue($this->case))
                 ->then(new FromPreset($this->case))

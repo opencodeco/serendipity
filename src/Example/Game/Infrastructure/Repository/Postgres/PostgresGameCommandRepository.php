@@ -23,7 +23,7 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
      */
     public function persist(GameCommand $game): string
     {
-        $id = $this->instrumental->id();
+        $id = $this->managed->id();
         $fields = [
             'id',
             'created_at',
@@ -34,7 +34,7 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
         ];
         /* @noinspection SqlNoDataSourceInspection, SqlResolve */
         $query = 'insert into "games" ("id", "created_at", "updated_at", "name", "slug", "data") '
-                 . 'values (?, ?, ?, ?, ?, ?)';
+            . 'values (?, ?, ?, ?, ?, ?)';
 
 
         $bindings = $this->bindings($game, $fields, ['id' => $id]);

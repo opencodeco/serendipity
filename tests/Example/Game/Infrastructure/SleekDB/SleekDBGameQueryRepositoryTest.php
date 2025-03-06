@@ -7,7 +7,7 @@ namespace Serendipity\Test\Example\Game\Infrastructure\SleekDB;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameQueryRepository;
 use Serendipity\Test\Example\Game\InfrastructureCase;
-use Serendipity\Testing\Extension\InstrumentalExtension;
+use Serendipity\Testing\Extension\ManagedExtension;
 
 use function Hyperf\Collection\collect;
 
@@ -16,7 +16,7 @@ use function Hyperf\Collection\collect;
  */
 class SleekDBGameQueryRepositoryTest extends InfrastructureCase
 {
-    use InstrumentalExtension;
+    use ManagedExtension;
 
     protected function setUp(): void
     {
@@ -36,7 +36,7 @@ class SleekDBGameQueryRepositoryTest extends InfrastructureCase
 
     final public function testShouldReturnNullWhenGameNotExists(): void
     {
-        $id = $this->instrumental()->id();
+        $id = $this->managed()->id();
         $repository = $this->make(SleekDBGameQueryRepository::class);
         $this->assertNull($repository->getGame($id));
     }

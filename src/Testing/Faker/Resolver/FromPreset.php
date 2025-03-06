@@ -11,11 +11,8 @@ use Serendipity\Testing\Faker\Resolver;
 
 final class FromPreset extends Resolver
 {
-    public function resolve(ReflectionParameter $parameter, ?Set $preset = null): ?Value
+    public function resolve(ReflectionParameter $parameter, Set $preset): ?Value
     {
-        if (! isset($preset)) {
-            return parent::resolve($parameter, $preset);
-        }
         $field = $this->formatParameterName($parameter);
         if ($preset->has($field)) {
             return new Value($preset->get($field));

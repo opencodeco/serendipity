@@ -6,9 +6,9 @@ namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
+use Serendipity\Domain\Support\Meta\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\ValidateValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 
 /**
@@ -20,7 +20,7 @@ final class ValidateValueTest extends TestCase
     {
         $resolver = new ValidateValue(path: ['string']);
         $target = Target::createFrom(Builtin::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(6, $parameters);
 
@@ -37,7 +37,7 @@ final class ValidateValueTest extends TestCase
     {
         $resolver = new ValidateValue(path: ['int']);
         $target = Target::createFrom(Builtin::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(6, $parameters);
 

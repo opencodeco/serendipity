@@ -6,9 +6,9 @@ namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
+use Serendipity\Domain\Support\Meta\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\EnumVariety;
 use Serendipity\Test\Testing\Stub\NotNative;
 use Serendipity\Test\Testing\Stub\Type\BackedEnumeration;
@@ -24,7 +24,7 @@ final class BackedEnumValueTest extends TestCase
     {
         $resolver = new BackedEnumValue();
         $target = Target::createFrom(NotNative::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(3, $parameters);
 
@@ -49,7 +49,7 @@ final class BackedEnumValueTest extends TestCase
     {
         $resolver = new BackedEnumValue();
         $target = Target::createFrom(NotNative::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(3, $parameters);
 
@@ -78,7 +78,7 @@ final class BackedEnumValueTest extends TestCase
     {
         $resolver = new BackedEnumValue();
         $target = Target::createFrom(EnumVariety::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(4, $parameters);
 
@@ -113,7 +113,7 @@ final class BackedEnumValueTest extends TestCase
     {
         $resolver = new BackedEnumValue();
         $target = Target::createFrom(NotNative::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(3, $parameters);
 

@@ -9,10 +9,10 @@ use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
+use Serendipity\Domain\Support\Meta\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\Complex;
@@ -38,7 +38,7 @@ final class DependencyValueTest extends TestCase
     {
         $resolver = new DependencyValue();
         $target = Target::createFrom(Command::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $set = Set::createFrom(['signup_date' => $value]);
 
@@ -58,7 +58,7 @@ final class DependencyValueTest extends TestCase
     {
         $resolver = new DependencyValue();
         $target = Target::createFrom(Complex::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $generator = $this->generator();
         $set = Set::createFrom([
@@ -106,7 +106,7 @@ final class DependencyValueTest extends TestCase
     {
         $resolver = new DependencyValue();
         $target = Target::createFrom(Union::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $set = Set::createFrom(['native' => new stdClass()]);
 
@@ -120,7 +120,7 @@ final class DependencyValueTest extends TestCase
     {
         $resolver = new DependencyValue();
         $target = Target::createFrom(Intersection::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $set = Set::createFrom(['intersected' => null]);
 

@@ -7,9 +7,9 @@ namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
+use Serendipity\Domain\Support\Meta\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\FormatValue;
-use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\EntityStub;
 use Serendipity\Test\Testing\Stub\NoConstructor;
@@ -41,7 +41,7 @@ final class FormatValueTest extends TestCase
         ];
         $resolver = new FormatValue(formatters: $formatters, path: ['*']);
         $target = Target::createFrom(Builtin::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(6, $parameters);
 
@@ -86,7 +86,7 @@ final class FormatValueTest extends TestCase
         ];
         $resolver = new FormatValue(formatters: $formatters, path: ['*']);
         $target = Target::createFrom(Variety::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(4, $parameters);
 

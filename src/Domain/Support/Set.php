@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Support;
 
-use InvalidArgumentException;
+use Serendipity\Domain\Exception\MetaprogrammingException;
 
+use function array_filter;
 use function array_key_exists;
+use function array_keys;
 use function array_map;
 use function array_merge;
+use function count;
 use function is_array;
 
-final readonly class Set
+readonly class Set
 {
     /**
      * @var array<string, mixed>
@@ -21,12 +24,12 @@ final readonly class Set
     public function __construct(mixed $data = [])
     {
         if (! is_array($data)) {
-            throw new InvalidArgumentException('Values must be an array.');
+            throw new MetaprogrammingException('Values must be an array.');
         }
         $keys = array_keys($data);
         $filtered = array_filter($keys, 'is_string');
         if (count($keys) !== count($filtered)) {
-            throw new InvalidArgumentException('All keys must be strings.');
+            throw new MetaprogrammingException('All keys must be strings.');
         }
         /* @phpstan-ignore assign.propertyType */
         $this->data = $data;
@@ -40,6 +43,14 @@ final readonly class Set
     public function get(string $field, mixed $default = null): mixed
     {
         return $this->data[$field] ?? $default;
+    }
+
+    public function at(string $field): mixed
+    {
+        if (array_key_exists($field, $this->data)) {
+            return $this->data[$field];
+        }
+        throw new MetaprogrammingException(sprintf("Field '%s' not found.", $field));
     }
 
     public function with(string $field, mixed $value): self

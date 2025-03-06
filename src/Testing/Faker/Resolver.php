@@ -8,8 +8,6 @@ use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
-use function Hyperf\Support\make;
-
 abstract class Resolver extends Faker
 {
     protected ?Resolver $previous = null;
@@ -20,7 +18,7 @@ abstract class Resolver extends Faker
         return $resolver;
     }
 
-    public function resolve(ReflectionParameter $parameter, ?Set $preset = null): ?Value
+    public function resolve(ReflectionParameter $parameter, Set $preset): ?Value
     {
         if (isset($this->previous)) {
             return $this->previous->resolve($parameter, $preset);
@@ -31,17 +29,5 @@ abstract class Resolver extends Faker
     final protected function previous(Resolver $previous): void
     {
         $this->previous = $previous;
-    }
-
-    /**
-     * @template T of mixed
-     * @param class-string<T> $class
-     * @param array<string, mixed> $args
-     *
-     * @return T
-     */
-    protected function make(string $class, array $args = []): mixed
-    {
-        return make($class, $args);
     }
 }

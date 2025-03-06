@@ -8,5 +8,4 @@ use DomainException;
 
 class MetaprogrammingException extends DomainException
 {
-
 }

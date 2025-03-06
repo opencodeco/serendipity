@@ -10,7 +10,7 @@ use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Database\Instrumental;
+use Serendipity\Infrastructure\Database\Managed;
 use SleekDB\Exceptions\IdNotAllowedException;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\IOException;
@@ -24,7 +24,7 @@ class SleekDBGameCommandRepository extends SleekDBGameRepository implements Game
     protected readonly Deserializer $deserializer;
 
     public function __construct(
-        Instrumental $generator,
+        Managed $generator,
         SleekDBDatabaseFactory $databaseFactory,
         DeserializerFactory $deserializerFactory,
     ) {

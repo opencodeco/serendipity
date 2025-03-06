@@ -8,10 +8,10 @@ use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
+use Serendipity\Domain\Support\Meta\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\TypeMatched;
-use Serendipity\Infrastructure\Adapter\Serialize\Target;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\EntityStub;
@@ -40,7 +40,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Builtin::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(6, $parameters);
 
@@ -85,7 +85,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Native::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(5, $parameters);
 
@@ -117,7 +117,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(NotNative::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(3, $parameters);
 
@@ -150,7 +150,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Intersection::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(1, $parameters);
 
@@ -168,7 +168,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Union::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(3, $parameters);
 
@@ -198,7 +198,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Intersection::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(1, $parameters);
 
@@ -213,7 +213,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Intersection::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(1, $parameters);
 
@@ -230,7 +230,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Union::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $set = Set::createFrom([
             'builtin' => true,
@@ -246,7 +246,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched();
         $target = Target::createFrom(Variety::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $this->assertCount(4, $parameters);
 
@@ -289,7 +289,7 @@ final class TypeMatchedTest extends TestCase
     {
         $resolver = new TypeMatched(path: ['*']);
         $target = Target::createFrom(Command::class);
-        $parameters = $target->parameters();
+        $parameters = $target->getReflectionParameters();
 
         $set = Set::createFrom([
             'email' => $this->generator()->email(),

@@ -9,7 +9,7 @@ use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Database\Instrumental;
+use Serendipity\Infrastructure\Database\Managed;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\IOException;
 
@@ -18,7 +18,7 @@ use function Serendipity\Type\Cast\toArray;
 class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQueryRepository
 {
     public function __construct(
-        Instrumental $generator,
+        Managed $generator,
         SleekDBDatabaseFactory $databaseFactory,
         protected readonly SerializerFactory $serializerFactory,
     ) {

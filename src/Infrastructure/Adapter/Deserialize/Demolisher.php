@@ -6,7 +6,7 @@ namespace Serendipity\Infrastructure\Adapter\Deserialize;
 
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Metaprogramming;
+use Serendipity\Domain\Support\Meta\Engine;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
@@ -14,7 +14,7 @@ use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
 use function get_object_vars;
 use function Serendipity\Type\Cast\toArray;
 
-class Demolisher extends Metaprogramming
+class Demolisher extends Engine
 {
     /**
      * @return array<string, mixed>

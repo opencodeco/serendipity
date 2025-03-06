@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Support;
+namespace Serendipity\Domain\Support\Meta;
 
 use ReflectionIntersectionType;
 use ReflectionNamedType;
@@ -12,13 +12,19 @@ use ReflectionUnionType;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\Adapter\NotResolvedCollection;
+use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\CaseConvention;
 
 use function array_map;
 use function gettype;
+use function implode;
+use function is_callable;
+use function is_object;
 use function Serendipity\Type\String\toSnakeCase;
+use function sort;
+use function sprintf;
 
-abstract class Metaprogramming
+abstract class Engine
 {
     public function __construct(
         public readonly CaseConvention $case = CaseConvention::SNAKE,

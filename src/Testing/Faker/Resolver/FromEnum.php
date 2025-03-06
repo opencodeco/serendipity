@@ -17,13 +17,13 @@ final class FromEnum extends Resolver
     /**
      * @throws RandomException
      */
-    public function resolve(ReflectionParameter $parameter, ?Set $preset = null): ?Value
+    public function resolve(ReflectionParameter $parameter, Set $preset): ?Value
     {
-        $parameterType = $parameter->getType();
-        if (! $parameterType instanceof ReflectionNamedType) {
+        $type = $parameter->getType();
+        if (! $type instanceof ReflectionNamedType) {
             return parent::resolve($parameter, $preset);
         }
-        $enum = $parameterType->getName();
+        $enum = $type->getName();
         if ($this->isNotEnum($enum)) {
             return parent::resolve($parameter, $preset);
         }
@@ -38,7 +38,7 @@ final class FromEnum extends Resolver
     /**
      * @throws RandomException
      */
-    private function resolveEnumValue(string $enum, ReflectionParameter $parameter, ?Set $preset): ?Value
+    private function resolveEnumValue(string $enum, ReflectionParameter $parameter, Set $preset): ?Value
     {
         if (! is_subclass_of($enum, BackedEnum::class)) {
             return parent::resolve($parameter, $preset);

@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Adapter\Serialize;
+namespace Serendipity\Domain\Support\Meta;
 
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 use ReflectionParameter;
 
 /**
@@ -13,15 +14,15 @@ use ReflectionParameter;
  */
 final readonly class Target
 {
-    public function __construct(
+    private function __construct(
         /**
          * @var ReflectionClass<T> $reflection
          */
         private ReflectionClass $reflection,
         /**
-         * @var array<ReflectionParameter> $parameters
+         * @var array<ReflectionParameter> $reflectionParameters
          */
-        private array $parameters = [],
+        private array $reflectionParameters = [],
     ) {
     }
 
@@ -35,13 +36,13 @@ final readonly class Target
     {
         $reflection = new ReflectionClass($class);
         $constructor = $reflection->getConstructor();
-        return new Target($reflection, $constructor?->getParameters() ?? []);
+        return new Target($reflection, self::extractReflectionParameters($constructor));
     }
 
     /**
      * @return ReflectionClass<T>
      */
-    public function reflection(): ReflectionClass
+    public function getReflectionClass(): ReflectionClass
     {
         return $this->reflection;
     }
@@ -49,8 +50,19 @@ final readonly class Target
     /**
      * @return array<ReflectionParameter>
      */
-    public function parameters(): array
+    public function getReflectionParameters(): array
     {
-        return $this->parameters;
+        return $this->reflectionParameters;
+    }
+
+    /**
+     * @return array<ReflectionParameter>
+     */
+    private static function extractReflectionParameters(?ReflectionMethod $constructor): array
+    {
+        if ($constructor === null) {
+            return [];
+        }
+        return $constructor->getParameters();
     }
 }

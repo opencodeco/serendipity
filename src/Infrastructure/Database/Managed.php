@@ -10,7 +10,7 @@ use Serendipity\Domain\Exception\GeneratingException;
 use Throwable;
 use Visus\Cuid2\Cuid2;
 
-class Instrumental
+class Managed
 {
     public function __construct(public readonly int $length = 10)
     {
