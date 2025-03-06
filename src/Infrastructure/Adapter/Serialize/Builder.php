@@ -8,7 +8,7 @@ use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Reflective\Engine;
-use Serendipity\Domain\Support\Reflective\Target;
+use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;

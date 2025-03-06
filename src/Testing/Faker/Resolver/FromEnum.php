@@ -24,15 +24,9 @@ final class FromEnum extends Resolver
             return parent::resolve($parameter, $preset);
         }
         $enum = $type->getName();
-        if ($this->isNotEnum($enum)) {
-            return parent::resolve($parameter, $preset);
-        }
-        return $this->resolveEnumValue($enum, $parameter, $preset);
-    }
-
-    private function isNotEnum(string $enum): bool
-    {
-        return ! is_subclass_of($enum, BackedEnum::class) || ! enum_exists($enum);
+        return enum_exists($enum)
+            ? $this->resolveEnumValue($enum, $parameter, $preset)
+            : parent::resolve($parameter, $preset);
     }
 
     /**

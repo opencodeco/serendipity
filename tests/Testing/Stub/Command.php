@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Testing\Stub;
 
 use DateTimeImmutable;
+use SensitiveParameter;
 use Serendipity\Domain\Entity\Entity;
 use Serendipity\Domain\Support\Reflective\Attributes\Define;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
@@ -28,6 +29,7 @@ class Command extends Entity
         public readonly string $firstName,
         #[Define(new Password())]
         public readonly string $password,
+        #[SensitiveParameter]
         public readonly ?string $address = null,
         public readonly ?string $city = null,
         public readonly ?string $state = null,

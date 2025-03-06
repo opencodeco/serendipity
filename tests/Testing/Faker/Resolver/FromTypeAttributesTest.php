@@ -1,0 +1,140 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Serendipity\Test\Testing\Faker\Resolver;
+
+use DateTimeImmutable;
+use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Support\Reflective\CaseConvention;
+use Serendipity\Domain\Support\Reflective\Factory\Target;
+use Serendipity\Domain\Support\Set;
+use Serendipity\Test\Testing\Stub\Command;
+use Serendipity\Test\Testing\Stub\EntityManaged;
+use Serendipity\Test\Testing\Stub\Variety;
+use Serendipity\Testing\Faker\Resolver\FromTypeAttributes;
+
+/**
+ * @internal
+ */
+final class FromTypeAttributesTest extends TestCase
+{
+    public function testShouldResolveEmailAttribute(): void
+    {
+        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $target = Target::createFrom(Command::class);
+        $parameters = $target->getReflectionParameters();
+
+        [0 => $emailParameter] = $parameters;
+
+        $set = Set::createFrom([]);
+        $value = $resolver->resolve($emailParameter, $set);
+
+        $this->assertNotNull($value);
+        $this->assertIsString($value->content);
+        $this->assertStringContainsString('@', $value->content);
+    }
+
+    public function testShouldResolveIpAddressAttribute(): void
+    {
+        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $target = Target::createFrom(Command::class);
+        $parameters = $target->getReflectionParameters();
+
+        [1 => $ipAddressParameter] = $parameters;
+
+        $set = Set::createFrom([]);
+        $value = $resolver->resolve($ipAddressParameter, $set);
+
+        $this->assertNotNull($value);
+        $this->assertIsString($value->content);
+        $this->assertMatchesRegularExpression(
+            '/^(\d{1,3}\.){3}\d{1,3}$|^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/',
+            $value->content
+        );
+    }
+
+    public function testShouldResolveFirstNameAttribute(): void
+    {
+        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $target = Target::createFrom(Command::class);
+        $parameters = $target->getReflectionParameters();
+
+        [4 => $firstNameParameter] = $parameters;
+
+        $set = Set::createFrom([]);
+        $value = $resolver->resolve($firstNameParameter, $set);
+
+        $this->assertNotNull($value);
+        $this->assertIsString($value->content);
+    }
+
+    public function testShouldResolveTypeExtendedAttribute(): void
+    {
+        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $target = Target::createFrom(Command::class);
+        $parameters = $target->getReflectionParameters();
+
+        [
+            5 => $password,
+            6 => $address,
+        ] = $parameters;
+
+        $set = Set::createFrom([]);
+
+        $value = $resolver->resolve($password, $set);
+        $this->assertNotNull($value);
+        $this->assertIsString($value->content);
+
+        $value = $resolver->resolve($address, $set);
+        $this->assertNull($value);
+    }
+
+    public function testShouldFallbackToNextResolverWhenNoAttribute(): void
+    {
+        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $target = Target::createFrom(Command::class);
+        $parameters = $target->getReflectionParameters();
+
+        [2 => $signupDateParameter] = $parameters;
+
+        $set = Set::createFrom([]);
+        $value = $resolver->resolve($signupDateParameter, $set);
+
+        $this->assertNull($value);
+    }
+
+    public function testShouldReturnNullForUndefinedType(): void
+    {
+        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $target = Target::createFrom(Variety::class);
+        $parameters = $target->getReflectionParameters();
+
+        [3 => $whateverParameter] = $parameters;
+
+        $set = Set::createFrom([]);
+        $value = $resolver->resolve($whateverParameter, $set);
+
+        $this->assertNull($value);
+    }
+
+    public function testShouldResolveManagedAttributes(): void
+    {
+        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $target = Target::createFrom(EntityManaged::class);
+        $parameters = $target->getReflectionParameters();
+
+        [0 => $idParameter] = $parameters;
+        [1 => $createdAtParameter] = $parameters;
+
+        $set = Set::createFrom([]);
+
+        $idValue = $resolver->resolve($idParameter, $set);
+        $this->assertNotNull($idValue);
+        $this->assertIsString($idValue->content);
+
+        $createdAtValue = $resolver->resolve($createdAtParameter, $set);
+        $this->assertNotNull($createdAtValue);
+        $this->assertIsString(DateTimeImmutable::class, $createdAtValue->content);
+    }
+}

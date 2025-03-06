@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Support\Reflective;
+namespace Serendipity\Domain\Support\Reflective\Factory;
 
 use ReflectionClass;
 use ReflectionException;

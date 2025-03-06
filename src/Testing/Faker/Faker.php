@@ -12,13 +12,15 @@ use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Contract\Testing\Faker as Contract;
 use Serendipity\Domain\Support\Reflective\CaseConvention;
 use Serendipity\Domain\Support\Reflective\Engine;
-use Serendipity\Domain\Support\Reflective\Target;
+use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Testing\Faker\Resolver\FromDefaultValue;
 use Serendipity\Testing\Faker\Resolver\FromDependency;
 use Serendipity\Testing\Faker\Resolver\FromEnum;
 use Serendipity\Testing\Faker\Resolver\FromPreset;
-use Serendipity\Testing\Faker\Resolver\FromType;
+use Serendipity\Testing\Faker\Resolver\FromTypeAttributes;
+use Serendipity\Testing\Faker\Resolver\FromTypeBuiltin;
+use Serendipity\Testing\Faker\Resolver\FromTypeNative;
 
 class Faker extends Engine implements Contract
 {
@@ -35,6 +37,11 @@ class Faker extends Engine implements Contract
         parent::__construct($case, $formatters);
 
         $this->generator = Factory::create('pt_BR');
+    }
+
+    public function __call(string $name, array $arguments): mixed
+    {
+        return $this->generate($name, $arguments);
     }
 
     /**
@@ -63,11 +70,6 @@ class Faker extends Engine implements Contract
         return $this->generator;
     }
 
-    public function __call(string $name, array $arguments): mixed
-    {
-        return $this->generate($name, $arguments);
-    }
-
     /**
      * @param array<ReflectionParameter> $parameters
      */
@@ -77,7 +79,9 @@ class Faker extends Engine implements Contract
         foreach ($parameters as $parameter) {
             $field = $this->formatParameterName($parameter);
             $generated = (new FromDependency($this->case))
-                ->then(new FromType($this->case))
+                ->then(new FromTypeNative($this->case))
+                ->then(new FromTypeBuiltin($this->case))
+                ->then(new FromTypeAttributes($this->case))
                 ->then(new FromEnum($this->case))
                 ->then(new FromDefaultValue($this->case))
                 ->then(new FromPreset($this->case))

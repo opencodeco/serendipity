@@ -7,7 +7,7 @@ namespace Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
-use Serendipity\Domain\Support\Reflective\Target;
+use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\FormatValue;
 use Serendipity\Test\Testing\Stub\Builtin;
