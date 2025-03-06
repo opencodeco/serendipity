@@ -64,10 +64,8 @@ final class FromDependency extends Resolver
     private function resolveFromUnionType(ReflectionUnionType $unionType, Set $presets): ?Value
     {
         $types = $unionType->getTypes();
-        $callback = function (?Value $carry, ?ReflectionType $type) use ($presets) {
-            return $carry
-                ?? $this->resolveReflectionParameterType($type, $presets);
-        };
+        $callback = fn (?Value $carry, ?ReflectionType $type) => $carry
+            ?? $this->resolveReflectionParameterType($type, $presets);
         return array_reduce($types, $callback);
     }
 
