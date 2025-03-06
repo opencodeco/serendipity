@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Support;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Exception\MetaprogrammingException;
+use Serendipity\Domain\Exception\SchemaException;
 use Serendipity\Domain\Support\Set;
 
 /**
@@ -64,14 +64,14 @@ final class SetTest extends TestCase
 
     public function testInvalidValuesArray(): void
     {
-        $this->expectException(MetaprogrammingException::class);
+        $this->expectException(SchemaException::class);
         $this->expectExceptionMessage('Values must be an array.');
         new Set('invalid');
     }
 
     public function testInvalidKeysInArray(): void
     {
-        $this->expectException(MetaprogrammingException::class);
+        $this->expectException(SchemaException::class);
         $this->expectExceptionMessage('All keys must be strings.');
         new Set(['value', 5 => 'foo', 'key' => 'value']);
     }

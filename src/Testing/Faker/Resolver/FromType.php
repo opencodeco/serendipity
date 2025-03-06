@@ -13,8 +13,8 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
 use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Domain\Exception\MetaprogrammingException;
-use Serendipity\Domain\Support\Meta\Options;
+use Serendipity\Domain\Exception\SchemaException;
+use Serendipity\Domain\Support\Reflective\Behaviour\Managed;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
@@ -59,7 +59,7 @@ final class FromType extends Resolver
             return $reflectionNamedTypes[$index]->getName();
         }
         if ($type instanceof ReflectionIntersectionType) {
-            throw new MetaprogrammingException(
+            throw new SchemaException(
                 sprintf(
                     'Intersection type not supported for parameter "%s". Please provide a preset value for it',
                     $parameter->getName()
@@ -96,24 +96,14 @@ final class FromType extends Resolver
      */
     private function resolveByOptions(ReflectionParameter $parameter): ?Value
     {
-        $attributes = $parameter->getAttributes(Options::class);
+        $attributes = $parameter->getAttributes(Managed::class);
         if (empty($attributes)) {
             return null;
         }
-        $attributes = array_shift($attributes);
-        $options = $attributes->newInstance();
-        if ($options->has('managed')) {
-            return $this->resolveManaged($options);
-        }
-        return null;
-    }
-
-    /**
-     * @throws GeneratingException
-     */
-    private function resolveManaged(Options $options): ?Value
-    {
-        return match ($options->at('managed')) {
+        $attributes = array_first($attributes);
+        /** @var Managed $managed */
+        $managed = $attributes->newInstance();
+        return match ($managed->management) {
             'id' => new Value($this->managed()->id()),
             'now' => new Value($this->managed()->now()),
             default => null,

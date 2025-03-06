@@ -9,7 +9,7 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
-use Serendipity\Domain\Exception\MetaprogrammingException;
+use Serendipity\Domain\Exception\SchemaException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Testing\Faker\Resolver;
@@ -21,7 +21,7 @@ final class FromDependency extends Resolver
     {
         $type = $parameter->getType();
         if ($type instanceof ReflectionIntersectionType) {
-            throw new MetaprogrammingException(
+            throw new SchemaException(
                 sprintf(
                     'Intersection type not supported for parameter "%s". Please provide a preset value for it',
                     $parameter->getName()

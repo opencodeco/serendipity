@@ -6,6 +6,6 @@ namespace Serendipity\Domain\Exception;
 
 use DomainException;
 
-class MetaprogrammingException extends DomainException
+class SchemaException extends DomainException
 {
 }

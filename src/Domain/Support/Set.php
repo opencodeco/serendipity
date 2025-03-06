@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Support;
 
-use Serendipity\Domain\Exception\MetaprogrammingException;
+use Serendipity\Domain\Exception\SchemaException;
 
 use function array_filter;
 use function array_key_exists;
@@ -24,12 +24,12 @@ readonly class Set
     public function __construct(mixed $data = [])
     {
         if (! is_array($data)) {
-            throw new MetaprogrammingException('Values must be an array.');
+            throw new SchemaException('Values must be an array.');
         }
         $keys = array_keys($data);
         $filtered = array_filter($keys, 'is_string');
         if (count($keys) !== count($filtered)) {
-            throw new MetaprogrammingException('All keys must be strings.');
+            throw new SchemaException('All keys must be strings.');
         }
         /* @phpstan-ignore assign.propertyType */
         $this->data = $data;
@@ -50,7 +50,7 @@ readonly class Set
         if (array_key_exists($field, $this->data)) {
             return $this->data[$field];
         }
-        throw new MetaprogrammingException(sprintf("Field '%s' not found.", $field));
+        throw new SchemaException(sprintf("Field '%s' not found.", $field));
     }
 
     public function with(string $field, mixed $value): self

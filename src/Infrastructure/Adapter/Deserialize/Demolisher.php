@@ -6,7 +6,7 @@ namespace Serendipity\Infrastructure\Adapter\Deserialize;
 
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Support\Meta\Engine;
+use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;

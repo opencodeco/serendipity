@@ -9,7 +9,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
-use Serendipity\Domain\Support\Meta\Target;
+use Serendipity\Domain\Support\Reflective\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;

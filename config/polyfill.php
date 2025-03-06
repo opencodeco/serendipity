@@ -37,14 +37,23 @@ if (! function_exists('array_flatten_prefixed')) {
 }
 
 if (! function_exists('array_shift_pluck_int')) {
-    function array_shift_pluck_int(mixed $result, string $property): ?int
+    function array_shift_pluck_int(mixed $array, string $property): ?int
     {
-        $data = toArray($result);
+        $data = toArray($array);
         if (empty($data)) {
             return null;
         }
         $datum = toArray($data[0]);
         $id = toInt(extractInt($datum, $property));
         return $id === 0 ? null : $id;
+    }
+}
+
+if (! function_exists('array_first')) {
+    function array_first(array $array): mixed
+    {
+        return empty($array)
+            ? null :
+            $array[0];
     }
 }

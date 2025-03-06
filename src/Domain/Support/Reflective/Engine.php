@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Support\Meta;
+namespace Serendipity\Domain\Support\Reflective;
 
 use ReflectionIntersectionType;
 use ReflectionNamedType;
