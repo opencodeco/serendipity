@@ -85,21 +85,6 @@ abstract class Engine
     }
 
     /**
-     * @param array<ReflectionType> $types
-     */
-    private function joinReflectionTypeNames(array $types, string $separator): string
-    {
-        $array = array_map(fn (ReflectionType $type) => $this->formatTypeName($type), $types);
-        sort($array);
-        return implode($separator, $array);
-    }
-
-    private function formatFormatter(Formatter $formatter): callable
-    {
-        return fn (mixed $value, mixed $option = null): mixed => $formatter->format($value, $option);
-    }
-
-    /**
      * @param array<NotResolved>|string $unresolved
      */
     protected function notResolved(array|string $unresolved, mixed $value = null): Value
@@ -135,5 +120,20 @@ abstract class Engine
             $actual,
         );
         return $this->notResolved($message, $value);
+    }
+
+    /**
+     * @param array<ReflectionType> $types
+     */
+    private function joinReflectionTypeNames(array $types, string $separator): string
+    {
+        $array = array_map(fn (ReflectionType $type) => $this->formatTypeName($type), $types);
+        sort($array);
+        return implode($separator, $array);
+    }
+
+    private function formatFormatter(Formatter $formatter): callable
+    {
+        return fn (mixed $value, mixed $option = null): mixed => $formatter->format($value, $option);
     }
 }

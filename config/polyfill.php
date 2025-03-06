@@ -53,7 +53,7 @@ if (! function_exists('array_first')) {
     function array_first(array $array): mixed
     {
         return empty($array)
-            ? null :
-            $array[0];
+            ? null
+            : $array[0];
     }
 }

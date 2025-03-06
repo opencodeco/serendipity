@@ -34,6 +34,11 @@ class Faker extends Engine
         $this->generator = Factory::create('pt_BR');
     }
 
+    public function __call(string $name, array $arguments): mixed
+    {
+        return $this->generator->__call($name, $arguments);
+    }
+
     /**
      * @template U of object
      * @param class-string<U> $class
@@ -48,11 +53,6 @@ class Faker extends Engine
         }
 
         return $this->resolveParameters($parameters, new Set($presets));
-    }
-
-    public function __call(string $name, array $arguments): mixed
-    {
-        return $this->generator->__call($name, $arguments);
     }
 
     public function generator(): Generator
