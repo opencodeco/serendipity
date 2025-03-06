@@ -13,7 +13,9 @@ class Game extends GameCommand
     public function __construct(
         #[Managed(management: 'id')]
         public readonly string $id,
+        #[Managed(management: 'now')]
         public readonly DateTimeImmutable $createdAt,
+        #[Managed(management: 'now')]
         public readonly DateTimeImmutable $updatedAt,
         string $name,
         string $slug,

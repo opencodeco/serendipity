@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure;
+namespace Serendipity\Domain\Support\Reflective;
 
 enum CaseConvention
 {

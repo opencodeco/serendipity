@@ -40,7 +40,7 @@ final class FromType extends Resolver
         try {
             return new Value($this->generator->format($type));
         } catch (Throwable) {
-            return $this->resolveByOptions($parameter)
+            return $this->resolveByAttributes($parameter)
                 ?? $this->resolveByType($type)
                 ?? parent::resolve($parameter, $preset);
         }
@@ -94,19 +94,25 @@ final class FromType extends Resolver
     /**
      * @throws GeneratingException
      */
-    private function resolveByOptions(ReflectionParameter $parameter): ?Value
+    private function resolveByAttributes(ReflectionParameter $parameter): ?Value
     {
         $attributes = $parameter->getAttributes(Managed::class);
         if (empty($attributes)) {
             return null;
         }
-        $attributes = array_first($attributes);
-        /** @var Managed $managed */
-        $managed = $attributes->newInstance();
-        return match ($managed->management) {
-            'id' => new Value($this->managed()->id()),
-            'now' => new Value($this->managed()->now()),
-            default => null,
-        };
+        foreach ($attributes as $attribute) {
+            $managed = $attribute->newInstance();
+            $matched = match (true) {
+                $managed instanceof Managed => match ($managed->management) {
+                    'id' => new Value($this->managed()->id()),
+                    'now' => new Value($this->managed()->now()),
+                    default => null,
+                }
+            };
+            if ($matched !== null) {
+                return $matched;
+            }
+        }
+        return null;
     }
 }

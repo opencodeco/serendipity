@@ -8,10 +8,11 @@ use Faker\Factory;
 use Faker\Generator;
 use ReflectionException;
 use ReflectionParameter;
+use Serendipity\Domain\Contract\Formatter;
+use Serendipity\Domain\Support\Reflective\CaseConvention;
 use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Target;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\CaseConvention;
 use Serendipity\Testing\Faker\Resolver\FromDefaultValue;
 use Serendipity\Testing\Faker\Resolver\FromDependency;
 use Serendipity\Testing\Faker\Resolver\FromEnum;
@@ -23,13 +24,14 @@ class Faker extends Engine
     protected readonly Generator $generator;
 
     /**
+     * @param array<callable|Formatter> $formatters
      * @SuppressWarnings(StaticAccess)
      */
     public function __construct(
         CaseConvention $case = CaseConvention::SNAKE,
-        array $converters = [],
+        array $formatters = [],
     ) {
-        parent::__construct($case, $converters);
+        parent::__construct($case, $formatters);
 
         $this->generator = Factory::create('pt_BR');
     }

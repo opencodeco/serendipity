@@ -13,7 +13,6 @@ use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\Adapter\NotResolvedCollection;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Infrastructure\CaseConvention;
 
 use function array_map;
 use function gettype;

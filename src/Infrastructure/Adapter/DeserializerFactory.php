@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter;
 
 use Serendipity\Domain\Contract\Adapter\DeserializerFactory as Contract;
+use Serendipity\Domain\Contract\Formatter;
 
 class DeserializerFactory implements Contract
 {
@@ -18,6 +19,9 @@ class DeserializerFactory implements Contract
         return new Deserializer(type: $type, formatters: $this->formatters());
     }
 
+    /**
+     * @return array<callable|Formatter>
+     */
     protected function formatters(): array
     {
         return [];

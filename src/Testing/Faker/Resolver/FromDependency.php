@@ -48,6 +48,9 @@ final class FromDependency extends Resolver
             return null;
         }
         try {
+            if (! class_exists($class)) {
+                return null;
+            }
             $resolved = $this->fake($class, $preset->toArray());
             return new Value($resolved->toArray());
         } catch (Throwable) {
@@ -69,6 +72,6 @@ final class FromDependency extends Resolver
 
     private function isEligibleForDependency(string $class, ReflectionNamedType $type): bool
     {
-        return ! class_exists($class) || $type->isBuiltin() || enum_exists($class);
+        return $type->isBuiltin() || enum_exists($class);
     }
 }
