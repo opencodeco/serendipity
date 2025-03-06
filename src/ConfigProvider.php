@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity;
 
-use Hyperf\Contract\ConfigInterface;
-use Psr\Container\ContainerInterface;
-use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
-use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
-
-use function Serendipity\Type\Cast\toArray;
+use Serendipity\Hyperf\Database\Document\HyperfSleekDBFactory;
+use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
+use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 
 class ConfigProvider
 {
@@ -18,12 +15,8 @@ class ConfigProvider
     {
         return [
             'dependencies' => [
-                SleekDBDatabaseFactory::class => function (ContainerInterface $container) {
-                    $config = $container->get(ConfigInterface::class);
-                    $options = toArray($config->get('databases.sleek'));
-                    return new SleekDBDatabaseFactory($options);
-                },
-                RelationalDatabaseFactory::class => HyperfDatabaseFactory::class,
+                SleekDBFactory::class => HyperfSleekDBFactory::class,
+                ConnectionFactory::class => HyperfConnectionFactory::class,
             ],
             'annotations' => [
                 'scan' => [

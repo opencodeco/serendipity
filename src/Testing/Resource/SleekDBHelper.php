@@ -8,7 +8,7 @@ use ReflectionException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
-use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Testing\Faker\Faker;
 use SleekDB\Exceptions\IdNotAllowedException;
 use SleekDB\Exceptions\InvalidArgumentException;
@@ -24,7 +24,7 @@ final class SleekDBHelper extends Helper
         Faker $faker,
         SerializerFactory $serializerFactory,
         DeserializerFactory $deserializerFactory,
-        private readonly SleekDBDatabaseFactory $factory,
+        private readonly SleekDBFactory $factory,
     ) {
         parent::__construct($faker, $serializerFactory, $deserializerFactory);
     }

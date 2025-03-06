@@ -12,7 +12,7 @@ use SleekDB\Store;
 use function Serendipity\Type\Cast\toArray;
 use function Serendipity\Type\Cast\toString;
 
-class SleekDBDatabaseFactory
+class SleekDBFactory
 {
     public function __construct(private readonly array $options)
     {

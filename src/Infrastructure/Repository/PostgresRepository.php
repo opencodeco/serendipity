@@ -6,20 +6,20 @@ namespace Serendipity\Infrastructure\Repository;
 
 use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Infrastructure\Database\Managed;
-use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
-use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
+use Serendipity\Infrastructure\Database\Relational\Connection;
+use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 
 abstract class PostgresRepository extends Repository
 {
-    protected readonly RelationalDatabase $database;
+    protected readonly Connection $database;
 
     public function __construct(
         protected readonly Managed $managed,
         protected readonly RelationalDeserializerFactory $deserializerFactory,
         protected readonly RelationalSerializerFactory $serializerFactory,
-        RelationalDatabaseFactory $relationalDatabaseFactory,
+        ConnectionFactory $relationalDatabaseFactory,
     ) {
         $this->database = $relationalDatabaseFactory->make('postgres');
     }

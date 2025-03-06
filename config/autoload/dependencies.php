@@ -9,10 +9,10 @@ use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
 use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;
 use Serendipity\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameCommandRepository;
 use Serendipity\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameQueryRepository;
-use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
+use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
 use Serendipity\Hyperf\Logging\EnvironmentLoggerFactory;
-use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
+use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 
 use function Hyperf\Support\env;
 use function Serendipity\Type\Cast\toArray;
@@ -22,12 +22,12 @@ return [
     LoggerInterface::class => fn (ContainerInterface $container) => $container
         ->get(EnvironmentLoggerFactory::class)
         ->make(toString(env('APP_ENV', 'dev'))),
-    SleekDBDatabaseFactory::class => function (ContainerInterface $container) {
+    SleekDBFactory::class => function (ContainerInterface $container) {
         $config = $container->get(ConfigInterface::class);
         $options = toArray($config->get('databases.sleek'));
-        return new SleekDBDatabaseFactory($options);
+        return new SleekDBFactory($options);
     },
-    RelationalDatabaseFactory::class => HyperfDatabaseFactory::class,
+    ConnectionFactory::class => HyperfConnectionFactory::class,
 
     GameCommandRepository::class => SleekDBGameCommandRepository::class,
     GameQueryRepository::class => SleekDBGameQueryRepository::class,

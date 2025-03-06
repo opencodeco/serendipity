@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Hyperf\Database;
+namespace Serendipity\Hyperf\Database\Relational;
 
 use Closure;
 use Hyperf\DB\DB as Database;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
+use Serendipity\Infrastructure\Database\Relational\Connection;
 
 use function get_object_vars;
 use function is_object;
 use function Serendipity\Type\Cast\toArray;
 use function Serendipity\Type\Cast\toInt;
 
-class HyperfDatabase implements RelationalDatabase
+class HyperfConnection implements Connection
 {
     public function __construct(
         public readonly string $connection,

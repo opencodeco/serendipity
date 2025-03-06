@@ -7,7 +7,7 @@ namespace Serendipity\Infrastructure\Database\Relational;
 use Closure;
 use Serendipity\Domain\Support\Set;
 
-interface RelationalDatabase
+interface Connection
 {
     public function beginTransaction(): void;
 

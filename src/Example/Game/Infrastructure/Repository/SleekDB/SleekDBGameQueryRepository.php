@@ -8,7 +8,7 @@ use Serendipity\Example\Game\Domain\Collection\GameCollection;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
-use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Infrastructure\Database\Managed;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\IOException;
@@ -19,7 +19,7 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
 {
     public function __construct(
         Managed $generator,
-        SleekDBDatabaseFactory $databaseFactory,
+        SleekDBFactory $databaseFactory,
         protected readonly SerializerFactory $serializerFactory,
     ) {
         parent::__construct($generator, $databaseFactory);

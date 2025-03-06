@@ -6,8 +6,8 @@ namespace Serendipity\Test\General;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\ConfigProvider;
-use Serendipity\Infrastructure\Database\Document\SleekDBDatabaseFactory;
-use Serendipity\Infrastructure\Database\Relational\RelationalDatabaseFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
+use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 
 /**
  * @internal
@@ -19,8 +19,8 @@ class ConfigProviderTest extends TestCase
         $provider = new ConfigProvider();
         $config = $provider();
         $this->assertArrayHasKey('dependencies', $config);
-        $this->assertArrayHasKey(SleekDBDatabaseFactory::class, $config['dependencies']);
-        $this->assertArrayHasKey(RelationalDatabaseFactory::class, $config['dependencies']);
+        $this->assertArrayHasKey(SleekDBFactory::class, $config['dependencies']);
+        $this->assertArrayHasKey(ConnectionFactory::class, $config['dependencies']);
         $this->assertArrayHasKey('annotations', $config);
     }
 }

@@ -10,7 +10,7 @@ use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
-use Serendipity\Hyperf\Database\Support\HasPostgresUniqueConstraint;
+use Serendipity\Hyperf\Database\Relational\Support\HasPostgresUniqueConstraint;
 use Serendipity\Infrastructure\Repository\PostgresRepository;
 
 class PostgresGameCommandRepository extends PostgresRepository implements GameCommandRepository

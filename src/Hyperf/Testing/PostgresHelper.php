@@ -6,8 +6,8 @@ namespace Serendipity\Hyperf\Testing;
 
 use ReflectionException;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
-use Serendipity\Infrastructure\Database\Relational\RelationalDatabase;
+use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
+use Serendipity\Infrastructure\Database\Relational\Connection;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Testing\Faker\Faker;
@@ -27,13 +27,13 @@ use function str_repeat;
 
 final class PostgresHelper extends Helper
 {
-    private readonly RelationalDatabase $database;
+    private readonly Connection $database;
 
     public function __construct(
         Faker $faker,
         RelationalSerializerFactory $serializerFactory,
         RelationalDeserializerFactory $deserializerFactory,
-        HyperfDatabaseFactory $hyperfDatabaseFactory,
+        HyperfConnectionFactory $hyperfDatabaseFactory,
     ) {
         parent::__construct($faker, $serializerFactory, $deserializerFactory);
 

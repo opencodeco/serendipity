@@ -6,8 +6,8 @@ namespace Serendipity\Test\Infrastructure\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\GeneratingException;
-use Serendipity\Hyperf\Database\HyperfDatabase;
-use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
+use Serendipity\Hyperf\Database\Relational\HyperfConnection;
+use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
 use Serendipity\Infrastructure\Adapter\Deserializer;
 use Serendipity\Infrastructure\Database\Managed;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
@@ -35,10 +35,10 @@ final class PostgresRepositoryTest extends TestCase
         $this->deserializerFactory = $this->createMock(RelationalDeserializerFactory::class);
         $serializerFactory = $this->createMock(RelationalSerializerFactory::class);
 
-        $hyperfDBFactory = $this->createMock(HyperfDatabaseFactory::class);
+        $hyperfDBFactory = $this->createMock(HyperfConnectionFactory::class);
         $hyperfDBFactory->expects($this->once())
             ->method('make')
-            ->willReturn($this->createMock(HyperfDatabase::class));
+            ->willReturn($this->createMock(HyperfConnection::class));
 
         $this->repository = new PostgresRepositoryTestMock(
             $generator,

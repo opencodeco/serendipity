@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Hyperf\Database\Support;
+namespace Serendipity\Hyperf\Database\Relational\Support;
 
 use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Throwable;

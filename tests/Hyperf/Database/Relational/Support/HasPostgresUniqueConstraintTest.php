@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Hyperf\Database\Support;
+namespace Serendipity\Test\Hyperf\Database\Relational\Support;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\UniqueKeyViolationException;
-use Serendipity\Hyperf\Database\Support\HasPostgresUniqueConstraint;
+use Serendipity\Hyperf\Database\Relational\Support\HasPostgresUniqueConstraint;
 
 /**
  * @internal

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Hyperf\Database;
+namespace Serendipity\Test\Hyperf\Database\Relational;
 
 use Hyperf\DB\DB as Database;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Hyperf\Database\HyperfDatabaseFactory;
+use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 
 /**
  * @internal
  */
-final class HyperfDatabaseFactoryTest extends TestCase
+final class HyperfRelationalFactoryTest extends TestCase
 {
     use MakeExtension;
 
@@ -20,7 +20,7 @@ final class HyperfDatabaseFactoryTest extends TestCase
     {
         $database = $this->make(Database::class);
 
-        $factory = new HyperfDatabaseFactory($database);
+        $factory = new HyperfConnectionFactory($database);
         $connection = $factory->make('default');
 
         $this->assertEquals('default', $connection->connection);
