@@ -9,6 +9,7 @@ use Faker\Generator;
 use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Contract\Formatter;
+use Serendipity\Domain\Contract\Testing\Faker as Contract;
 use Serendipity\Domain\Support\Reflective\CaseConvention;
 use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Target;
@@ -19,7 +20,7 @@ use Serendipity\Testing\Faker\Resolver\FromEnum;
 use Serendipity\Testing\Faker\Resolver\FromPreset;
 use Serendipity\Testing\Faker\Resolver\FromType;
 
-class Faker extends Engine
+class Faker extends Engine implements Contract
 {
     protected readonly Generator $generator;
 
@@ -34,11 +35,6 @@ class Faker extends Engine
         parent::__construct($case, $formatters);
 
         $this->generator = Factory::create('pt_BR');
-    }
-
-    public function __call(string $name, array $arguments): mixed
-    {
-        return $this->generator->__call($name, $arguments);
     }
 
     /**
@@ -57,9 +53,19 @@ class Faker extends Engine
         return $this->resolveParameters($parameters, new Set($presets));
     }
 
+    public function generate(string $name, array $arguments = []): mixed
+    {
+        return $this->generator->__call($name, $arguments);
+    }
+
     public function generator(): Generator
     {
         return $this->generator;
+    }
+
+    public function __call(string $name, array $arguments): mixed
+    {
+        return $this->generate($name, $arguments);
     }
 
     /**

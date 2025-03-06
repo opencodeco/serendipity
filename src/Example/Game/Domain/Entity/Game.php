@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Example\Game\Domain\Entity;
 
 use DateTimeImmutable;
-use Serendipity\Domain\Support\Reflective\Behaviour\Managed;
+use Serendipity\Domain\Support\Reflective\Attributes\Managed;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 
 class Game extends GameCommand

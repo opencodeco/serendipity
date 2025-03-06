@@ -293,20 +293,20 @@ final class TypeMatchedTest extends TestCase
 
         $set = Set::createFrom([
             'email' => $this->generator()->email(),
-            'first_name' => null,
+            'address' => null,
             'dob' => null,
         ]);
 
         [
             0 => $email,
-            3 => $firstName,
+            6 => $address,
             13 => $dob,
         ] = $parameters;
 
         $value = $resolver->resolve($email, $set);
         $this->assertIsString($value->content);
 
-        $value = $resolver->resolve($firstName, $set);
+        $value = $resolver->resolve($address, $set);
         $this->assertNull($value->content);
 
         $value = $resolver->resolve($dob, $set);

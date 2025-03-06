@@ -14,7 +14,10 @@ use ReflectionParameter;
 use ReflectionUnionType;
 use Serendipity\Domain\Exception\GeneratingException;
 use Serendipity\Domain\Exception\SchemaException;
-use Serendipity\Domain\Support\Reflective\Behaviour\Managed;
+use Serendipity\Domain\Support\Reflective\Attributes\Define;
+use Serendipity\Domain\Support\Reflective\Attributes\Managed;
+use Serendipity\Domain\Support\Reflective\Definition\Type;
+use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
@@ -37,13 +40,11 @@ final class FromType extends Resolver
         if ($type === null) {
             return parent::resolve($parameter, $preset);
         }
-        try {
-            return new Value($this->generator->format($type));
-        } catch (Throwable) {
-            return $this->resolveByAttributes($parameter)
-                ?? $this->resolveByType($type)
-                ?? parent::resolve($parameter, $preset);
-        }
+
+        return $this->resolveByAttributes($parameter)
+            ?? $this->resolveByType($type)
+            ?? $this->resolveByFormat($type)
+            ?? parent::resolve($parameter, $preset);
     }
 
     private function extractType(ReflectionParameter $parameter): ?string
@@ -70,6 +71,29 @@ final class FromType extends Resolver
     }
 
     /**
+     * @throws GeneratingException
+     */
+    private function resolveByAttributes(ReflectionParameter $parameter): ?Value
+    {
+        $attributes = $parameter->getAttributes();
+        if (empty($attributes)) {
+            return null;
+        }
+        foreach ($attributes as $attribute) {
+            $instance = $attribute->newInstance();
+            $resolved = match (true) {
+                $instance instanceof Managed => $this->resolveManaged($instance),
+                $instance instanceof Define => $this->resolveDefine($instance),
+                default => null,
+            };
+            if ($resolved !== null) {
+                return $resolved;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @throws DateMalformedStringException
      */
     private function resolveByType(string $type): ?Value
@@ -86,6 +110,15 @@ final class FromType extends Resolver
         };
     }
 
+    private function resolveByFormat(string $type): ?Value
+    {
+        try {
+            return new Value($this->generator->format($type));
+        } catch (Throwable) {
+            return null;
+        }
+    }
+
     private function now(): string
     {
         return $this->generator->dateTime()->format(DateTimeInterface::ATOM);
@@ -94,23 +127,26 @@ final class FromType extends Resolver
     /**
      * @throws GeneratingException
      */
-    private function resolveByAttributes(ReflectionParameter $parameter): ?Value
+    public function resolveManaged(Managed $instance): ?Value
     {
-        $attributes = $parameter->getAttributes(Managed::class);
-        if (empty($attributes)) {
-            return null;
-        }
-        foreach ($attributes as $attribute) {
-            $managed = $attribute->newInstance();
-            $matched = match (true) {
-                $managed instanceof Managed => match ($managed->management) {
-                    'id' => new Value($this->managed()->id()),
-                    'now' => new Value($this->managed()->now()),
-                    default => null,
-                }
+        return match ($instance->management) {
+            'id' => new Value($this->managed()->id()),
+            'now' => new Value($this->managed()->now()),
+            default => null,
+        };
+    }
+
+    private function resolveDefine(Define $instance): ?Value
+    {
+        $types = $instance->types;
+        foreach ($types as $type) {
+            $resolved = match (true) {
+                $type instanceof Type => $this->resolveByFormat($type->value),
+                $type instanceof TypeExtended => $type->fake($this),
+                default => null,
             };
-            if ($matched !== null) {
-                return $matched;
+            if ($resolved !== null) {
+                return $resolved;
             }
         }
         return null;

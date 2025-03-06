@@ -6,6 +6,10 @@ namespace Serendipity\Test\Testing\Stub;
 
 use DateTimeImmutable;
 use Serendipity\Domain\Entity\Entity;
+use Serendipity\Domain\Support\Reflective\Attributes\Define;
+use Serendipity\Domain\Support\Reflective\Definition\Type;
+use Serendipity\Test\Testing\Stub\Type\Gender;
+use Serendipity\Test\Testing\Stub\Type\Password;
 
 class Command extends Entity
 {
@@ -14,18 +18,22 @@ class Command extends Entity
      * @SuppressWarnings(ShortVariable)
      */
     public function __construct(
+        #[Define(Type::EMAIL)]
         public readonly string $email,
+        #[Define(Type::IP_V4, Type::IP_V6)]
         public readonly string $ipAddress,
         public readonly DateTimeImmutable $signupDate,
-        public readonly ?string $firstName = null,
-        public readonly ?string $lastName = null,
+        public readonly Gender $gender,
+        #[Define(Type::FIRST_NAME)]
+        public readonly string $firstName,
+        #[Define(new Password())]
+        public readonly string $password,
         public readonly ?string $address = null,
         public readonly ?string $city = null,
         public readonly ?string $state = null,
         public readonly ?string $zip = null,
         public readonly ?string $phone = null,
         public readonly ?string $leadId = null,
-        public readonly ?string $sex = null,
         public readonly ?string $birthday = null,
         public readonly ?DateTimeImmutable $dob = null,
         public readonly ?string $c1 = null,
