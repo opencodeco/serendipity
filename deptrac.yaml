@@ -42,8 +42,9 @@ parameters:
             - type: className
               regex:
                 ^Psr\\(Http|Log|Container)\\.*|\
-                ^Hyperf\\(Command|Context|Coordinator|DB|Event|ExceptionHandler|HttpMessage|HttpServer)\\.*|\
+                ^Hyperf\\(Command|Context|Coordinator|DB|Event|ExceptionHandler|Guzzle|HttpMessage|HttpServer)\\.*|\
                 ^Google\\.*|\
+                ^GuzzleHttp\\.*|\
                 ^SleekDB\\.*|\
                 ^Visus\\Cuid2\\.*|\
                 ^Swow\\.*
