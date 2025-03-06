@@ -80,7 +80,7 @@ final class FromTypeAttributes extends Resolver
         return array_reduce($types, $callback);
     }
 
-    private function resolveByFormat(string $type): ?Value
+    private function resolveByFormat(string $type): Value
     {
         return new Value($this->generator->format($type));
     }

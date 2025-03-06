@@ -11,6 +11,9 @@ use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 #[Attribute]
 readonly class Define
 {
+    /**
+     * @var array<Type|TypeExtended>
+     */
     public array $types;
 
     public function __construct(Type|TypeExtended ...$type)
