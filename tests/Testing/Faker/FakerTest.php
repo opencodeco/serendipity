@@ -9,7 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\EntityStub;
+use Serendipity\Test\Testing\Stub\Intersection;
 use Serendipity\Test\Testing\Stub\Type\SingleBacked;
+use Serendipity\Test\Testing\Stub\Union;
 use Serendipity\Testing\Faker\Faker;
 
 /**
@@ -65,5 +67,32 @@ class FakerTest extends TestCase
         $email = $faker->email();
         $this->assertIsString($email);
         $this->assertStringContainsString('@', $email);
+    }
+
+    public function testShouldSkipParameterWhenNoResolverCanHandle(): void
+    {
+        $faker = new Faker();
+
+        $set = $faker->fake(Intersection::class);
+        $this->assertFalse($set->has('intersected'));
+        $this->assertCount(0, $set->toArray());
+    }
+
+    public function testShouldResolveUnionTypeParameter(): void
+    {
+        $faker = new Faker();
+
+        $set = $faker->fake(Union::class);
+
+        $this->assertTrue($set->has('builtin'));
+        $value = $set->at('builtin');
+        $this->assertTrue(is_int($value) || is_string($value));
+
+        $this->assertTrue($set->has('nullable'));
+        $value = $set->at('nullable');
+        $this->assertTrue(is_null($value) || is_int($value) || is_string($value));
+
+        $this->assertTrue($set->has('native'));
+        $this->assertNotNull($set->at('native'));
     }
 }

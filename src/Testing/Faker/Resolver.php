@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Testing\Faker;
 
-use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionType;
 use ReflectionUnionType;
-use Serendipity\Domain\Exception\SchemaException;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 
@@ -35,25 +34,15 @@ abstract class Resolver extends Faker
         $this->previous = $previous;
     }
 
-    protected function extractType(ReflectionParameter $parameter): ?string
+    protected function detectReflectionType(?ReflectionType $type): ?string
     {
-        $type = $parameter->getType();
         if ($type instanceof ReflectionNamedType) {
             return $type->getName();
         }
         if ($type instanceof ReflectionUnionType) {
-            /** @var array<ReflectionNamedType> $reflectionNamedTypes */
             $reflectionNamedTypes = $type->getTypes();
             $index = $this->generator->numberBetween(0, count($reflectionNamedTypes) - 1);
-            return $reflectionNamedTypes[$index]->getName();
-        }
-        if ($type instanceof ReflectionIntersectionType) {
-            throw new SchemaException(
-                sprintf(
-                    'Intersection type not supported for parameter "%s". Please provide a preset value for it',
-                    $parameter->getName()
-                )
-            );
+            return $this->detectReflectionType($reflectionNamedTypes[$index]);
         }
         return null;
     }

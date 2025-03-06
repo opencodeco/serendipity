@@ -26,7 +26,7 @@ final class FromTypeAttributes extends Resolver
      */
     public function resolve(ReflectionParameter $parameter, Set $presets): ?Value
     {
-        $type = $this->extractType($parameter);
+        $type = $this->detectReflectionType($parameter->getType());
         if ($type === null) {
             return parent::resolve($parameter, $presets);
         }
