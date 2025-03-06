@@ -58,4 +58,12 @@ class FakerTest extends TestCase
         $this->assertIsString($set->at('gender'));
         $this->assertIsString($set->get('first_name'));
     }
+
+    public function testShouldUseGenerateOnUndefinedMethods(): void
+    {
+        $faker = new Faker();
+        $email = $faker->email();
+        $this->assertIsString($email);
+        $this->assertStringContainsString('@', $email);
+    }
 }

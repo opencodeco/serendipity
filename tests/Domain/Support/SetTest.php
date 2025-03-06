@@ -75,4 +75,18 @@ final class SetTest extends TestCase
         $this->expectExceptionMessage('All keys must be strings.');
         new Set(['value', 5 => 'foo', 'key' => 'value']);
     }
+
+    public function testAtExistingKey(): void
+    {
+        $values = new Set(['key' => 'value']);
+        $this->assertEquals('value', $values->at('key'));
+    }
+
+    public function testAtNonExistingKey(): void
+    {
+        $values = new Set(['key' => 'value']);
+        $this->expectException(SchemaException::class);
+        $this->expectExceptionMessage("Field 'non_existing_key' not found.");
+        $values->at('non_existing_key');
+    }
 }

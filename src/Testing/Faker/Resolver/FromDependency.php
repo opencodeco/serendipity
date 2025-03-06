@@ -64,13 +64,11 @@ final class FromDependency extends Resolver
     private function resolveFromUnionType(ReflectionUnionType $unionType, Set $presets): ?Value
     {
         $types = $unionType->getTypes();
-        foreach ($types as $type) {
-            $resolved = $this->resolveReflectionParameterType($type, $presets);
-            if ($resolved !== null) {
-                return $resolved;
-            }
-        }
-        return null;
+        $callback = function (?Value $carry, ?ReflectionType $type) use ($presets) {
+            return $carry
+                ?? $this->resolveReflectionParameterType($type, $presets);
+        };
+        return array_reduce($types, $callback);
     }
 
     private function isEligibleForDependency(string $class, ReflectionNamedType $type): bool
