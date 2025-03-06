@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository;
 
-use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Infrastructure\Database\Managed;
 use Serendipity\Infrastructure\Database\Relational\Connection;
 use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
@@ -28,7 +28,7 @@ abstract class PostgresRepository extends Repository
      * @param array<string> $fields
      * @param array<string,mixed> $default
      * @param array<string,string> $managed
-     * @throws GeneratingException
+     * @throws ManagedException
      */
     protected function bindings(
         object $instance,
@@ -45,7 +45,7 @@ abstract class PostgresRepository extends Repository
             $value = match ($type) {
                 'now' => $this->managed->now(),
                 'id' => $this->managed->id(),
-                default => throw new GeneratingException($type)
+                default => throw new ManagedException($type)
             };
             $values[$field] = $value;
         }

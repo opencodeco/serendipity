@@ -6,7 +6,7 @@ namespace Serendipity\Infrastructure\Database;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\ManagedException;
 use Throwable;
 use Visus\Cuid2\Cuid2;
 
@@ -17,14 +17,14 @@ class Managed
     }
 
     /**
-     * @throws GeneratingException
+     * @throws ManagedException
      */
     public function id(): string
     {
         try {
             return (new Cuid2($this->length))->toString();
         } catch (Throwable $exception) {
-            throw new GeneratingException('id', $exception);
+            throw new ManagedException('id', $exception);
         }
     }
 

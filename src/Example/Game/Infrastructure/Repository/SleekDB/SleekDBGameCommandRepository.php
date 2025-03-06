@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Example\Game\Infrastructure\Repository\SleekDB;
 
 use Serendipity\Domain\Contract\Adapter\Deserializer;
-use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
@@ -38,7 +38,7 @@ class SleekDBGameCommandRepository extends SleekDBGameRepository implements Game
      * @throws JsonException
      * @throws IdNotAllowedException
      * @throws InvalidArgumentException
-     * @throws GeneratingException
+     * @throws ManagedException
      */
     public function persist(GameCommand $game): string
     {

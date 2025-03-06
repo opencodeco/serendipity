@@ -10,7 +10,5 @@ interface Message
 {
     public function properties(): Set;
 
-    public function property(string $key, mixed $default = null): mixed;
-
     public function content(): mixed;
 }

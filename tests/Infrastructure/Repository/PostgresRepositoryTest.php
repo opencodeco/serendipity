@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Repository;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Hyperf\Database\Relational\HyperfConnection;
 use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
 use Serendipity\Infrastructure\Adapter\Deserializer;
@@ -72,7 +72,7 @@ final class PostgresRepositoryTest extends TestCase
 
     public function testShouldRaiseMappingExceptionOnInvalidGenerate(): void
     {
-        $this->expectException(GeneratingException::class);
+        $this->expectException(ManagedException::class);
 
         $this->repository->exposeBindings(
             instance: new stdClass(),

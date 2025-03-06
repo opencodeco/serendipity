@@ -9,7 +9,7 @@ use Throwable;
 
 use function sprintf;
 
-final class GeneratingException extends Exception
+final class ManagedException extends Exception
 {
     public function __construct(
         public readonly string $type,

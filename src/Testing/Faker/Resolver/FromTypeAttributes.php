@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Testing\Faker\Resolver;
 
 use ReflectionParameter;
-use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Domain\Support\Reflective\Attributes\Define;
 use Serendipity\Domain\Support\Reflective\Attributes\Managed;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
@@ -22,7 +22,7 @@ final class FromTypeAttributes extends Resolver
     use ManagedExtension;
 
     /**
-     * @throws GeneratingException
+     * @throws ManagedException
      */
     public function resolve(ReflectionParameter $parameter, Set $presets): ?Value
     {
@@ -36,7 +36,7 @@ final class FromTypeAttributes extends Resolver
     }
 
     /**
-     * @throws GeneratingException
+     * @throws ManagedException
      */
     private function resolveByAttributes(ReflectionParameter $parameter): ?Value
     {
@@ -59,7 +59,7 @@ final class FromTypeAttributes extends Resolver
     }
 
     /**
-     * @throws GeneratingException
+     * @throws ManagedException
      */
     private function resolveManaged(Managed $instance): ?Value
     {

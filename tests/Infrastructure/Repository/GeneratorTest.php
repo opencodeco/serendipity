@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Repository;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Infrastructure\Database\Managed;
 
 /**
@@ -31,7 +31,7 @@ final class GeneratorTest extends TestCase
 
     final public function testIdWithLength(): void
     {
-        $this->expectException(GeneratingException::class);
+        $this->expectException(ManagedException::class);
         $this->expectExceptionMessage('Error generating "id": "maxLength: cannot be less than 4 or greater than 32."');
         $generator = new Managed(0);
         $generator->id();

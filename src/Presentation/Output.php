@@ -23,21 +23,8 @@ class Output implements Message
         return $this->properties;
     }
 
-    public function property(string $key, mixed $default = null): mixed
-    {
-        return $this->properties->get($key, $default);
-    }
-
     public function content(): mixed
     {
         return $this->content;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'properties' => $this->properties->toArray(),
-            'content' => $this->content,
-        ];
     }
 }

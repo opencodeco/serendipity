@@ -51,12 +51,6 @@ class Input extends HyperfFormRequest implements Message
         return $this->rules;
     }
 
-    final public function property(string $key, mixed $default = null): ?string
-    {
-        $retrieved = $this->retrieve($this->properties(), $key, $default);
-        return is_string($retrieved) ? $retrieved : null;
-    }
-
     public function content(): Set
     {
         return $this->values();

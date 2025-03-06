@@ -86,7 +86,6 @@ final class InputTest extends ExtensibleCase
         $headers = ['header' => 'cool'];
         $input = $this->input(class: Input::class, headers: $headers);
         $this->setUpRequestContext(headers: $headers);
-        $this->assertEquals('cool', $input->property('header'));
         $this->assertEquals($headers, $input->properties()->toArray());
     }
 

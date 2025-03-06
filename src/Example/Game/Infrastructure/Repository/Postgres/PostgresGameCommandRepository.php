@@ -6,7 +6,7 @@ namespace Serendipity\Example\Game\Infrastructure\Repository\Postgres;
 
 use Exception;
 use Hyperf\DB\Exception\QueryException;
-use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
@@ -18,7 +18,7 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
     use HasPostgresUniqueConstraint;
 
     /**
-     * @throws GeneratingException
+     * @throws ManagedException
      * @throws Exception|UniqueKeyViolationException
      */
     public function persist(GameCommand $game): string

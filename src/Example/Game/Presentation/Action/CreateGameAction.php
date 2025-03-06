@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Example\Game\Presentation\Action;
 
 use Serendipity\Domain\Contract\Message;
-use Serendipity\Domain\Exception\GeneratingException;
+use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
 use Serendipity\Example\Game\Presentation\Input\CreateGameInput;
@@ -21,7 +21,7 @@ readonly class CreateGameAction
     }
 
     /**
-     * @throws GeneratingException
+     * @throws ManagedException
      */
     public function __invoke(CreateGameInput $input): Message
     {
