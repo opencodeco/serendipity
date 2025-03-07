@@ -4,65 +4,30 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation\Input;
 
-use Serendipity\Domain\Exception\InvalidInputException;
-
-use function Serendipity\Type\Cast\toString;
+use function Hyperf\Collection\data_get;
+use function Hyperf\Collection\data_set;
 
 final class Mapped extends Resolver
 {
-    public function map(array $data): array
+    public function resolve(array $data): array
     {
         $mappings = $this->input->mappings();
-        foreach ($mappings as $target => $value) {
-        }
-        /*
-        $mapped = [];
-        $errors = [];
-            [$from, $target] = $this->extractMappedFromAndTarget($source);
-            $detected = $this->detectMisconfiguration($source, $formatter);
-            if ($detected) {
-                $errors[toString($source)] = $detected;
+        foreach ($mappings as $target => $from) {
+            $value = $this->extractValue($data, $target, $from);
+            if ($value === null) {
                 continue;
             }
-            $previous = data_get($data, $from);
-            if ($previous === null) {
-                continue;
-            }
-            $value = $formatter($previous);
-            data_set($mapped, $target, $value);
-        */
-        if (empty($errors)) {
-            /* @phpstan-ignore return.type */
-            return $mapped;
+            data_set($data, $target, $value);
         }
-        throw new InvalidInputException($errors);
+        return parent::resolve($data);
     }
 
-    /**
-     * @return array<string>
-     */
-    private function extractMappedFromAndTarget(string $setup): array
+    private function extractValue(array $data, string|int $target, mixed $from): mixed
     {
-        $pieces = explode(':', $setup);
-        $from = $pieces[0];
-        $target = $pieces[1] ?? $from;
-        return [toString($from), toString($target)];
-    }
-
-    /**
-     * @SuppressWarnings(CyclomaticComplexity)
-     */
-    private function detectMisconfiguration(mixed $setup, mixed $formatter): ?string
-    {
-        $isString = is_string($setup);
-        if ($isString && is_callable($formatter)) {
-            return null;
-        }
-
-        $format = $isString
-            ? "Mapping right side (formatter) must be a 'callable', got '%s'"
-            : "Mapping left side (setup) must be a 'string', got '%s'";
-        $value = $isString ? gettype($formatter) : gettype($setup);
-        return sprintf($format, $value);
+        return match (true) {
+            is_string($from) => data_get($data, $from),
+            is_callable($from) => $from($data, data_get($data, $target)),
+            default => null,
+        };
     }
 }

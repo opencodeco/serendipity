@@ -11,8 +11,8 @@ use Serendipity\Infrastructure\Database\Relational\Connection;
 
 use function get_object_vars;
 use function is_object;
-use function Serendipity\Type\Cast\toArray;
-use function Serendipity\Type\Cast\toInt;
+use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\integerify;
 
 class HyperfConnection implements Connection
 {
@@ -51,7 +51,7 @@ class HyperfConnection implements Connection
      */
     public function insert(string $query, array $bindings = []): int
     {
-        return toInt($this->database->insert($query, $bindings));
+        return integerify($this->database->insert($query, $bindings));
     }
 
     /**
@@ -59,7 +59,7 @@ class HyperfConnection implements Connection
      */
     public function execute(string $query, array $bindings = []): int
     {
-        return toInt($this->database->execute($query, $bindings));
+        return integerify($this->database->execute($query, $bindings));
     }
 
     /**
@@ -67,7 +67,7 @@ class HyperfConnection implements Connection
      */
     public function query(string $query, array $bindings = []): array
     {
-        return toArray($this->database->query($query, $bindings));
+        return arrayify($this->database->query($query, $bindings));
     }
 
     /**
@@ -79,7 +79,7 @@ class HyperfConnection implements Connection
         if (is_object($data)) {
             $data = get_object_vars($data);
         }
-        return Set::createFrom(toArray($data));
+        return Set::createFrom(arrayify($data));
     }
 
     /**

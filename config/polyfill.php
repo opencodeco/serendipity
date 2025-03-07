@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use function Serendipity\Type\Cast\toArray;
-use function Serendipity\Type\Cast\toInt;
+use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\integerify;
 use function Serendipity\Type\Util\extractInt;
 
 if (! function_exists('array_flatten')) {
@@ -39,12 +39,12 @@ if (! function_exists('array_flatten_prefixed')) {
 if (! function_exists('array_shift_pluck_int')) {
     function array_shift_pluck_int(mixed $array, string $property): ?int
     {
-        $data = toArray($array);
+        $data = arrayify($array);
         if (empty($data)) {
             return null;
         }
-        $datum = toArray($data[0]);
-        $id = toInt(extractInt($datum, $property));
+        $datum = arrayify($data[0]);
+        $id = integerify(extractInt($datum, $property));
         return $id === 0 ? null : $id;
     }
 }

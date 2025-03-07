@@ -16,8 +16,8 @@ use Throwable;
 
 use function array_map;
 use function in_array;
-use function Serendipity\Type\Cast\toInt;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\integerify;
+use function Serendipity\Type\Cast\stringify;
 use function sprintf;
 
 class AppExceptionHandler extends ExceptionHandler
@@ -54,13 +54,13 @@ class AppExceptionHandler extends ExceptionHandler
 
     public function isValid(Throwable $throwable): bool
     {
-        $haystack = array_map(fn (mixed $candidate) => toString($candidate), $this->ignored);
+        $haystack = array_map(fn (mixed $candidate) => stringify($candidate), $this->ignored);
         return ! in_array($throwable::class, $haystack, true);
     }
 
     public function code(Throwable $throwable): int
     {
-        $code = toInt($throwable->getCode());
+        $code = integerify($throwable->getCode());
         return ($code < 400 || $code > 599) ? 500 : $code;
     }
 }

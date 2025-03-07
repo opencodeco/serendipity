@@ -7,7 +7,7 @@ namespace Serendipity\Hyperf\Database\Relational\Support;
 use Serendipity\Domain\Exception\UniqueKeyViolationException;
 use Throwable;
 
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\stringify;
 
 trait HasPostgresUniqueConstraint
 {
@@ -18,9 +18,9 @@ trait HasPostgresUniqueConstraint
         if (! preg_match($pattern, $message, $matches)) {
             return null;
         }
-        $resource = toString($matches[1]);
-        $key = toString($matches[2]);
-        $value = toString($matches[3]);
+        $resource = stringify($matches[1]);
+        $key = stringify($matches[2]);
+        $value = stringify($matches[3]);
         return new UniqueKeyViolationException($key, $value, $resource, $exception);
     }
 }

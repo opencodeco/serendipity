@@ -20,8 +20,8 @@ use function array_shift;
 use function array_values;
 use function count;
 use function implode;
-use function Serendipity\Type\Cast\toArray;
-use function Serendipity\Type\Cast\toInt;
+use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\integerify;
 use function sprintf;
 use function str_repeat;
 
@@ -84,12 +84,12 @@ final class PostgresHelper extends Helper
             $where
         );
         $bindings = array_values(array_filter($filters, static fn (mixed $value) => $value !== null));
-        $result = toArray($this->database->query($query, $bindings));
-        $data = toArray(array_shift($result));
+        $result = arrayify($this->database->query($query, $bindings));
+        $data = arrayify(array_shift($result));
         if (empty($data)) {
             return 0;
         }
         $count = $data['count'] ?? 0;
-        return toInt($count);
+        return integerify($count);
     }
 }

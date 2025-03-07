@@ -8,7 +8,7 @@ use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\Adapter\Deserialize\Chain;
 
 use function is_object;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\stringify;
 
 class FormatterChain extends Chain
 {
@@ -28,6 +28,6 @@ class FormatterChain extends Chain
         if ($type === 'object' && is_object($value)) {
             $type = $value::class;
         }
-        return toString($type);
+        return stringify($type);
     }
 }

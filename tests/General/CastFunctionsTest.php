@@ -6,10 +6,10 @@ namespace Serendipity\Test\General;
 
 use PHPUnit\Framework\TestCase;
 
-use function Serendipity\Type\Cast\toArray;
-use function Serendipity\Type\Cast\toBool;
-use function Serendipity\Type\Cast\toInt;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\boolify;
+use function Serendipity\Type\Cast\integerify;
+use function Serendipity\Type\Cast\stringify;
 
 /**
  * @internal
@@ -19,7 +19,7 @@ final class CastFunctionsTest extends TestCase
     public function testToArrayReturnsArrayWhenValueIsArray(): void
     {
         $value = ['key' => 'value'];
-        $result = toArray($value);
+        $result = arrayify($value);
         $this->assertEquals($value, $result);
     }
 
@@ -27,14 +27,14 @@ final class CastFunctionsTest extends TestCase
     {
         $value = 'not an array';
         $default = ['default'];
-        $result = toArray($value, $default);
+        $result = arrayify($value, $default);
         $this->assertEquals($default, $result);
     }
 
     public function testToStringReturnsStringWhenValueIsString(): void
     {
         $value = 'string';
-        $result = toString($value);
+        $result = stringify($value);
         $this->assertEquals($value, $result);
     }
 
@@ -42,14 +42,14 @@ final class CastFunctionsTest extends TestCase
     {
         $value = 123;
         $default = 'default';
-        $result = toString($value, $default);
+        $result = stringify($value, $default);
         $this->assertEquals($default, $result);
     }
 
     public function testToIntReturnsIntWhenValueIsInt(): void
     {
         $value = 123;
-        $result = toInt($value);
+        $result = integerify($value);
         $this->assertEquals($value, $result);
     }
 
@@ -57,14 +57,14 @@ final class CastFunctionsTest extends TestCase
     {
         $value = 'not an int';
         $default = 456;
-        $result = toInt($value, $default);
+        $result = integerify($value, $default);
         $this->assertEquals($default, $result);
     }
 
     public function testToBoolReturnsBoolWhenValueIsBool(): void
     {
         $value = true;
-        $result = toBool($value);
+        $result = boolify($value);
         $this->assertEquals($value, $result);
     }
 
@@ -72,7 +72,7 @@ final class CastFunctionsTest extends TestCase
     {
         $value = 'not a bool';
         $default = true;
-        $result = toBool($value, $default);
+        $result = boolify($value, $default);
         $this->assertEquals(true, $result);
     }
 }

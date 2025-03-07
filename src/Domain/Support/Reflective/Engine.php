@@ -19,7 +19,7 @@ use function gettype;
 use function implode;
 use function is_callable;
 use function is_object;
-use function Serendipity\Type\String\toSnakeCase;
+use function Serendipity\Type\String\snakify;
 use function sort;
 use function sprintf;
 
@@ -42,7 +42,7 @@ abstract class Engine
     {
         $name = is_string($field) ? $field : $field->getName();
         return match ($this->case) {
-            CaseConvention::SNAKE => toSnakeCase($name),
+            CaseConvention::SNAKE => snakify($name),
             CaseConvention::NONE => $name,
         };
     }

@@ -20,6 +20,7 @@ final class ParamsTest extends ExtensibleCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->setUpInput();
     }
 

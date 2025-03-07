@@ -4,42 +4,42 @@ declare(strict_types=1);
 
 namespace Serendipity\Type\Cast;
 
-if (! function_exists('toArray')) {
+if (! function_exists('arrayify')) {
     /**
      * @template T of array-key
      * @template U
      * @param array<T, U> $default
      * @return array<T, U>
      */
-    function toArray(mixed $value, array $default = []): array
+    function arrayify(mixed $value, array $default = []): array
     {
         return is_array($value) ? $value : $default;
     }
 }
 
-if (! function_exists('toString')) {
-    function toString(mixed $value, string $default = ''): string
+if (! function_exists('stringify')) {
+    function stringify(mixed $value, string $default = ''): string
     {
         return is_string($value) ? $value : $default;
     }
 }
 
-if (! function_exists('toInt')) {
-    function toInt(mixed $value, int $default = 0): int
+if (! function_exists('integerify')) {
+    function integerify(mixed $value, int $default = 0): int
     {
         return is_int($value) ? $value : $default;
     }
 }
 
-if (! function_exists('toFloat')) {
-    function toFloat(mixed $value, float $default = 0.0): float
+if (! function_exists('floatify')) {
+    function floatify(mixed $value, float $default = 0.0): float
     {
         return is_float($value) ? $value : $default;
     }
 }
 
-if (! function_exists('toBool')) {
-    function toBool(mixed $value, bool $default = false): bool
+if (! function_exists('boolify')) {
+    function boolify(mixed $value, bool $default = false): bool
     {
         return is_bool($value) ? $value : $default;
     }
@@ -111,12 +111,12 @@ if (! function_exists('extractNumeric')) {
 
 namespace Serendipity\Type\String;
 
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\stringify;
 
-if (! function_exists('toSnakeCase')) {
-    function toSnakeCase(string $string): string
+if (! function_exists('snakify')) {
+    function snakify(string $string): string
     {
-        $string = toString(preg_replace('/[A-Z]/', '_$0', $string));
+        $string = stringify(preg_replace('/[A-Z]/', '_$0', $string));
         return strtolower(ltrim($string, '_'));
     }
 }
@@ -125,14 +125,14 @@ namespace Serendipity\Type\Json;
 
 use JsonException;
 
-use function Serendipity\Type\Cast\toArray;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\stringify;
 
 if (! function_exists('decode')) {
     function decode(string $json): ?array
     {
         try {
-            return toArray(json_decode($json, true, 512, JSON_THROW_ON_ERROR));
+            return arrayify(json_decode($json, true, 512, JSON_THROW_ON_ERROR));
         } catch (JsonException) {
             return null;
         }
@@ -143,7 +143,7 @@ if (! function_exists('encode')) {
     function encode(array $data): ?string
     {
         try {
-            return toString(json_encode($data, JSON_THROW_ON_ERROR));
+            return stringify(json_encode($data, JSON_THROW_ON_ERROR));
         } catch (JsonException) {
             return null;
         }

@@ -15,12 +15,12 @@ use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 
 use function Hyperf\Support\env;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\stringify;
 
 return [
     LoggerInterface::class => fn (Container $container) => $container
         ->get(EnvironmentLoggerFactory::class)
-        ->make(toString(env('APP_ENV', 'dev'))),
+        ->make(stringify(env('APP_ENV', 'dev'))),
 
     SleekDBFactory::class => fn (Container $container) => (new HyperfSleekDBFactory())->make($container),
     ConnectionFactory::class => HyperfConnectionFactory::class,

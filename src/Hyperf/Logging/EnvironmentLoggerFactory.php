@@ -10,7 +10,7 @@ use Hyperf\Contract\StdoutLoggerInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
 
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\stringify;
 
 readonly class EnvironmentLoggerFactory
 {
@@ -28,7 +28,7 @@ readonly class EnvironmentLoggerFactory
             return $this->stdoutLogger;
         }
 
-        $projectId = toString($this->config->get('logger.gcloud.project_id', 'unknown'));
+        $projectId = stringify($this->config->get('logger.gcloud.project_id', 'unknown'));
         $logging = new LoggingClient(['projectId' => $projectId]);
         $options = [];
         if ($this->config->get('logger.gcloud.batch', false)) {
@@ -41,7 +41,7 @@ readonly class EnvironmentLoggerFactory
             ];
         }
         $driver = $logging->logger('google-cloud', $options);
-        $serviceName = toString($this->config->get('logger.gcloud.service_name', 'unknown'));
+        $serviceName = stringify($this->config->get('logger.gcloud.service_name', 'unknown'));
         return new GoogleCloudLogger($driver, $projectId, $serviceName, $env);
     }
 }

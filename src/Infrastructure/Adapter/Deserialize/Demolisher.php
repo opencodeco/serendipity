@@ -12,7 +12,7 @@ use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
 
 use function get_object_vars;
-use function Serendipity\Type\Cast\toArray;
+use function Serendipity\Type\Cast\arrayify;
 
 class Demolisher extends Engine
 {
@@ -39,7 +39,7 @@ class Demolisher extends Engine
     public function extractValues(object $instance): array
     {
         if ($instance instanceof Message) {
-            return toArray($instance->content());
+            return arrayify($instance->content());
         }
         if ($instance instanceof Exportable) {
             return (array) $instance->export();

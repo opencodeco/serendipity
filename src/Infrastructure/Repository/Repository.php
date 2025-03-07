@@ -8,7 +8,7 @@ use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
 use Serendipity\Domain\Entity\Entity;
 
-use function Serendipity\Type\Cast\toArray;
+use function Serendipity\Type\Cast\arrayify;
 
 abstract class Repository
 {
@@ -25,7 +25,7 @@ abstract class Repository
             return null;
         }
         /* @phpstan-ignore argument.type */
-        $datum = toArray(array_shift($data));
+        $datum = arrayify(array_shift($data));
         return $serializer->serialize($datum);
     }
 

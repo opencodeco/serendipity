@@ -20,7 +20,7 @@ use function array_key_exists;
 use function class_exists;
 use function count;
 use function enum_exists;
-use function Serendipity\Type\Cast\toArray;
+use function Serendipity\Type\Cast\arrayify;
 
 class DependencyValue extends ResolverTyped
 {
@@ -81,7 +81,7 @@ class DependencyValue extends ResolverTyped
      */
     protected function convertValueToSet(array $parameters, mixed $value): Set
     {
-        $input = toArray($value, [$value]);
+        $input = arrayify($value, [$value]);
         $values = [];
         foreach ($parameters as $index => $parameter) {
             $name = $this->formatParameterName($parameter);

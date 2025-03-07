@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 
-use function Serendipity\Type\Cast\toArray;
+use function Serendipity\Type\Cast\arrayify;
 
 readonly class HyperfSleekDBFactory
 {
@@ -21,7 +21,7 @@ readonly class HyperfSleekDBFactory
     public function make(ContainerInterface $container): SleekDBFactory
     {
         $config = $container->get(ConfigInterface::class);
-        $options = toArray($config->get('databases.sleek'));
+        $options = arrayify($config->get('databases.sleek'));
         return new SleekDBFactory($options);
     }
 }

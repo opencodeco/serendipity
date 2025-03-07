@@ -9,8 +9,8 @@ use SleekDB\Exceptions\InvalidConfigurationException;
 use SleekDB\Exceptions\IOException;
 use SleekDB\Store;
 
-use function Serendipity\Type\Cast\toArray;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\stringify;
 
 class SleekDBFactory
 {
@@ -25,8 +25,8 @@ class SleekDBFactory
      */
     public function make(string $resource): Store
     {
-        $path = toString($this->options['path'] ?? '');
-        $configuration = toArray($this->options['configuration'] ?? []);
+        $path = stringify($this->options['path'] ?? '');
+        $configuration = arrayify($this->options['configuration'] ?? []);
         return new Store($resource, $path, $configuration);
     }
 }

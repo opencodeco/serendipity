@@ -5,9 +5,9 @@ declare(strict_types=1);
 use SleekDB\Query;
 
 use function Hyperf\Support\env;
-use function Serendipity\Type\Cast\toBool;
-use function Serendipity\Type\Cast\toFloat;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\boolify;
+use function Serendipity\Type\Cast\floatify;
+use function Serendipity\Type\Cast\stringify;
 
 $connections = [
     'postgres' => [
@@ -39,7 +39,7 @@ $connections = [
             'connect_timeout' => 10.0,
             'wait_timeout' => 3.0,
             'heartbeat' => -1,
-            'max_idle_time' => toFloat(env('DB_POSTGRES_MAX_IDLE_TIME', 60)),
+            'max_idle_time' => floatify(env('DB_POSTGRES_MAX_IDLE_TIME', 60)),
         ],
         'options' => [
             PDO::ATTR_TIMEOUT => 5,
@@ -78,7 +78,7 @@ $connections = [
             'connect_timeout' => 10.0,
             'wait_timeout' => 3.0,
             'heartbeat' => -1,
-            'max_idle_time' => toFloat(env('DB_MYSQL_MAX_IDLE_TIME', 60)),
+            'max_idle_time' => floatify(env('DB_MYSQL_MAX_IDLE_TIME', 60)),
         ],
         'options' => [
             PDO::ATTR_TIMEOUT => 5,
@@ -90,11 +90,11 @@ $connections = [
         ],
     ],
     'sleek' => [
-        'path' => sprintf('%s/%s', dirname(__DIR__, 2), toString(env('DB_SLEEK_PATH', 'storage/.sleekdb'))),
+        'path' => sprintf('%s/%s', dirname(__DIR__, 2), stringify(env('DB_SLEEK_PATH', 'storage/.sleekdb'))),
         'configuration' => [
-            'auto_cache' => toBool(env('DB_SLEEK_AUTO_CACHE', true)),
+            'auto_cache' => boolify(env('DB_SLEEK_AUTO_CACHE', true)),
             'cache_lifetime' => env('DB_SLEEK_CACHE_LIFETIME'),
-            'timeout' => toBool(env('DB_SLEEK_TIMEOUT', false)),
+            'timeout' => boolify(env('DB_SLEEK_TIMEOUT', false)),
             'primary_key' => env('DB_SLEEK_PRIMARY_KEY', '_id'),
             'search' => [
                 'min_length' => 2,

@@ -17,7 +17,7 @@ use Serendipity\Infrastructure\Http\JsonFormatter;
 use Swow\Psr7\Message\ResponsePlusInterface;
 
 use function is_string;
-use function Serendipity\Type\Cast\toInt;
+use function Serendipity\Type\Cast\integerify;
 use function sprintf;
 
 class AppMiddleware extends Hyperf
@@ -64,7 +64,7 @@ class AppMiddleware extends Hyperf
 
     private function normalizeStatusCode(Message $response): int
     {
-        $statusCode = toInt($this->config->get(sprintf('http.result.%s.status', $response::class)));
+        $statusCode = integerify($this->config->get(sprintf('http.result.%s.status', $response::class)));
         if ($statusCode === 0) {
             return 200;
         }

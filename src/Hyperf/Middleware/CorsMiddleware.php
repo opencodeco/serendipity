@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 
 use function assert;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\stringify;
 
 class CorsMiddleware
 {
@@ -31,7 +31,7 @@ class CorsMiddleware
             new RuntimeException('ResponseInterface not found in context')
         );
 
-        $origin = toString($this->config->get('cors.allow_origin', '*'));
+        $origin = stringify($this->config->get('cors.allow_origin', '*'));
         $response = $response->withHeader('Access-Control-Allow-Origin', $origin)
             ->withHeader('Access-Control-Allow-Credentials', 'true')
             ->withHeader(

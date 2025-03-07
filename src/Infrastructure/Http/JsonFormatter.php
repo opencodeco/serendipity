@@ -10,7 +10,7 @@ use Serendipity\Infrastructure\Exception\Type;
 use Throwable;
 
 use function json_encode;
-use function Serendipity\Type\Cast\toString;
+use function Serendipity\Type\Cast\stringify;
 use function sprintf;
 
 class JsonFormatter implements Formatter
@@ -49,7 +49,7 @@ class JsonFormatter implements Formatter
             ],
             Type::UNTREATED => [
                 'status' => 'error',
-                'message' => toString($value),
+                'message' => stringify($value),
             ],
         };
     }
