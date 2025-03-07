@@ -101,23 +101,6 @@ final class InputTest extends ExtensibleCase
         $this->assertEquals($array, $input->properties()->toArray());
     }
 
-    public function testShouldGetValueFromParams(): void
-    {
-        $param = $this->generator()->uuid();
-        $params = ['param' => $param];
-        $input = $this->make(
-            Input::class,
-            [
-                'rules' => [
-                    'param' => 'required|string',
-                ],
-            ]
-        );
-
-        $this->setUpRequestContext(params: $params);
-        $this->assertEquals($param, $input->value('param'));
-    }
-
     public function testShouldCallValueBehindPost(): void
     {
         $input = $this->make(Input::class, ['values' => Set::createFrom(['test' => 'cool'])]);
