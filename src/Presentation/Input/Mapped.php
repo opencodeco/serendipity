@@ -6,6 +6,9 @@ namespace Serendipity\Presentation\Input;
 
 use function Hyperf\Collection\data_get;
 use function Hyperf\Collection\data_set;
+use function is_callable;
+use function is_string;
+use function Serendipity\Type\Cast\arrayify;
 
 final class Mapped extends Resolver
 {
@@ -13,13 +16,13 @@ final class Mapped extends Resolver
     {
         $mappings = $this->input->mappings();
         foreach ($mappings as $target => $from) {
-            $value = $this->extractValue($data, $target, $from);
+            $value = $this->extractValue(arrayify($data), $target, $from);
             if ($value === null) {
                 continue;
             }
             data_set($data, $target, $value);
         }
-        return parent::resolve($data);
+        return parent::resolve(arrayify($data));
     }
 
     private function extractValue(array $data, string|int $target, mixed $from): mixed

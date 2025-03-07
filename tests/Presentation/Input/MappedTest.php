@@ -11,6 +11,8 @@ use Serendipity\Presentation\Input\Mapped;
 use Serendipity\Test\Testing\ExtensibleCase;
 use Serendipity\Testing\Extension\FakerExtension;
 
+use function Serendipity\Type\Cast\stringify;
+
 final class MappedTest extends ExtensibleCase
 {
     use MakeExtension;
@@ -63,7 +65,7 @@ final class MappedTest extends ExtensibleCase
     public function testShouldApplyCallableTransformations(): void
     {
         $mappings = [
-            'name' => fn ($data) => strtoupper($data['source'][0]['field']),
+            'name' => fn ($data) => strtoupper(stringify($data['source'][0]['field'])),
             'description' => fn ($data) => 'cool: ' . $data['source'][1]['field'],
         ];
         $parsedBody = [
