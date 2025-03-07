@@ -9,7 +9,7 @@ use Throwable;
 
 class ThrownFactory
 {
-    public function __construct(private readonly array $classification)
+    public function __construct(private readonly array $classification = [])
     {
     }
 
