@@ -6,10 +6,10 @@ namespace Serendipity\Test\Example\Game;
 
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Hyperf\Testing\PostgresHelper;
+use Serendipity\Hyperf\Testing\SleekDBHelper;
 use Serendipity\Test\Testing\ExtensibleCase;
 use Serendipity\Testing\Extension\FakerExtension;
 use Serendipity\Testing\Extension\ResourceExtension;
-use Serendipity\Testing\Resource\SleekDBHelper;
 
 /**
  * @internal

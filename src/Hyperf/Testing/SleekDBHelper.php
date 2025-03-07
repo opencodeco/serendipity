@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Testing\Resource;
+namespace Serendipity\Hyperf\Testing;
 
 use ReflectionException;
 use Serendipity\Domain\Support\Set;
@@ -10,6 +10,7 @@ use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Testing\Faker\Faker;
+use Serendipity\Testing\Resource\Helper;
 use SleekDB\Exceptions\IdNotAllowedException;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\InvalidConfigurationException;
