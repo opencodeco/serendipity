@@ -21,16 +21,8 @@ trait LoggerExtension
 
     protected function setUpLogger(): void
     {
-        $this->registerTearDown(fn () => $this->tearDownLogger(false));
-    }
-
-    /**
-     * @SuppressWarnings(StaticAccess)
-     */
-    protected function tearDownLogger(bool $flag): void
-    {
-        $this->isLoggerSetup = $flag;
-        MemoryLoggerStore::clear();
+        $this->registerTearDown(fn () => $this->tearDownLogger());
+        $this->isLoggerSetup = true;
     }
 
     /**
@@ -56,6 +48,15 @@ trait LoggerExtension
     }
 
     abstract protected function registerTearDown(callable $callback): void;
+
+    /**
+     * @SuppressWarnings(StaticAccess)
+     */
+    private function tearDownLogger(): void
+    {
+        MemoryLoggerStore::clear();
+        $this->isLoggerSetup = false;
+    }
 
     /**
      * @SuppressWarnings(StaticAccess)
