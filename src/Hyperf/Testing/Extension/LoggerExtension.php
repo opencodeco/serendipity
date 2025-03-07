@@ -42,9 +42,7 @@ trait LoggerExtension
             static::fail('Request is not set up.');
         }
 
-        $where = fn (LogRecord $record) => ($pattern === null || preg_match($pattern, $record->message))
-            && ($level === null || $record->level === $level);
-        $tallied = MemoryLoggerStore::tally($where);
+        $tallied = $this->tally($pattern, $level);
         $filters = [
             'pattern' => $pattern,
             'level' => $level,
@@ -58,4 +56,14 @@ trait LoggerExtension
     }
 
     abstract protected function registerTearDown(callable $callback): void;
+
+    /**
+     * @SuppressWarnings(StaticAccess)
+     */
+    private function tally(?string $pattern, ?string $level): int
+    {
+        $where = fn (LogRecord $record) => ($pattern === null || preg_match($pattern, $record->message))
+            && ($level === null || $record->level === $level);
+        return MemoryLoggerStore::tally($where);
+    }
 }

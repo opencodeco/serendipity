@@ -51,6 +51,9 @@ final class MemoryLogger implements LoggerInterface
         $this->log('debug', $message, $context);
     }
 
+    /**
+     * @SuppressWarnings(StaticAccess)
+     */
     public function log($level, Stringable|string $message, array $context = []): void
     {
         MemoryLoggerStore::add(stringify($level), (string) $message, $context);
