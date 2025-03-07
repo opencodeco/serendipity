@@ -4,32 +4,55 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Testing\Observability;
 
-use Hyperf\Collection\Collection;
+use Psr\Log\LoggerInterface;
+use Stringable;
 
-final class MemoryLogger
+use function Serendipity\Type\Cast\stringify;
+
+final class MemoryLogger implements LoggerInterface
 {
-    private static ?Collection $collection = null;
-
-    public static function log(string $level, string $message, array $context = []): void
+    public function emergency(Stringable|string $message, array $context = []): void
     {
-        self::collection()->push(new LogRecord($level, $message, $context));
+        $this->log('emergency', $message, $context);
     }
 
-    public static function clear(): void
+    public function alert(Stringable|string $message, array $context = []): void
     {
-        self::$collection = new Collection();
+        $this->log('alert', $message, $context);
     }
 
-    public static function tally(callable $where): int
+    public function critical(Stringable|string $message, array $context = []): void
     {
-        return self::collection()
-            ->where($where)
-            ->count();
+        $this->log('critical', $message, $context);
     }
 
-    private static function collection(): Collection
+    public function error(Stringable|string $message, array $context = []): void
     {
-        self::$collection ??= new Collection();
-        return self::$collection;
+        $this->log('error', $message, $context);
+    }
+
+    public function warning(Stringable|string $message, array $context = []): void
+    {
+        $this->log('warning', $message, $context);
+    }
+
+    public function notice(Stringable|string $message, array $context = []): void
+    {
+        $this->log('notice', $message, $context);
+    }
+
+    public function info(Stringable|string $message, array $context = []): void
+    {
+        $this->log('info', $message, $context);
+    }
+
+    public function debug(Stringable|string $message, array $context = []): void
+    {
+        $this->log('debug', $message, $context);
+    }
+
+    public function log($level, Stringable|string $message, array $context = []): void
+    {
+        MemoryLoggerStore::add(stringify($level), (string) $message, $context);
     }
 }

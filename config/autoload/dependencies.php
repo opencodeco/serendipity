@@ -12,7 +12,7 @@ use Serendipity\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameQueryR
 use Serendipity\Hyperf\Database\Document\HyperfSleekDBFactory;
 use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
 use Serendipity\Hyperf\Logging\GoogleCloudLoggerFactory;
-use Serendipity\Hyperf\Testing\Observability\MemoryLoggerFactory;
+use Serendipity\Hyperf\Testing\Observability\MemoryLogger;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 
@@ -25,7 +25,7 @@ if (! defined('RUNNING_ENV')) {
 
 return [
     LoggerInterface::class => fn (Container $container) => match (RUNNING_ENV) {
-        'test' => $container->get(MemoryLoggerFactory::class)->make(),
+        'test' => $container->get(MemoryLogger::class),
         'prd', 'hom', 'liv', 'stg' => $container->get(GoogleCloudLoggerFactory::class)->make(RUNNING_ENV),
         default => $container->get(StdoutLoggerInterface::class),
     },

@@ -6,7 +6,7 @@ namespace Serendipity\Hyperf\Testing\Extension;
 
 use PHPUnit\Framework\Constraint\IsTrue;
 use Serendipity\Hyperf\Testing\Observability\LogRecord;
-use Serendipity\Hyperf\Testing\Observability\MemoryLogger;
+use Serendipity\Hyperf\Testing\Observability\MemoryLoggerStore;
 
 use function Serendipity\Type\Json\encode;
 
@@ -17,9 +17,10 @@ trait LoggerExtension
 {
     private bool $isLoggerSetup = false;
 
+    abstract public static function fail(string $message = ''): never;
+
     protected function setUpLogger(): void
     {
-        $this->tearDownLogger(true);
         $this->registerTearDown(fn () => $this->tearDownLogger(false));
     }
 
@@ -29,7 +30,7 @@ trait LoggerExtension
     protected function tearDownLogger(bool $flag): void
     {
         $this->isLoggerSetup = $flag;
-        MemoryLogger::clear();
+        MemoryLoggerStore::clear();
     }
 
     /**
@@ -37,9 +38,13 @@ trait LoggerExtension
      */
     protected function assertLogged(?string $pattern = null, ?string $level = null): void
     {
+        if (! $this->isLoggerSetup) {
+            static::fail('Request is not set up.');
+        }
+
         $where = fn (LogRecord $record) => ($pattern === null || preg_match($pattern, $record->message))
             && ($level === null || $record->level === $level);
-        $tallied = MemoryLogger::tally($where);
+        $tallied = MemoryLoggerStore::tally($where);
         $filters = [
             'pattern' => $pattern,
             'level' => $level,
