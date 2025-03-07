@@ -37,13 +37,13 @@ final class HealthActionTest extends ExtensibleCase
         $action = $this->make(HealthAction::class);
         $result = $action($input);
         $this->assertEquals($message, $result);
-        $this->assertLogged('/Health action message: .*/', 'emergency');
-        $this->assertLogged('/Health action message: .*/', 'alert');
-        $this->assertLogged('/Health action message: .*/', 'critical');
-        $this->assertLogged('/Health action message: .*/', 'error');
-        $this->assertLogged('/Health action message: .*/', 'warning');
-        $this->assertLogged('/Health action message: .*/', 'notice');
-        $this->assertLogged('/Health action message: .*/', 'info');
-        $this->assertLogged('/Health action message: .*/', 'debug');
+        $this->assertLogged('/Health action message using \w+: .*/', 'emergency');
+        $this->assertLogged('/Health action message using \w+: .*/', 'alert');
+        $this->assertLogged('/Health action message using \w+: .*/', 'critical');
+        $this->assertLogged('/Health action message using \w+: .*/', 'error');
+        $this->assertLogged('/Health action message using \w+: .*/', 'warning');
+        $this->assertLogged('/Health action message using \w+: .*/', 'notice');
+        $this->assertLogged('/Health action message using \w+: .*/', 'info');
+        $this->assertLogged('/Health action message using \w+: .*/', 'debug');
     }
 }

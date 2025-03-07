@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Hyperf\Testing\Extension;
 
 use PHPUnit\Framework\Constraint\IsTrue;
-use Serendipity\Hyperf\Testing\Observability\LogRecord;
 use Serendipity\Hyperf\Testing\Observability\MemoryLoggerStore;
+use Serendipity\Hyperf\Testing\Observability\Record;
 
 use function Serendipity\Type\Json\encode;
 
@@ -63,7 +63,7 @@ trait LoggerExtension
      */
     private function tally(?string $pattern, ?string $level): int
     {
-        $where = fn (LogRecord $record) => ($pattern === null || preg_match($pattern, $record->message))
+        $where = fn (Record $record) => ($pattern === null || preg_match($pattern, $record->message))
             && ($level === null || $record->level === $level);
         return MemoryLoggerStore::tally($where);
     }

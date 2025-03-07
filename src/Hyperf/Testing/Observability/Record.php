@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Testing\Observability;
 
-readonly class LogRecord
+readonly class Record
 {
     public function __construct(
         public string $level,

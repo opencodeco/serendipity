@@ -12,7 +12,7 @@ final class MemoryLoggerStore
 
     public static function add(string $level, string $message, array $context = []): void
     {
-        self::collection()->push(new LogRecord($level, $message, $context));
+        self::collection()->push(new Record($level, $message, $context));
     }
 
     public static function clear(): void
