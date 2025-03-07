@@ -52,7 +52,7 @@ class Input extends HyperfFormRequest implements Message
     }
 
     /**
-     * @return array<string, callable(mixed $value):mixed|string>
+     * @return array<string, callable(array $data):mixed|string>
      */
     public function mappings(): array
     {
