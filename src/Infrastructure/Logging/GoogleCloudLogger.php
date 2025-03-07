@@ -70,7 +70,7 @@ class GoogleCloudLogger extends Logger
 
     private function logName(): string
     {
-        return sprintf('projects/%s/logs/%s%%2F%s-%s', $this->serviceName, $this->projectId, 'env', $this->env);
+        return sprintf('projects/%s/logs/%s%%2F%s-%s', $this->projectId, $this->serviceName, 'env', $this->env);
     }
 
     private function write(string $severity, string|Stringable $message, array $context): void
