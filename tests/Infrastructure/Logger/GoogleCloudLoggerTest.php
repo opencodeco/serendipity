@@ -48,7 +48,7 @@ final class GoogleCloudLoggerTest extends TestCase
                 $this->callback(function (Entry $entry) use ($message, $context) {
                     $info = $entry->info();
                     $asserts = [
-                        'logName' => 'projects/serviceName/logs/projectId%2Fenv-test',
+                        'logName' => 'projects/projectId/logs/serviceName%2Fenv-test',
                         'severity' => 'INFO',
                         'jsonPayload.key' => $context['key'],
                         'jsonPayload.message' => $message,

@@ -44,7 +44,7 @@ final class AppExceptionHandlerTest extends TestCase
         $this->logger->expects($this->once())
             ->method('alert')
             ->with(
-                $this->stringContains('[AppExceptionHandler]'),
+                $this->stringContains('[handle:app]'),
                 $this->arrayHasKey('message')
             );
 
@@ -68,7 +68,7 @@ final class AppExceptionHandlerTest extends TestCase
         $this->logger->expects($this->once())
             ->method('notice')
             ->with(
-                $this->stringContains('[AppExceptionHandler]'),
+                $this->stringContains('[handle:app]'),
                 $this->arrayHasKey('message')
             );
 

@@ -38,7 +38,7 @@ class AppExceptionHandler extends ExceptionHandler
     {
         $thrown = $this->factory->make($throwable);
 
-        $message = sprintf('[AppExceptionHandler] %s', $thrown->resume());
+        $message = sprintf('[handle:app] %s', $thrown->resume());
         $context = $thrown->context();
 
         match ($thrown->type) {

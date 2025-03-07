@@ -80,7 +80,7 @@ class GoogleCloudLogger extends Logger
         } catch (Throwable $error) {
             $detail = sprintf('"%s" in `%s` at `%s`', $error->getMessage(), $error->getFile(), $error->getLine());
             $stdout = sprintf(
-                '[GoogleCloudLogger][%s] %s: %s (%s)',
+                '[panic:%s] %s: %s (%s)',
                 $severity,
                 $message,
                 encode($context),

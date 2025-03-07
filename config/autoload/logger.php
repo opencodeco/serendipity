@@ -13,7 +13,7 @@ $formatter = [
     'class' => JsonFormatter::class,
     'constructor' => [],
 ];
-if (env('APP_ENV', 'dev') === 'dev') {
+if (in_array(env('APP_ENV', 'dev'), ['dev', 'test'], true)) {
     $formatter = [
         'class' => LineFormatter::class,
         'constructor' => [
