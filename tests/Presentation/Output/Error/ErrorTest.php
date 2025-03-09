@@ -77,7 +77,7 @@ final class ErrorTest extends TestCase
         $properties = [
             'timestamp' => date('Y-m-d H:i:s'),
             'server' => 'api-server-01',
-            'request_id' => $this->generator()->uuid()
+            'request_id' => $this->generator()->uuid(),
         ];
 
         $instance = $className::createFrom(null, $properties);
@@ -99,10 +99,10 @@ final class ErrorTest extends TestCase
                 'line' => 423,
                 'context' => [
                     'user_id' => 12345,
-                    'action' => 'process_payment'
-                ]
+                    'action' => 'process_payment',
+                ],
             ],
-            'retry_after' => 300
+            'retry_after' => 300,
         ];
 
         $instance = $className::createFrom($content, $properties);

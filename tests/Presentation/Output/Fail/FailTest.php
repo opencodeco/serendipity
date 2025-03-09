@@ -96,13 +96,13 @@ final class FailTest extends TestCase
             'errors' => [
                 [
                     'field' => 'email',
-                    'message' => 'Invalid email format'
+                    'message' => 'Invalid email format',
                 ],
                 [
                     'field' => 'password',
-                    'message' => 'Too short'
-                ]
-            ]
+                    'message' => 'Too short',
+                ],
+            ],
         ];
 
         $instance = $className::createFrom($content);
@@ -129,7 +129,7 @@ final class FailTest extends TestCase
     {
         $properties = [
             'reason' => 'Authentication failed',
-            'timestamp' => date('Y-m-d H:i:s')
+            'timestamp' => date('Y-m-d H:i:s'),
         ];
 
         $instance = $className::createFrom(null, $properties);
@@ -146,9 +146,9 @@ final class FailTest extends TestCase
         $properties = [
             'errors' => [
                 'field1' => ['message' => 'Required'],
-                'field2' => ['message' => 'Invalid format']
+                'field2' => ['message' => 'Invalid format'],
             ],
-            'request_id' => $this->generator()->uuid()
+            'request_id' => $this->generator()->uuid(),
         ];
 
         $instance = $className::createFrom($content, $properties);

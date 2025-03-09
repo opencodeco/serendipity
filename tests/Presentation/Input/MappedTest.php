@@ -13,6 +13,9 @@ use Serendipity\Testing\Extension\FakerExtension;
 
 use function Serendipity\Type\Cast\stringify;
 
+/**
+ * @internal
+ */
 final class MappedTest extends ExtensibleCase
 {
     use MakeExtension;
@@ -140,9 +143,9 @@ final class MappedTest extends ExtensibleCase
                 'name' => 'John Doe',
                 'age' => 30,
                 'location' => [
-                    'street' => 'Main St'
-                ]
-            ]
+                    'street' => 'Main St',
+                ],
+            ],
         ];
 
         $input = $this->make(

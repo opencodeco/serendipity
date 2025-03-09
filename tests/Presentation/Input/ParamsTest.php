@@ -11,6 +11,9 @@ use Serendipity\Presentation\Input\Params;
 use Serendipity\Test\Testing\ExtensibleCase;
 use Serendipity\Testing\Extension\FakerExtension;
 
+/**
+ * @internal
+ */
 final class ParamsTest extends ExtensibleCase
 {
     use MakeExtension;

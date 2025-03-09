@@ -11,50 +11,51 @@ use function Serendipity\Type\Cast\stringify;
 
 final class MemoryLogger implements LoggerInterface
 {
-    public function emergency(Stringable|string $message, array $context = []): void
+    public function emergency(string|Stringable $message, array $context = []): void
     {
         $this->log('emergency', $message, $context);
     }
 
-    public function alert(Stringable|string $message, array $context = []): void
+    public function alert(string|Stringable $message, array $context = []): void
     {
         $this->log('alert', $message, $context);
     }
 
-    public function critical(Stringable|string $message, array $context = []): void
+    public function critical(string|Stringable $message, array $context = []): void
     {
         $this->log('critical', $message, $context);
     }
 
-    public function error(Stringable|string $message, array $context = []): void
+    public function error(string|Stringable $message, array $context = []): void
     {
         $this->log('error', $message, $context);
     }
 
-    public function warning(Stringable|string $message, array $context = []): void
+    public function warning(string|Stringable $message, array $context = []): void
     {
         $this->log('warning', $message, $context);
     }
 
-    public function notice(Stringable|string $message, array $context = []): void
+    public function notice(string|Stringable $message, array $context = []): void
     {
         $this->log('notice', $message, $context);
     }
 
-    public function info(Stringable|string $message, array $context = []): void
+    public function info(string|Stringable $message, array $context = []): void
     {
         $this->log('info', $message, $context);
     }
 
-    public function debug(Stringable|string $message, array $context = []): void
+    public function debug(string|Stringable $message, array $context = []): void
     {
         $this->log('debug', $message, $context);
     }
 
     /**
      * @SuppressWarnings(StaticAccess)
+     * @param mixed $level
      */
-    public function log($level, Stringable|string $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
         MemoryLoggerStore::add(stringify($level), (string) $message, $context);
     }

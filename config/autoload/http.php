@@ -63,11 +63,11 @@ return [
         ],
     ],
     'result' => [
-        ########################
-        ## 2xx Success Output ##
-        ########################
+        # #######################
+        # # 2xx Success Output ##
+        # #######################
         # This is the standard response for successful HTTP requests.
-        OK::class => ['status' => 200],
+        Ok::class => ['status' => 200],
         # The request succeeded and a new resource was created. This is usually the response after POST or PUT
         #   requests.
         Created::class => ['status' => 201],
@@ -90,9 +90,9 @@ return [
         AlreadyReported::class => ['status' => 208],
         # The server completed a GET request. And the response indicates one or more instance-manipulation results.
         ImUsed::class => ['status' => 226],
-        ########################
-        ### 4xx Client Error ###
-        ########################
+        # #######################
+        # ## 4xx Client Error ###
+        # #######################
         # The server can’t or won’t process the request due to a client error. For example, invalid request message
         #   framing, deceptive request routing, size too large, etc.
         BadRequest::class => ['status' => 400],
@@ -155,9 +155,9 @@ return [
         PropertiesAreTooLarge::class => ['status' => 431],
         # The user requests a resource the server can’t legally provide.
         UnavailableForLegalReasons::class => ['status' => 451],
-        ########################
-        ### 5xx Server Error ###
-        ########################
+        # #######################
+        # ## 5xx Server Error ###
+        # #######################
         # The server has encountered an unexpected error and cannot complete the request.
         InternalServerError::class => ['status' => 500],
         # The server can’t fulfill the request or doesn’t recognize the request method.

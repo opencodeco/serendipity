@@ -25,7 +25,7 @@ final class Mapped extends Resolver
         return parent::resolve(arrayify($data));
     }
 
-    private function extractValue(array $data, string|int $target, mixed $from): mixed
+    private function extractValue(array $data, int|string $target, mixed $from): mixed
     {
         return match (true) {
             is_string($from) => data_get($data, $from),
