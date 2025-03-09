@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Hyperf\Testing\Observability;
+namespace Serendipity\Hyperf\Testing\Observability\Logger\InMemory;
 
 use Hyperf\Collection\Collection;
 
-final class MemoryLoggerStore
+final class Store
 {
     private static ?Collection $collection = null;
 
-    public static function add(string $level, string $message, array $context = []): void
+    public static function write(string $level, string $message, array $context = []): void
     {
         self::collection()->push(new Record($level, $message, $context));
     }

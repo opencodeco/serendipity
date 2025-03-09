@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Hyperf\Testing\Extension;
 
 use PHPUnit\Framework\Constraint\IsTrue;
-use Serendipity\Hyperf\Testing\Observability\MemoryLoggerStore;
-use Serendipity\Hyperf\Testing\Observability\Record;
+use Serendipity\Hyperf\Testing\Observability\Logger\InMemory\Record;
+use Serendipity\Hyperf\Testing\Observability\Logger\InMemory\Store;
 
 use function Serendipity\Type\Json\encode;
 
@@ -54,7 +54,7 @@ trait LoggerExtension
      */
     private function tearDownLogger(): void
     {
-        MemoryLoggerStore::clear();
+        Store::clear();
         $this->isLoggerSetup = false;
     }
 
@@ -65,6 +65,6 @@ trait LoggerExtension
     {
         $where = fn (Record $record) => ($pattern === null || preg_match($pattern, $record->message))
             && ($level === null || $record->level === $level);
-        return MemoryLoggerStore::tally($where);
+        return Store::tally($where);
     }
 }

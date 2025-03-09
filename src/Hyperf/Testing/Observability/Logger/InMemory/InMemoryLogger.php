@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Hyperf\Testing\Observability;
+namespace Serendipity\Hyperf\Testing\Observability\Logger\InMemory;
 
 use Psr\Log\LoggerInterface;
 use Stringable;
 
 use function Serendipity\Type\Cast\stringify;
 
-final class MemoryLogger implements LoggerInterface
+final class InMemoryLogger implements LoggerInterface
 {
     public function emergency(string|Stringable $message, array $context = []): void
     {
@@ -57,6 +57,6 @@ final class MemoryLogger implements LoggerInterface
      */
     public function log($level, string|Stringable $message, array $context = []): void
     {
-        MemoryLoggerStore::add(stringify($level), (string) $message, $context);
+        Store::write(stringify($level), (string) $message, $context);
     }
 }
