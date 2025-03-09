@@ -8,7 +8,7 @@ use Serendipity\Domain\Contract\Message;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;
 use Serendipity\Example\Game\Presentation\Input\ReadGameInput;
-use Serendipity\Presentation\Output\NotFound;
+use Serendipity\Presentation\Output\Fail\NotFound;
 use Serendipity\Presentation\Output\Ok;
 
 readonly class ReadGameAction

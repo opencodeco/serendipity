@@ -6,7 +6,7 @@ namespace Serendipity\Test\Presentation\Output;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
-use Serendipity\Presentation\Output\NotFound;
+use Serendipity\Presentation\Output\Fail\NotFound;
 use Serendipity\Testing\Extension\FakerExtension;
 
 /**

@@ -7,7 +7,7 @@ namespace Serendipity\Test\Example\Game\Presentation;
 use Serendipity\Example\Game\Domain\Entity\Game;
 use Serendipity\Example\Game\Presentation\Action\ReadGameAction;
 use Serendipity\Example\Game\Presentation\Input\ReadGameInput;
-use Serendipity\Presentation\Output\NotFound;
+use Serendipity\Presentation\Output\Fail\NotFound;
 use Serendipity\Presentation\Output\Ok;
 use Serendipity\Test\Example\Game\PresentationCase;
 

@@ -6,6 +6,9 @@ namespace Serendipity\Presentation\Output;
 
 use Serendipity\Presentation\Output;
 
+/**
+ * The request was successfully processed, but there is no content. The headers may be useful.
+ */
 final class NoContent extends Output
 {
     public function __construct(array $properties = [])
