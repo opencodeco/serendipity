@@ -57,6 +57,6 @@ final class InMemoryLogger implements LoggerInterface
      */
     public function log($level, string|Stringable $message, array $context = []): void
     {
-        Store::write(stringify($level), (string) $message, $context);
+        Memory::write(stringify($level), (string) $message, $context);
     }
 }

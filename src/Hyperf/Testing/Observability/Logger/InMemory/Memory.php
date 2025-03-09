@@ -6,7 +6,7 @@ namespace Serendipity\Hyperf\Testing\Observability\Logger\InMemory;
 
 use Hyperf\Collection\Collection;
 
-final class Store
+final class Memory
 {
     private static ?Collection $collection = null;
 
