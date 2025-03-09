@@ -37,5 +37,5 @@ object serialization and deserialization, utilizing metaprogramming to resolve d
 To install Serendipity, run the following command:
 
 ```bash
-composer require devitools/serependity
+composer require devitools/serendipity
 ```
