@@ -25,14 +25,14 @@ trait InputExtension
      */
     protected function setUpInput(): void
     {
-        $this->reset(true);
-        $this->registerTearDown(fn () => $this->reset(false));
+        $this->tearDownInput(true);
+        $this->registerTearDown(fn () => $this->tearDownInput(false));
     }
 
     /**
      * @SuppressWarnings(StaticAccess)
      */
-    protected function reset(bool $isRequestSetUp): void
+    protected function tearDownInput(bool $isRequestSetUp): void
     {
         $this->isRequestSetUp = $isRequestSetUp;
         Context::destroy(ServerRequestInterface::class);
