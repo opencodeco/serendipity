@@ -12,6 +12,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 use Swow\Psr7\Message\ResponsePlusInterface;
@@ -41,25 +42,39 @@ class AppMiddleware extends Hyperf
     protected function handleFound(Dispatched $dispatched, ServerRequestInterface $request): mixed
     {
         $response = parent::handleFound($dispatched, $request);
-        if (! $response instanceof Message) {
-            return $response;
-        }
+        return match (true) {
+            $response instanceof Message => $this->handleFoundMessage($response),
+            $response instanceof Exportable => $this->handleFoundExportable($response),
+            default => $response,
+        };
+    }
 
-        $statusCode = $this->normalizeStatusCode($response);
+    private function handleFoundMessage(Message $message): ResponsePlusInterface
+    {
+        $statusCode = $this->normalizeStatusCode($message);
 
-        $output = $this->response()
+        $response = $this->response()
             ->addHeader('content-type', 'application/json')
             ->withStatus($statusCode);
 
-        $output = $this->configureHeaders($response, $output);
+        $response = $this->configureHeaders($message, $response);
 
         if ($statusCode === 204) {
-            return $output->setBody(new SwooleStream());
+            return $response->setBody(new SwooleStream());
         }
 
-        $body = $response->content();
+        $body = $message->content();
         $contents = $this->formatter->format($body);
-        return $output->setBody(new SwooleStream($contents));
+        return $response->setBody(new SwooleStream($contents));
+    }
+
+    private function handleFoundExportable(Exportable $exportable): ResponsePlusInterface
+    {
+        $contents = $this->formatter->format($exportable->export());
+        return $this->response()
+            ->addHeader('content-type', 'application/json')
+            ->withStatus(200)
+            ->setBody(new SwooleStream($contents));
     }
 
     private function normalizeStatusCode(Message $response): int
@@ -71,15 +86,15 @@ class AppMiddleware extends Hyperf
         return $statusCode;
     }
 
-    private function configureHeaders(Message $response, ResponsePlusInterface $output): ResponsePlusInterface
+    private function configureHeaders(Message $message, ResponsePlusInterface $response): ResponsePlusInterface
     {
-        $properties = $response->properties()->toArray();
+        $properties = $message->properties()->toArray();
         foreach ($properties as $key => $value) {
             if (! is_string($value)) {
                 continue;
             }
-            $output = $output->withAddedHeader(sprintf('X-%s', $key), $value);
+            $response = $response->withAddedHeader(sprintf('X-%s', $key), $value);
         }
-        return $output;
+        return $response;
     }
 }

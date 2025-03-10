@@ -12,6 +12,7 @@ use Hyperf\HttpServer\Router\Handler;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Hyperf\Middleware\AppMiddleware;
 use Serendipity\Presentation\Output;
 use Serendipity\Presentation\Output\NoContent;
@@ -112,6 +113,40 @@ final class AppMiddlewareTest extends TestCase
                 new Dispatched([
                     Dispatcher::FOUND,
                     new Handler(fn () => new NoContent(), ''),
+                    [],
+                ])
+            );
+
+        $response->expects($this->once())
+            ->method('addHeader')
+            ->with('content-type', 'application/json')
+            ->willReturnSelf();
+
+        $middleware->process($request, $handler);
+    }
+
+    public function testShouldRenderExportableResponse(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('get')
+            ->willReturnCallback(fn (string $class) => $this->createMock($class));
+        $middleware = new AppMiddleware($container);
+
+        $request = $this->createMock(ServerRequestPlusInterface::class);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $response = $this->createMock(ResponsePlusInterface::class);
+
+        ResponseContext::set($response);
+
+        $exportable = $this->createMock(Exportable::class);
+        $exportable->method('export')
+            ->willReturn(['key' => 'value']);
+
+        $request->method('getAttribute')
+            ->willReturn(
+                new Dispatched([
+                    Dispatcher::FOUND,
+                    new Handler(fn () => $exportable, ''),
                     [],
                 ])
             );
