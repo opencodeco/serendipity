@@ -47,7 +47,8 @@ parameters:
                 ^GuzzleHttp\\.*|\
                 ^SleekDB\\.*|\
                 ^Visus\\Cuid2\\.*|\
-                ^Swow\\.*
+                ^Swow\\.*|\
+                ^MongoDB\\.*
           must_not:
             - type: className
               regex:
