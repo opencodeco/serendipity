@@ -15,7 +15,6 @@ abstract class Repository
     /**
      * @template T of Entity
      * @param Serializer<T> $serializer
-     * @param array<array<string,mixed>> $data
      *
      * @return null|T
      */
@@ -24,15 +23,14 @@ abstract class Repository
         if (empty($data)) {
             return null;
         }
+        $datum = array_shift($data);
         /* @phpstan-ignore argument.type */
-        $datum = arrayify(array_shift($data));
-        return $serializer->serialize($datum);
+        return $serializer->serialize($this->toArray($datum));
     }
 
     /**
      * @template T of Collection
      * @param class-string<T> $collection
-     * @param array<array<string,mixed>> $data
      *
      * @return T
      */
@@ -41,8 +39,13 @@ abstract class Repository
         $instance = new $collection();
         foreach ($data as $datum) {
             /* @phpstan-ignore argument.type */
-            $instance->push($serializer->serialize($datum));
+            $instance->push($serializer->serialize($this->toArray($datum)));
         }
         return $instance;
+    }
+
+    protected function toArray(mixed $datum): array
+    {
+        return arrayify($datum);
     }
 }

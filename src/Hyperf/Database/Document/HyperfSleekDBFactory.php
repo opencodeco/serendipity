@@ -9,19 +9,33 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
+use SleekDB\Exceptions\InvalidArgumentException;
+use SleekDB\Exceptions\InvalidConfigurationException;
+use SleekDB\Exceptions\IOException;
+use SleekDB\Store;
 
 use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\stringify;
 
-readonly class HyperfSleekDBFactory
+readonly class HyperfSleekDBFactory implements SleekDBFactory
 {
+    public function __construct(private ContainerInterface $container)
+    {
+    }
+
     /**
      * @throws ContainerExceptionInterface
+     * @throws IOException
+     * @throws InvalidArgumentException
+     * @throws InvalidConfigurationException
      * @throws NotFoundExceptionInterface
      */
-    public function make(ContainerInterface $container): SleekDBFactory
+    public function make(string $resource): Store
     {
-        $config = $container->get(ConfigInterface::class);
+        $config = $this->container->get(ConfigInterface::class);
         $options = arrayify($config->get('databases.sleek'));
-        return new SleekDBFactory($options);
+        $path = stringify($options['path'] ?? '');
+        $configuration = arrayify($options['configuration'] ?? []);
+        return new Store($resource, $path, $configuration);
     }
 }

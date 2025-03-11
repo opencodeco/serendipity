@@ -12,7 +12,7 @@ use Serendipity\Domain\Support\Reflective\CaseConvention;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
-use Serendipity\Infrastructure\Repository\Formatter\FromDatabaseToArray;
+use Serendipity\Infrastructure\Repository\Formatter\RelationalJsonToArray;
 use Serendipity\Test\Testing\Stub\Deep;
 use Serendipity\Test\Testing\Stub\EntityStub;
 use Serendipity\Test\Testing\Stub\NoConstructor;
@@ -46,7 +46,7 @@ final class BuilderTest extends TestCase
         ];
 
         $mapper = new Builder(formatters: [
-            'array' => new FromDatabaseToArray(),
+            'array' => new RelationalJsonToArray(),
         ]);
         $instance = $mapper->build($entityClass, Set::createFrom($values));
 

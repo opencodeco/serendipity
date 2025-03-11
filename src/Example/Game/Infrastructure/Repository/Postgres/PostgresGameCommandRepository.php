@@ -21,7 +21,7 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
      * @throws ManagedException
      * @throws Exception|UniqueKeyViolationException
      */
-    public function persist(GameCommand $game): string
+    public function create(GameCommand $game): string
     {
         $id = $this->managed->id();
         $fields = [
@@ -47,7 +47,7 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
         return $id;
     }
 
-    public function destroy(string $id): bool
+    public function delete(string $id): bool
     {
         /* @noinspection SqlNoDataSourceInspection, SqlResolve */
         $query = 'delete from "games" where "id" = ?';

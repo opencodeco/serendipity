@@ -14,8 +14,6 @@ services:
     restart: on-failure
 
   postgres:
-    profiles:
-      - postgres
     container_name: serendipity-postgres
     image: postgres:16.2
     tty: true
@@ -23,6 +21,11 @@ services:
       - POSTGRES_DB=${DB_POSTGRES_NAME:-database}
       - POSTGRES_USER=${DB_POSTGRES_USERNAME:-username}
       - POSTGRES_PASSWORD=${DB_POSTGRES_PASSWORD:-password}
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${DB_POSTGRES_USERNAME:-username} -d ${DB_POSTGRES_NAME:-database}'" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
     volumes:
       - serendipity-postgres-data:/var/lib/postgresql/data
     ports:
@@ -30,8 +33,36 @@ services:
     networks:
       - serendipity-network
 
+  mongo:
+    container_name: serendipity-mongo
+    image: mongo:6.0
+    hostname: mongo
+    command: --replSet rs0
+    volumes:
+      - serendipity-mongo-data:/data/db
+    ports:
+      - '27017:27017'
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u user -p password --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    networks:
+      - serendipity-network
+
+  mongo-bootstrap:
+    container_name: serendipity-mongo-bootstrap
+    image: mongo:6.0
+    command: /bin/sh -c "/scripts/bootstrap.sh"
+    depends_on:
+      - mongo
+    volumes:
+      - ./.docker/mongo/bootstrap.sh:/scripts/bootstrap.sh:ro
+    networks:
+      - serendipity-network
+
 volumes:
   serendipity-postgres-data:
+  serendipity-mongo-data:
 
 networks:
   serendipity-network:

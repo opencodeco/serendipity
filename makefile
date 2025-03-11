@@ -17,16 +17,13 @@ bash: ## Start nginx bash
 	@$(COMPOSE_RUNNER) run --rm --entrypoint sh app
 
 up: ## Start the project
-	@$(COMPOSE_RUNNER) --profile postgres up -d
-	@$(COMPOSE_RUNNER) --profile mysql up -d
+	@$(COMPOSE_RUNNER) up -d
 
 down: ## Stop the project
-	@$(COMPOSE_RUNNER) --profile postgres down --remove-orphans
-	@$(COMPOSE_RUNNER) --profile mysql down --remove-orphans
+	@$(COMPOSE_RUNNER) down --remove-orphans
 
 prune: ## Prune the project
-	@$(COMPOSE_RUNNER) --profile postgres down --remove-orphans --volumes
-	@$(COMPOSE_RUNNER) --profile mysql down --remove-orphans --volumes
+	@$(COMPOSE_RUNNER) down --remove-orphans --volumes
 
 watch: ## Start the project in watch mode
 	@make up
@@ -82,7 +79,7 @@ ci: ## Execute all analysis as CI does
 ##@ Database
 
 postgres: ## Start the postgres container
-	@$(COMPOSE_RUNNER) --profile postgres up -d
+	@$(COMPOSE_RUNNER) up -d
 
 migrate: ## Execute the migrations
 	@$(COMPOSE_RUNNER) run --rm --entrypoint "php bin/hyperf.php" app migrate --database=postgres

@@ -13,7 +13,7 @@ use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 /**
  * @internal
  */
-class HyperfSleekDBFactoryTest extends TestCase
+final class HyperfSleekDBFactoryTest extends TestCase
 {
     use MakeExtension;
 
@@ -33,7 +33,7 @@ class HyperfSleekDBFactoryTest extends TestCase
             ->with(ConfigInterface::class)
             ->willReturn($config);
 
-        $factory = new HyperfSleekDBFactory();
-        $factory->make($container);
+        $factory = new HyperfSleekDBFactory($container);
+        $factory->make('games');
     }
 }

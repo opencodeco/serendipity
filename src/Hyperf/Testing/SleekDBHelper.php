@@ -13,7 +13,6 @@ use Serendipity\Testing\Faker\Faker;
 use Serendipity\Testing\Resource\Helper;
 use SleekDB\Exceptions\IdNotAllowedException;
 use SleekDB\Exceptions\InvalidArgumentException;
-use SleekDB\Exceptions\InvalidConfigurationException;
 use SleekDB\Exceptions\IOException;
 use SleekDB\Exceptions\JsonException as SleekDBJsonExceptionAlias;
 
@@ -32,7 +31,6 @@ final class SleekDBHelper extends Helper
 
     /**
      * @throws IOException
-     * @throws InvalidConfigurationException
      * @throws InvalidArgumentException
      */
     public function truncate(string $resource): void
@@ -48,7 +46,6 @@ final class SleekDBHelper extends Helper
      * @throws IOException
      * @throws IdNotAllowedException
      * @throws InvalidArgumentException
-     * @throws InvalidConfigurationException
      * @throws SleekDBJsonExceptionAlias
      */
     public function seed(string $type, string $resource, array $override = []): Set
@@ -61,7 +58,6 @@ final class SleekDBHelper extends Helper
 
     /**
      * @throws IOException
-     * @throws InvalidConfigurationException
      * @throws InvalidArgumentException
      */
     public function count(string $resource, array $filters = []): int

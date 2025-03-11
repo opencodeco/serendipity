@@ -24,11 +24,11 @@ class SleekDBGameCommandRepository extends SleekDBGameRepository implements Game
     protected readonly Deserializer $deserializer;
 
     public function __construct(
-        Managed $generator,
-        SleekDBFactory $databaseFactory,
+        Managed $managed,
+        SleekDBFactory $storeFactory,
         DeserializerFactory $deserializerFactory,
     ) {
-        parent::__construct($generator, $databaseFactory);
+        parent::__construct($managed, $storeFactory);
 
         $this->deserializer = $deserializerFactory->make(GameCommand::class);
     }
@@ -40,14 +40,14 @@ class SleekDBGameCommandRepository extends SleekDBGameRepository implements Game
      * @throws InvalidArgumentException
      * @throws ManagedException
      */
-    public function persist(GameCommand $game): string
+    public function create(GameCommand $game): string
     {
         $datum = $this->deserializer->deserialize($game);
-        $id = $this->generator->id();
+        $id = $this->managed->id();
         $datum['id'] = $id;
-        $datum['created_at'] = $this->generator->now();
-        $datum['updated_at'] = $this->generator->now();
-        $this->database->insert($datum);
+        $datum['created_at'] = $this->managed->now();
+        $datum['updated_at'] = $this->managed->now();
+        $this->store->insert($datum);
         return $id;
     }
 
@@ -55,8 +55,8 @@ class SleekDBGameCommandRepository extends SleekDBGameRepository implements Game
      * @throws InvalidArgumentException
      * @throws IOException
      */
-    public function destroy(string $id): bool
+    public function delete(string $id): bool
     {
-        return (bool) $this->database->deleteBy(['id', '=', $id]);
+        return (bool) $this->store->deleteBy(['id', '=', $id]);
     }
 }

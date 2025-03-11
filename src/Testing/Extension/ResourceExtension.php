@@ -59,6 +59,7 @@ trait ResourceExtension
 
     protected function assertHas(array $filters, ?string $resource = null): void
     {
+        $resource = $this->detect($resource);
         $tallied = $this->tally($filters, $resource);
         $message = sprintf(
             "Expected to find at least one item in resource '%s' with filters '%s'",
@@ -70,6 +71,7 @@ trait ResourceExtension
 
     protected function assertHasNot(array $filters, ?string $resource = null): void
     {
+        $resource = $this->detect($resource);
         $tallied = $this->tally($filters, $resource);
         $message = sprintf(
             "Expected to not find any item in resource '%s' with filters '%s'",
@@ -81,6 +83,7 @@ trait ResourceExtension
 
     protected function assertHasExactly(int $expected, array $filters, ?string $resource = null): void
     {
+        $resource = $this->detect($resource);
         $tallied = $this->tally($filters, $resource);
         $message = sprintf(
             "Expected to find %d items in resource '%s' with filters '%s', but found %d",
@@ -94,9 +97,8 @@ trait ResourceExtension
 
     abstract protected function registerTearDown(callable $callback): void;
 
-    private function tally(array $filters, ?string $resource = null): int
+    private function tally(array $filters, string $resource): int
     {
-        $resource = $this->detect($resource);
         $helper = $this->helper($resource);
         return $helper->count($resource, $filters);
     }

@@ -29,7 +29,7 @@ class FormatValue extends ResolverTyped
         $field = $this->formatParameterName($parameter);
         $value = $set->get($field);
 
-        $content = $formatter($value, $set);
+        $content = $formatter($value, $expected);
 
         $resolved = $this->resolveReflectionParameterType($type, $content);
         return $resolved

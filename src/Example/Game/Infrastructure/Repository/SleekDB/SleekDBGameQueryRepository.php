@@ -18,11 +18,11 @@ use function Serendipity\Type\Cast\arrayify;
 class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQueryRepository
 {
     public function __construct(
-        Managed $generator,
-        SleekDBFactory $databaseFactory,
+        Managed $managed,
+        SleekDBFactory $storeFactory,
         protected readonly SerializerFactory $serializerFactory,
     ) {
-        parent::__construct($generator, $databaseFactory);
+        parent::__construct($managed, $storeFactory);
     }
 
     /**
@@ -31,7 +31,7 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
      */
     public function getGame(string $id): ?Game
     {
-        $data = arrayify($this->database->findBy(['id', '=', $id]));
+        $data = arrayify($this->store->findBy(['id', '=', $id]));
         $serializer = $this->serializerFactory->make(Game::class);
         return $this->entity($serializer, $data);
     }
@@ -44,14 +44,14 @@ class SleekDBGameQueryRepository extends SleekDBGameRepository implements GameQu
     {
         $serializer = $this->serializerFactory->make(Game::class);
         if (empty($filters)) {
-            $data = arrayify($this->database->findAll());
+            $data = arrayify($this->store->findAll());
             return $this->collection($serializer, $data, GameCollection::class);
         }
         $criteria = [];
         foreach ($filters as $key => $value) {
             $criteria[] = [$key, '=', $value];
         }
-        $data = arrayify($this->database->findBy($criteria));
+        $data = arrayify($this->store->findBy($criteria));
         return $this->collection($serializer, $data, GameCollection::class);
     }
 }

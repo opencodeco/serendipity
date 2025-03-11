@@ -12,7 +12,7 @@ interface GameCommandRepository
     /**
      * @throws ManagedException
      */
-    public function persist(GameCommand $game): string;
+    public function create(GameCommand $game): string;
 
-    public function destroy(string $id): bool;
+    public function delete(string $id): bool;
 }

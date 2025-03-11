@@ -7,17 +7,17 @@ namespace Serendipity\Infrastructure\Repository\Adapter;
 use DateTime;
 use DateTimeImmutable;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
-use Serendipity\Infrastructure\Repository\Formatter\FromArrayToDatabase;
-use Serendipity\Infrastructure\Repository\Formatter\FromDatetimeToDatabase;
+use Serendipity\Infrastructure\Repository\Formatter\RelationalArrayToJson;
+use Serendipity\Infrastructure\Repository\Formatter\RelationalDatetimeToString;
 
 class RelationalDeserializerFactory extends DeserializerFactory
 {
     protected function formatters(): array
     {
         return [
-            'array' => new FromArrayToDatabase(),
-            DateTime::class => new FromDatetimeToDatabase(),
-            DateTimeImmutable::class => new FromDatetimeToDatabase(),
+            'array' => new RelationalArrayToJson(),
+            DateTime::class => new RelationalDatetimeToString(),
+            DateTimeImmutable::class => new RelationalDatetimeToString(),
         ];
     }
 }

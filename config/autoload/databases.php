@@ -105,6 +105,10 @@ $connections = [
             'folder_permissions' => env('DB_SLEEK_FOLDER_PERMISSIONS', 0644),
         ],
     ],
+    'mongo' => [
+        'uri' => env('DB_MONGO_URI', 'mongodb://mongo:27017'),
+        'database' => env('DB_MONGO_DATABASE', 'database'),
+    ],
 ];
 
 $default = env('DB_CONNECTION', 'postgres');
