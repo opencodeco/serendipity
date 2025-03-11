@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Database\Document\Mongo;
 
+use function Serendipity\Type\Cast\arrayify;
+
 abstract class SearchEngine
 {
     public const string OPERATOR_AND = 'and';
@@ -42,6 +44,9 @@ abstract class SearchEngine
             return $condition;
         }
 
+        if (! is_array($parsed['$and'] ?? null)) {
+            $parsed['$and'] = [];
+        }
         $parsed['$and'][] = $condition;
         return $parsed;
     }
@@ -61,7 +66,7 @@ abstract class SearchEngine
         }
         if ($match['grouping'] === ')') {
             $lastGroup = array_pop($stack);
-            $parsed = $this->mergeGroup($lastGroup, $parsed);
+            $parsed = $this->mergeGroup(arrayify($lastGroup), $parsed);
         }
     }
 
@@ -76,8 +81,8 @@ abstract class SearchEngine
             return $parsed;
         }
 
-        if (! isset($lastGroup['$and'])) {
-            $lastGroup = ['$and' => [$lastGroup]];
+        if (! is_array($lastGroup['$and'] ?? null)) {
+            $lastGroup['$and'] = [$lastGroup];
         }
 
         $lastGroup['$and'][] = $parsed;

@@ -24,7 +24,6 @@ abstract class Repository
             return null;
         }
         $datum = array_shift($data);
-        /* @phpstan-ignore argument.type */
         return $serializer->serialize($this->toArray($datum));
     }
 
@@ -38,12 +37,14 @@ abstract class Repository
     {
         $instance = new $collection();
         foreach ($data as $datum) {
-            /* @phpstan-ignore argument.type */
             $instance->push($serializer->serialize($this->toArray($datum)));
         }
         return $instance;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function toArray(mixed $datum): array
     {
         return arrayify($datum);

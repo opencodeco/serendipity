@@ -9,7 +9,9 @@ use Serendipity\Infrastructure\Database\Document\Mongo\Condition\EqualCondition;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\InCondition;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\RegexCondition;
 
+use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\stringify;
+use function Serendipity\Type\Util\extractString;
 
 final class Search extends SearchEngine
 {
@@ -49,12 +51,15 @@ final class Search extends SearchEngine
         $stack = [];
         $parsed = [];
         foreach ($matches as $match) {
+            $match = arrayify($match);
             if ($this->isKeyValue($match)) {
-                $parsed = $this->mergeCondition($parsed, $match['key'], $match['value']);
+                $key = extractString($match, 'key');
+                $value = extractString($match, 'value');
+                $parsed = $this->mergeCondition($parsed, $key, $value);
                 continue;
             }
             if (! empty($match['operator'])) {
-                $parsed = $this->wrapOperator($parsed, $match['operator']);
+                $parsed = $this->wrapOperator($parsed, extractString($match, 'operator'));
                 continue;
             }
             $this->handleGrouping($parsed, $stack, $match);

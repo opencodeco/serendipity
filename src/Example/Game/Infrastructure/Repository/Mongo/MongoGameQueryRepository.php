@@ -41,6 +41,9 @@ class MongoGameQueryRepository extends MongoGameRepository implements GameQueryR
         return $this->collection($serializer, $data, GameCollection::class);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function toArray(mixed $datum): array
     {
         return match (true) {
