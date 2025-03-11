@@ -73,7 +73,7 @@ final class FromTypeAttributes extends Resolver
     private function resolveDefine(Define $instance): ?Value
     {
         $types = $instance->types;
-        $callback = fn (?Value $carry, Type|TypeExtended $type) => $carry ?? match (true) {
+        $callback = fn (?Value $carry, Type|TypeExtended $type): ?Value => $carry ?? match (true) {
             $type instanceof Type => $this->resolveByFormat($type->value),
             $type instanceof TypeExtended => $type->fake($this),
         };
