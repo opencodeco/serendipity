@@ -57,3 +57,14 @@ if (! function_exists('array_first')) {
             : $array[0];
     }
 }
+
+if (! function_exists('array_unshift_key')) {
+    function array_unshift_key(array $array, string $key, mixed $value): array
+    {
+        if (! is_array($array[$key] ?? null)) {
+            $array[$key] = [];
+        }
+        $array[$key][] = $value;
+        return $array;
+    }
+}

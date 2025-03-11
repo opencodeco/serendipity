@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Database\Document\Mongo;
 
+use function array_unshift_key;
+use function preg_match_all;
 use function Serendipity\Type\Cast\arrayify;
+use function sprintf;
+use function trim;
 
 abstract class SearchEngine
 {
@@ -43,12 +47,7 @@ abstract class SearchEngine
         if (empty($parsed)) {
             return $condition;
         }
-
-        if (! is_array($parsed['$and'] ?? null)) {
-            $parsed['$and'] = [];
-        }
-        $parsed['$and'][] = $condition;
-        return $parsed;
+        return array_unshift_key($parsed, '$and', $condition);
     }
 
     final protected function wrapOperator(array $parsed, string $operator): array
@@ -80,12 +79,9 @@ abstract class SearchEngine
         if (empty($lastGroup)) {
             return $parsed;
         }
-
-        if (! is_array($lastGroup['$and'] ?? null)) {
-            $lastGroup['$and'] = [$lastGroup];
+        if (! isset($lastGroup['$and'])) {
+            $lastGroup = ['$and' => [$lastGroup]];
         }
-
-        $lastGroup['$and'][] = $parsed;
-        return $lastGroup;
+        return array_unshift_key($lastGroup, '$and', $parsed);
     }
 }

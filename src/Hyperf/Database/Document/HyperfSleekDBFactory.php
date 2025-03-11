@@ -15,7 +15,8 @@ use SleekDB\Exceptions\IOException;
 use SleekDB\Store;
 
 use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\stringify;
+use function Serendipity\Type\Util\extractArray;
+use function Serendipity\Type\Util\extractString;
 
 readonly class HyperfSleekDBFactory implements SleekDBFactory
 {
@@ -34,8 +35,8 @@ readonly class HyperfSleekDBFactory implements SleekDBFactory
     {
         $config = $this->container->get(ConfigInterface::class);
         $options = arrayify($config->get('databases.sleek'));
-        $path = stringify($options['path'] ?? '');
-        $configuration = arrayify($options['configuration'] ?? []);
+        $path = extractString($options, 'path');
+        $configuration = extractArray($options, 'configuration');
         return new Store($resource, $path, $configuration);
     }
 }
