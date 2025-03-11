@@ -7,6 +7,9 @@ namespace Serendipity\Test\Infrastructure\Database\Document\Condition;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\InCondition;
 
+/**
+ * @internal
+ */
 class InConditionTest extends TestCase
 {
     public function testShouldCompose(): void

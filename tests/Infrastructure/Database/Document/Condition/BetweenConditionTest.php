@@ -9,6 +9,9 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\BetweenCondition;
 
+/**
+ * @internal
+ */
 class BetweenConditionTest extends TestCase
 {
     public function testShouldCompose(): void

@@ -12,6 +12,9 @@ use Serendipity\Infrastructure\Database\Document\Mongo\Condition\InCondition;
 use Serendipity\Infrastructure\Database\Document\Mongo\ConditionParser;
 use stdClass;
 
+/**
+ * @internal
+ */
 class ConditionParserTest extends TestCase
 {
     public function testShouldParse(): void

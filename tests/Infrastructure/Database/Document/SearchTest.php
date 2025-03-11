@@ -8,6 +8,9 @@ use MongoDB\BSON\UTCDateTime;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Document\Mongo\Search;
 
+/**
+ * @internal
+ */
 class SearchTest extends TestCase
 {
     public function testShouldMakeSearchParam(): void
@@ -76,9 +79,9 @@ class SearchTest extends TestCase
     public function testShouldParseConditionsExpression(): void
     {
         $search = Search::create();
-        $expression = 'type="in:ruleA,ruleB" ' .
-            'and status=equal:open ' .
-            'and reference.date="!between:2024-11-16 18:00:00,2024-11-17 07:10:00"';
+        $expression = 'type="in:ruleA,ruleB" '
+            . 'and status=equal:open '
+            . 'and reference.date="!between:2024-11-16 18:00:00,2024-11-17 07:10:00"';
 
         $filters = $search->parse($expression);
         $this->assertEquals(

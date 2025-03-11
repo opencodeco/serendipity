@@ -21,7 +21,6 @@ use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 use function Hyperf\Support\env;
 use function Serendipity\Type\Cast\stringify;
 
-
 if (! defined('APP_ENV')) {
     define('APP_ENV', stringify(env('APP_ENV', 'dev')));
 }
