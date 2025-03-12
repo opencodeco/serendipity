@@ -29,7 +29,7 @@ final class FakerExtensionMock
         return $this->generator();
     }
 
-    private function make(string $class, array $args = []): mixed
+    protected function make(string $class, array $args = []): mixed
     {
         if ($this->assertion !== null) {
             invoke($this->assertion, $class);

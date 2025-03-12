@@ -1,46 +1,48 @@
-parameters:
+deptrac:
   paths:
     - ./src
 
+  exclude_files:
+    - '#.*test.*#'
+
   layers:
-    # Define the layers of your application
     - name: Application
       collectors:
-        - type: className
-          regex: ^Serendipity\\Application\\.*
+        - type: classLike
+          value: ^Serendipity\\Application\\.*
 
     - name: Domain
       collectors:
-        - type: className
-          regex: ^Serendipity\\Domain\\.*
+        - type: classLike
+          value: ^Serendipity\\Domain\\.*
 
     - name: Infrastructure
       collectors:
-        - type: className
-          regex: ^Serendipity\\Infrastructure\\.*
+        - type: classLike
+          value: ^Serendipity\\Infrastructure\\.*
 
     - name: Presentation
       collectors:
-        - type: className
-          regex: ^Serendipity\\Presentation\\.*
+        - type: classLike
+          value: ^Serendipity\\Presentation\\.*
 
     # Define the supported global layers
     - name: Contract
       collectors:
-        - type: className
-          regex: ^Hyperf\\Contract\\.*
+        - type: classLike
+          value: ^Hyperf\\Contract\\.*
 
     - name: Native
       collectors:
-        - type: className
-          regex: ^\w+$|^(DS|Decimal)\\.*$
+        - type: classLike
+          value: ^\w+$|^(DS|Decimal)\\.*$
 
     - name: Vendor
       collectors:
         - type: bool
           must:
-            - type: className
-              regex:
+            - type: classLike
+              value:
                 ^Psr\\(Http|Log|Container)\\.*|\
                 ^Hyperf\\(Command|Context|Coordinator|DB|Event|ExceptionHandler|Guzzle|HttpMessage|HttpServer)\\.*|\
                 ^Google\\.*|\
@@ -50,8 +52,8 @@ parameters:
                 ^Swow\\.*|\
                 ^MongoDB\\.*
           must_not:
-            - type: className
-              regex:
+            - type: classLike
+              value:
                 ^Psr\\Container\\ContainerInterface$|\
                 ^Psr\\Http\\Message\\ServerRequestInterface$|\
                 ^Hyperf\\Context\\Context$|\
@@ -60,8 +62,8 @@ parameters:
 
     - name: Validation
       collectors:
-        - type: className
-          regex:
+        - type: classLike
+          value:
             ^Serendipity\\Hyperf\\Request\\HyperfFormRequest$|\
             ^Psr\\Container\\ContainerInterface$|\
             ^Psr\\Http\\Message\\ServerRequestInterface$|\
