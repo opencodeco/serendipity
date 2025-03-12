@@ -83,6 +83,13 @@ trait InputExtension
         Context::set(ServerRequestInterface::class, $value);
     }
 
+    /**
+     * @template T of mixed
+     * @param class-string<T> $class
+     * @param array<string, mixed> $args
+     *
+     * @return T
+     */
     abstract protected function make(string $class, array $args = []): mixed;
 
     abstract protected function registerTearDown(callable $callback): void;

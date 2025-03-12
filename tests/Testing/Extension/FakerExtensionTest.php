@@ -18,7 +18,6 @@ final class FakerExtensionTest extends TestCase
     {
         $mock = new FakerExtensionMock(
             $this->createMock(Faker::class),
-            $this->createMock(Generator::class),
             fn (string $actual) => $this->assertEquals(Faker::class, $actual),
         );
         $mock->assertFaker();
@@ -27,11 +26,10 @@ final class FakerExtensionTest extends TestCase
     public function testGenerator(): void
     {
         $faker = $this->createMock(Faker::class);
-        $generator = $this->createMock(Generator::class);
-        $mock = new FakerExtensionMock($faker, $generator);
+        $mock = new FakerExtensionMock($faker);
         $faker->expects($this->once())
             ->method('generator')
-            ->willReturn($generator);
+            ->willReturn($this->createMock(Generator::class));
 
         $mock->assertGenerator();
     }

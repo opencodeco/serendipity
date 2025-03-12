@@ -18,5 +18,12 @@ trait BuilderExtension
         return $this->builder;
     }
 
+    /**
+     * @template T of mixed
+     * @param class-string<T> $class
+     * @param array<string, mixed> $args
+     *
+     * @return T
+     */
     abstract protected function make(string $class, array $args = []): mixed;
 }

@@ -11,6 +11,7 @@ use Serendipity\Domain\Support\Set;
 
 use function array_key_first;
 use function count;
+use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\Json\encode;
 use function sprintf;
 
@@ -22,9 +23,9 @@ trait ResourceExtension
     private array $helpers = [];
 
     /**
-     * @var null|array<string,string>
+     * @var array<string,Helper>
      */
-    private ?array $resources = [];
+    private array $resources = [];
 
     abstract public static function fail(string $message = ''): never;
 
@@ -107,7 +108,7 @@ trait ResourceExtension
     private function resolveResource(?string $resource): string
     {
         if (isset($this->resources[$resource])) {
-            return $resource;
+            return stringify($resource);
         }
         if (count($this->resources) === 1) {
             return array_key_first($this->resources);

@@ -14,8 +14,7 @@ final class FakerExtensionMock
     use FakerExtension;
 
     public function __construct(
-        private readonly Faker $fakerMock,
-        private readonly Generator $generatorMock,
+        private readonly Faker $mock,
         private readonly ?Closure $assertion = null,
     ) {
     }
@@ -30,15 +29,12 @@ final class FakerExtensionMock
         return $this->generator();
     }
 
-    protected function make(string $class, array $args = []): mixed
+    private function make(string $class, array $args = []): mixed
     {
         if ($this->assertion !== null) {
-            ($this->assertion)($class);
+            invoke($this->assertion, $class);
         }
-
-        return match ($class) {
-            Faker::class => $this->fakerMock,
-            Generator::class => $this->generatorMock,
-        };
+        /* @phpstan-ignore return.type */
+        return $this->mock;
     }
 }

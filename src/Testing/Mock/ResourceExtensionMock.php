@@ -54,11 +54,17 @@ final class ResourceExtensionMock
         $this->assertHasExactly($expected, $filters, $resource);
     }
 
+    /**
+     * @return array<string,Helper>
+     */
     public function getHelpers(): array
     {
         return $this->helpers;
     }
 
+    /**
+     * @return array<string,Helper>
+     */
     public function getResources(): array
     {
         return $this->resources;
