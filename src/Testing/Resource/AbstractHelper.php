@@ -7,12 +7,13 @@ namespace Serendipity\Testing\Resource;
 use ReflectionException;
 use Serendipity\Domain\Contract\Adapter\DeserializerFactory;
 use Serendipity\Domain\Contract\Adapter\SerializerFactory;
+use Serendipity\Domain\Contract\Testing\Helper;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Testing\Faker\Faker;
 
 use function array_merge;
 
-abstract class Helper
+abstract class AbstractHelper implements Helper
 {
     public function __construct(
         private readonly Faker $faker,

@@ -55,7 +55,7 @@ class ConditionParser
 
     private function instance(mixed $condition, string $alias): Condition
     {
-        if ($this->isInvalid($condition)) {
+        if (! is_string($condition) || ! class_exists($condition)) {
             throw new RuntimeException(sprintf("Condition '%s' not found", $alias));
         }
         $instance = new $condition();
@@ -65,10 +65,5 @@ class ConditionParser
             );
         }
         return $instance;
-    }
-
-    private function isInvalid(mixed $condition): bool
-    {
-        return ! $condition || ! is_string($condition) || ! class_exists($condition);
     }
 }

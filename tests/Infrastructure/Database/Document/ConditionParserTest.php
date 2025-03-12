@@ -7,7 +7,6 @@ namespace Serendipity\Test\Infrastructure\Database\Document;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use RuntimeException;
-use Serendipity\Infrastructure\Database\Document\Mongo\Condition\EqualCondition;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\InCondition;
 use Serendipity\Infrastructure\Database\Document\Mongo\ConditionParser;
 use stdClass;
@@ -19,9 +18,7 @@ class ConditionParserTest extends TestCase
 {
     public function testShouldParse(): void
     {
-        $parser = new ConditionParser([
-            'equal' => EqualCondition::class,
-        ]);
+        $parser = new ConditionParser();
         $parsed = $parser->parse('key', 'value');
         $this->assertEquals(['key' => 'value'], $parsed);
     }
@@ -31,6 +28,7 @@ class ConditionParserTest extends TestCase
         $parser = new ConditionParser([
             'in' => InCondition::class,
         ]);
+        $parser->parse('key', 'in:value');
         $parsed = $parser->parse('key', 'in:value');
         $this->assertEquals(['key' => ['$in' => ['value']]], $parsed);
     }

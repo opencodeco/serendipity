@@ -10,11 +10,11 @@ use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Repository\Adapter\MongoDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\MongoSerializerFactory;
 use Serendipity\Testing\Faker\Faker;
-use Serendipity\Testing\Resource\Helper;
+use Serendipity\Testing\Resource\AbstractHelper;
 
 use function Serendipity\Type\Cast\arrayify;
 
-final class MongoHelper extends Helper
+final class MongoHelper extends AbstractHelper
 {
     public function __construct(
         Faker $faker,

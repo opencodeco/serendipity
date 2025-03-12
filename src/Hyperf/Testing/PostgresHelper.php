@@ -11,7 +11,7 @@ use Serendipity\Infrastructure\Database\Relational\Connection;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Testing\Faker\Faker;
-use Serendipity\Testing\Resource\Helper;
+use Serendipity\Testing\Resource\AbstractHelper;
 
 use function array_filter;
 use function array_keys;
@@ -25,7 +25,7 @@ use function Serendipity\Type\Cast\integerify;
 use function sprintf;
 use function str_repeat;
 
-final class PostgresHelper extends Helper
+final class PostgresHelper extends AbstractHelper
 {
     private readonly Connection $database;
 

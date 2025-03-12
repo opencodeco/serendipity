@@ -10,7 +10,7 @@ use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Testing\Faker\Faker;
-use Serendipity\Testing\Resource\Helper;
+use Serendipity\Testing\Resource\AbstractHelper;
 use SleekDB\Exceptions\IdNotAllowedException;
 use SleekDB\Exceptions\InvalidArgumentException;
 use SleekDB\Exceptions\IOException;
@@ -18,7 +18,7 @@ use SleekDB\Exceptions\JsonException as SleekDBJsonExceptionAlias;
 
 use function Serendipity\Type\Cast\arrayify;
 
-final class SleekDBHelper extends Helper
+final class SleekDBHelper extends AbstractHelper
 {
     public function __construct(
         Faker $faker,

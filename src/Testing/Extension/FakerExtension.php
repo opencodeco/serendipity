@@ -7,9 +7,6 @@ namespace Serendipity\Testing\Extension;
 use Faker\Generator;
 use Serendipity\Testing\Faker\Faker;
 
-/**
- * @phpstan-ignore trait.unused
- */
 trait FakerExtension
 {
     private ?Faker $faker = null;
