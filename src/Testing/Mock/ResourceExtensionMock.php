@@ -69,11 +69,6 @@ final class ResourceExtensionMock
         return $this->registeredTearDowns;
     }
 
-    protected function registerTearDown(callable $callback): void
-    {
-        $this->registeredTearDowns[] = $callback;
-    }
-
     public static function assertThat(mixed $value, Constraint $constraint, string $message = ''): void
     {
         call_user_func(self::$assert, $value, $constraint, $message);
@@ -82,5 +77,10 @@ final class ResourceExtensionMock
     public static function fail(string $message = ''): never
     {
         throw new RuntimeException($message ?: 'Test failure');
+    }
+
+    protected function registerTearDown(callable $callback): void
+    {
+        $this->registeredTearDowns[] = $callback;
     }
 }
