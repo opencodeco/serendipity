@@ -12,7 +12,7 @@ use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 /**
  * @internal
  */
-final class HyperfRelationalFactoryTest extends TestCase
+final class HyperfConnectionFactoryTest extends TestCase
 {
     use MakeExtension;
 
