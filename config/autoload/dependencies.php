@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Hyperf\Contract\StdoutLoggerInterface;
 use Psr\Container\ContainerInterface as Container;
 use Psr\Log\LoggerInterface;
 use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
@@ -13,6 +12,7 @@ use Serendipity\Hyperf\Database\Document\HyperfMongoFactory;
 use Serendipity\Hyperf\Database\Document\HyperfSleekDBFactory;
 use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
 use Serendipity\Hyperf\Logging\GoogleCloudLoggerFactory;
+use Serendipity\Hyperf\Logging\StdoutLoggerFactory;
 use Serendipity\Hyperf\Testing\Observability\Logger\InMemory\InMemoryLogger;
 use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
@@ -29,7 +29,7 @@ return [
     LoggerInterface::class => fn (Container $container) => match (APP_ENV) {
         'test' => $container->get(InMemoryLogger::class),
         'prd', 'hom', 'liv', 'stg' => $container->get(GoogleCloudLoggerFactory::class)->make(APP_ENV),
-        default => $container->get(StdoutLoggerInterface::class),
+        default => $container->get(StdoutLoggerFactory::class)->make(APP_ENV),
     },
 
     SleekDBFactory::class => fn (Container $container) => new HyperfSleekDBFactory($container),

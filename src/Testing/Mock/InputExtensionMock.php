@@ -1,0 +1,99 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Serendipity\Testing\Mock;
+
+use RuntimeException;
+use Serendipity\Hyperf\Testing\Extension\InputExtension;
+
+final class InputExtensionMock
+{
+    use InputExtension;
+
+    private array $registeredTearDowns = [];
+    private bool $makeWasCalled = false;
+    private string $makeClass = '';
+    private array $makeArgs = [];
+    private mixed $makeReturn;
+
+    public function __construct(mixed $makeReturn = null)
+    {
+        $this->makeReturn = $makeReturn;
+    }
+
+    public function exposeSetUpInput(): void
+    {
+        $this->setUpInput();
+    }
+
+    public function exposeTearDownInput(bool $isRequestSetUp = false): void
+    {
+        $this->tearDownInput($isRequestSetUp);
+    }
+
+    public function exposeInput(
+        string $class,
+        array $parsedBody = [],
+        array $queryParams = [],
+        array $params = [],
+        array $headers = [],
+        array $args = [],
+    ): mixed {
+        return $this->input($class, $parsedBody, $queryParams, $params, $headers, $args);
+    }
+
+    public function exposeSetUpRequestContext(
+        array $parsedBody = [],
+        array $queryParams = [],
+        array $params = [],
+        array $headers = [],
+        string $method = 'POST',
+        string $uri = '/',
+    ): void {
+        $this->setUpRequestContext($parsedBody, $queryParams, $params, $headers, $method, $uri);
+    }
+
+    public function getRegisteredTearDowns(): array
+    {
+        return $this->registeredTearDowns;
+    }
+
+    public function getMakeClass(): string
+    {
+        return $this->makeClass;
+    }
+
+    public function getMakeArgs(): array
+    {
+        return $this->makeArgs;
+    }
+
+    public function wasMakeCalled(): bool
+    {
+        return $this->makeWasCalled;
+    }
+
+    public function getIsRequestSetUp(): bool
+    {
+        return $this->isRequestSetUp;
+    }
+
+    public static function fail(string $message = ''): never
+    {
+        throw new RuntimeException($message ?: 'Test failure');
+    }
+
+    protected function registerTearDown(callable $callback): void
+    {
+        $this->registeredTearDowns[] = $callback;
+    }
+
+    protected function make(string $class, array $args = []): mixed
+    {
+        $this->makeWasCalled = true;
+        $this->makeClass = $class;
+        $this->makeArgs = $args;
+        return $this->makeReturn;
+    }
+}

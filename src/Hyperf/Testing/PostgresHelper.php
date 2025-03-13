@@ -21,7 +21,6 @@ use function array_values;
 use function count;
 use function implode;
 use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\integerify;
 use function sprintf;
 use function str_repeat;
 
@@ -84,12 +83,13 @@ final class PostgresHelper extends AbstractHelper
             $where
         );
         $bindings = array_values(array_filter($filters, static fn (mixed $value) => $value !== null));
-        $result = arrayify($this->database->query($query, $bindings));
-        $data = arrayify(array_shift($result));
+        $result = $this->database->query($query, $bindings);
+        $array = arrayify($result);
+        $data = arrayify(array_shift($array));
         if (empty($data)) {
             return 0;
         }
         $count = $data['count'] ?? 0;
-        return integerify($count);
+        return (int) $count;
     }
 }

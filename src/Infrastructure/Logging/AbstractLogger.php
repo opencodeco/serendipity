@@ -4,49 +4,49 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Logging;
 
-use Google\Cloud\Logging\Logger as GoogleCloud;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Stringable;
 
-abstract class Logger implements LoggerInterface
+abstract class AbstractLogger implements LoggerInterface
 {
     final public function emergency(string|Stringable $message, array $context = []): void
     {
-        $this->log(GoogleCloud::EMERGENCY, $message, $context);
+        $this->log(LogLevel::EMERGENCY, $message, $context);
     }
 
     final public function info(string|Stringable $message, array $context = []): void
     {
-        $this->log(GoogleCloud::INFO, $message, $context);
+        $this->log(LogLevel::INFO, $message, $context);
     }
 
     final public function alert(string|Stringable $message, array $context = []): void
     {
-        $this->log(GoogleCloud::ALERT, $message, $context);
+        $this->log(LogLevel::ALERT, $message, $context);
     }
 
     final public function critical(string|Stringable $message, array $context = []): void
     {
-        $this->log(GoogleCloud::CRITICAL, $message, $context);
+        $this->log(LogLevel::CRITICAL, $message, $context);
     }
 
     final public function error(string|Stringable $message, array $context = []): void
     {
-        $this->log(GoogleCloud::ERROR, $message, $context);
+        $this->log(LogLevel::ERROR, $message, $context);
     }
 
     final public function warning(string|Stringable $message, array $context = []): void
     {
-        $this->log(GoogleCloud::WARNING, $message, $context);
+        $this->log(LogLevel::WARNING, $message, $context);
     }
 
     final public function notice(string|Stringable $message, array $context = []): void
     {
-        $this->log(GoogleCloud::NOTICE, $message, $context);
+        $this->log(LogLevel::NOTICE, $message, $context);
     }
 
     final public function debug(string|Stringable $message, array $context = []): void
     {
-        $this->log(GoogleCloud::DEBUG, $message, $context);
+        $this->log(LogLevel::DEBUG, $message, $context);
     }
 }

@@ -27,6 +27,11 @@ final class Memory
             ->count();
     }
 
+    public static function all(): array
+    {
+        return self::collection()->all();
+    }
+
     private static function collection(): Collection
     {
         self::$collection ??= new Collection();

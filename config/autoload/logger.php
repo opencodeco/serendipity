@@ -6,23 +6,26 @@ use Monolog\Formatter\JsonFormatter;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
+use Psr\Log\LogLevel;
 
 use function Hyperf\Support\env;
+use function Serendipity\Type\Cast\stringify;
 
-$formatter = [
-    'class' => JsonFormatter::class,
-    'constructor' => [],
-];
-if (in_array(env('APP_ENV', 'dev'), ['dev', 'test'], true)) {
-    $formatter = [
+$logLevel = stringify(env('STDOUT_LOG_LEVEL'));
+$formatter = match (env('APP_ENV', 'dev')) {
+    'dev' => [
         'class' => LineFormatter::class,
         'constructor' => [
             'format' => "||%datetime%||%channel%||%level_name%||%message%||%context%||%extra%\n",
-            'allowInlineLineBreaks' => true,
+            'allowInlineLineBreaks' => false,
             'includeStacktraces' => true,
         ],
-    ];
-}
+    ],
+    default => [
+        'class' => JsonFormatter::class,
+        'constructor' => [],
+    ],
+};
 
 return [
     'default' => [
@@ -34,6 +37,18 @@ return [
             ],
         ],
         'formatter' => $formatter,
+        'levels' => $logLevel
+            ? explode(',', $logLevel)
+            : [
+                LogLevel::ALERT,
+                LogLevel::CRITICAL,
+                LogLevel::EMERGENCY,
+                LogLevel::ERROR,
+                LogLevel::WARNING,
+                LogLevel::NOTICE,
+                LogLevel::INFO,
+                LogLevel::DEBUG,
+            ],
     ],
 
     'gcloud' => [
