@@ -15,11 +15,9 @@ final class InputExtensionMock
     private bool $makeWasCalled = false;
     private string $makeClass = '';
     private array $makeArgs = [];
-    private mixed $makeReturn;
 
-    public function __construct(mixed $makeReturn = null)
+    public function __construct(private mixed $makeReturn = null)
     {
-        $this->makeReturn = $makeReturn;
     }
 
     public function exposeSetUpInput(): void
@@ -27,11 +25,21 @@ final class InputExtensionMock
         $this->setUpInput();
     }
 
+    /**
+     * @SuppressWarnings(BooleanArgumentFlag)
+     */
     public function exposeTearDownInput(bool $isRequestSetUp = false): void
     {
         $this->tearDownInput($isRequestSetUp);
     }
 
+    /**
+     * @template T of mixed
+     * @param class-string<T> $class
+     * @param array<string, array<string>|string> $headers
+     * @param array<string, mixed> $args
+     * @return T
+     */
     public function exposeInput(
         string $class,
         array $parsedBody = [],
@@ -43,6 +51,9 @@ final class InputExtensionMock
         return $this->input($class, $parsedBody, $queryParams, $params, $headers, $args);
     }
 
+    /**
+     * @param array<string, array<string>|string> $headers
+     */
     public function exposeSetUpRequestContext(
         array $parsedBody = [],
         array $queryParams = [],

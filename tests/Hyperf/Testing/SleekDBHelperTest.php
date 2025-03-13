@@ -4,34 +4,31 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Hyperf\Testing;
 
-use Hyperf\Contract\Arrayable;
-use MongoDB\Collection;
-use MongoDB\InsertOneResult;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Contract\Adapter\Deserializer;
 use Serendipity\Domain\Contract\Adapter\Serializer;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Hyperf\Testing\MongoHelper;
-use Serendipity\Infrastructure\Database\Document\MongoFactory;
-use Serendipity\Infrastructure\Repository\Adapter\MongoDeserializerFactory;
-use Serendipity\Infrastructure\Repository\Adapter\MongoSerializerFactory;
+use Serendipity\Hyperf\Testing\SleekDBHelper;
+use Serendipity\Infrastructure\Adapter\DeserializerFactory;
+use Serendipity\Infrastructure\Adapter\SerializerFactory;
+use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Testing\Faker\Faker;
-use stdClass;
+use SleekDB\Store;
 
 /**
  * @internal
  */
-final class MongoHelperTest extends TestCase
+final class SleekDBHelperTest extends TestCase
 {
     private Faker|MockObject $faker;
-    private MongoSerializerFactory|MockObject $serializerFactory;
-    private MongoDeserializerFactory|MockObject $deserializerFactory;
-    private MongoFactory|MockObject $factory;
-    private Collection|MockObject $collection;
+    private SerializerFactory|MockObject $serializerFactory;
+    private DeserializerFactory|MockObject $deserializerFactory;
+    private SleekDBFactory|MockObject $factory;
+    private Store|MockObject $store;
     private Serializer|MockObject $serializer;
     private Deserializer|MockObject $deserializer;
-    private MongoHelper $helper;
+    private SleekDBHelper $helper;
     private string $resource = 'resource';
 
     protected function setUp(): void
@@ -39,14 +36,14 @@ final class MongoHelperTest extends TestCase
         parent::setUp();
 
         $this->faker = $this->createMock(Faker::class);
-        $this->serializerFactory = $this->createMock(MongoSerializerFactory::class);
-        $this->deserializerFactory = $this->createMock(MongoDeserializerFactory::class);
-        $this->factory = $this->createMock(MongoFactory::class);
-        $this->collection = $this->createMock(Collection::class);
+        $this->serializerFactory = $this->createMock(SerializerFactory::class);
+        $this->deserializerFactory = $this->createMock(DeserializerFactory::class);
+        $this->factory = $this->createMock(SleekDBFactory::class);
+        $this->store = $this->createMock(Store::class);
         $this->serializer = $this->createMock(Serializer::class);
         $this->deserializer = $this->createMock(Deserializer::class);
 
-        $this->helper = new MongoHelper(
+        $this->helper = new SleekDBHelper(
             $this->faker,
             $this->serializerFactory,
             $this->deserializerFactory,
@@ -54,17 +51,17 @@ final class MongoHelperTest extends TestCase
         );
     }
 
-    public function testTruncateShouldDeleteAllDocumentsFromCollection(): void
+    public function testTruncateShouldDeleteAllDocumentsFromStore(): void
     {
         // Arrange
         $this->factory->expects($this->once())
             ->method('make')
             ->with($this->resource)
-            ->willReturn($this->collection);
+            ->willReturn($this->store);
 
-        $this->collection->expects($this->once())
-            ->method('deleteMany')
-            ->with([]);
+        $this->store->expects($this->once())
+            ->method('deleteBy')
+            ->with(['_id', '>=', 0]);
 
         // Act
         $this->helper->truncate($this->resource);
@@ -73,13 +70,13 @@ final class MongoHelperTest extends TestCase
     public function testSeedShouldInsertFakeDataAndReturnSetUsingCorrectTransformation(): void
     {
         // Arrange
-        $type = stdClass::class;
+        $type = 'TestEntity';
         $override = ['name' => 'Test Override'];
         $fakerData = ['name' => 'Faker Generated', 'age' => 25];
         $serializedData = ['name' => 'Serialized', 'age' => 25];
         $deserializedData = ['name' => 'Deserialized', 'age' => 25];
         $expectedResult = ['name' => 'Test Override', 'age' => 25]; // Override + deserialized
-        $objectId = $this->createMock(InsertOneResult::class);
+        $insertResult = ['_id' => 123, 'name' => 'Test Override', 'age' => 25];
 
         $this->faker->expects($this->once())
             ->method('fake')
@@ -109,33 +106,30 @@ final class MongoHelperTest extends TestCase
         $this->factory->expects($this->once())
             ->method('make')
             ->with($this->resource)
-            ->willReturn($this->collection);
+            ->willReturn($this->store);
 
-        $this->collection->expects($this->once())
-            ->method('insertOne')
+        $this->store->expects($this->once())
+            ->method('insert')
             ->with($expectedResult)
-            ->willReturn($objectId);
+            ->willReturn($insertResult);
 
         // Act
         $result = $this->helper->seed($type, $this->resource, $override);
 
         // Assert
-        $this->assertEquals(
-            array_merge($expectedResult, ['_id' => $objectId]),
-            $result->toArray()
-        );
+        $this->assertEquals($insertResult, $result->toArray());
     }
 
     public function testSeedShouldRespeitarOverrideNosCamposFornecidos(): void
     {
         // Arrange
-        $type = stdClass::class;
+        $type = 'TestEntity';
         $override = ['name' => 'Nome Sobrescrito'];
         $fakerData = ['name' => 'Nome Original', 'email' => 'email@teste.com', 'age' => 30];
         $serializedData = ['name' => 'Nome Serializado', 'email' => 'email@teste.com', 'age' => 30];
         $deserializedData = ['name' => 'Nome Deserializado', 'email' => 'email@teste.com', 'age' => 30];
         $expectedResult = ['name' => 'Nome Sobrescrito', 'email' => 'email@teste.com', 'age' => 30];
-        $objectId = $this->createMock(InsertOneResult::class);
+        $insertResult = ['_id' => 456, 'name' => 'Nome Sobrescrito', 'email' => 'email@teste.com', 'age' => 30];
 
         $this->faker->expects($this->once())
             ->method('fake')
@@ -165,46 +159,38 @@ final class MongoHelperTest extends TestCase
         $this->factory->expects($this->once())
             ->method('make')
             ->with($this->resource)
-            ->willReturn($this->collection);
+            ->willReturn($this->store);
 
-        $this->collection->expects($this->once())
-            ->method('insertOne')
+        $this->store->expects($this->once())
+            ->method('insert')
             ->with($expectedResult)
-            ->willReturn($objectId);
+            ->willReturn($insertResult);
 
         // Act
         $result = $this->helper->seed($type, $this->resource, $override);
 
         // Assert
-        $this->assertEquals(
-            array_merge($expectedResult, ['_id' => $objectId]),
-            $result->toArray()
-        );
+        $this->assertEquals($insertResult, $result->toArray());
     }
 
     public function testCountShouldReturnNumberOfDocuments(): void
     {
         // Arrange
         $filters = ['status' => 'active'];
-        $resultCursor = $this->createMock(Arrayable::class);
         $documents = [
-            ['_id' => '1', 'name' => 'Document 1'],
-            ['_id' => '2', 'name' => 'Document 2'],
+            ['_id' => 1, 'name' => 'Document 1', 'status' => 'active'],
+            ['_id' => 2, 'name' => 'Document 2', 'status' => 'active']
         ];
-
-        $resultCursor->expects($this->once())
-            ->method('toArray')
-            ->willReturn($documents);
 
         $this->factory->expects($this->once())
             ->method('make')
             ->with($this->resource)
-            ->willReturn($this->collection);
+            ->willReturn($this->store);
 
-        $this->collection->expects($this->once())
-            ->method('find')
+        $this->store->expects($this->once())
+            ->method('findBy')
             ->with($filters)
-            ->willReturn($resultCursor);
+            ->willReturn($documents);
 
         // Act
         $count = $this->helper->count($this->resource, $filters);
@@ -217,22 +203,17 @@ final class MongoHelperTest extends TestCase
     {
         // Arrange
         $filters = ['status' => 'inactive'];
-        $resultCursor = $this->createMock(Arrayable::class);
         $documents = [];
-
-        $resultCursor->expects($this->once())
-            ->method('toArray')
-            ->willReturn($documents);
 
         $this->factory->expects($this->once())
             ->method('make')
             ->with($this->resource)
-            ->willReturn($this->collection);
+            ->willReturn($this->store);
 
-        $this->collection->expects($this->once())
-            ->method('find')
+        $this->store->expects($this->once())
+            ->method('findBy')
             ->with($filters)
-            ->willReturn($resultCursor);
+            ->willReturn($documents);
 
         // Act
         $count = $this->helper->count($this->resource, $filters);
@@ -244,11 +225,17 @@ final class MongoHelperTest extends TestCase
     public function testSeedShouldHandleMultipleFieldsCorrectly(): void
     {
         // Arrange
-        $type = stdClass::class;
+        $type = 'ComplexEntity';
         $fakerData = ['id' => 1, 'name' => 'Original', 'created_at' => '2023-01-01'];
         $serializedData = ['id' => 1, 'name' => 'Serialized', 'created_at' => '2023-01-01'];
         $deserializedData = ['id' => 1, 'name' => 'Final', 'created_at' => '2023-01-01', 'is_active' => true];
-        $objectId = $this->createMock(InsertOneResult::class);
+        $insertResult = [
+            '_id' => 789,
+            'id' => 1,
+            'name' => 'Final',
+            'created_at' => '2023-01-01',
+            'is_active' => true
+        ];
 
         $this->faker->expects($this->once())
             ->method('fake')
@@ -278,20 +265,17 @@ final class MongoHelperTest extends TestCase
         $this->factory->expects($this->once())
             ->method('make')
             ->with($this->resource)
-            ->willReturn($this->collection);
+            ->willReturn($this->store);
 
-        $this->collection->expects($this->once())
-            ->method('insertOne')
+        $this->store->expects($this->once())
+            ->method('insert')
             ->with($deserializedData)
-            ->willReturn($objectId);
+            ->willReturn($insertResult);
 
         // Act
         $result = $this->helper->seed($type, $this->resource);
 
         // Assert
-        $this->assertEquals(
-            array_merge($deserializedData, ['_id' => $objectId]),
-            $result->toArray()
-        );
+        $this->assertEquals($insertResult, $result->toArray());
     }
 }

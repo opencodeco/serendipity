@@ -51,7 +51,7 @@ class StdoutLogger extends AbstractLogger
             is_string($value) => sprintf("'%s'", $value),
             is_scalar($value) => (string) $value,
             is_array($value) => $this->context($value),
-            is_object($value) => json_encode($value),
+            is_object($value) => stringify(json_encode($value)),
             default => 'null',
         };
     }

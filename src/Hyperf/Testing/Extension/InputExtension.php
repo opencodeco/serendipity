@@ -31,6 +31,7 @@ trait InputExtension
 
     /**
      * @SuppressWarnings(StaticAccess)
+     * @SuppressWarnings(BooleanArgumentFlag)
      */
     protected function tearDownInput(bool $isRequestSetUp): void
     {
@@ -42,6 +43,8 @@ trait InputExtension
     /**
      * @template T of mixed
      * @param class-string<T> $class
+     * @param array<string, array<string>|string> $headers
+     * @param array<string, mixed> $args
      * @return T
      */
     final protected function input(
@@ -61,6 +64,7 @@ trait InputExtension
 
     /**
      * @SuppressWarnings(StaticAccess)
+     * @param array<string, array<string>|string> $headers
      */
     final protected function setUpRequestContext(
         array $parsedBody = [],

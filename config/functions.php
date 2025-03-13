@@ -27,6 +27,7 @@ if (! function_exists('stringify')) {
 if (! function_exists('integerify')) {
     function integerify(mixed $value, int $default = 0): int
     {
+        $value = is_scalar($value) ? (int) $value : $value;
         return is_int($value) ? $value : $default;
     }
 }

@@ -52,8 +52,8 @@ final class SleekDBHelper extends AbstractHelper
     {
         $data = $this->fake($type, $override);
 
-        $generatedId = $this->factory->make($resource)->insert($data);
-        return new Set(array_merge($data, ['_id' => $generatedId]));
+        $generated = $this->factory->make($resource)->insert($data);
+        return new Set(array_merge($data, $generated));
     }
 
     /**

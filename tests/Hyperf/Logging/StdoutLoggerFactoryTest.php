@@ -139,9 +139,7 @@ final class StdoutLoggerFactoryTest extends TestCase
             ->method('get')
             ->with(
                 'logger.default.levels',
-                $this->callback(function ($default) use ($defaultLevels) {
-                    return $default === $defaultLevels;
-                })
+                $this->callback(fn($default) => $default === $defaultLevels)
             )
             ->willReturn(null);
 

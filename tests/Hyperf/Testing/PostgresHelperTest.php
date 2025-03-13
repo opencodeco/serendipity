@@ -80,13 +80,11 @@ final class PostgresHelperTest extends TestCase
         $deserializedData = ['name' => 'Deserialized', 'age' => 25];
         $expectedResult = ['name' => 'Test Override', 'age' => 25]; // Override + deserialized
 
-        // Configurar comportamento do faker
         $this->faker->expects($this->once())
             ->method('fake')
             ->with($type)
             ->willReturn(Set::createFrom($fakerData));
 
-        // Configurar comportamento do serializer
         $this->serializerFactory->expects($this->once())
             ->method('make')
             ->with($type)
@@ -97,7 +95,6 @@ final class PostgresHelperTest extends TestCase
             ->with($fakerData)
             ->willReturn($serializedData);
 
-        // Configurar comportamento do deserializer
         $this->deserializerFactory->expects($this->once())
             ->method('make')
             ->with($type)
@@ -108,7 +105,6 @@ final class PostgresHelperTest extends TestCase
             ->with($serializedData)
             ->willReturn($deserializedData);
 
-        // Configurar comportamento do connection
         $expectedQuery = 'insert into "resource" ("name","age") values (?,?)';
         $expectedBindings = ['Test Override', 25];
 
@@ -133,13 +129,11 @@ final class PostgresHelperTest extends TestCase
         $deserializedData = ['name' => 'Nome Deserializado', 'email' => 'email@teste.com', 'age' => 30];
         $expectedResult = ['name' => 'Nome Sobrescrito', 'email' => 'email@teste.com', 'age' => 30];
 
-        // Configurar comportamento do faker
         $this->faker->expects($this->once())
             ->method('fake')
             ->with($type)
             ->willReturn(Set::createFrom($fakerData));
 
-        // Configurar comportamento do serializer
         $this->serializerFactory->expects($this->once())
             ->method('make')
             ->with($type)
@@ -150,7 +144,6 @@ final class PostgresHelperTest extends TestCase
             ->with($fakerData)
             ->willReturn($serializedData);
 
-        // Configurar comportamento do deserializer
         $this->deserializerFactory->expects($this->once())
             ->method('make')
             ->with($type)
@@ -161,7 +154,6 @@ final class PostgresHelperTest extends TestCase
             ->with($serializedData)
             ->willReturn($deserializedData);
 
-        // Configurar comportamento do connection
         $expectedQuery = 'insert into "resource" ("name","email","age") values (?,?,?)';
         $expectedBindings = ['Nome Sobrescrito', 'email@teste.com', 30];
 
@@ -184,13 +176,11 @@ final class PostgresHelperTest extends TestCase
         $serializedData = ['id' => 1, 'name' => 'Serialized', 'created_at' => '2023-01-01'];
         $deserializedData = ['id' => 1, 'name' => 'Final', 'created_at' => '2023-01-01', 'is_active' => true];
 
-        // Configurar comportamento do faker
         $this->faker->expects($this->once())
             ->method('fake')
             ->with($type)
             ->willReturn(Set::createFrom($fakerData));
 
-        // Configurar comportamento do serializer
         $this->serializerFactory->expects($this->once())
             ->method('make')
             ->with($type)
@@ -201,7 +191,6 @@ final class PostgresHelperTest extends TestCase
             ->with($fakerData)
             ->willReturn($serializedData);
 
-        // Configurar comportamento do deserializer
         $this->deserializerFactory->expects($this->once())
             ->method('make')
             ->with($type)
@@ -212,7 +201,6 @@ final class PostgresHelperTest extends TestCase
             ->with($serializedData)
             ->willReturn($deserializedData);
 
-        // Configurar comportamento do connection
         $expectedQuery = 'insert into "resource" ("id","name","created_at","is_active") values (?,?,?,?)';
         $expectedBindings = [1, 'Final', '2023-01-01', true];
 

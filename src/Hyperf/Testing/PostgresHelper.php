@@ -21,6 +21,7 @@ use function array_values;
 use function count;
 use function implode;
 use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\integerify;
 use function sprintf;
 use function str_repeat;
 
@@ -90,6 +91,6 @@ final class PostgresHelper extends AbstractHelper
             return 0;
         }
         $count = $data['count'] ?? 0;
-        return (int) $count;
+        return integerify($count);
     }
 }

@@ -22,14 +22,14 @@ use function Hyperf\Support\env;
 use function Serendipity\Type\Cast\stringify;
 
 if (! defined('APP_ENV')) {
-    define('APP_ENV', stringify(env('APP_ENV', 'dev')));
+    define('APP_ENV', env('APP_ENV', 'dev'));
 }
 
 return [
     LoggerInterface::class => fn (Container $container) => match (APP_ENV) {
         'test' => $container->get(InMemoryLogger::class),
-        'prd', 'hom', 'liv', 'stg' => $container->get(GoogleCloudLoggerFactory::class)->make(APP_ENV),
-        default => $container->get(StdoutLoggerFactory::class)->make(APP_ENV),
+        'prd', 'hom', 'liv', 'stg' => $container->get(GoogleCloudLoggerFactory::class)->make(stringify(APP_ENV)),
+        default => $container->get(StdoutLoggerFactory::class)->make(stringify(APP_ENV)),
     },
 
     SleekDBFactory::class => fn (Container $container) => new HyperfSleekDBFactory($container),

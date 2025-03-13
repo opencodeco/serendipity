@@ -50,7 +50,8 @@ deptrac:
                 ^SleekDB\\.*|\
                 ^Visus\\Cuid2\\.*|\
                 ^Swow\\.*|\
-                ^MongoDB\\.*
+                ^MongoDB\\.*|\
+                ^Symfony\\.*
           must_not:
             - type: classLike
               value:

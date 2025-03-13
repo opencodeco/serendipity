@@ -13,6 +13,7 @@ use Stringable;
 use Throwable;
 
 use function Serendipity\Coroutine\coroutine;
+use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\Json\encode;
 
 class GoogleCloudLogger extends AbstractLogger
@@ -31,7 +32,7 @@ class GoogleCloudLogger extends AbstractLogger
     public function log($level, string|Stringable $message, array $context = []): void
     {
         $context['message'] = $message;
-        $severity = $this->level($level);
+        $severity = $this->level(stringify($level));
         $payload = $this->payload($severity, $context);
         $write = fn () => $this->write($severity, $message, $payload);
 
@@ -40,7 +41,7 @@ class GoogleCloudLogger extends AbstractLogger
             : $write();
     }
 
-    protected function level(string $level): string|int
+    protected function level(string $level): string
     {
         $levels = [
             LogLevel::EMERGENCY => 'EMERGENCY',
