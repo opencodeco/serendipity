@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Testing\Mock;
 
-use RuntimeException;
 use Serendipity\Hyperf\Testing\Extension\InputExtension;
+use Serendipity\Testing\FailException;
 
 final class InputExtensionMock
 {
@@ -90,9 +90,12 @@ final class InputExtensionMock
         return $this->isRequestSetUp;
     }
 
+    /**
+     * @throws FailException
+     */
     public static function fail(string $message = ''): never
     {
-        throw new RuntimeException($message ?: 'Test failure');
+        throw new FailException($message ?: 'Test failure');
     }
 
     protected function registerTearDown(callable $callback): void

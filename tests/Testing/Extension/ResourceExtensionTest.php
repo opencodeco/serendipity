@@ -6,9 +6,9 @@ namespace Serendipity\Test\Testing\Extension;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Serendipity\Domain\Contract\Testing\Helper;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Testing\FailException;
 use Serendipity\Testing\Mock\ResourceExtensionMock;
 
 /**
@@ -50,7 +50,7 @@ final class ResourceExtensionTest extends TestCase
 
     public function testShouldRaiseExceptionWithInvalidHelper(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(FailException::class);
         $this->expectExceptionMessage('Helper not defined');
 
         $this->mock->exposeSetUpResource('resource', 'alias');
@@ -70,7 +70,7 @@ final class ResourceExtensionTest extends TestCase
 
     public function testShouldFailOnInvalidHelper(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(FailException::class);
         $this->expectExceptionMessage('Resource not defined');
 
         $this->mock->exposeSeed('type', ['override'], 'resource');
@@ -78,7 +78,7 @@ final class ResourceExtensionTest extends TestCase
 
     public function testShouldFailOnResourceNotDefined(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(FailException::class);
         $this->expectExceptionMessage('Resource not defined');
 
         $helper = $this->createMock(Helper::class);

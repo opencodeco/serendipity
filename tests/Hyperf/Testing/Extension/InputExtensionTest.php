@@ -8,7 +8,7 @@ use Hyperf\Context\Context;
 use Hyperf\HttpServer\Router\Dispatched;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
+use Serendipity\Testing\FailException;
 use Serendipity\Testing\Mock\InputExtensionMock;
 
 /**
@@ -62,7 +62,7 @@ final class InputExtensionTest extends TestCase
         $this->mock->exposeTearDownInput(false);
 
         // Assert
-        $this->expectException(RuntimeException::class);
+        $this->expectException(FailException::class);
         $this->expectExceptionMessage('Request is not set up.');
 
         // Act

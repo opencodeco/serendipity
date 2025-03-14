@@ -6,10 +6,10 @@ namespace Serendipity\Testing\Mock;
 
 use Closure;
 use PHPUnit\Framework\Constraint\Constraint;
-use RuntimeException;
 use Serendipity\Domain\Contract\Testing\Helper;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Testing\Extension\ResourceExtension;
+use Serendipity\Testing\FailException;
 
 final class ResourceExtensionMock
 {
@@ -80,9 +80,12 @@ final class ResourceExtensionMock
         call_user_func(self::$assert, $value, $constraint, $message);
     }
 
+    /**
+     * @throws FailException
+     */
     public static function fail(string $message = ''): never
     {
-        throw new RuntimeException($message ?: 'Test failure');
+        throw new FailException($message ?: 'Test failure');
     }
 
     protected function registerTearDown(callable $callback): void

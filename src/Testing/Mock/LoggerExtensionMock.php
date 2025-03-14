@@ -6,8 +6,8 @@ namespace Serendipity\Testing\Mock;
 
 use Closure;
 use PHPUnit\Framework\Constraint\Constraint;
-use RuntimeException;
 use Serendipity\Hyperf\Testing\Extension\LoggerExtension;
+use Serendipity\Testing\FailException;
 
 final class LoggerExtensionMock
 {
@@ -53,9 +53,12 @@ final class LoggerExtensionMock
         return $this->isLoggerSetup;
     }
 
+    /**
+     * @throws FailException
+     */
     public static function fail(string $message = ''): never
     {
-        throw new RuntimeException($message ?: 'Test failure');
+        throw new FailException($message ?: 'Test failure');
     }
 
     public static function assertThat(mixed $value, Constraint $constraint, string $message = ''): void

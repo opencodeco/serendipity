@@ -6,8 +6,8 @@ namespace Serendipity\Test\Hyperf\Testing\Extension;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Serendipity\Hyperf\Testing\Observability\Logger\InMemory\Memory;
+use Serendipity\Testing\FailException;
 use Serendipity\Testing\Mock\LoggerExtensionMock;
 
 /**
@@ -65,7 +65,7 @@ final class LoggerExtensionTest extends TestCase
     public function testAssertLoggedShouldFailWhenLoggerNotSetUp(): void
     {
         // Assert
-        $this->expectException(RuntimeException::class);
+        $this->expectException(FailException::class);
         $this->expectExceptionMessage('Request is not set up.');
 
         // Act
