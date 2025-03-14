@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Database\Document\Mongo;
 
-use RuntimeException;
+use Serendipity\Domain\Exception\Misconfiguration;
 
 class ConditionParser
 {
@@ -16,6 +16,9 @@ class ConditionParser
     ) {
     }
 
+    /**
+     * @throws Misconfiguration
+     */
     public function parse(string $key, string $content): array
     {
         $content = trim($content, '"');
@@ -41,6 +44,9 @@ class ConditionParser
         return [$key => $filter];
     }
 
+    /**
+     * @throws Misconfiguration
+     */
     private function condition(string $alias): Condition
     {
         $condition = $this->conditions[$alias] ?? null;
@@ -53,14 +59,17 @@ class ConditionParser
         return $condition;
     }
 
+    /**
+     * @throws Misconfiguration
+     */
     private function instance(mixed $condition, string $alias): Condition
     {
         if (! is_string($condition) || ! class_exists($condition)) {
-            throw new RuntimeException(sprintf("Condition '%s' not found", $alias));
+            throw new Misconfiguration(sprintf("Condition '%s' not found", $alias));
         }
         $instance = new $condition();
         if (! $instance instanceof Condition) {
-            throw new RuntimeException(
+            throw new Misconfiguration(
                 sprintf("Condition should be an instance of '%s'", Condition::class)
             );
         }

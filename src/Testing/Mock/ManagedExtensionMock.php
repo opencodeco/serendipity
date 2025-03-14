@@ -26,7 +26,7 @@ final class ManagedExtensionMock
     protected function make(string $class, array $args = []): Managed
     {
         if ($this->assertion !== null) {
-            call_user_func($this->assertion, $class);
+            call_user_func($this->assertion, $class, $args);
         }
 
         return $this->managedMock;

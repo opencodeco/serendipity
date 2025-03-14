@@ -9,7 +9,7 @@ use Hyperf\Contract\ConfigInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use RuntimeException;
+use Serendipity\Domain\Exception\Misconfiguration;
 
 use function assert;
 use function Serendipity\Type\Cast\stringify;
@@ -28,7 +28,7 @@ class CorsMiddleware
         $response = Context::get(ResponseInterface::class);
         assert(
             $response instanceof ResponseInterface,
-            new RuntimeException('ResponseInterface not found in context')
+            new Misconfiguration('ResponseInterface not found in context')
         );
 
         $origin = stringify($this->config->get('cors.allow_origin', '*'));

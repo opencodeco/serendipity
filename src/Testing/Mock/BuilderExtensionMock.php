@@ -25,7 +25,7 @@ final class BuilderExtensionMock
 
     protected function make(string $class, array $args = []): Builder
     {
-        call_user_func($this->assertion, Builder::class, $class);
+        call_user_func($this->assertion, Builder::class, $class, $args);
         return $this->mock;
     }
 }

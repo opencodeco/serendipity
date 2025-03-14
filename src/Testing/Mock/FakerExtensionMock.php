@@ -32,7 +32,7 @@ final class FakerExtensionMock
     protected function make(string $class, array $args = []): mixed
     {
         if ($this->assertion !== null) {
-            invoke($this->assertion, $class);
+            invoke($this->assertion, $class, $args);
         }
         /* @phpstan-ignore return.type */
         return $this->mock;
