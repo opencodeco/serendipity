@@ -20,6 +20,7 @@ if (! function_exists('arrayify')) {
 if (! function_exists('stringify')) {
     function stringify(mixed $value, string $default = ''): string
     {
+        $value = is_scalar($value) ? (string) $value : $default;
         return is_string($value) ? $value : $default;
     }
 }
@@ -27,7 +28,7 @@ if (! function_exists('stringify')) {
 if (! function_exists('integerify')) {
     function integerify(mixed $value, int $default = 0): int
     {
-        $value = is_scalar($value) ? (int) $value : $value;
+        $value = is_numeric($value) ? (int) $value : $value;
         return is_int($value) ? $value : $default;
     }
 }
@@ -35,6 +36,7 @@ if (! function_exists('integerify')) {
 if (! function_exists('floatify')) {
     function floatify(mixed $value, float $default = 0.0): float
     {
+        $value = is_numeric($value) ? (float) $value : $value;
         return is_float($value) ? $value : $default;
     }
 }

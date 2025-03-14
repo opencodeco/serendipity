@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\General;
 
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\boolify;
@@ -40,7 +41,7 @@ final class CastFunctionsTest extends TestCase
 
     public function testToStringReturnsDefaultWhenValueIsNotString(): void
     {
-        $value = 123;
+        $value = new stdClass();
         $default = 'default';
         $result = stringify($value, $default);
         $this->assertEquals($default, $result);
