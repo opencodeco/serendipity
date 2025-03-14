@@ -9,7 +9,7 @@ use Hyperf\HttpMessage\Server\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Serendipity\Hyperf\Exception\AppExceptionHandler;
+use Serendipity\Hyperf\Exception\GeneralExceptionHandler;
 use Serendipity\Infrastructure\Exception\Thrown;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
 use Serendipity\Infrastructure\Exception\Type;
@@ -18,11 +18,11 @@ use Serendipity\Infrastructure\Http\JsonFormatter;
 /**
  * @internal
  */
-final class AppExceptionHandlerTest extends TestCase
+final class GeneralExceptionHandlerTest extends TestCase
 {
     private LoggerInterface $logger;
 
-    private AppExceptionHandler $handler;
+    private GeneralExceptionHandler $handler;
 
     private ThrownFactory $factory;
 
@@ -32,7 +32,7 @@ final class AppExceptionHandlerTest extends TestCase
 
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->factory = $this->createMock(ThrownFactory::class);
-        $this->handler = new AppExceptionHandler(
+        $this->handler = new GeneralExceptionHandler(
             $this->logger,
             $this->factory,
             new JsonFormatter()
@@ -44,7 +44,7 @@ final class AppExceptionHandlerTest extends TestCase
         $this->logger->expects($this->once())
             ->method('alert')
             ->with(
-                $this->stringContains('[handle:app]'),
+                $this->stringContains('<general>'),
                 $this->arrayHasKey('message')
             );
 
@@ -68,7 +68,7 @@ final class AppExceptionHandlerTest extends TestCase
         $this->logger->expects($this->once())
             ->method('notice')
             ->with(
-                $this->stringContains('[handle:app]'),
+                $this->stringContains('<general>'),
                 $this->arrayHasKey('message')
             );
 

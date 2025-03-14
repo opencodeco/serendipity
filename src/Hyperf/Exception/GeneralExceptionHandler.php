@@ -20,7 +20,7 @@ use function Serendipity\Type\Cast\integerify;
 use function Serendipity\Type\Cast\stringify;
 use function sprintf;
 
-class AppExceptionHandler extends ExceptionHandler
+class GeneralExceptionHandler extends ExceptionHandler
 {
     /**
      * @var array<string>
@@ -38,7 +38,7 @@ class AppExceptionHandler extends ExceptionHandler
     {
         $thrown = $this->factory->make($throwable);
 
-        $message = sprintf('[handle:app] %s', $thrown->resume());
+        $message = sprintf('<general> %s', $thrown->resume());
         $context = $thrown->context();
 
         match ($thrown->type) {
