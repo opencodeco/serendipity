@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Database\Document;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use RuntimeException;
+use Serendipity\Domain\Exception\Misconfiguration;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\InCondition;
 use Serendipity\Infrastructure\Database\Document\Mongo\ConditionParser;
 use stdClass;
@@ -53,7 +53,7 @@ class ConditionParserTest extends TestCase
 
     public function testShouldFailOnInvalidCondition(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(Misconfiguration::class);
         $parser = new ConditionParser();
         $parser->parse('key', 'none:value');
     }
@@ -65,7 +65,7 @@ class ConditionParserTest extends TestCase
         $reflectionClass->getProperty('conditions')
             ->setValue($parser, ['none' => stdClass::class]);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(Misconfiguration::class);
         $parser->parse('key', 'none:value');
     }
 }
