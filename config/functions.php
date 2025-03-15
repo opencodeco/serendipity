@@ -20,7 +20,9 @@ if (! function_exists('arrayify')) {
 if (! function_exists('stringify')) {
     function stringify(mixed $value, string $default = ''): string
     {
-        $value = is_scalar($value) ? (string) $value : $default;
+        if (is_scalar($value)) {
+            $value = (string) $value;
+        }
         return is_string($value) ? $value : $default;
     }
 }
