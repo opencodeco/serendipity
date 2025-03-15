@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Http;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Infrastructure\Exception\Type;
+use Serendipity\Domain\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 use stdClass;
 

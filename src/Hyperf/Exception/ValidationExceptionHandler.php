@@ -11,7 +11,7 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Domain\Exception\InvalidInputException;
-use Serendipity\Infrastructure\Exception\Type;
+use Serendipity\Domain\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Throwable;

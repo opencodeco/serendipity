@@ -9,10 +9,10 @@ use Hyperf\HttpMessage\Server\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Serendipity\Domain\Exception\Type;
 use Serendipity\Hyperf\Exception\GeneralExceptionHandler;
 use Serendipity\Infrastructure\Exception\Thrown;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
-use Serendipity\Infrastructure\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 
 /**

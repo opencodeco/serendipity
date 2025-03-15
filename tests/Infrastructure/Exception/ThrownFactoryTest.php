@@ -6,8 +6,8 @@ namespace Serendipity\Test\Infrastructure\Exception;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Exception\Type;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
-use Serendipity\Infrastructure\Exception\Type;
 
 /**
  * @internal

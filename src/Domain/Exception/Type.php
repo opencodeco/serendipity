@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Exception;
+namespace Serendipity\Domain\Exception;
 
 enum Type: string
 {

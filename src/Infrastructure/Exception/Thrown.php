@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Exception;
 
 use DateTimeImmutable;
+use Serendipity\Domain\Exception\Type;
 use Throwable;
 
 class Thrown

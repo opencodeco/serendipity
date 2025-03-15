@@ -5,7 +5,25 @@ declare(strict_types=1);
 namespace Serendipity\Domain\Exception;
 
 use Exception;
+use Throwable;
 
 class RepositoryException extends Exception
 {
+    public readonly Type $type;
+
+    public function __construct(
+        public readonly string $context,
+        ?Throwable $previous = null,
+        ?Type $type = null,
+        ?string $message = null,
+        ?int $code = null,
+    ) {
+        parent::__construct(
+            $message ?? $previous?->getMessage() ?? '',
+            $code ?? $previous?->getCode() ?? 0,
+            $previous
+        );
+
+        $this->type = $type ?? Type::UNTREATED;
+    }
 }

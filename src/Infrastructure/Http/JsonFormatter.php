@@ -6,7 +6,7 @@ namespace Serendipity\Infrastructure\Http;
 
 use InvalidArgumentException;
 use Serendipity\Domain\Contract\Formatter;
-use Serendipity\Infrastructure\Exception\Type;
+use Serendipity\Domain\Exception\Type;
 use Throwable;
 
 use function json_encode;

@@ -35,7 +35,7 @@ abstract class HttpRepository
             $response = $this->client->request($method, $uri, $options);
             return $this->format($response);
         } catch (GuzzleException $exception) {
-            throw new RepositoryException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new RepositoryException(static::class, $exception);
         }
     }
 

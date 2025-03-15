@@ -9,8 +9,8 @@ use Hyperf\HttpMessage\Stream\SwooleStream;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Serendipity\Domain\Exception\Type;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
-use Serendipity\Infrastructure\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 use Throwable;
 
