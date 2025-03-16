@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Testing\Faker\Resolver;
 
-use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionType;
 use ReflectionUnionType;
 use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Domain\Support\Reflective\Attribute\Define;
@@ -85,10 +85,8 @@ final class FromTypeAttributes extends Resolver
         return array_reduce($types, $callback);
     }
 
-    private function resolvePattern(
-        Pattern $instance,
-        ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type,
-    ): ?Value {
+    private function resolvePattern(Pattern $instance, ?ReflectionType $type): ?Value
+    {
         return match (true) {
             $type instanceof ReflectionNamedType => $this->resolvePatternFromNamedType($instance, $type),
             $type instanceof ReflectionUnionType => $this->resolvePatternFromUnionType($instance, $type),
