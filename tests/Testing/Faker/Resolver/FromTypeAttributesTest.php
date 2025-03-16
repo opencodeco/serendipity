@@ -11,6 +11,7 @@ use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\EntityManaged;
+use Serendipity\Test\Testing\Stub\PatternMock;
 use Serendipity\Test\Testing\Stub\Variety;
 use Serendipity\Testing\Faker\Resolver\FromTypeAttributes;
 
@@ -136,5 +137,35 @@ final class FromTypeAttributesTest extends TestCase
         $createdAtValue = $resolver->resolve($createdAtParameter, $set);
         $this->assertNotNull($createdAtValue);
         $this->assertIsString(DateTimeImmutable::class, $createdAtValue->content);
+    }
+
+    public function testShouldDetectTypeBeforeFakePattern(): void
+    {
+        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $target = Target::createFrom(PatternMock::class);
+        $parameters = $target->getReflectionParameters();
+
+        [
+            $id,
+            $name,
+            $code,
+            $amount,
+        ] = $parameters;
+
+        $value = $resolver->resolve($id, Set::createFrom([]));
+        $this->assertNotNull($value);
+        $this->assertIsInt($value->content);
+
+        $value = $resolver->resolve($name, Set::createFrom([]));
+        $this->assertNotNull($value);
+        $this->assertIsString($value->content);
+
+        $value = $resolver->resolve($code, Set::createFrom([]));
+        $this->assertNotNull($value);
+        $this->assertIsNumeric($value->content);
+
+        $value = $resolver->resolve($amount, Set::createFrom([]));
+        $this->assertNotNull($value);
+        $this->assertIsFloat($value->content);
     }
 }

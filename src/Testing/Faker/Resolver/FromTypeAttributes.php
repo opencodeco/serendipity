@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Testing\Faker\Resolver;
 
+use ReflectionIntersectionType;
+use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionUnionType;
 use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Domain\Support\Reflective\Attribute\Define;
 use Serendipity\Domain\Support\Reflective\Attribute\Managed;
@@ -50,7 +53,7 @@ final class FromTypeAttributes extends Resolver
             $resolved = match (true) {
                 $instance instanceof Managed => $this->resolveManaged($instance),
                 $instance instanceof Define => $this->resolveDefine($instance),
-                $instance instanceof Pattern => $this->resolvePattern($instance),
+                $instance instanceof Pattern => $this->resolvePattern($instance, $parameter->getType()),
                 default => null,
             };
             if ($resolved !== null) {
@@ -82,13 +85,44 @@ final class FromTypeAttributes extends Resolver
         return array_reduce($types, $callback);
     }
 
-    private function resolvePattern(Pattern $instance): Value
-    {
-        return new Value($this->generator->regexify($instance->pattern));
+    private function resolvePattern(
+        Pattern $instance,
+        ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type,
+    ): ?Value {
+        return match (true) {
+            $type instanceof ReflectionNamedType => $this->resolvePatternFromNamedType($instance, $type),
+            $type instanceof ReflectionUnionType => $this->resolvePatternFromUnionType($instance, $type),
+            default => null,
+        };
     }
 
     private function resolveByFormat(string $type): Value
     {
         return new Value($this->generator->format($type));
+    }
+
+    private function resolvePatternFromNamedType(Pattern $instance, ReflectionNamedType $type): Value
+    {
+        $content = $this->generator->regexify($instance->pattern);
+        $content = match ($type->getName()) {
+            'int' => (int) $content,
+            'float' => (float) $content,
+            default => $content,
+        };
+        return new Value($content);
+    }
+
+    private function resolvePatternFromUnionType(Pattern $instance, ReflectionUnionType $unionType): ?Value
+    {
+        $types = $unionType->getTypes();
+        $value = null;
+        foreach ($types as $type) {
+            $value = $this->resolvePattern($instance, $type);
+            if ($value === null) {
+                continue;
+            }
+            break;
+        }
+        return $value;
     }
 }

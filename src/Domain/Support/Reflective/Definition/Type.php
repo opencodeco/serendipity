@@ -23,7 +23,6 @@ enum Type: string
     case POSTCODE = 'postcode';
     case LATITUDE = 'latitude';
     case LONGITUDE = 'longitude';
-    case PASSTHROUGH = 'passthrough';
     case COMPANY = 'company';
     case JOB_TITLE = 'jobTitle';
     case USERNAME = 'userName';
