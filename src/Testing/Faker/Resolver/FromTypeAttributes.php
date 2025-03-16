@@ -118,10 +118,9 @@ final class FromTypeAttributes extends Resolver
         $value = null;
         foreach ($types as $type) {
             $value = $this->resolvePattern($instance, $type);
-            if ($value === null) {
-                continue;
+            if ($value !== null) {
+                break;
             }
-            break;
         }
         return $value;
     }
