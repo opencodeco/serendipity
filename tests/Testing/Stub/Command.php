@@ -7,7 +7,8 @@ namespace Serendipity\Test\Testing\Stub;
 use DateTimeImmutable;
 use SensitiveParameter;
 use Serendipity\Domain\Entity\Entity;
-use Serendipity\Domain\Support\Reflective\Attributes\Define;
+use Serendipity\Domain\Support\Reflective\Attribute\Define;
+use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Test\Testing\Stub\Type\Gender;
 use Serendipity\Test\Testing\Stub\Type\Password;
@@ -31,6 +32,7 @@ class Command extends Entity
         public readonly string $password,
         #[SensitiveParameter]
         public readonly ?string $address = null,
+        #[Pattern('/^[a-zA-Z]{1,255}$/')]
         public readonly ?string $city = null,
         public readonly ?string $state = null,
         public readonly ?string $zip = null,

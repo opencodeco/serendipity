@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Testing\Stub;
 
 use DateTimeImmutable;
-use Serendipity\Domain\Support\Reflective\Attributes\Managed;
+use Serendipity\Domain\Support\Reflective\Attribute\Managed;
 
 class EntityManaged
 {

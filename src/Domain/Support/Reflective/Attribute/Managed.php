@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Support\Reflective\Attributes;
+namespace Serendipity\Domain\Support\Reflective\Attribute;
 
 use Attribute;
 

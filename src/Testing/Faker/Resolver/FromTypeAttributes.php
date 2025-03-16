@@ -6,8 +6,9 @@ namespace Serendipity\Testing\Faker\Resolver;
 
 use ReflectionParameter;
 use Serendipity\Domain\Exception\ManagedException;
-use Serendipity\Domain\Support\Reflective\Attributes\Define;
-use Serendipity\Domain\Support\Reflective\Attributes\Managed;
+use Serendipity\Domain\Support\Reflective\Attribute\Define;
+use Serendipity\Domain\Support\Reflective\Attribute\Managed;
+use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 use Serendipity\Domain\Support\Set;
@@ -49,6 +50,7 @@ final class FromTypeAttributes extends Resolver
             $resolved = match (true) {
                 $instance instanceof Managed => $this->resolveManaged($instance),
                 $instance instanceof Define => $this->resolveDefine($instance),
+                $instance instanceof Pattern => $this->resolvePattern($instance),
                 default => null,
             };
             if ($resolved !== null) {
@@ -78,6 +80,11 @@ final class FromTypeAttributes extends Resolver
             $type instanceof TypeExtended => $type->fake($this),
         };
         return array_reduce($types, $callback);
+    }
+
+    private function resolvePattern(Pattern $instance): Value
+    {
+        return new Value($this->generator->regexify($instance->pattern));
     }
 
     private function resolveByFormat(string $type): Value
