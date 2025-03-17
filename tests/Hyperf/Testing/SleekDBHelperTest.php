@@ -22,13 +22,21 @@ use SleekDB\Store;
 final class SleekDBHelperTest extends TestCase
 {
     private Faker|MockObject $faker;
-    private SerializerFactory|MockObject $serializerFactory;
+
+    private MockObject|SerializerFactory $serializerFactory;
+
     private DeserializerFactory|MockObject $deserializerFactory;
-    private SleekDBFactory|MockObject $factory;
-    private Store|MockObject $store;
-    private Serializer|MockObject $serializer;
+
+    private MockObject|SleekDBFactory $factory;
+
+    private MockObject|Store $store;
+
+    private MockObject|Serializer $serializer;
+
     private Deserializer|MockObject $deserializer;
+
     private SleekDBHelper $helper;
+
     private string $resource = 'resource';
 
     protected function setUp(): void
@@ -179,7 +187,7 @@ final class SleekDBHelperTest extends TestCase
         $filters = ['status' => 'active'];
         $documents = [
             ['_id' => 1, 'name' => 'Document 1', 'status' => 'active'],
-            ['_id' => 2, 'name' => 'Document 2', 'status' => 'active']
+            ['_id' => 2, 'name' => 'Document 2', 'status' => 'active'],
         ];
 
         $this->factory->expects($this->once())
@@ -234,7 +242,7 @@ final class SleekDBHelperTest extends TestCase
             'id' => 1,
             'name' => 'Final',
             'created_at' => '2023-01-01',
-            'is_active' => true
+            'is_active' => true,
         ];
 
         $this->faker->expects($this->once())

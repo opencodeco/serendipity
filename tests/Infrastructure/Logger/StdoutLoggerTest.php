@@ -15,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class StdoutLoggerTest extends TestCase
 {
     private OutputInterface $output;
+
     private StdoutLogger $stdoutLogger;
 
     protected function setUp(): void

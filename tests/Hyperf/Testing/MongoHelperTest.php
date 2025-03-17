@@ -25,13 +25,21 @@ use stdClass;
 final class MongoHelperTest extends TestCase
 {
     private Faker|MockObject $faker;
-    private MongoSerializerFactory|MockObject $serializerFactory;
-    private MongoDeserializerFactory|MockObject $deserializerFactory;
-    private MongoFactory|MockObject $factory;
+
+    private MockObject|MongoSerializerFactory $serializerFactory;
+
+    private MockObject|MongoDeserializerFactory $deserializerFactory;
+
+    private MockObject|MongoFactory $factory;
+
     private Collection|MockObject $collection;
-    private Serializer|MockObject $serializer;
+
+    private MockObject|Serializer $serializer;
+
     private Deserializer|MockObject $deserializer;
+
     private MongoHelper $helper;
+
     private string $resource = 'resource';
 
     protected function setUp(): void

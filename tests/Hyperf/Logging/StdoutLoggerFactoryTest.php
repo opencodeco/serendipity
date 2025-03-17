@@ -18,8 +18,11 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 final class StdoutLoggerFactoryTest extends TestCase
 {
     private ContainerInterface $container;
+
     private ConfigInterface $config;
+
     private ConsoleOutput $consoleOutput;
+
     private StdoutLoggerFactory $stdoutLoggerFactory;
 
     protected function setUp(): void
@@ -139,7 +142,7 @@ final class StdoutLoggerFactoryTest extends TestCase
             ->method('get')
             ->with(
                 'logger.default.levels',
-                $this->callback(fn($default) => $default === $defaultLevels)
+                $this->callback(fn ($default) => $default === $defaultLevels)
             )
             ->willReturn(null);
 

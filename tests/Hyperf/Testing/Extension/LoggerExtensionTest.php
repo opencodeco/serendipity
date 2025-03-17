@@ -16,6 +16,7 @@ use Serendipity\Testing\Mock\LoggerExtensionMock;
 final class LoggerExtensionTest extends TestCase
 {
     private LoggerExtensionMock $mock;
+
     private bool $assertionCalled = false;
 
     protected function setUp(): void

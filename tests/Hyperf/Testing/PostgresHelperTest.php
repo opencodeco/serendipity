@@ -24,12 +24,19 @@ use Serendipity\Testing\Faker\Faker;
 final class PostgresHelperTest extends TestCase
 {
     private Faker|MockObject $faker;
-    private RelationalSerializerFactory|MockObject $serializerFactory;
-    private RelationalDeserializerFactory|MockObject $deserializerFactory;
+
+    private MockObject|RelationalSerializerFactory $serializerFactory;
+
+    private MockObject|RelationalDeserializerFactory $deserializerFactory;
+
     private Connection|MockObject $connection;
-    private Serializer|MockObject $serializer;
+
+    private MockObject|Serializer $serializer;
+
     private Deserializer|MockObject $deserializer;
+
     private PostgresHelper $helper;
+
     private string $resource = 'resource';
 
     protected function setUp(): void
