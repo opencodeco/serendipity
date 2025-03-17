@@ -20,10 +20,13 @@ if (! function_exists('arrayify')) {
 if (! function_exists('stringify')) {
     function stringify(mixed $value, string $default = ''): string
     {
-        if (is_scalar($value)) {
-            $value = (string) $value;
-        }
-        return is_string($value) ? $value : $default;
+        return match (true) {
+            is_string($value) => $value,
+            is_scalar($value) => (string) $value,
+            (! is_object($value) && settype($value, 'string') !== false) => (string) $value,
+            (is_object($value) && method_exists($value, '__toString')) => (string) $value,
+            default => $default,
+        };
     }
 }
 
@@ -163,5 +166,71 @@ if (! function_exists('coroutine')) {
     function coroutine(callable $callback): int
     {
         return Coroutine::create($callback);
+    }
+}
+
+namespace Serendipity\Crypt;
+
+use InvalidArgumentException;
+use Serendipity\Domain\Support\Set;
+
+use function Hyperf\Support\env;
+
+if (! defined('DEFAULT_CRYPT_KEY')) {
+    define('DEFAULT_CRYPT_KEY', base64_encode(random_bytes(32)));
+}
+
+if (! function_exists('encrypt')) {
+    function encrypt(string $plaintext): string
+    {
+        $key = env('CRYPT_KEY', DEFAULT_CRYPT_KEY);
+
+        $iv = random_bytes(16);
+        $ciphertext = openssl_encrypt($plaintext, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
+
+        $data = encode('aes-256-cbc', base64_encode($iv), base64_encode($ciphertext));
+
+        return base64_encode($data);
+    }
+}
+
+if (! function_exists('decrypt')) {
+    function decrypt(string $encrypted): string
+    {
+        $key = env('CRYPT_KEY', DEFAULT_CRYPT_KEY);
+
+        $set = decode($encrypted);
+        if ($set === null) {
+            throw new InvalidArgumentException('Invalid encrypted format.');
+        }
+        if ($set->get('algo') !== 'aes-256-cbc') {
+            throw new InvalidArgumentException('Unknown encryption algorithm.');
+        }
+
+        $iv = base64_decode($set->get('salt'));
+        $ciphertext = base64_decode($set->get('data'));
+
+        return openssl_decrypt($ciphertext, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
+    }
+}
+
+if (! function_exists('encode')) {
+    function encode(string $algo, string $salt, string $data): string
+    {
+        return json_encode([
+            'algo' => $algo,
+            'salt' => $salt,
+            'data' => $data,
+        ]);
+    }
+}
+
+if (! function_exists('decode')) {
+    function decode(mixed $encrypted): ?Set
+    {
+        $decoded = json_decode(base64_decode($encrypted), true);
+        return (isset($decoded['algo'], $decoded['salt'], $decoded['data']))
+            ? new Set($decoded)
+            : null;
     }
 }
