@@ -18,7 +18,7 @@ class StdoutLogger extends AbstractLogger
     ) {
     }
 
-    public function log($level, Stringable|string $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
         if (! in_array($level, $this->levels, true)) {
             return;
@@ -32,9 +32,9 @@ class StdoutLogger extends AbstractLogger
     {
         $items = [];
         foreach ($context as $key => $value) {
-            $items[] = sprintf("%s%s", $this->key($key), $this->value($value));
+            $items[] = sprintf('%s%s', $this->key($key), $this->value($value));
         }
-        return sprintf("[%s]", implode(', ', $items));
+        return sprintf('[%s]', implode(', ', $items));
     }
 
     private function key(int|string $key): string
