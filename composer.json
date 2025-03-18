@@ -12,13 +12,12 @@
       "Serendipity\\": "src/"
     },
     "files": [
-      "config/functions/cast.php",
-      "config/functions/crypt.php",
-      "config/functions/json.php",
-      "config/functions/polyfill.php",
-      "config/functions/runtime.php",
-      "config/functions/string.php",
-      "config/functions/util.php"
+      "src/@functions/cast.php",
+      "src/@functions/json.php",
+      "src/@functions/polyfill.php",
+      "src/@functions/runtime.php",
+      "src/@functions/string.php",
+      "src/@functions/util.php"
     ]
   },
   "autoload-dev": {
@@ -91,6 +90,7 @@
     "friendsofphp/php-cs-fixer": "^3.0",
     "hyperf/devtool": "~3.1.0",
     "hyperf/testing": "~3.1.0",
+    "php-mock/php-mock-phpunit": "^2.12",
     "phpmd/phpmd": "^2.15",
     "phpstan/phpstan": "^2",
     "phpunit/phpunit": "^10.5",

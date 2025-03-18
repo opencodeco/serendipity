@@ -6,7 +6,7 @@ namespace Serendipity\Type\Cast;
 
 use Stringable;
 
-if (! function_exists('arrayify')) {
+if (! function_exists(__NAMESPACE__ . '\arrayify')) {
     /**
      * @template T of array-key
      * @template U
@@ -19,7 +19,7 @@ if (! function_exists('arrayify')) {
     }
 }
 
-if (! function_exists('stringify')) {
+if (! function_exists(__NAMESPACE__ . '\stringify')) {
     function stringify(mixed $value, string $default = ''): string
     {
         return match (true) {
@@ -32,7 +32,7 @@ if (! function_exists('stringify')) {
     }
 }
 
-if (! function_exists('integerify')) {
+if (! function_exists(__NAMESPACE__ . '\integerify')) {
     function integerify(mixed $value, int $default = 0): int
     {
         $value = is_numeric($value) ? (int) $value : $value;
@@ -40,7 +40,7 @@ if (! function_exists('integerify')) {
     }
 }
 
-if (! function_exists('floatify')) {
+if (! function_exists(__NAMESPACE__ . '\floatify')) {
     function floatify(mixed $value, float $default = 0.0): float
     {
         $value = is_numeric($value) ? (float) $value : $value;
@@ -48,7 +48,10 @@ if (! function_exists('floatify')) {
     }
 }
 
-if (! function_exists('boolify')) {
+if (! function_exists(__NAMESPACE__ . '\boolify')) {
+    /**
+     * @SuppressWarnings(BooleanArgumentFlag)
+     */
     function boolify(mixed $value, bool $default = false): bool
     {
         return is_bool($value) ? $value : $default;

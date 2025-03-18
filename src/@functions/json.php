@@ -9,7 +9,7 @@ use JsonException;
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\stringify;
 
-if (! function_exists('decode')) {
+if (! function_exists(__NAMESPACE__ . '\decode')) {
     function decode(string $json): ?array
     {
         try {
@@ -20,7 +20,7 @@ if (! function_exists('decode')) {
     }
 }
 
-if (! function_exists('encode')) {
+if (! function_exists(__NAMESPACE__ . '\encode')) {
     function encode(array $data): ?string
     {
         try {

@@ -9,12 +9,13 @@ use PHPUnit\Framework\TestCase;
 use function Serendipity\Type\Util\extractArray;
 use function Serendipity\Type\Util\extractBool;
 use function Serendipity\Type\Util\extractInt;
+use function Serendipity\Type\Util\extractNumeric;
 use function Serendipity\Type\Util\extractString;
 
 /**
  * @internal
  */
-final class ArrayFunctionsTest extends TestCase
+final class FunctionsUtilTest extends TestCase
 {
     public function testExtractArrayReturnsArrayWhenPropertyExists(): void
     {
@@ -73,6 +74,36 @@ final class ArrayFunctionsTest extends TestCase
         $array = [];
         $default = true;
         $result = extractBool($array, 'property', $default);
+        $this->assertEquals($default, $result);
+    }
+
+    public function testExtractNumericReturnsNumericWhenPropertyExists(): void
+    {
+        $array = ['property' => 123.45];
+        $result = extractNumeric($array, 'property');
+        $this->assertEquals(123.45, $result);
+    }
+
+    public function testExtractNumericConvertsStringToNumeric(): void
+    {
+        $array = ['property' => '123.45'];
+        $result = extractNumeric($array, 'property');
+        $this->assertEquals(123.45, $result);
+    }
+
+    public function testExtractNumericReturnsDefaultWhenPropertyDoesNotExist(): void
+    {
+        $array = [];
+        $default = 456.78;
+        $result = extractNumeric($array, 'property', $default);
+        $this->assertEquals($default, $result);
+    }
+
+    public function testExtractNumericReturnsDefaultWhenPropertyIsNotNumeric(): void
+    {
+        $array = ['property' => 'abc'];
+        $default = 123.45;
+        $result = extractNumeric($array, 'property', $default);
         $this->assertEquals($default, $result);
     }
 }

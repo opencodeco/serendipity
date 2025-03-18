@@ -9,13 +9,14 @@ use stdClass;
 
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\boolify;
+use function Serendipity\Type\Cast\floatify;
 use function Serendipity\Type\Cast\integerify;
 use function Serendipity\Type\Cast\stringify;
 
 /**
  * @internal
  */
-final class CastFunctionsTest extends TestCase
+final class FunctionsCastTest extends TestCase
 {
     public function testToArrayReturnsArrayWhenValueIsArray(): void
     {
@@ -75,5 +76,35 @@ final class CastFunctionsTest extends TestCase
         $default = true;
         $result = boolify($value, $default);
         $this->assertEquals(true, $result);
+    }
+
+    public function testFloatifyReturnsFloatWhenValueIsFloat(): void
+    {
+        $value = 123.45;
+        $result = floatify($value);
+        $this->assertEquals($value, $result);
+    }
+
+    public function testFloatifyReturnsDefaultWhenValueIsNotFloat(): void
+    {
+        $value = 'not a float';
+        $default = 456.78;
+        $result = floatify($value, $default);
+        $this->assertEquals($default, $result);
+    }
+
+    public function testFloatifyConvertsNumericStringsToFloat(): void
+    {
+        $value = '123.45';
+        $result = floatify($value);
+        $this->assertEquals(123.45, $result);
+    }
+
+    public function testFloatifyConvertsIntegersToFloat(): void
+    {
+        $value = 123;
+        $result = floatify($value);
+        $this->assertEquals(123.0, $result);
+        $this->assertIsFloat($result);
     }
 }

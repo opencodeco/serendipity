@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
-use Serendipity\Infrastructure\Adapter\Serialize\Resolver\AttributeDefinition;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\AttributeValue;
 use Serendipity\Infrastructure\Database\Managed;
 use Serendipity\Test\Testing\Stub\AttributesVariety;
 
@@ -23,7 +23,7 @@ final class AttributeDefinitionTest extends TestCase
 {
     public function testResolveManaged(): void
     {
-        $resolver = new AttributeDefinition();
+        $resolver = new AttributeValue();
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -49,7 +49,7 @@ final class AttributeDefinitionTest extends TestCase
 
     public function testResolveDefine(): void
     {
-        $resolver = new AttributeDefinition();
+        $resolver = new AttributeValue();
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -63,7 +63,7 @@ final class AttributeDefinitionTest extends TestCase
 
     public function testResolvePattern(): void
     {
-        $resolver = new AttributeDefinition();
+        $resolver = new AttributeValue();
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -89,7 +89,7 @@ final class AttributeDefinitionTest extends TestCase
 
     public function testResolvePatternWithUnionType(): void
     {
-        $resolver = new AttributeDefinition();
+        $resolver = new AttributeValue();
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -105,7 +105,7 @@ final class AttributeDefinitionTest extends TestCase
 
     public function testResolveInvalidPattern(): void
     {
-        $resolver = new AttributeDefinition(path: ['*']);
+        $resolver = new AttributeValue(path: ['*']);
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -126,7 +126,7 @@ final class AttributeDefinitionTest extends TestCase
     public function testPropertyWithNoAttribute(): void
     {
         // Arrange
-        $resolver = new AttributeDefinition(path: ['*']);
+        $resolver = new AttributeValue(path: ['*']);
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -147,7 +147,7 @@ final class AttributeDefinitionTest extends TestCase
     public function testPropertyWithUnsupportedAttribute(): void
     {
         // Arrange
-        $resolver = new AttributeDefinition(path: ['*']);
+        $resolver = new AttributeValue(path: ['*']);
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -168,7 +168,7 @@ final class AttributeDefinitionTest extends TestCase
     public function testPropertyWithNoTypeDefinition(): void
     {
         // Arrange
-        $resolver = new AttributeDefinition(path: ['*']);
+        $resolver = new AttributeValue(path: ['*']);
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -189,7 +189,7 @@ final class AttributeDefinitionTest extends TestCase
     public function testPasswordAttributeWithInvalidValue(): void
     {
         // Arrange
-        $resolver = new AttributeDefinition(path: ['sensitive']);
+        $resolver = new AttributeValue(path: ['sensitive']);
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -210,7 +210,7 @@ final class AttributeDefinitionTest extends TestCase
     public function testNoAttributeInvalidValue(): void
     {
         // Arrange
-        $resolver = new AttributeDefinition(path: ['test']);
+        $resolver = new AttributeValue(path: ['test']);
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -231,7 +231,7 @@ final class AttributeDefinitionTest extends TestCase
     public function testShouldResolveTypeDefined(): void
     {
         // Arrange
-        $resolver = new AttributeDefinition();
+        $resolver = new AttributeValue();
         $target = Target::createFrom(AttributesVariety::class);
         $parameters = $target->getReflectionParameters();
 

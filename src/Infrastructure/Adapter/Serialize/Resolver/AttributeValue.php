@@ -24,7 +24,7 @@ use function Serendipity\Type\Cast\stringify;
 /**
  * @SuppressWarnings(ExcessiveClassLength)
  */
-final class AttributeDefinition extends ResolverTyped
+final class AttributeValue extends ResolverTyped
 {
     /**
      * @throws DateMalformedStringException

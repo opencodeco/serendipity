@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Type\Util;
 
-if (! function_exists('extractArray')) {
+if (! function_exists(__NAMESPACE__ . '\extractArray')) {
     /**
      * @template T
      * @template U
@@ -22,7 +22,7 @@ if (! function_exists('extractArray')) {
     }
 }
 
-if (! function_exists('extractString')) {
+if (! function_exists(__NAMESPACE__ . '\extractString')) {
     /**
      * @param array<string, mixed> $array
      */
@@ -33,7 +33,7 @@ if (! function_exists('extractString')) {
     }
 }
 
-if (! function_exists('extractInt')) {
+if (! function_exists(__NAMESPACE__ . '\extractInt')) {
     /**
      * @param array<string, mixed> $array
      */
@@ -44,8 +44,9 @@ if (! function_exists('extractInt')) {
     }
 }
 
-if (! function_exists('extractBool')) {
+if (! function_exists(__NAMESPACE__ . '\extractBool')) {
     /**
+     * @SuppressWarnings(BooleanArgumentFlag)
      * @param array<string, mixed> $array
      */
     function extractBool(array $array, string $property, bool $default = false): bool
@@ -55,7 +56,7 @@ if (! function_exists('extractBool')) {
     }
 }
 
-if (! function_exists('extractNumeric')) {
+if (! function_exists(__NAMESPACE__ . '\extractNumeric')) {
     /**
      * @param array<string, mixed> $array
      */
