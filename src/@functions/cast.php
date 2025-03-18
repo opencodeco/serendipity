@@ -48,9 +48,7 @@ if (! function_exists(__NAMESPACE__ . '\floatify')) {
     }
 }
 
-/**
- * @SuppressWarnings(BooleanArgumentFlag)
- */
+/* @SuppressWarnings(BooleanArgumentFlag) */
 if (! function_exists(__NAMESPACE__ . '\boolify')) {
     function boolify(mixed $value, bool $default = false): bool
     {

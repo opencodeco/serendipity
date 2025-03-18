@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Testing\Stub\Type;
 
+use Closure;
 use Serendipity\Domain\Contract\Testing\Faker;
 use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 use Serendipity\Domain\Support\Value;
@@ -14,7 +15,7 @@ use function Serendipity\Type\Cast\stringify;
 
 class Sensitive implements TypeExtended
 {
-    public function build(mixed $value): string
+    public function build(mixed $value, Closure $build): string
     {
         return decrypt(stringify($value));
     }

@@ -83,7 +83,19 @@ final class AttributeValue extends ResolverTyped
         $types = $instance->types;
         $callback = fn (?Value $carry, Type|TypeExtended $type): Value => $carry ?? match (true) {
             $type instanceof Type => $this->resolveDefineType($type, $value),
-            $type instanceof TypeExtended => new Value($type->build($value)),
+            $type instanceof TypeExtended => new Value(
+                $type->build(
+                    $value,
+                    /**
+                     * @template T of object
+                     * @param class-string<T> $class
+                     * @param array<string> $path
+                     *
+                     * @return T
+                     */
+                    fn (string $class, Set $set, array $path = []) => $this->build($class, $set, $path)
+                )
+            ),
         };
         return array_reduce($types, $callback);
     }
