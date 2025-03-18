@@ -11,7 +11,7 @@ use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
 
 use function Serendipity\Type\Cast\stringify;
 
-class FormatValue extends ResolverTyped
+final class FormatValue extends ResolverTyped
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {

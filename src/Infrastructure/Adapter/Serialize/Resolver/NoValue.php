@@ -10,7 +10,7 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver;
 
-class NoValue extends Resolver
+final class NoValue extends Resolver
 {
     /**
      * @throws ReflectionException

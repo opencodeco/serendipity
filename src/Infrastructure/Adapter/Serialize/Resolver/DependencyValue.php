@@ -22,7 +22,7 @@ use function count;
 use function enum_exists;
 use function Serendipity\Type\Cast\arrayify;
 
-class DependencyValue extends ResolverTyped
+final class DependencyValue extends ResolverTyped
 {
     /**
      * @throws ReflectionException
@@ -34,17 +34,6 @@ class DependencyValue extends ResolverTyped
             return parent::resolve($parameter, $set);
         }
         return $this->resolveDependencyValue($parameter, $set, $field);
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    final protected function resolveDependencyValue(ReflectionParameter $parameter, Set $set, string $field): Value
-    {
-        $type = $parameter->getType();
-        $value = $set->get($field);
-        $resolved = $this->resolveReflectionParameterType($type, $value);
-        return $resolved ?? parent::resolve($parameter, $set);
     }
 
     /**
@@ -77,9 +66,20 @@ class DependencyValue extends ResolverTyped
     }
 
     /**
+     * @throws ReflectionException
+     */
+    private function resolveDependencyValue(ReflectionParameter $parameter, Set $set, string $field): Value
+    {
+        $type = $parameter->getType();
+        $value = $set->get($field);
+        $resolved = $this->resolveReflectionParameterType($type, $value);
+        return $resolved ?? parent::resolve($parameter, $set);
+    }
+
+    /**
      * @param array<ReflectionParameter> $parameters
      */
-    protected function convertValueToSet(array $parameters, mixed $value): Set
+    private function convertValueToSet(array $parameters, mixed $value): Set
     {
         $input = arrayify($value, [$value]);
         $values = [];

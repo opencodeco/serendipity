@@ -17,7 +17,7 @@ use function is_int;
 use function is_string;
 use function is_subclass_of;
 
-class BackedEnumValue extends ResolverTyped
+final class BackedEnumValue extends ResolverTyped
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {

@@ -11,7 +11,7 @@ use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
 
 use function Serendipity\Type\Cast\stringify;
 
-class ValidateValue extends ResolverTyped
+final class ValidateValue extends ResolverTyped
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
