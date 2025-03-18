@@ -29,4 +29,11 @@ final class FunctionsStringTest extends TestCase
     {
         $this->assertEquals('', snakify(''));
     }
+
+    public function testSnakifyNumber(): void
+    {
+        $this->assertEquals('super_line_1', snakify('superLine1'));
+        $this->assertEquals('line_1', snakify('line1'));
+        $this->assertEquals('1_line', snakify('1Line'));
+    }
 }
