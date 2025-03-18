@@ -17,20 +17,20 @@ final class FunctionsPolyfillTest extends TestCase
             'a' => 1,
             'b' => [
                 'c' => 2,
-                'd' => 3
+                'd' => 3,
             ],
             'e' => [
                 'f' => [
-                    'g' => 4
-                ]
-            ]
+                    'g' => 4,
+                ],
+            ],
         ];
 
         $expected = [
             'a' => 1,
             'c' => 2,
             'd' => 3,
-            'g' => 4
+            'g' => 4,
         ];
 
         $this->assertEquals($expected, array_flatten($array));
@@ -42,20 +42,20 @@ final class FunctionsPolyfillTest extends TestCase
             'a' => 1,
             'b' => [
                 'c' => 2,
-                'd' => 3
+                'd' => 3,
             ],
             'e' => [
                 'f' => [
-                    'g' => 4
-                ]
-            ]
+                    'g' => 4,
+                ],
+            ],
         ];
 
         $expected = [
             'a' => 1,
             'b.c' => 2,
             'b.d' => 3,
-            'e.f.g' => 4
+            'e.f.g' => 4,
         ];
 
         $this->assertEquals($expected, array_flatten_prefixed($array));
@@ -65,7 +65,7 @@ final class FunctionsPolyfillTest extends TestCase
     {
         $array = [
             ['id' => 1, 'name' => 'test'],
-            ['id' => 2, 'name' => 'test2']
+            ['id' => 2, 'name' => 'test2'],
         ];
 
         $this->assertEquals(1, array_shift_pluck_int($array, 'id'));
