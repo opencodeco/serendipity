@@ -6,7 +6,7 @@ use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\integerify;
 use function Serendipity\Type\Util\extractInt;
 
-if (! function_exists(__NAMESPACE__ . '\array_flatten')) {
+if (! function_exists('array_flatten')) {
     function array_flatten(array $array): array
     {
         $result = [];
@@ -21,7 +21,7 @@ if (! function_exists(__NAMESPACE__ . '\array_flatten')) {
     }
 }
 
-if (! function_exists(__NAMESPACE__ . '\array_flatten_prefixed')) {
+if (! function_exists('array_flatten_prefixed')) {
     function array_flatten_prefixed(array $array, string $prefix = ''): array
     {
         $result = [];
@@ -36,7 +36,7 @@ if (! function_exists(__NAMESPACE__ . '\array_flatten_prefixed')) {
     }
 }
 
-if (! function_exists(__NAMESPACE__ . '\array_shift_pluck_int')) {
+if (! function_exists('array_shift_pluck_int')) {
     function array_shift_pluck_int(mixed $array, string $property): ?int
     {
         $data = arrayify($array);
@@ -49,7 +49,7 @@ if (! function_exists(__NAMESPACE__ . '\array_shift_pluck_int')) {
     }
 }
 
-if (! function_exists(__NAMESPACE__ . '\array_first')) {
+if (! function_exists('array_first')) {
     function array_first(array $array): mixed
     {
         return empty($array)
@@ -58,7 +58,7 @@ if (! function_exists(__NAMESPACE__ . '\array_first')) {
     }
 }
 
-if (! function_exists(__NAMESPACE__ . '\array_unshift_key')) {
+if (! function_exists('array_unshift_key')) {
     function array_unshift_key(array $array, string $key, mixed $value): array
     {
         if (! is_array($array[$key] ?? null)) {
