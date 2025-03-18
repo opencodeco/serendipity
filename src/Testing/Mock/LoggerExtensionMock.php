@@ -14,6 +14,7 @@ final class LoggerExtensionMock
     use LoggerExtension;
 
     private array $registeredTearDowns = [];
+
     private static ?Closure $assertion = null;
 
     public function __construct(?Closure $assertion = null)

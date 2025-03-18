@@ -12,8 +12,11 @@ final class InputExtensionMock
     use InputExtension;
 
     private array $registeredTearDowns = [];
+
     private bool $makeWasCalled = false;
+
     private string $makeClass = '';
+
     private array $makeArgs = [];
 
     public function __construct(private mixed $makeReturn = null)
