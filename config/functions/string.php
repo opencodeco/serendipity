@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Serendipity\Type\String;
+
+use function Serendipity\Type\Cast\stringify;
+
+if (! function_exists('snakify')) {
+    function snakify(string $string): string
+    {
+        $string = stringify(preg_replace('/[A-Z]/', '_$0', $string));
+        return strtolower(ltrim($string, '_'));
+    }
+}

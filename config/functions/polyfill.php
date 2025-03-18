@@ -68,10 +68,3 @@ if (! function_exists('array_unshift_key')) {
         return $array;
     }
 }
-
-if (! function_exists('invoke')) {
-    function invoke(callable $callback, mixed ...$args): mixed
-    {
-        return $callback(...$args);
-    }
-}

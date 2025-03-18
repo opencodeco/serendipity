@@ -12,7 +12,7 @@ use Psr\Log\LogLevel;
 use Stringable;
 use Throwable;
 
-use function Serendipity\Coroutine\coroutine;
+use function Serendipity\Runtime\coroutine;
 use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\Json\encode;
 

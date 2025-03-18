@@ -9,7 +9,9 @@ use Faker\Generator;
 use Serendipity\Testing\Extension\FakerExtension;
 use Serendipity\Testing\Faker\Faker;
 
-final class FakerExtensionMock
+use function Serendipity\Runtime\invoke;
+
+class FakerExtensionMock
 {
     use FakerExtension;
 

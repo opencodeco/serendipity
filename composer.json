@@ -12,8 +12,13 @@
       "Serendipity\\": "src/"
     },
     "files": [
-      "config/functions.php",
-      "config/polyfill.php"
+      "config/functions/cast.php",
+      "config/functions/crypt.php",
+      "config/functions/json.php",
+      "config/functions/polyfill.php",
+      "config/functions/runtime.php",
+      "config/functions/string.php",
+      "config/functions/util.php"
     ]
   },
   "autoload-dev": {

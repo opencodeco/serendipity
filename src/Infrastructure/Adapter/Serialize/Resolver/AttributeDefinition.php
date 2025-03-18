@@ -21,6 +21,9 @@ use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
 
 use function Serendipity\Type\Cast\stringify;
 
+/**
+ * @SuppressWarnings(ExcessiveClassLength)
+ */
 final class AttributeDefinition extends ResolverTyped
 {
     /**
@@ -70,7 +73,7 @@ final class AttributeDefinition extends ResolverTyped
     {
         return match ($instance->management) {
             'id' => new Value($value),
-            'now' => new Value(new DateTimeImmutable($value)),
+            'now' => new Value(new DateTimeImmutable(stringify($value))),
             default => null,
         };
     }
@@ -78,7 +81,7 @@ final class AttributeDefinition extends ResolverTyped
     private function resolveDefine(Define $instance, mixed $value): ?Value
     {
         $types = $instance->types;
-        $callback = fn (?Value $carry, Type|TypeExtended $type): ?Value => $carry ?? match (true) {
+        $callback = fn (?Value $carry, Type|TypeExtended $type): Value => $carry ?? match (true) {
             $type instanceof Type => $this->resolveDefineType($type, $value),
             $type instanceof TypeExtended => new Value($type->build($value)),
         };
@@ -125,7 +128,7 @@ final class AttributeDefinition extends ResolverTyped
         return $resolved;
     }
 
-    private function resolveDefineType(Type $type, mixed $value): ?Value
+    private function resolveDefineType(Type $type, mixed $value): Value
     {
         $content = match ($type) {
             Type::EMOJI => stringify($value),
