@@ -12,6 +12,7 @@ class FunctionsTest extends TestCase
     {
         $files = [
             'src/@functions/cast.php',
+            'src/@functions/crypt.php',
             'src/@functions/json.php',
             'src/@functions/polyfill.php',
             'src/@functions/runtime.php',

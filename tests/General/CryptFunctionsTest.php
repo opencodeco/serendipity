@@ -12,7 +12,7 @@ use function Serendipity\Crypt\encrypt;
 /**
  * @internal
  */
-final class CryptFunctions extends TestCase
+final class CryptFunctionsTest extends TestCase
 {
     public function testShouldEncrypt(): void
     {
