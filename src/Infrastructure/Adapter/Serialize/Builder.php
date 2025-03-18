@@ -10,6 +10,7 @@ use Serendipity\Domain\Exception\AdapterException;
 use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\AttributeDefinition;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\FormatValue;
@@ -77,6 +78,7 @@ class Builder extends Engine
         foreach ($parameters as $parameter) {
             $nestedPath = [...$path, $parameter->getName()];
             $resolved = (new ValidateValue(case: $this->case, path: $nestedPath))
+                ->then(new AttributeDefinition(case: $this->case, path: $nestedPath))
                 ->then(new DependencyValue(case: $this->case, path: $nestedPath))
                 ->then(new BackedEnumValue(case: $this->case, path: $nestedPath))
                 ->then(new FormatValue($this->case, $this->formatters, $nestedPath))

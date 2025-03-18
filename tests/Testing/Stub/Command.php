@@ -11,7 +11,7 @@ use Serendipity\Domain\Support\Reflective\Attribute\Define;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Test\Testing\Stub\Type\Gender;
-use Serendipity\Test\Testing\Stub\Type\Password;
+use Serendipity\Test\Testing\Stub\Type\Sensitive;
 
 class Command extends Entity
 {
@@ -28,7 +28,7 @@ class Command extends Entity
         public readonly Gender $gender,
         #[Define(Type::FIRST_NAME)]
         public readonly string $firstName,
-        #[Define(new Password())]
+        #[Define(new Sensitive())]
         public readonly string $password,
         #[SensitiveParameter]
         public readonly ?string $address = null,

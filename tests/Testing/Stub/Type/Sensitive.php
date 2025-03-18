@@ -12,7 +12,7 @@ use function Serendipity\Crypt\decrypt;
 use function Serendipity\Crypt\encrypt;
 use function Serendipity\Type\Cast\stringify;
 
-class Crypt implements TypeExtended
+class Sensitive implements TypeExtended
 {
     public function build(mixed $value): string
     {
@@ -26,6 +26,10 @@ class Crypt implements TypeExtended
 
     public function fake(Faker $faker): ?Value
     {
-        return new Value($faker->generate('password'));
+        $value = $faker->generate(
+            'regexify',
+            ['/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+<>?]).{8,}$']
+        );
+        return new Value(encrypt($value));
     }
 }
