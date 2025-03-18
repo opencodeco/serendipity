@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter\Deserialize\Resolve;
 
 use DateMalformedStringException;
+use DateTimeImmutable;
 use DateTimeInterface;
 use ReflectionNamedType;
 use ReflectionParameter;
@@ -40,7 +41,11 @@ class AttributeChain extends Chain
     {
         return match ($instance->management) {
             'id' => new Value($value),
-            'timestamp' => new Value($value->format(DateTimeInterface::ATOM)),
+            'timestamp' => new Value(
+                $value instanceof DateTimeImmutable
+                    ? $value->format(DateTimeInterface::ATOM)
+                    : $value
+            ),
             default => null,
         };
     }

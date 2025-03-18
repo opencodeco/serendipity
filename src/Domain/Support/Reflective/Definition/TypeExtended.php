@@ -12,7 +12,7 @@ interface TypeExtended
 {
     public function build(mixed $value, Closure $build): mixed;
 
-    public function demolish(mixed $value, Closure $build): mixed;
+    public function demolish(mixed $value, Closure $demolish): mixed;
 
     public function fake(Faker $faker): ?Value;
 }

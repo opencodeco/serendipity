@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 
-use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -88,7 +87,7 @@ final class AttributeChainTest extends TestCase
             ->willReturn([$managed]);
 
         // Act
-        $dateTime = new DateTime();
+        $dateTime = new DateTimeImmutable();
         $result = $chain->resolve($parameter, $dateTime);
 
         // Assert
