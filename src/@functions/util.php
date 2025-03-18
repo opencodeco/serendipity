@@ -44,9 +44,11 @@ if (! function_exists(__NAMESPACE__ . '\extractInt')) {
     }
 }
 
+/**
+ * @SuppressWarnings(BooleanArgumentFlag)
+ */
 if (! function_exists(__NAMESPACE__ . '\extractBool')) {
     /**
-     * @SuppressWarnings(BooleanArgumentFlag)
      * @param array<string, mixed> $array
      */
     function extractBool(array $array, string $property, bool $default = false): bool

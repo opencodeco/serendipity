@@ -1,15 +1,18 @@
 <?php
 
+/**
+ * Runtime functions.
+ */
 declare(strict_types=1);
 
 namespace Serendipity\Runtime;
 
 use Hyperf\Coroutine\Coroutine;
 
+/**
+ * @SuppressWarnings(StaticAccess)
+ */
 if (! function_exists(__NAMESPACE__ . '\coroutine')) {
-    /**
-     * @SuppressWarnings(StaticAccess)
-     */
     function coroutine(callable $callback): int
     {
         return Coroutine::create($callback);
