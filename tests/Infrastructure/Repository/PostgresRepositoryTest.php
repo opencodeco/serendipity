@@ -64,7 +64,7 @@ final class PostgresRepositoryTest extends TestCase
             fields: ['field'],
             generate: [
                 'cuid' => 'id',
-                'at' => 'now',
+                'at' => 'timestamp',
             ]
         );
         $this->assertEquals(['value'], $values);

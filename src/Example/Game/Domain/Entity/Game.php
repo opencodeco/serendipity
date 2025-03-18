@@ -14,9 +14,9 @@ class Game extends GameCommand
     public function __construct(
         #[Managed('id')]
         public readonly string $id,
-        #[Managed('now')]
+        #[Managed('timestamp')]
         public readonly DateTimeImmutable $createdAt,
-        #[Managed('now')]
+        #[Managed('timestamp')]
         public readonly DateTimeImmutable $updatedAt,
         #[Pattern('/^[a-zA-Z]{1,255}$/')]
         string $name,

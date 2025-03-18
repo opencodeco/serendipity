@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionParameter;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use stdClass;
 
@@ -13,20 +14,20 @@ use stdClass;
  */
 final class DependencyChainTest extends TestCase
 {
-    final public function testResolveObject(): void
+    public function testResolveObject(): void
     {
         $chain = new DependencyChain();
         $object = new stdClass();
-        $result = $chain->resolve($object);
+        $result = $chain->resolve($this->createMock(ReflectionParameter::class), $object);
 
         $this->assertIsArray($result->content);
     }
 
-    final public function testResolveNonObject(): void
+    public function testResolveNonObject(): void
     {
         $chain = new DependencyChain();
         $value = 'test';
-        $result = $chain->resolve($value);
+        $result = $chain->resolve($this->createMock(ReflectionParameter::class), $value);
 
         $this->assertEquals('test', $result->content);
     }

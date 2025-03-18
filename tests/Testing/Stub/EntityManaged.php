@@ -12,9 +12,9 @@ class EntityManaged
     public function __construct(
         #[Managed(management: 'id')]
         public readonly string $id,
-        #[Managed(management: 'now')]
+        #[Managed(management: 'timestamp')]
         public readonly DateTimeImmutable $createdAt,
-        #[Managed(management: 'now')]
+        #[Managed(management: 'timestamp')]
         public readonly DateTimeImmutable $updatedAt,
         public readonly string $name,
     ) {

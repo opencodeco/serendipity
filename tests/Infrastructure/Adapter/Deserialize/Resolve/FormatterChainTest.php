@@ -6,6 +6,7 @@ namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
+use ReflectionParameter;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
 use stdClass;
@@ -24,7 +25,7 @@ final class FormatterChainTest extends TestCase
     public function testResolveWithoutConverter(mixed $value): void
     {
         $chain = new FormatterChain();
-        $result = $chain->resolve($value);
+        $result = $chain->resolve($this->createMock(ReflectionParameter::class), $value);
 
         $this->assertSame($value, $result->content);
     }
@@ -39,7 +40,7 @@ final class FormatterChainTest extends TestCase
         };
         $chain = new FormatterChain(formatters: ['array' => $converter]);
         $value = ['key' => 'value'];
-        $result = $chain->resolve($value);
+        $result = $chain->resolve($this->createMock(ReflectionParameter::class), $value);
 
         $this->assertEquals('{"key":"value"}', $result->content);
     }

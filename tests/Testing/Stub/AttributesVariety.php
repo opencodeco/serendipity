@@ -17,7 +17,7 @@ readonly class AttributesVariety
     public function __construct(
         #[Managed('id')]
         public int $id,
-        #[Managed('now')]
+        #[Managed('timestamp')]
         public DateTimeImmutable $createdAt,
         #[Define(Type::EMAIL)]
         public string $email,

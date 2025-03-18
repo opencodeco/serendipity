@@ -34,7 +34,7 @@ abstract class PostgresRepository extends Repository
         object $instance,
         array $fields,
         array $default = [],
-        array $managed = ['created_at' => 'now', 'updated_at' => 'now']
+        array $managed = ['created_at' => 'timestamp', 'updated_at' => 'timestamp']
     ): array {
         $values = $this->deserializerFactory->make($instance::class)
             ->deserialize($instance);
@@ -43,7 +43,7 @@ abstract class PostgresRepository extends Repository
 
         foreach ($managed as $field => $type) {
             $value = match ($type) {
-                'now' => $this->managed->now(),
+                'timestamp' => $this->managed->now(),
                 'id' => $this->managed->id(),
                 default => throw new ManagedException($type)
             };

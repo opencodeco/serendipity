@@ -70,7 +70,7 @@ final class FromTypeAttributes extends Resolver
     {
         return match ($instance->management) {
             'id' => new Value($this->managed()->id()),
-            'now' => new Value($this->managed()->now()),
+            'timestamp' => new Value($this->managed()->now()),
             default => null,
         };
     }

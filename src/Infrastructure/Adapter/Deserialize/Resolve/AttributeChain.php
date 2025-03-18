@@ -2,70 +2,47 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Infrastructure\Adapter\Serialize\Resolver;
+namespace Serendipity\Infrastructure\Adapter\Deserialize\Resolve;
 
 use DateMalformedStringException;
-use DateTimeImmutable;
+use DateTimeInterface;
 use ReflectionNamedType;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Reflective\Attribute\Managed;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
-use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
-use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
+use Serendipity\Infrastructure\Adapter\Deserialize\Chain;
 use Serendipity\Infrastructure\Adapter\Support\AttributeAdapter;
 
 use function Serendipity\Type\Cast\stringify;
 
-/**
- * @SuppressWarnings(ExcessiveClassLength)
- */
-final class AttributeValue extends ResolverTyped
+class AttributeChain extends Chain
 {
     use AttributeAdapter;
 
     /**
      * @throws DateMalformedStringException
      */
-    public function resolve(ReflectionParameter $parameter, Set $set): Value
+    public function resolve(ReflectionParameter $parameter, mixed $value): Value
     {
         $type = $this->formatTypeName($parameter->getType());
         if ($type === null) {
-            return parent::resolve($parameter, $set);
+            return parent::resolve($parameter, $value);
         }
-        $field = $this->formatParameterName($parameter);
-        $value = $set->get($field);
         return $this->resolveByAttributes($parameter, $value)
-            ?? parent::resolve($parameter, $set);
+            ?? parent::resolve($parameter, $value);
     }
 
-    /**
-     * @throws DateMalformedStringException
-     */
+
     protected function resolveManaged(Managed $instance, mixed $value): ?Value
     {
         return match ($instance->management) {
             'id' => new Value($value),
-            'timestamp' => new Value(new DateTimeImmutable(stringify($value))),
+            'timestamp' => new Value($value->format(DateTimeInterface::ATOM)),
             default => null,
         };
-    }
-
-    protected function resolvePatternFromNamedType(Pattern $instance, mixed $value, ReflectionNamedType $type): ?Value
-    {
-        $value = stringify($value);
-        if (preg_match($instance->pattern, $value) !== 1) {
-            return null;
-        }
-        $name = $type->getName();
-        $content = match ($name) {
-            'int' => (int) $value,
-            'float' => (float) $value,
-            default => $value,
-        };
-        return new Value($content);
     }
 
     protected function resolveDefineType(Type $type, mixed $value): Value
@@ -80,11 +57,16 @@ final class AttributeValue extends ResolverTyped
     protected function resolveDefineTypeExtended(TypeExtended $type, mixed $value): Value
     {
         return new Value(
-            $type->build(
+            $type->demolish(
                 $value,
                 /* @phpstan-ignore argument.type, argument.templateType */
-                fn (string $class, Set $set) => $this->build($class, $set, $this->path)
+                fn (object $instance) => $this->demolish($instance)
             )
         );
+    }
+
+    protected function resolvePatternFromNamedType(Pattern $instance, mixed $value, ReflectionNamedType $type): ?Value
+    {
+        return new Value($value);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter;
 
 use InvalidArgumentException;
+use ReflectionException;
 use Serendipity\Domain\Contract\Adapter\Deserializer as Contract;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Support\Reflective\CaseConvention;
@@ -33,6 +34,7 @@ class Deserializer extends Demolisher implements Contract
     /**
      * @param T $instance
      * @return array<string, mixed>
+     * @throws ReflectionException
      */
     public function deserialize(mixed $instance): array
     {

@@ -20,7 +20,7 @@ class Sensitive implements TypeExtended
         return decrypt(stringify($value));
     }
 
-    public function demolish(mixed $value): string
+    public function demolish(mixed $value, Closure $build): string
     {
         return encrypt(stringify($value));
     }

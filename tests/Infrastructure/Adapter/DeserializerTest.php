@@ -41,9 +41,11 @@ final class DeserializerTest extends TestCase
     public function testShouldSerializeWhenAnInstanceOfResult(): void
     {
         $mapped = new class extends Stub implements Message {
-            public function __construct()
-            {
-                parent::__construct('John Doe', 30);
+            public function __construct(
+                public string $name = 'John Doe',
+                public int $age = 30,
+            ) {
+                parent::__construct($name, $age);
             }
 
             public function properties(): Set
@@ -51,14 +53,12 @@ final class DeserializerTest extends TestCase
                 return new Set([]);
             }
 
-            public function property(string $key, mixed $default = null): mixed
-            {
-                return null;
-            }
-
             public function content(): array
             {
-                return ['name' => 'John Doe', 'age' => 30];
+                return [
+                    'name' => $this->name,
+                    'age' => $this->age,
+                ];
             }
         };
 
