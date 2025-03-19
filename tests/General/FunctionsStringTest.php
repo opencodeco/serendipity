@@ -33,7 +33,13 @@ final class FunctionsStringTest extends TestCase
     public function testSnakifyNumber(): void
     {
         $this->assertEquals('super_line_1', snakify('superLine1'));
-        $this->assertEquals('line_1', snakify('line1'));
+        $this->assertEquals('line_122', snakify('line122'));
+        $this->assertEquals('123_line_122', snakify('123Line122'));
         $this->assertEquals('1_line', snakify('1Line'));
+
+        $this->assertEquals('super_line1', snakify('superLine1', false));
+        $this->assertEquals('line122', snakify('line122', false));
+        $this->assertEquals('123_line122', snakify('123Line122', false));
+        $this->assertEquals('1_line', snakify('1Line', false));
     }
 }
