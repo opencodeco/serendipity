@@ -13,6 +13,7 @@ putenv('METRIC_DRIVER=noop');
 putenv('TRACER_DRIVER=noop');
 putenv('ERROR_TRACKER_ADAPTER=noop');
 putenv('APP_ENV=test');
+putenv('FAKER_LOCALE=en_US');
 putenv('STDOUT_LOG_LEVEL=alert,critical,emergency,error,warning,info');
 
 require_once __DIR__ . '/../vendor/autoload.php';

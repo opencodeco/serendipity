@@ -24,9 +24,6 @@ class BetweenCondition implements Condition
         ];
     }
 
-    /**
-     * @SuppressWarnings(BooleanArgumentFlag)
-     */
     private function convertToDate(string $value, bool $pad = false): UTCDateTime
     {
         try {

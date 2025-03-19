@@ -28,9 +28,6 @@ final class InputExtensionMock
         $this->setUpInput();
     }
 
-    /**
-     * @SuppressWarnings(BooleanArgumentFlag)
-     */
     public function exposeTearDownInput(bool $isRequestSetUp = false): void
     {
         $this->tearDownInput($isRequestSetUp);

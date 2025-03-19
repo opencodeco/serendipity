@@ -10,7 +10,7 @@
     </rule>
     <rule ref="rulesets/cleancode.xml/BooleanArgumentFlag">
         <properties>
-            <property name="ignorepattern" value="/^(__construct|format)$/"/>
+            <property name="ignorepattern" value="/^(__construct|format|.*[bB]ool.*|convert.*|.*[tT]earDown.*)$/"/>
         </properties>
     </rule>
     <rule ref="rulesets/cleancode.xml/StaticAccess">

@@ -44,7 +44,6 @@ if (! function_exists(__NAMESPACE__ . '\extractInt')) {
     }
 }
 
-/** @SuppressWarnings(BooleanArgumentFlag) */
 if (! function_exists(__NAMESPACE__ . '\extractBool')) {
     /**
      * @param array<string, mixed> $array

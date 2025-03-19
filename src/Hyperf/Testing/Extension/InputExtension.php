@@ -31,7 +31,6 @@ trait InputExtension
 
     /**
      * @SuppressWarnings(StaticAccess)
-     * @SuppressWarnings(BooleanArgumentFlag)
      */
     protected function tearDownInput(bool $isRequestSetUp): void
     {

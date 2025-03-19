@@ -22,6 +22,8 @@ use Serendipity\Testing\Faker\Resolver\FromTypeAttributes;
 use Serendipity\Testing\Faker\Resolver\FromTypeBuiltin;
 use Serendipity\Testing\Faker\Resolver\FromTypeNative;
 
+use function Serendipity\Type\Cast\stringify;
+
 class Faker extends Engine implements Contract
 {
     protected readonly Generator $generator;
@@ -33,10 +35,11 @@ class Faker extends Engine implements Contract
     public function __construct(
         CaseConvention $case = CaseConvention::SNAKE,
         array $formatters = [],
+        ?string $locale = null,
     ) {
         parent::__construct($case, $formatters);
 
-        $this->generator = Factory::create('pt_BR');
+        $this->generator = Factory::create($locale ?? stringify(getenv('FAKER_LOCALE'), 'en_US'));
     }
 
     public function __call(string $name, array $arguments): mixed
