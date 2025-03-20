@@ -8,7 +8,7 @@ use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Support\Reflective\CaseConvention;
+use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\Native;
@@ -22,7 +22,7 @@ final class FromTypeNativeTest extends TestCase
 {
     public function testShouldResolveDateTimeImmutable(): void
     {
-        $resolver = new FromTypeNative(CaseConvention::SNAKE);
+        $resolver = new FromTypeNative(CaseNotation::SNAKE);
         $target = Target::createFrom(Native::class);
         $parameters = $target->getReflectionParameters();
 
@@ -37,7 +37,7 @@ final class FromTypeNativeTest extends TestCase
 
     public function testShouldResolveDateTime(): void
     {
-        $resolver = new FromTypeNative(CaseConvention::SNAKE);
+        $resolver = new FromTypeNative(CaseNotation::SNAKE);
         $target = Target::createFrom(Native::class);
         $parameters = $target->getReflectionParameters();
 
@@ -52,7 +52,7 @@ final class FromTypeNativeTest extends TestCase
 
     public function testShouldResolveDateTimeInterface(): void
     {
-        $resolver = new FromTypeNative(CaseConvention::SNAKE);
+        $resolver = new FromTypeNative(CaseNotation::SNAKE);
         $target = Target::createFrom(Native::class);
         $parameters = $target->getReflectionParameters();
 
@@ -67,7 +67,7 @@ final class FromTypeNativeTest extends TestCase
 
     public function testShouldNotResolveFallbackToNextResolverForNonNativeType(): void
     {
-        $resolver = new FromTypeNative(CaseConvention::SNAKE);
+        $resolver = new FromTypeNative(CaseNotation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -81,7 +81,7 @@ final class FromTypeNativeTest extends TestCase
 
     public function testShouldReturnNullForParameterWithoutType(): void
     {
-        $resolver = new FromTypeNative(CaseConvention::SNAKE);
+        $resolver = new FromTypeNative(CaseNotation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 

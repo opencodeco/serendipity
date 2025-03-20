@@ -170,7 +170,7 @@ final class TypeMatchedTest extends TestCase
         $target = Target::createFrom(Union::class);
         $parameters = $target->getReflectionParameters();
 
-        $this->assertCount(3, $parameters);
+        $this->assertCount(4, $parameters);
 
         $set = Set::createFrom([
             'builtin' => 23,

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Test\Testing\Faker\Resolver;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Support\Reflective\CaseConvention;
+use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\Command;
@@ -21,7 +21,7 @@ final class FromPresetTest extends TestCase
 {
     public function testShouldResolvePresetWithExactParameterName(): void
     {
-        $resolver = new FromPreset(CaseConvention::SNAKE);
+        $resolver = new FromPreset(CaseNotation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -37,7 +37,7 @@ final class FromPresetTest extends TestCase
 
     public function testShouldResolvePresetWithCamelCaseParameterName(): void
     {
-        $resolver = new FromPreset(CaseConvention::SNAKE);
+        $resolver = new FromPreset(CaseNotation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -53,7 +53,7 @@ final class FromPresetTest extends TestCase
 
     public function testShouldResolvePresetWithMultiWordCamelCaseParameterName(): void
     {
-        $resolver = new FromPreset(CaseConvention::SNAKE);
+        $resolver = new FromPreset(CaseNotation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -69,7 +69,7 @@ final class FromPresetTest extends TestCase
 
     public function testShouldResolveNestedPropertyName(): void
     {
-        $resolver = new FromPreset(CaseConvention::SNAKE);
+        $resolver = new FromPreset(CaseNotation::SNAKE);
         $target = Target::createFrom(DeepDown::class);
         $parameters = $target->getReflectionParameters();
 
@@ -85,7 +85,7 @@ final class FromPresetTest extends TestCase
 
     public function testShouldFallbackToNextResolverWhenPresetNotFound(): void
     {
-        $resolver = new FromPreset(CaseConvention::SNAKE);
+        $resolver = new FromPreset(CaseNotation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 

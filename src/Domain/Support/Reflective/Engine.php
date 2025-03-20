@@ -10,9 +10,7 @@ use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
 use Serendipity\Domain\Contract\Formatter;
-use Serendipity\Domain\Exception\Adapter\NotResolved;
-use Serendipity\Domain\Exception\Adapter\NotResolvedCollection;
-use Serendipity\Domain\Support\Value;
+use Serendipity\Domain\Support\Reflective\Engine\Resolution;
 
 use function array_map;
 use function gettype;
@@ -22,30 +20,26 @@ use function is_object;
 use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\String\snakify;
 use function sort;
-use function sprintf;
 
-abstract class Engine
+abstract class Engine extends Resolution
 {
-    public function __construct(
-        public readonly CaseConvention $case = CaseConvention::SNAKE,
-        /**
-         * @var array<callable|Formatter>
-         */
-        public readonly array $formatters = [],
-        /**
-         * @var array<string>
-         */
-        protected readonly array $path = [],
-    ) {
+    protected function casedField(ReflectionParameter|string $parameter): string
+    {
+        $name = is_string($parameter) ? $parameter : $parameter->getName();
+        return match ($this->case) {
+            CaseNotation::SNAKE => snakify($name),
+            CaseNotation::NONE => $name,
+        };
     }
 
-    protected function casedField(ReflectionParameter|string $field): string
+    protected function dottedField(ReflectionParameter|string|null $parameter = null): string
     {
-        $name = is_string($field) ? $field : $field->getName();
-        return match ($this->case) {
-            CaseConvention::SNAKE => snakify($name),
-            CaseConvention::NONE => $name,
-        };
+        $last = $parameter === null ? [] : [$this->casedField($parameter)];
+        $pieces = [
+            ...$this->path,
+            ...$last
+        ];
+        return stringify(implode('.', $pieces));
     }
 
     protected function formatTypeName(?ReflectionType $type): ?string
@@ -82,49 +76,6 @@ abstract class Engine
             return $value::class;
         }
         return $type;
-    }
-
-    /**
-     * @param array<NotResolved>|string $unresolved
-     */
-    protected function notResolved(array|string $unresolved, mixed $value = null): Value
-    {
-        if (is_array($unresolved)) {
-            return new Value(new NotResolvedCollection($unresolved, $this->path, $value));
-        }
-        $field = $this->dottedField();
-        return new Value(new NotResolved($unresolved, $field, $value));
-    }
-
-    protected function notResolvedAsRequired(): Value
-    {
-        $field = $this->dottedField();
-        $message = sprintf("The value for '%s' is required and was not given.", $field);
-        return $this->notResolved($message);
-    }
-
-    protected function notResolvedAsInvalid(mixed $value): Value
-    {
-        $field = $this->dottedField();
-        $message = sprintf("The value given for '%s' is not supported.", $field);
-        return $this->notResolved($message, $value);
-    }
-
-    protected function notResolvedAsTypeMismatch(string $expected, string $actual, mixed $value): Value
-    {
-        $field = $this->dottedField();
-        $message = sprintf(
-            "The value for '%s' must be of type '%s' and '%s' was given.",
-            $field,
-            $expected,
-            $actual,
-        );
-        return $this->notResolved($message, $value);
-    }
-
-    protected function dottedField(): string
-    {
-        return stringify(implode('.', $this->path));
     }
 
     /**

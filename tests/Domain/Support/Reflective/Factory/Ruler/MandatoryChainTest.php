@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Domain\Support\Reflective\Factory\Rules;
+namespace Serendipity\Test\Domain\Support\Reflective\Factory\Ruler;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use Serendipity\Domain\Support\Reflective\Factory\Rules\MandatoryChain;
-use Serendipity\Domain\Support\Reflective\Factory\Ruleset;
+use Serendipity\Domain\Support\Reflective\Factory\Ruler\MandatoryChain;
+use Serendipity\Domain\Support\Reflective\Ruleset;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 
 /**

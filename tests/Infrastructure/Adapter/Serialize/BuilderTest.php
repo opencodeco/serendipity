@@ -8,7 +8,7 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\AdapterException;
-use Serendipity\Domain\Support\Reflective\CaseConvention;
+use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
@@ -186,7 +186,7 @@ final class BuilderTest extends TestCase
     {
         $values = [];
 
-        $builder = new Builder(CaseConvention::NONE);
+        $builder = new Builder(CaseNotation::NONE);
         $this->expectException(AdapterException::class);
         $this->expectExceptionMessage(
             'Adapter failed with 3 error(s). The errors are: '

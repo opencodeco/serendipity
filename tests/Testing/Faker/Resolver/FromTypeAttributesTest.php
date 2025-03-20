@@ -6,7 +6,7 @@ namespace Serendipity\Test\Testing\Faker\Resolver;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Support\Reflective\CaseConvention;
+use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\Command;
@@ -22,7 +22,7 @@ final class FromTypeAttributesTest extends TestCase
 {
     public function testShouldResolveEmailAttribute(): void
     {
-        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $resolver = new FromTypeAttributes(CaseNotation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -38,7 +38,7 @@ final class FromTypeAttributesTest extends TestCase
 
     public function testShouldResolveIpAddressAttribute(): void
     {
-        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $resolver = new FromTypeAttributes(CaseNotation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -57,7 +57,7 @@ final class FromTypeAttributesTest extends TestCase
 
     public function testShouldResolveFirstNameAttribute(): void
     {
-        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $resolver = new FromTypeAttributes(CaseNotation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -72,7 +72,7 @@ final class FromTypeAttributesTest extends TestCase
 
     public function testShouldResolveTypeExtendedAttribute(): void
     {
-        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $resolver = new FromTypeAttributes(CaseNotation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -93,7 +93,7 @@ final class FromTypeAttributesTest extends TestCase
 
     public function testShouldFallbackToNextResolverWhenNoAttribute(): void
     {
-        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $resolver = new FromTypeAttributes(CaseNotation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -107,7 +107,7 @@ final class FromTypeAttributesTest extends TestCase
 
     public function testShouldReturnNullForUndefinedType(): void
     {
-        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $resolver = new FromTypeAttributes(CaseNotation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -121,7 +121,7 @@ final class FromTypeAttributesTest extends TestCase
 
     public function testShouldResolveManagedAttributes(): void
     {
-        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $resolver = new FromTypeAttributes(CaseNotation::SNAKE);
         $target = Target::createFrom(EntityManaged::class);
         $parameters = $target->getReflectionParameters();
 
@@ -141,7 +141,7 @@ final class FromTypeAttributesTest extends TestCase
 
     public function testShouldDetectTypeBeforeFakePattern(): void
     {
-        $resolver = new FromTypeAttributes(CaseConvention::SNAKE);
+        $resolver = new FromTypeAttributes(CaseNotation::SNAKE);
         $target = Target::createFrom(PatternMock::class);
         $parameters = $target->getReflectionParameters();
 

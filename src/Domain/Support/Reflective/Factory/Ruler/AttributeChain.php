@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Support\Reflective\Factory\Rules;
+namespace Serendipity\Domain\Support\Reflective\Factory\Ruler;
 
 use ReflectionAttribute;
 use ReflectionNamedType;
@@ -14,7 +14,7 @@ use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 use Serendipity\Domain\Support\Reflective\Factory\Chain;
-use Serendipity\Domain\Support\Reflective\Factory\Ruleset;
+use Serendipity\Domain\Support\Reflective\Ruleset;
 
 use function Serendipity\Type\Cast\boolify;
 use function Serendipity\Type\String\snakify;
@@ -23,7 +23,7 @@ class AttributeChain extends Chain
 {
     public function resolve(ReflectionParameter $parameter, Ruleset $rules): Ruleset
     {
-        $field = $this->dottedField();
+        $field = $this->dottedField($parameter);
         $type = $parameter->getType();
 
         $attributes = $parameter->getAttributes();

@@ -6,6 +6,7 @@ namespace Serendipity\Test\Domain\Support\Reflective\Factory;
 
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler;
+use Serendipity\Domain\Support\Reflective\Ruleset;
 use Serendipity\Test\Testing\Stub\Command;
 
 /**
@@ -13,28 +14,89 @@ use Serendipity\Test\Testing\Stub\Command;
  */
 class RulerTest extends TestCase
 {
-    public function testShouldCreateRules(): void
+    private Ruler $ruler;
+    private Ruleset $rules;
+
+    protected function setUp(): void
     {
-        $ruler = new Ruler();
-        $rules = $ruler->ruleset(Command::class);
-        $this->assertCount(19, $rules->all());
-        $this->assertContains('required', $rules->get('email'));
-        $this->assertContains('required', $rules->get('ip_address'));
-        $this->assertContains('required', $rules->get('signup_date'));
-        $this->assertContains('required', $rules->get('first_name'));
-        $this->assertContains('required', $rules->get('password'));
-        $this->assertContains('sometimes', $rules->get('address'));
-        $this->assertContains('sometimes', $rules->get('city'));
-        $this->assertContains('sometimes', $rules->get('state'));
-        $this->assertContains('sometimes', $rules->get('zip'));
-        $this->assertContains('sometimes', $rules->get('phone'));
-        $this->assertContains('sometimes', $rules->get('lead_id'));
-        $this->assertContains('sometimes', $rules->get('birthday'));
-        $this->assertContains('sometimes', $rules->get('dob'));
-        $this->assertContains('sometimes', $rules->get('c_1'));
-        $this->assertContains('sometimes', $rules->get('hid'));
-        $this->assertContains('sometimes', $rules->get('car_make'));
-        $this->assertContains('sometimes', $rules->get('car_model'));
-        $this->assertContains('sometimes', $rules->get('car_year'));
+        $this->ruler = new Ruler();
+        $this->rules = $this->ruler->ruleset(Command::class);
+    }
+
+    public function testRulesetShouldHaveExpectedCount(): void
+    {
+        $this->assertCount(19, $this->rules->all(), 'Ruleset should contain exactly 19 rules');
+    }
+
+    /**
+     * @dataProvider requiredFieldsProvider
+     */
+    public function testRequiredFields(string $field): void
+    {
+        $this->assertContains('required', $this->rules->get($field), "Field '$field' should be required");
+    }
+
+    /**
+     * @dataProvider optionalFieldsProvider
+     */
+    public function testOptionalFields(string $field): void
+    {
+        $this->assertContains('sometimes', $this->rules->get($field), "Field '$field' should be optional");
+    }
+
+    public function testRulesetWithPath(): void
+    {
+        $this->ruler = new Ruler(path: ['user']);
+        $nestedRules = $this->ruler->ruleset(Command::class);
+
+        // Test path prefixing works correctly
+        foreach ($nestedRules->all() as $field => $rules) {
+            $this->assertStringStartsWith('user.', $field, "Nested field should be prefixed with path");
+        }
+    }
+
+    public function testRulesetCaching(): void
+    {
+        // Check that generating the same ruleset twice produces identical results
+        $rules1 = $this->ruler->ruleset(Command::class);
+        $rules2 = $this->ruler->ruleset(Command::class);
+
+        $this->assertEquals($rules1, $rules2, "Generated rulesets should be identical");
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public static function requiredFieldsProvider(): array
+    {
+        return [
+            ['email'],
+            ['ip_address'],
+            ['signup_date'],
+            ['first_name'],
+            ['password'],
+        ];
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public static function optionalFieldsProvider(): array
+    {
+        return [
+            ['address'],
+            ['city'],
+            ['state'],
+            ['zip'],
+            ['phone'],
+            ['lead_id'],
+            ['birthday'],
+            ['dob'],
+            ['c_1'],
+            ['hid'],
+            ['car_make'],
+            ['car_model'],
+            ['car_year'],
+        ];
     }
 }

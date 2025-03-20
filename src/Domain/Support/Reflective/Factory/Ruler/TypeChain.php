@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Domain\Support\Reflective\Factory\Rules;
+namespace Serendipity\Domain\Support\Reflective\Factory\Ruler;
 
 use BackedEnum;
 use ReflectionEnum;
@@ -12,30 +12,20 @@ use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
 use Serendipity\Domain\Support\Reflective\Factory\Chain;
-use Serendipity\Domain\Support\Reflective\Factory\Ruleset;
+use Serendipity\Domain\Support\Reflective\Ruleset;
 
 use function Serendipity\Type\Cast\boolify;
+use function Serendipity\Type\Cast\stringify;
 
 class TypeChain extends Chain
 {
-    /**
-     * @var array<string, string>
-     */
-    private array $supported = [
-        'array' => 'array',
-        'bool' => 'boolean',
-        'int' => 'integer',
-        'float' => 'numeric',
-        'string' => 'string',
-    ];
-
     /**
      * @throws ReflectionException
      */
     public function resolve(ReflectionParameter $parameter, Ruleset $rules): Ruleset
     {
         $type = $parameter->getType();
-        $field = implode('.', $this->path);
+        $field = $this->dottedField($parameter);
         $this->resolveType($type, $rules, $field);
 
         return parent::resolve($parameter, $rules);
@@ -56,8 +46,8 @@ class TypeChain extends Chain
     private function resolveTypeReflectionNamedType(ReflectionNamedType $type, Ruleset $rules, string $field): bool
     {
         $rule = $type->getName();
-        if (isset($this->supported[$rule])) {
-            return $rules->add($field, $rule);
+        if (isset($this->native[$rule])) {
+            return $rules->add($field, stringify($this->native[$rule]));
         }
         return $this->resolveTypeBackedEnum($rule, $field, $rules);
     }

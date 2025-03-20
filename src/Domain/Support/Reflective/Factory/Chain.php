@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Domain\Support\Reflective\Factory;
 
 use ReflectionParameter;
+use Serendipity\Domain\Support\Reflective\Ruleset;
 
 abstract class Chain extends Ruler
 {
@@ -24,7 +25,7 @@ abstract class Chain extends Ruler
         return $resolver;
     }
 
-    protected function previous(Chain $previous): void
+    final protected function previous(Chain $previous): void
     {
         $this->previous = $previous;
     }

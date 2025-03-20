@@ -10,7 +10,7 @@ use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Contract\Testing\Faker as Contract;
-use Serendipity\Domain\Support\Reflective\CaseConvention;
+use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
@@ -33,7 +33,7 @@ class Faker extends Engine implements Contract
      * @SuppressWarnings(StaticAccess)
      */
     public function __construct(
-        CaseConvention $case = CaseConvention::SNAKE,
+        CaseNotation $case = CaseNotation::SNAKE,
         array $formatters = [],
         ?string $locale = null,
     ) {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Serendipity\Test\Domain\Support\Reflective\Factory\Rules;
+namespace Serendipity\Test\Domain\Support\Reflective\Factory\Ruler;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use Serendipity\Domain\Support\Reflective\Factory\Rules\TypeChain;
-use Serendipity\Domain\Support\Reflective\Factory\Ruleset;
+use Serendipity\Domain\Support\Reflective\Factory\Ruler\TypeChain;
+use Serendipity\Domain\Support\Reflective\Ruleset;
 use Serendipity\Test\Testing\Stub\AttributesVariety;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Command;
@@ -41,7 +41,7 @@ class TypeChainTest extends TestCase
             }
         }
 
-        $this->assertNotNull($parameter, "Parameter '{$typeName}' not found");
+        $this->assertNotNull($parameter, sprintf("Parameter '%s' not found", $typeName));
 
         $chain->resolve($parameter, $ruleset);
 

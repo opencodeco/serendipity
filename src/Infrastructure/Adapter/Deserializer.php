@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use ReflectionException;
 use Serendipity\Domain\Contract\Adapter\Deserializer as Contract;
 use Serendipity\Domain\Contract\Formatter;
-use Serendipity\Domain\Support\Reflective\CaseConvention;
+use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 
 use function is_object;
@@ -25,7 +25,7 @@ class Deserializer extends Demolisher implements Contract
      */
     public function __construct(
         public readonly string $type,
-        CaseConvention $case = CaseConvention::SNAKE,
+        CaseNotation $case = CaseNotation::SNAKE,
         array $formatters = [],
     ) {
         parent::__construct($case, $formatters);
