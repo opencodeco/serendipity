@@ -6,6 +6,7 @@ namespace Serendipity\Hyperf\Exception;
 
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -16,11 +17,14 @@ use Serendipity\Infrastructure\Http\JsonFormatter;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Throwable;
 
+use function sprintf;
+
 class ValidationExceptionHandler extends ExceptionHandler
 {
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly JsonFormatter $formatter,
+        private readonly RequestInterface $request,
     ) {
     }
 
@@ -29,7 +33,6 @@ class ValidationExceptionHandler extends ExceptionHandler
         $this->stopPropagation();
 
         $errors = $this->extractErrors($throwable);
-
         $message = sprintf('<validation> %s', $throwable->getMessage());
         $this->logger->notice($message, $errors);
 
@@ -46,11 +49,19 @@ class ValidationExceptionHandler extends ExceptionHandler
 
     private function extractErrors(Throwable $throwable): array
     {
-        return match (true) {
+        $errors = match (true) {
             $throwable instanceof ValidationException => $throwable->validator->errors()->getMessages(),
             $throwable instanceof InvalidInputException => $throwable->getErrors(),
             default => [],
         };
+        return [
+            'errors' => $errors,
+            'payload' => [
+                'headers' => $this->request->getHeaders(),
+                'query' => $this->request->query(),
+                'body' => $this->request->post(),
+            ],
+        ];
     }
 
     private function extractStatus(Throwable $throwable): int
