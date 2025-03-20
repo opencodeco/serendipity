@@ -39,7 +39,7 @@ class Faker extends Engine implements Contract
     ) {
         parent::__construct($case, $formatters);
 
-        $this->generator = Factory::create($locale ?? stringify(getenv('FAKER_LOCALE'), 'en_US'));
+        $this->generator = Factory::create($this->locale($locale));
     }
 
     public function __call(string $name, array $arguments): mixed
@@ -96,5 +96,14 @@ class Faker extends Engine implements Contract
             $values[$field] = $generated->content;
         }
         return Set::createFrom($values);
+    }
+
+    private function locale(?string $locale): string
+    {
+        $fallback = function (string $default = 'en_US'): string {
+            $locale = stringify(getenv('FAKER_LOCALE'), $default);
+            return empty($locale) ? $default : $locale;
+        };
+        return $locale ?? $fallback();
     }
 }
