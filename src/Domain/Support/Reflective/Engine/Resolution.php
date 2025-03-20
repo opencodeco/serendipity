@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Support\Reflective\Engine;
 
+use ReflectionParameter;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\Adapter\NotResolvedCollection;
@@ -11,6 +12,8 @@ use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Value;
 
 use function is_array;
+use function Serendipity\Notation\format;
+use function Serendipity\Type\Cast\stringify;
 use function sprintf;
 
 abstract class Resolution
@@ -26,6 +29,22 @@ abstract class Resolution
          */
         protected readonly array $path = [],
     ) {
+    }
+
+    protected function casedField(ReflectionParameter|string $parameter): string
+    {
+        $name = is_string($parameter) ? $parameter : $parameter->getName();
+        return format($name, $this->notation);
+    }
+
+    protected function dottedField(null|ReflectionParameter|string $parameter = null): string
+    {
+        $last = $parameter === null ? [] : [$this->casedField($parameter)];
+        $pieces = [
+            ...$this->path,
+            ...$last,
+        ];
+        return stringify(implode('.', $pieces));
     }
 
     /**

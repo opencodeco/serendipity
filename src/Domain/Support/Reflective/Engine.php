@@ -6,7 +6,6 @@ namespace Serendipity\Domain\Support\Reflective;
 
 use ReflectionIntersectionType;
 use ReflectionNamedType;
-use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
 use Serendipity\Domain\Contract\Formatter;
@@ -17,28 +16,10 @@ use function gettype;
 use function implode;
 use function is_callable;
 use function is_object;
-use function Serendipity\Notation\format;
-use function Serendipity\Type\Cast\stringify;
 use function sort;
 
 abstract class Engine extends Resolution
 {
-    protected function casedField(ReflectionParameter|string $parameter): string
-    {
-        $name = is_string($parameter) ? $parameter : $parameter->getName();
-        return format($name, $this->notation);
-    }
-
-    protected function dottedField(null|ReflectionParameter|string $parameter = null): string
-    {
-        $last = $parameter === null ? [] : [$this->casedField($parameter)];
-        $pieces = [
-            ...$this->path,
-            ...$last,
-        ];
-        return stringify(implode('.', $pieces));
-    }
-
     protected function formatTypeName(?ReflectionType $type): ?string
     {
         return match (true) {
