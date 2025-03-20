@@ -35,7 +35,7 @@ final class AttributeValue extends ResolverTyped
         if ($type === null) {
             return parent::resolve($parameter, $set);
         }
-        $field = $this->formatParameterName($parameter);
+        $field = $this->casedField($parameter);
         $value = $set->get($field);
         return $this->resolveByAttributes($parameter, $value)
             ?? parent::resolve($parameter, $set);

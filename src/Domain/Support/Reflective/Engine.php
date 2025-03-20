@@ -19,6 +19,7 @@ use function gettype;
 use function implode;
 use function is_callable;
 use function is_object;
+use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\String\snakify;
 use function sort;
 use function sprintf;
@@ -38,7 +39,7 @@ abstract class Engine
     ) {
     }
 
-    protected function formatParameterName(ReflectionParameter|string $field): string
+    protected function casedField(ReflectionParameter|string $field): string
     {
         $name = is_string($field) ? $field : $field->getName();
         return match ($this->case) {
@@ -91,27 +92,27 @@ abstract class Engine
         if (is_array($unresolved)) {
             return new Value(new NotResolvedCollection($unresolved, $this->path, $value));
         }
-        $field = implode('.', $this->path);
+        $field = $this->dottedField();
         return new Value(new NotResolved($unresolved, $field, $value));
     }
 
     protected function notResolvedAsRequired(): Value
     {
-        $field = implode('.', $this->path);
+        $field = $this->dottedField();
         $message = sprintf("The value for '%s' is required and was not given.", $field);
         return $this->notResolved($message);
     }
 
     protected function notResolvedAsInvalid(mixed $value): Value
     {
-        $field = implode('.', $this->path);
+        $field = $this->dottedField();
         $message = sprintf("The value given for '%s' is not supported.", $field);
         return $this->notResolved($message, $value);
     }
 
     protected function notResolvedAsTypeMismatch(string $expected, string $actual, mixed $value): Value
     {
-        $field = implode('.', $this->path);
+        $field = $this->dottedField();
         $message = sprintf(
             "The value for '%s' must be of type '%s' and '%s' was given.",
             $field,
@@ -119,6 +120,11 @@ abstract class Engine
             $actual,
         );
         return $this->notResolved($message, $value);
+    }
+
+    protected function dottedField(): string
+    {
+        return stringify(implode('.', $this->path));
     }
 
     /**

@@ -15,7 +15,7 @@ final class ValidateValue extends ResolverTyped
 {
     public function resolve(ReflectionParameter $parameter, Set $set): Value
     {
-        $field = $this->formatParameterName($parameter);
+        $field = $this->casedField($parameter);
         if ($set->hasNot($field)) {
             return $this->notResolvedAsRequired();
         }

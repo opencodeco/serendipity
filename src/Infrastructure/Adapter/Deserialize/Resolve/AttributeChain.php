@@ -36,7 +36,6 @@ class AttributeChain extends Chain
             ?? parent::resolve($parameter, $value);
     }
 
-
     protected function resolveManaged(Managed $instance, mixed $value): ?Value
     {
         return match ($instance->management) {

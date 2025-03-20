@@ -17,7 +17,7 @@ abstract class Resolver extends Builder
         if (isset($this->previous)) {
             return $this->previous->resolve($parameter, $set);
         }
-        return $this->notResolvedAsInvalid($set->get($this->formatParameterName($parameter)));
+        return $this->notResolvedAsInvalid($set->get($this->casedField($parameter)));
     }
 
     final public function then(Resolver $resolver): Resolver

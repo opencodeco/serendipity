@@ -80,7 +80,7 @@ class Faker extends Engine implements Contract
     {
         $values = [];
         foreach ($parameters as $parameter) {
-            $field = $this->formatParameterName($parameter);
+            $field = $this->casedField($parameter);
             $generated = (new FromDependency($this->case))
                 ->then(new FromTypeNative($this->case))
                 ->then(new FromTypeBuiltin($this->case))

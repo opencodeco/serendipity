@@ -47,7 +47,7 @@ class Demolisher extends Engine
                 ->then(new FormatterChain($this->case, $this->formatters))
                 ->resolve($parameter, $set->get($name));
 
-            $field = $this->formatParameterName($parameter);
+            $field = $this->casedField($parameter);
             $data[$field] = $resolved->content;
         }
         return $data;

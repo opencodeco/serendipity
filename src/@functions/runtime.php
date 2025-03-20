@@ -13,7 +13,6 @@ if (! function_exists(__NAMESPACE__ . '\invoke')) {
     }
 }
 
-/** @SuppressWarnings(StaticAccess) */
 if (! function_exists(__NAMESPACE__ . '\coroutine')) {
     function coroutine(callable $callback): int
     {

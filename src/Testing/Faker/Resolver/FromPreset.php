@@ -13,7 +13,7 @@ final class FromPreset extends Resolver
 {
     public function resolve(ReflectionParameter $parameter, Set $presets): ?Value
     {
-        $field = $this->formatParameterName($parameter);
+        $field = $this->casedField($parameter);
         if ($presets->has($field)) {
             return new Value($presets->get($field));
         }
