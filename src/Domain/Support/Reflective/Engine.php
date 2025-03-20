@@ -17,8 +17,8 @@ use function gettype;
 use function implode;
 use function is_callable;
 use function is_object;
+use function Serendipity\Notation\format;
 use function Serendipity\Type\Cast\stringify;
-use function Serendipity\Type\String\snakify;
 use function sort;
 
 abstract class Engine extends Resolution
@@ -26,18 +26,15 @@ abstract class Engine extends Resolution
     protected function casedField(ReflectionParameter|string $parameter): string
     {
         $name = is_string($parameter) ? $parameter : $parameter->getName();
-        return match ($this->case) {
-            CaseNotation::SNAKE => snakify($name),
-            CaseNotation::NONE => $name,
-        };
+        return format($name, $this->notation);
     }
 
-    protected function dottedField(ReflectionParameter|string|null $parameter = null): string
+    protected function dottedField(null|ReflectionParameter|string $parameter = null): string
     {
         $last = $parameter === null ? [] : [$this->casedField($parameter)];
         $pieces = [
             ...$this->path,
-            ...$last
+            ...$last,
         ];
         return stringify(implode('.', $pieces));
     }

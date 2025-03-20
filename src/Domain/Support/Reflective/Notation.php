@@ -23,7 +23,7 @@ namespace Serendipity\Domain\Support\Reflective;
  * | ⚙️ Dot notation  | my.name.is.bond      |
  * |------------------|----------------------|
  */
-enum CaseNotation
+enum Notation
 {
     case CAMEL;
     case PASCAL;

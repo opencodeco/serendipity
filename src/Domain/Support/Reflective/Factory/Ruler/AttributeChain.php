@@ -16,8 +16,8 @@ use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 use Serendipity\Domain\Support\Reflective\Factory\Chain;
 use Serendipity\Domain\Support\Reflective\Ruleset;
 
+use function Serendipity\Notation\snakify;
 use function Serendipity\Type\Cast\boolify;
-use function Serendipity\Type\String\snakify;
 
 class AttributeChain extends Chain
 {

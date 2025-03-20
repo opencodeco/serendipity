@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Test\Testing\Faker\Resolver;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
+use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Command;
@@ -20,7 +20,7 @@ final class FromDefaultValueTest extends TestCase
 {
     public function testShouldResolveParameterWithDefaultValue(): void
     {
-        $resolver = new FromDefaultValue(CaseNotation::SNAKE);
+        $resolver = new FromDefaultValue(Notation::SNAKE);
         $target = Target::createFrom(NullableAndOptional::class);
         $parameters = $target->getReflectionParameters();
 
@@ -37,7 +37,7 @@ final class FromDefaultValueTest extends TestCase
 
     public function testShouldResolveOptionalParameter(): void
     {
-        $resolver = new FromDefaultValue(CaseNotation::SNAKE);
+        $resolver = new FromDefaultValue(Notation::SNAKE);
         $target = Target::createFrom(Command::class);
         $parameters = $target->getReflectionParameters();
 
@@ -53,7 +53,7 @@ final class FromDefaultValueTest extends TestCase
 
     public function testShouldResolveNullableParameter(): void
     {
-        $resolver = new FromDefaultValue(CaseNotation::SNAKE);
+        $resolver = new FromDefaultValue(Notation::SNAKE);
         $target = Target::createFrom(NullableAndOptional::class);
         $parameters = $target->getReflectionParameters();
 
@@ -70,7 +70,7 @@ final class FromDefaultValueTest extends TestCase
 
     public function testShouldFallbackToNextResolver(): void
     {
-        $resolver = new FromDefaultValue(CaseNotation::SNAKE);
+        $resolver = new FromDefaultValue(Notation::SNAKE);
         $target = Target::createFrom(Builtin::class);
         $parameters = $target->getReflectionParameters();
 

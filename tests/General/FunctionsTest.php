@@ -17,9 +17,9 @@ class FunctionsTest extends TestCase
             'src/@functions/cast.php',
             'src/@functions/crypt.php',
             'src/@functions/json.php',
+            'src/@functions/notation.php',
             'src/@functions/polyfill.php',
             'src/@functions/runtime.php',
-            'src/@functions/string.php',
             'src/@functions/util.php',
         ];
         foreach ($files as $file) {

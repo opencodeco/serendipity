@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Test\Testing\Faker\Resolver;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
+use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Complex;
@@ -24,7 +24,7 @@ final class FromDependencyTest extends TestCase
 {
     public function testShouldResolveClassDependency(): void
     {
-        $resolver = new FromDependency(CaseNotation::SNAKE);
+        $resolver = new FromDependency(Notation::SNAKE);
         $target = Target::createFrom(Complex::class);
         $parameters = $target->getReflectionParameters();
 
@@ -43,7 +43,7 @@ final class FromDependencyTest extends TestCase
 
     public function testShouldNotResolveBuiltinType(): void
     {
-        $resolver = new FromDependency(CaseNotation::SNAKE);
+        $resolver = new FromDependency(Notation::SNAKE);
         $target = Target::createFrom(Builtin::class);
         $parameters = $target->getReflectionParameters();
 
@@ -57,7 +57,7 @@ final class FromDependencyTest extends TestCase
 
     public function testShouldNotResolveEnumType(): void
     {
-        $resolver = new FromDependency(CaseNotation::SNAKE);
+        $resolver = new FromDependency(Notation::SNAKE);
         $target = Target::createFrom(EntityStub::class);
         $parameters = $target->getReflectionParameters();
 
@@ -71,7 +71,7 @@ final class FromDependencyTest extends TestCase
 
     public function testShouldNotResolveIntersectionType(): void
     {
-        $resolver = new FromDependency(CaseNotation::SNAKE);
+        $resolver = new FromDependency(Notation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -85,7 +85,7 @@ final class FromDependencyTest extends TestCase
 
     public function testShouldResolveUnionTypeWithFirstEligibleType(): void
     {
-        $resolver = new FromDependency(CaseNotation::SNAKE);
+        $resolver = new FromDependency(Notation::SNAKE);
         $target = Target::createFrom(Union::class);
         $parameters = $target->getReflectionParameters();
 
@@ -100,7 +100,7 @@ final class FromDependencyTest extends TestCase
 
     public function testShouldFallbackToNextResolverForNonExistingClass(): void
     {
-        $resolver = new FromDependency(CaseNotation::SNAKE);
+        $resolver = new FromDependency(Notation::SNAKE);
         $target = Target::createFrom(Intersection::class);
         $parameters = $target->getReflectionParameters();
 
@@ -114,7 +114,7 @@ final class FromDependencyTest extends TestCase
 
     public function testShouldReturnNullForParameterWithoutType(): void
     {
-        $resolver = new FromDependency(CaseNotation::SNAKE);
+        $resolver = new FromDependency(Notation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 

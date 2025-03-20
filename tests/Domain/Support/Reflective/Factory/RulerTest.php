@@ -15,6 +15,7 @@ use Serendipity\Test\Testing\Stub\Command;
 class RulerTest extends TestCase
 {
     private Ruler $ruler;
+
     private Ruleset $rules;
 
     protected function setUp(): void
@@ -33,35 +34,7 @@ class RulerTest extends TestCase
      */
     public function testRequiredFields(string $field): void
     {
-        $this->assertContains('required', $this->rules->get($field), "Field '$field' should be required");
-    }
-
-    /**
-     * @dataProvider optionalFieldsProvider
-     */
-    public function testOptionalFields(string $field): void
-    {
-        $this->assertContains('sometimes', $this->rules->get($field), "Field '$field' should be optional");
-    }
-
-    public function testRulesetWithPath(): void
-    {
-        $this->ruler = new Ruler(path: ['user']);
-        $nestedRules = $this->ruler->ruleset(Command::class);
-
-        // Test path prefixing works correctly
-        foreach ($nestedRules->all() as $field => $rules) {
-            $this->assertStringStartsWith('user.', $field, "Nested field should be prefixed with path");
-        }
-    }
-
-    public function testRulesetCaching(): void
-    {
-        // Check that generating the same ruleset twice produces identical results
-        $rules1 = $this->ruler->ruleset(Command::class);
-        $rules2 = $this->ruler->ruleset(Command::class);
-
-        $this->assertEquals($rules1, $rules2, "Generated rulesets should be identical");
+        $this->assertContains('required', $this->rules->get($field), "Field '{$field}' should be required");
     }
 
     /**
@@ -76,6 +49,14 @@ class RulerTest extends TestCase
             ['first_name'],
             ['password'],
         ];
+    }
+
+    /**
+     * @dataProvider optionalFieldsProvider
+     */
+    public function testOptionalFields(string $field): void
+    {
+        $this->assertContains('sometimes', $this->rules->get($field), "Field '{$field}' should be optional");
     }
 
     /**
@@ -98,5 +79,25 @@ class RulerTest extends TestCase
             ['car_model'],
             ['car_year'],
         ];
+    }
+
+    public function testRulesetWithPath(): void
+    {
+        $this->ruler = new Ruler(path: ['user']);
+        $nestedRules = $this->ruler->ruleset(Command::class);
+
+        // Test path prefixing works correctly
+        foreach ($nestedRules->all() as $field => $rules) {
+            $this->assertStringStartsWith('user.', $field, 'Nested field should be prefixed with path');
+        }
+    }
+
+    public function testRulesetCaching(): void
+    {
+        // Check that generating the same ruleset twice produces identical results
+        $rules1 = $this->ruler->ruleset(Command::class);
+        $rules2 = $this->ruler->ruleset(Command::class);
+
+        $this->assertEquals($rules1, $rules2, 'Generated rulesets should be identical');
     }
 }

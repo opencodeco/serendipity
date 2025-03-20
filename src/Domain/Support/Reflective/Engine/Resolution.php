@@ -7,7 +7,7 @@ namespace Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Exception\Adapter\NotResolved;
 use Serendipity\Domain\Exception\Adapter\NotResolvedCollection;
-use Serendipity\Domain\Support\Reflective\CaseNotation;
+use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Value;
 
 use function is_array;
@@ -16,7 +16,7 @@ use function sprintf;
 abstract class Resolution
 {
     public function __construct(
-        public readonly CaseNotation $case = CaseNotation::SNAKE,
+        public readonly Notation $notation = Notation::SNAKE,
         /**
          * @var array<callable|Formatter>
          */

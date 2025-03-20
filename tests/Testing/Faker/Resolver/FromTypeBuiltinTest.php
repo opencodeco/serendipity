@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Test\Testing\Faker\Resolver;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
+use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Variety;
@@ -19,7 +19,7 @@ final class FromTypeBuiltinTest extends TestCase
 {
     public function testShouldResolveStringType(): void
     {
-        $resolver = new FromTypeBuiltin(CaseNotation::SNAKE);
+        $resolver = new FromTypeBuiltin(Notation::SNAKE);
         $target = Target::createFrom(Builtin::class);
         $parameters = $target->getReflectionParameters();
 
@@ -34,7 +34,7 @@ final class FromTypeBuiltinTest extends TestCase
 
     public function testShouldResolveIntType(): void
     {
-        $resolver = new FromTypeBuiltin(CaseNotation::SNAKE);
+        $resolver = new FromTypeBuiltin(Notation::SNAKE);
         $target = Target::createFrom(Builtin::class);
         $parameters = $target->getReflectionParameters();
 
@@ -51,7 +51,7 @@ final class FromTypeBuiltinTest extends TestCase
 
     public function testShouldResolveFloatType(): void
     {
-        $resolver = new FromTypeBuiltin(CaseNotation::SNAKE);
+        $resolver = new FromTypeBuiltin(Notation::SNAKE);
         $target = Target::createFrom(Builtin::class);
         $parameters = $target->getReflectionParameters();
 
@@ -68,7 +68,7 @@ final class FromTypeBuiltinTest extends TestCase
 
     public function testShouldResolveBoolType(): void
     {
-        $resolver = new FromTypeBuiltin(CaseNotation::SNAKE);
+        $resolver = new FromTypeBuiltin(Notation::SNAKE);
         $target = Target::createFrom(Builtin::class);
         $parameters = $target->getReflectionParameters();
 
@@ -83,7 +83,7 @@ final class FromTypeBuiltinTest extends TestCase
 
     public function testShouldResolveArrayType(): void
     {
-        $resolver = new FromTypeBuiltin(CaseNotation::SNAKE);
+        $resolver = new FromTypeBuiltin(Notation::SNAKE);
         $target = Target::createFrom(Builtin::class);
         $parameters = $target->getReflectionParameters();
 
@@ -98,7 +98,7 @@ final class FromTypeBuiltinTest extends TestCase
 
     public function testShouldFallbackToNextResolverForNonBuiltinType(): void
     {
-        $resolver = new FromTypeBuiltin(CaseNotation::SNAKE);
+        $resolver = new FromTypeBuiltin(Notation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -112,7 +112,7 @@ final class FromTypeBuiltinTest extends TestCase
 
     public function testShouldReturnNullForNullType(): void
     {
-        $resolver = new FromTypeBuiltin(CaseNotation::SNAKE);
+        $resolver = new FromTypeBuiltin(Notation::SNAKE);
         $target = Target::createFrom(Builtin::class);
         $parameters = $target->getReflectionParameters();
 
@@ -126,7 +126,7 @@ final class FromTypeBuiltinTest extends TestCase
 
     public function testShouldReturnNullForParameterWithoutType(): void
     {
-        $resolver = new FromTypeBuiltin(CaseNotation::SNAKE);
+        $resolver = new FromTypeBuiltin(Notation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 

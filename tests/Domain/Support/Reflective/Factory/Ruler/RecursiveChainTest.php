@@ -20,6 +20,7 @@ use Serendipity\Test\Testing\Stub\Union;
 class RecursiveChainTest extends TestCase
 {
     private RecursiveChain $chain;
+
     private Ruleset $ruleset;
 
     protected function setUp(): void

@@ -10,9 +10,9 @@ use ReflectionException;
 use ReflectionParameter;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Contract\Testing\Faker as Contract;
-use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
+use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Testing\Faker\Resolver\FromDefaultValue;
 use Serendipity\Testing\Faker\Resolver\FromDependency;
@@ -33,7 +33,7 @@ class Faker extends Engine implements Contract
      * @SuppressWarnings(StaticAccess)
      */
     public function __construct(
-        CaseNotation $case = CaseNotation::SNAKE,
+        Notation $case = Notation::SNAKE,
         array $formatters = [],
         ?string $locale = null,
     ) {
@@ -81,13 +81,13 @@ class Faker extends Engine implements Contract
         $values = [];
         foreach ($parameters as $parameter) {
             $field = $this->casedField($parameter);
-            $generated = (new FromDependency($this->case))
-                ->then(new FromTypeNative($this->case))
-                ->then(new FromTypeBuiltin($this->case))
-                ->then(new FromTypeAttributes($this->case))
-                ->then(new FromEnum($this->case))
-                ->then(new FromDefaultValue($this->case))
-                ->then(new FromPreset($this->case))
+            $generated = (new FromDependency($this->notation))
+                ->then(new FromTypeNative($this->notation))
+                ->then(new FromTypeBuiltin($this->notation))
+                ->then(new FromTypeAttributes($this->notation))
+                ->then(new FromEnum($this->notation))
+                ->then(new FromDefaultValue($this->notation))
+                ->then(new FromPreset($this->notation))
                 ->resolve($parameter, $presets);
 
             if ($generated === null) {

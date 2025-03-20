@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serendipity\Test\Testing\Faker\Resolver;
 
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
+use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\DeepDeepDown;
 use Serendipity\Test\Testing\Stub\EnumVariety;
@@ -21,7 +21,7 @@ final class FromEnumTest extends TestCase
 {
     public function testShouldResolveBackedEnum(): void
     {
-        $resolver = new FromEnum(CaseNotation::SNAKE);
+        $resolver = new FromEnum(Notation::SNAKE);
         $target = Target::createFrom(NotNative::class);
         $parameters = $target->getReflectionParameters();
 
@@ -36,7 +36,7 @@ final class FromEnumTest extends TestCase
 
     public function testShouldNotResolveNonBackedEnum(): void
     {
-        $resolver = new FromEnum(CaseNotation::SNAKE);
+        $resolver = new FromEnum(Notation::SNAKE);
         $target = Target::createFrom(NotNative::class);
         $parameters = $target->getReflectionParameters();
 
@@ -50,7 +50,7 @@ final class FromEnumTest extends TestCase
 
     public function testShouldResolveEnumInUnionType(): void
     {
-        $resolver = new FromEnum(CaseNotation::SNAKE);
+        $resolver = new FromEnum(Notation::SNAKE);
         $target = Target::createFrom(EnumVariety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -66,7 +66,7 @@ final class FromEnumTest extends TestCase
 
     public function testShouldFallbackToNextResolverForNonEnum(): void
     {
-        $resolver = new FromEnum(CaseNotation::SNAKE);
+        $resolver = new FromEnum(Notation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -80,7 +80,7 @@ final class FromEnumTest extends TestCase
 
     public function testShouldReturnNullForEmptyEnumeration(): void
     {
-        $resolver = new FromEnum(CaseNotation::SNAKE);
+        $resolver = new FromEnum(Notation::SNAKE);
 
         $target = Target::createFrom(NotNative::class);
         $parameters = $target->getReflectionParameters();
@@ -94,7 +94,7 @@ final class FromEnumTest extends TestCase
 
     public function testShouldNotResolveNotBackedEnum(): void
     {
-        $resolver = new FromEnum(CaseNotation::SNAKE);
+        $resolver = new FromEnum(Notation::SNAKE);
         $target = Target::createFrom(DeepDeepDown::class);
         $parameters = $target->getReflectionParameters();
 

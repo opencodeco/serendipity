@@ -6,7 +6,7 @@ namespace Serendipity\Infrastructure\Adapter;
 
 use Serendipity\Domain\Contract\Adapter\Serializer as Contract;
 use Serendipity\Domain\Contract\Formatter;
-use Serendipity\Domain\Support\Reflective\CaseNotation;
+use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 
@@ -22,7 +22,7 @@ class Serializer extends Builder implements Contract
      */
     public function __construct(
         public readonly string $type,
-        CaseNotation $case = CaseNotation::SNAKE,
+        Notation $case = Notation::SNAKE,
         array $formatters = [],
     ) {
         parent::__construct($case, $formatters);

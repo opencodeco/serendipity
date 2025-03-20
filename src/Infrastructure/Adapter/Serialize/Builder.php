@@ -77,13 +77,13 @@ class Builder extends Engine
     {
         foreach ($parameters as $parameter) {
             $nestedPath = [...$path, $parameter->getName()];
-            $resolved = (new ValidateValue(case: $this->case, path: $nestedPath))
-                ->then(new DependencyValue(case: $this->case, path: $nestedPath))
-                ->then(new BackedEnumValue(case: $this->case, path: $nestedPath))
-                ->then(new TypeMatched(case: $this->case, path: $nestedPath))
-                ->then(new AttributeValue(case: $this->case, path: $nestedPath))
-                ->then(new FormatValue($this->case, $this->formatters, $nestedPath))
-                ->then(new NoValue(case: $this->case, path: $nestedPath))
+            $resolved = (new ValidateValue(notation: $this->notation, path: $nestedPath))
+                ->then(new DependencyValue(notation: $this->notation, path: $nestedPath))
+                ->then(new BackedEnumValue(notation: $this->notation, path: $nestedPath))
+                ->then(new TypeMatched(notation: $this->notation, path: $nestedPath))
+                ->then(new AttributeValue(notation: $this->notation, path: $nestedPath))
+                ->then(new FormatValue($this->notation, $this->formatters, $nestedPath))
+                ->then(new NoValue(notation: $this->notation, path: $nestedPath))
                 ->resolve($parameter, $set);
 
             $resolution->add($resolved);

@@ -41,10 +41,10 @@ class Demolisher extends Engine
                 continue;
             }
 
-            $resolved = (new DoNothingChain($this->case))
-                ->then(new DependencyChain($this->case))
-                ->then(new AttributeChain($this->case))
-                ->then(new FormatterChain($this->case, $this->formatters))
+            $resolved = (new DoNothingChain($this->notation))
+                ->then(new DependencyChain($this->notation))
+                ->then(new AttributeChain($this->notation))
+                ->then(new FormatterChain($this->notation, $this->formatters))
                 ->resolve($parameter, $set->get($name));
 
             $field = $this->casedField($parameter);

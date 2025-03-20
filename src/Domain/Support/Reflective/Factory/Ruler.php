@@ -8,12 +8,12 @@ use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use ReflectionException;
-use Serendipity\Domain\Support\Reflective\CaseNotation;
 use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler\AttributeChain;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler\MandatoryChain;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler\RecursiveChain;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler\TypeChain;
+use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Reflective\Ruleset;
 
 class Ruler extends Engine
@@ -35,9 +35,9 @@ class Ruler extends Engine
     /**
      * @param array<string> $path
      */
-    public function __construct(CaseNotation $case = CaseNotation::SNAKE, array $path = [])
+    public function __construct(Notation $case = Notation::SNAKE, array $path = [])
     {
-        parent::__construct(case: $case, path: $path);
+        parent::__construct(notation: $case, path: $path);
     }
 
     /**
@@ -64,10 +64,10 @@ class Ruler extends Engine
         $parameters = $target->getReflectionParameters();
 
         $path = [...$this->path, ...$path];
-        $chain = (new RecursiveChain(case: $this->case, path: $path))
-            ->then(new AttributeChain(case: $this->case, path: $path))
-            ->then(new TypeChain(case: $this->case, path: $path))
-            ->then(new MandatoryChain(case: $this->case, path: $path));
+        $chain = (new RecursiveChain(case: $this->notation, path: $path))
+            ->then(new AttributeChain(case: $this->notation, path: $path))
+            ->then(new TypeChain(case: $this->notation, path: $path))
+            ->then(new MandatoryChain(case: $this->notation, path: $path));
         foreach ($parameters as $parameter) {
             $chain->resolve($parameter, $ruleset);
         }
