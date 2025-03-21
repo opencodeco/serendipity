@@ -25,20 +25,23 @@ class GoogleCloudLoggerTest extends TestCase
 
     private GoogleCloudLogger $googleCloudLogger;
 
+    private Task $task;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->logger = $this->createMock(Logger::class);
 
-        $task = $this->make(Task::class);
+        $this->task = $this->make(Task::class);
 
-        $task->setCorrelationId('f54a34947e7c4010befcc60a7b799d21')
+        $this->task->setResource('SQS:/queue')
+            ->setCorrelationId('f54a34947e7c4010befcc60a7b799d21')
             ->setPlatformId('9018488796262766009');
 
         $this->googleCloudLogger = new GoogleCloudLogger(
             driver: $this->logger,
-            task: $task,
+            task: $this->task,
             projectId: 'projectId',
             serviceName: 'serviceName',
             env: 'test',
@@ -61,12 +64,7 @@ class GoogleCloudLoggerTest extends TestCase
                         'logName' => 'projects/projectId/logs/serviceName%2Fenv-test',
                         'severity' => 'INFO',
                         'jsonPayload.key' => $context['key'],
-                        'jsonPayload.message' => sprintf(
-                            "%s | %s | %s",
-                            $message,
-                            'f54a34947e7c4010befcc60a7b799d21',
-                            '9018488796262766009'
-                        ),
+                        'jsonPayload.message' => sprintf("%s | %s", $message, $this->task->resume()),
                         'resource.type' => 'cloud_run_revision',
                         'resource.labels.configuration_name' => 'serviceName',
                         'resource.labels.location' => 'us-central1',

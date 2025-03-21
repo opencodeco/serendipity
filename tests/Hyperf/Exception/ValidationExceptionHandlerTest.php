@@ -28,7 +28,7 @@ final class ValidationExceptionHandlerTest extends TestCase
     {
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())
-            ->method('notice')
+            ->method('debug')
             ->willReturnCallback(function (string $message, array $context) {
                 $this->assertStringContainsString('<validation>', $message);
                 $expected = [

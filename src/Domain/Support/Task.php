@@ -6,9 +6,17 @@ namespace Serendipity\Domain\Support;
 
 final class Task
 {
+    private string $resource = '';
+
     private string $correlationId = '';
 
     private string $platformId = '';
+
+    public function setResource(string $resource): self
+    {
+        $this->resource = $resource;
+        return $this;
+    }
 
     public function setCorrelationId(string $correlationId): self
     {
@@ -22,6 +30,11 @@ final class Task
         return $this;
     }
 
+    public function getResource(): string
+    {
+        return $this->resource;
+    }
+
     public function getCorrelationId(): string
     {
         return $this->correlationId;
@@ -30,5 +43,10 @@ final class Task
     public function getPlatformId(): string
     {
         return $this->platformId;
+    }
+
+    public function resume(): string
+    {
+        return sprintf('%s::%s::%s', $this->getResource(), $this->getCorrelationId(), $this->getPlatformId());
     }
 }

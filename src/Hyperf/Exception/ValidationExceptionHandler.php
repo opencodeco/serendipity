@@ -35,7 +35,7 @@ class ValidationExceptionHandler extends ExceptionHandler
 
         $message = sprintf('<validation> %s', $throwable->getMessage());
         $context = $this->extractContext($throwable);
-        $this->logger->notice($message, $context);
+        $this->logger->debug($message, $context);
 
         return $response
             ->setStatus($this->extractStatus($throwable))

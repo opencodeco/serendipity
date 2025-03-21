@@ -33,7 +33,7 @@ class GoogleCloudLogger extends AbstractLogger
 
     public function log($level, string|Stringable $message, array $context = []): void
     {
-        $message = sprintf("%s | %s | %s", $message, $this->task->getCorrelationId(), $this->task->getPlatformId());
+        $message = sprintf("%s | %s", $message, $this->task->resume());
         $context['message'] = $message;
         $severity = $this->level(stringify($level));
         $payload = $this->payload($severity, $context);

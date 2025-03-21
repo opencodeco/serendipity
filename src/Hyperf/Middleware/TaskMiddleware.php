@@ -39,7 +39,10 @@ readonly class TaskMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $this->task->setCorrelationId($this->extractCorrelationId($request))
+        $operation = sprintf('%s:%s', upperify($request->getMethod()), $request->getUri()->getPath());
+        $this->task
+            ->setResource($operation)
+            ->setCorrelationId($this->extractCorrelationId($request))
             ->setPlatformId($this->extractPlatformId($request));
 
         return $handler->handle($request);
