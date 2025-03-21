@@ -31,8 +31,8 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'http.task.correlation_id' => ['X-Correlation-ID', 'header'],
-                'http.task.platform_id' => ['X-Platform-ID', 'header'],
+                'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
+                'task.default.platform_id' => ['X-Platform-ID', 'header'],
                 default => null,
             });
 
@@ -77,8 +77,8 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'http.task.correlation_id' => ['correlation_id', 'query'],
-                'http.task.platform_id' => ['platform_id', 'query'],
+                'task.default.correlation_id' => ['correlation_id', 'query'],
+                'task.default.platform_id' => ['platform_id', 'query'],
                 default => null,
             });
 
@@ -122,8 +122,8 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'http.task.correlation_id' => ['correlation_id', 'cookie'],
-                'http.task.platform_id' => ['platform_id', 'cookie'],
+                'task.default.correlation_id' => ['correlation_id', 'cookie'],
+                'task.default.platform_id' => ['platform_id', 'cookie'],
                 default => null,
             });
 
@@ -167,8 +167,8 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'http.task.correlation_id' => ['correlation_id', 'body'],
-                'http.task.platform_id' => ['platform_id', 'body'],
+                'task.default.correlation_id' => ['correlation_id', 'body'],
+                'task.default.platform_id' => ['platform_id', 'body'],
                 default => null,
             });
 
@@ -202,6 +202,43 @@ final class TaskMiddlewareTest extends TestCase
         $this->assertEquals($platformId, $task->getPlatformId());
     }
 
+    public function testShouldNotExtractWhenTypeIsUnknown(): void
+    {
+        // Arrange
+        $task = $this->make(Task::class);
+
+        $config = $this->createMock(ConfigInterface::class);
+        $config->method('get')
+            ->willReturnCallback(fn ($key) => match ($key) {
+                'task.default.correlation_id' => ['correlation_id', '***'],
+                'task.default.platform_id' => ['platform_id', '***'],
+                default => null,
+            });
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('get')
+            ->willReturnCallback(fn (string $id) => match ($id) {
+                Task::class => $task,
+                ConfigInterface::class => $config,
+                default => null,
+            });
+
+        $request = $this->createMock(ServerRequestInterface::class);
+        $response = $this->createMock(ResponseInterface::class);
+
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->method('handle')
+            ->willReturn($response);
+
+        // Act
+        $middleware = new TaskMiddleware($container);
+        $middleware->process($request, $handler);
+
+        // Assert
+        $this->assertEquals('N/A', $task->getCorrelationId());
+        $this->assertEquals('N/A', $task->getPlatformId());
+    }
+
     public function testShouldUseNotApplicableCorrelationIdWhenNotPresent(): void
     {
         // Arrange
@@ -211,8 +248,8 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'http.task.correlation_id' => ['X-Correlation-ID', 'header'],
-                'http.task.platform_id' => ['X-Platform-ID', 'header'],
+                'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
+                'task.default.platform_id' => ['X-Platform-ID', 'header'],
                 default => null,
             });
 
@@ -256,8 +293,8 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'http.task.correlation_id' => ['X-Correlation-ID', 'header'],
-                'http.task.platform_id' => ['X-Platform-ID', 'header'],
+                'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
+                'task.default.platform_id' => ['X-Platform-ID', 'header'],
                 default => null,
             });
 
@@ -299,8 +336,8 @@ final class TaskMiddlewareTest extends TestCase
         $config = $this->createMock(ConfigInterface::class);
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
-                'http.task.correlation_id' => ['X-Correlation-ID', 'header'],
-                'http.task.platform_id' => ['X-Platform-ID', 'header'],
+                'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
+                'task.default.platform_id' => ['X-Platform-ID', 'header'],
                 default => null,
             });
 
@@ -327,7 +364,7 @@ final class TaskMiddlewareTest extends TestCase
         $middleware->process($request, $handler);
 
         // Assert
-        $this->assertEquals('N/A', $task->getCorrelationId());
-        $this->assertEquals('N/A', $task->getPlatformId());
+        $this->assertEquals('ERR', $task->getCorrelationId());
+        $this->assertEquals('ERR', $task->getPlatformId());
     }
 }

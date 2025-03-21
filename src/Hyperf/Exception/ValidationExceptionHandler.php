@@ -33,14 +33,14 @@ class ValidationExceptionHandler extends ExceptionHandler
     {
         $this->stopPropagation();
 
-        $errors = $this->extractErrors($throwable);
         $message = sprintf('<validation> %s', $throwable->getMessage());
-        $this->logger->notice($message, $errors);
+        $context = $this->extractContext($throwable);
+        $this->logger->notice($message, $context);
 
         return $response
             ->setStatus($this->extractStatus($throwable))
             ->addHeader('content-type', 'application/json; charset=utf-8')
-            ->setBody(new SwooleStream($this->formatter->format($errors, Type::INVALID_INPUT)));
+            ->setBody(new SwooleStream($this->formatter->format($context, Type::INVALID_INPUT)));
     }
 
     public function isValid(Throwable $throwable): bool
@@ -48,7 +48,7 @@ class ValidationExceptionHandler extends ExceptionHandler
         return $throwable instanceof ValidationException || $throwable instanceof InvalidInputException;
     }
 
-    private function extractErrors(Throwable $throwable): array
+    private function extractContext(Throwable $throwable): array
     {
         $errors = match (true) {
             $throwable instanceof ValidationException => $throwable->validator->errors()->getMessages(),
@@ -57,11 +57,9 @@ class ValidationExceptionHandler extends ExceptionHandler
         };
         return [
             'errors' => $errors,
-            'payload' => [
-                'headers' => $this->headers(),
-                'query' => $this->request->query(),
-                'body' => $this->request->post(),
-            ],
+            'headers' => $this->headers(),
+            'query' => $this->request->query(),
+            'body' => $this->request->post(),
         ];
     }
 
@@ -80,7 +78,7 @@ class ValidationExceptionHandler extends ExceptionHandler
             if (! is_array($header)) {
                 return stringify($header);
             }
-            return implode(';', array_map(fn (mixed $value) => stringify($value), $header));
+            return implode('; ', array_map(fn (mixed $value) => stringify($value), $header));
         };
         return array_map($callback, $this->request->getHeaders());
     }

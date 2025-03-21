@@ -14,9 +14,9 @@ use Serendipity\Domain\Exception\Misconfiguration;
 use function assert;
 use function Serendipity\Type\Cast\stringify;
 
-class CorsMiddleware
+readonly class CorsMiddleware
 {
-    public function __construct(private readonly ConfigInterface $config)
+    public function __construct(private ConfigInterface $config)
     {
     }
 

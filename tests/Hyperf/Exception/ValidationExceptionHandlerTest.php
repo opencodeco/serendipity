@@ -27,8 +27,24 @@ final class ValidationExceptionHandlerTest extends TestCase
     public function testHandleShouldReturnValidationErrors(): void
     {
         $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('notice')
+            ->willReturnCallback(function (string $message, array $context) {
+                $this->assertStringContainsString('<validation>', $message);
+                $expected = [
+                    'accept' => 'application/json; UTF-8',
+                    'content-type' => 'text/xml',
+                ];
+                $this->assertEquals($expected, $context['headers']);
+            });
         $formatter = $this->createMock(JsonFormatter::class);
         $request = $this->createMock(RequestInterface::class);
+        $request->expects($this->once())
+            ->method('getHeaders')
+            ->willReturn([
+                'accept' => ['application/json', 'UTF-8'],
+                'content-type' => 'text/xml',
+            ]);
         $handler = new ValidationExceptionHandler($logger, $formatter, $request);
 
         $response = $this->createMock(ResponsePlusInterface::class);

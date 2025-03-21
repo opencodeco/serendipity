@@ -15,7 +15,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Domain\Support\Task;
 use Throwable;
 
+use function array_map;
 use function Hyperf\Collection\data_get;
+use function Serendipity\Notation\lowerify;
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\stringify;
 
@@ -46,29 +48,39 @@ readonly class TaskMiddleware implements MiddlewareInterface
     private function extractCorrelationId(ServerRequestInterface $request): string
     {
         try {
-            $location = $this->location('http.task.correlation_id', ['X-Correlation-ID', 'header']);
-            return $this->extract($request, ...$location) ?: bin2hex(random_bytes(16));
+            $location = $this->location($request, 'correlation_id', ['X-Correlation-ID', 'header']);
+            return $this->extract($request, ...$location) ?: 'N/A';
         } catch (Throwable) {
-            return 'N/A';
+            return 'ERR';
         }
     }
 
     private function extractPlatformId(ServerRequestInterface $request): string
     {
         try {
-            $location = $this->location('http.task.platform_id', ['X-Platform-ID', 'header']);
-            return $this->extract($request, ...$location) ?: '-';
+            $location = $this->location($request, 'platform_id', ['X-Platform-ID', 'header']);
+            return $this->extract($request, ...$location) ?: 'N/A';
         } catch (Throwable) {
-            return 'N/A';
+            return 'ERR';
         }
     }
 
     /**
      * @return array<string>
      */
-    private function location(string $key, array $default): array
+    private function location(ServerRequestInterface $request, string $key, array $default): array
     {
-        $location = arrayify($this->config->get($key, $default));
+        $path = sprintf(
+            'http.%s:%s.%s',
+            lowerify($request->getMethod()),
+            $request->getUri()->getPath(),
+            $key,
+        );
+        $location = arrayify($this->config->get($path, []));
+        if (empty($location)) {
+            $path = sprintf('task.default.%s', $key);
+            $location = arrayify($this->config->get($path, $default));
+        }
         return array_map(fn ($item) => stringify($item), $location);
     }
 
