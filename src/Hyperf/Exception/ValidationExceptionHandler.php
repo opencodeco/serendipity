@@ -17,6 +17,7 @@ use Serendipity\Infrastructure\Http\JsonFormatter;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Throwable;
 
+use function Serendipity\Type\Cast\stringify;
 use function sprintf;
 
 class ValidationExceptionHandler extends ExceptionHandler
@@ -57,7 +58,7 @@ class ValidationExceptionHandler extends ExceptionHandler
         return [
             'errors' => $errors,
             'payload' => [
-                'headers' => $this->request->getHeaders(),
+                'headers' => $this->headers(),
                 'query' => $this->request->query(),
                 'body' => $this->request->post(),
             ],
@@ -71,5 +72,16 @@ class ValidationExceptionHandler extends ExceptionHandler
             $throwable instanceof InvalidInputException => 428,
             default => 400,
         };
+    }
+
+    private function headers(): array
+    {
+        $callback = function (mixed $header): string {
+            if (! is_array($header)) {
+                return stringify($header);
+            }
+            return implode(';', array_map(fn (mixed $value) => stringify($value), $header));
+        };
+        return array_map($callback, $this->request->getHeaders());
     }
 }

@@ -9,6 +9,7 @@ use DateTimeInterface;
 use Google\Cloud\Logging\Entry;
 use Google\Cloud\Logging\Logger as GoogleCloud;
 use Psr\Log\LogLevel;
+use Serendipity\Domain\Support\Task;
 use Stringable;
 use Throwable;
 
@@ -20,6 +21,7 @@ class GoogleCloudLogger extends AbstractLogger
 {
     public function __construct(
         private readonly GoogleCloud $driver,
+        private readonly Task $task,
         public readonly string $projectId,
         public readonly string $serviceName,
         public readonly string $env,
@@ -31,6 +33,7 @@ class GoogleCloudLogger extends AbstractLogger
 
     public function log($level, string|Stringable $message, array $context = []): void
     {
+        $message = sprintf("%s | %s | %s", $message, $this->task->getCorrelationId(), $this->task->getPlatformId());
         $context['message'] = $message;
         $severity = $this->level(stringify($level));
         $payload = $this->payload($severity, $context);
@@ -87,7 +90,7 @@ class GoogleCloudLogger extends AbstractLogger
         } catch (Throwable $error) {
             $detail = sprintf('"%s" in `%s` at `%s`', $error->getMessage(), $error->getFile(), $error->getLine());
             $stdout = sprintf(
-                '[panic:%s] %s: %s (%s)',
+                '[panic] <%s> %s: %s (%s)',
                 $severity,
                 $message,
                 encode($context),

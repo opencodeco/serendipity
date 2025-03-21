@@ -8,6 +8,8 @@ use Exception;
 use Google\Cloud\Logging\Entry;
 use Google\Cloud\Logging\Logger;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Support\Task;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
 
 use function Hyperf\Collection\data_get;
@@ -15,8 +17,10 @@ use function Hyperf\Collection\data_get;
 /**
  * @internal
  */
-final class GoogleCloudLoggerTest extends TestCase
+class GoogleCloudLoggerTest extends TestCase
 {
+    use MakeExtension;
+
     private Logger $logger;
 
     private GoogleCloudLogger $googleCloudLogger;
@@ -27,8 +31,14 @@ final class GoogleCloudLoggerTest extends TestCase
 
         $this->logger = $this->createMock(Logger::class);
 
+        $task = $this->make(Task::class);
+
+        $task->setCorrelationId('f54a34947e7c4010befcc60a7b799d21')
+            ->setPlatformId('9018488796262766009');
+
         $this->googleCloudLogger = new GoogleCloudLogger(
             driver: $this->logger,
+            task: $task,
             projectId: 'projectId',
             serviceName: 'serviceName',
             env: 'test',
@@ -36,7 +46,7 @@ final class GoogleCloudLoggerTest extends TestCase
         );
     }
 
-    public function testShouldLogMessagesCorrectly(): void
+    final public function testShouldLogMessagesCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -51,7 +61,12 @@ final class GoogleCloudLoggerTest extends TestCase
                         'logName' => 'projects/projectId/logs/serviceName%2Fenv-test',
                         'severity' => 'INFO',
                         'jsonPayload.key' => $context['key'],
-                        'jsonPayload.message' => $message,
+                        'jsonPayload.message' => sprintf(
+                            "%s | %s | %s",
+                            $message,
+                            'f54a34947e7c4010befcc60a7b799d21',
+                            '9018488796262766009'
+                        ),
                         'resource.type' => 'cloud_run_revision',
                         'resource.labels.configuration_name' => 'serviceName',
                         'resource.labels.location' => 'us-central1',
@@ -75,7 +90,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldLogEmergencyMessageCorrectly(): void
+    final public function testShouldLogEmergencyMessageCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -92,7 +107,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldLogInfoMessageCorrectly(): void
+    final public function testShouldLogInfoMessageCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -109,7 +124,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldLogAlertMessageCorrectly(): void
+    final public function testShouldLogAlertMessageCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -126,7 +141,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldLogCriticalMessageCorrectly(): void
+    final public function testShouldLogCriticalMessageCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -143,7 +158,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldLogErrorMessageCorrectly(): void
+    final public function testShouldLogErrorMessageCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -160,7 +175,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldLogWarningMessageCorrectly(): void
+    final public function testShouldLogWarningMessageCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -177,7 +192,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldLogNoticeMessageCorrectly(): void
+    final public function testShouldLogNoticeMessageCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -194,7 +209,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldLogDebugMessageCorrectly(): void
+    final public function testShouldLogDebugMessageCorrectly(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -211,7 +226,7 @@ final class GoogleCloudLoggerTest extends TestCase
         // Nothing more to assert as behavior is validated via `$this->logger->expects()`
     }
 
-    public function testShouldPrintfOnException(): void
+    final public function testShouldPrintfOnException(): void
     {
         // Arrange
         $message = 'Test Message';
@@ -230,11 +245,13 @@ final class GoogleCloudLoggerTest extends TestCase
         $this->assertMatchesRegularExpression('/\("Test Exception" in `.*` at `.*`\)/', $output);
     }
 
-    public function testShouldWriteLogUsingCoroutine(): void
+    final public function testShouldWriteLogUsingCoroutine(): void
     {
         // Arrange
+        $task = $this->make(Task::class);
         $googleCloudLogger = new GoogleCloudLogger(
             driver: $this->logger,
+            task: $task,
             projectId: 'projectId',
             serviceName: 'serviceName',
             env: 'test',

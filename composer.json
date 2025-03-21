@@ -80,6 +80,7 @@
     "psr/http-client": "^1.0",
     "psr/http-message": "^2.0",
     "psr/http-server-handler": "^1.0",
+    "psr/http-server-middleware": "^1.0",
     "psr/log": "^3.0",
     "rakibtg/sleekdb": "^2.15",
     "swow/psr7-plus": "^1.1",

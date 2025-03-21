@@ -6,15 +6,20 @@ namespace Serendipity\Test\Hyperf\Logging;
 
 use Hyperf\Contract\ConfigInterface;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Support\Task;
 use Serendipity\Hyperf\Logging\GoogleCloudLoggerFactory;
+use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 
 /**
  * @internal
  */
 final class GoogleCloudLoggerFactoryTest extends TestCase
 {
+    use MakeExtension;
+
     public function testShouldMakeGoogleCloudLogger(): void
     {
+        $task = $this->make(Task::class);
         $config = $this->createMock(ConfigInterface::class);
         $config->expects($this->exactly(3))
             ->method('get')
@@ -25,7 +30,7 @@ final class GoogleCloudLoggerFactoryTest extends TestCase
                 default => null,
             });
 
-        $factory = new GoogleCloudLoggerFactory($config);
+        $factory = new GoogleCloudLoggerFactory($task, $config);
 
         $logger = $factory->make('prd');
 

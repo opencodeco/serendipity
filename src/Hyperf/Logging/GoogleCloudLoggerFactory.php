@@ -6,6 +6,7 @@ namespace Serendipity\Hyperf\Logging;
 
 use Google\Cloud\Logging\LoggingClient;
 use Hyperf\Contract\ConfigInterface;
+use Serendipity\Domain\Support\Task;
 use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
 
 use function Serendipity\Type\Cast\arrayify;
@@ -19,8 +20,10 @@ readonly class GoogleCloudLoggerFactory
 
     private array $options;
 
-    public function __construct(ConfigInterface $config)
-    {
+    public function __construct(
+        private Task $task,
+        ConfigInterface $config
+    ) {
         $this->projectId = stringify($config->get('logger.gcloud.project_id', 'unknown'));
         $this->serviceName = stringify($config->get('logger.gcloud.service_name', 'unknown'));
         $this->options = arrayify($config->get('logger.gcloud.options'));
@@ -30,6 +33,6 @@ readonly class GoogleCloudLoggerFactory
     {
         $logging = new LoggingClient(['projectId' => $this->projectId]);
         $driver = $logging->logger('google-cloud', $this->options);
-        return new GoogleCloudLogger($driver, $this->projectId, $this->serviceName, $env);
+        return new GoogleCloudLogger($driver, $this->task, $this->projectId, $this->serviceName, $env);
     }
 }
