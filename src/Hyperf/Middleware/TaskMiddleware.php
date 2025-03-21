@@ -17,7 +17,7 @@ use Throwable;
 
 use function array_map;
 use function Hyperf\Collection\data_get;
-use function Serendipity\Notation\lowerify;
+use function Serendipity\Notation\upperify;
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\stringify;
 
@@ -71,8 +71,8 @@ readonly class TaskMiddleware implements MiddlewareInterface
     private function location(ServerRequestInterface $request, string $key, array $default): array
     {
         $path = sprintf(
-            'http.%s:%s.%s',
-            lowerify($request->getMethod()),
+            'task.%s:%s.%s',
+            upperify($request->getMethod()),
             $request->getUri()->getPath(),
             $key,
         );
