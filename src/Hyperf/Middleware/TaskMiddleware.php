@@ -15,6 +15,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Domain\Support\Task;
 use Throwable;
 
+use function Hyperf\Collection\data_get;
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\stringify;
 
@@ -71,13 +72,13 @@ readonly class TaskMiddleware implements MiddlewareInterface
         return array_map(fn ($item) => stringify($item), $location);
     }
 
-    private function extract(ServerRequestInterface $request, string $name, string $type = ''): string
+    private function extract(ServerRequestInterface $request, string $key, string $type = ''): string
     {
         $extracted = match ($type) {
-            'header' => $request->getHeaderLine($name),
-            'query' => $request->getQueryParams()[$name] ?? '',
-            'cookie' => $request->getCookieParams()[$name] ?? '',
-            'body' => arrayify($request->getParsedBody())[$name] ?? '',
+            'header' => $request->getHeaderLine($key),
+            'query' => $request->getQueryParams()[$key] ?? '',
+            'cookie' => $request->getCookieParams()[$key] ?? '',
+            'body' => data_get(arrayify($request->getParsedBody()), $key, ''),
             default => '',
         };
         return stringify($extracted);
