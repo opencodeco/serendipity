@@ -43,7 +43,7 @@ readonly class TaskMiddleware implements MiddlewareInterface
         $this->task
             ->setResource($operation)
             ->setCorrelationId($this->extractCorrelationId($request))
-            ->setPlatformId($this->extractPlatformId($request));
+            ->setInvokerId($this->extractPlatformId($request));
 
         return $handler->handle($request);
     }
@@ -61,7 +61,7 @@ readonly class TaskMiddleware implements MiddlewareInterface
     private function extractPlatformId(ServerRequestInterface $request): string
     {
         try {
-            $location = $this->location($request, 'platform_id', ['X-Platform-ID', 'header']);
+            $location = $this->location($request, 'invoker_id', ['X-Invoker-ID', 'header']);
             return $this->extract($request, ...$location) ?: 'N/A';
         } catch (Throwable) {
             return 'ERR';

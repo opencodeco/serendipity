@@ -10,7 +10,7 @@ final class Task
 
     private string $correlationId = '';
 
-    private string $platformId = '';
+    private string $invokerId = '';
 
     public function setResource(string $resource): self
     {
@@ -24,9 +24,9 @@ final class Task
         return $this;
     }
 
-    public function setPlatformId(string $platformId): self
+    public function setInvokerId(string $invokerId): self
     {
-        $this->platformId = $platformId;
+        $this->invokerId = $invokerId;
         return $this;
     }
 
@@ -40,13 +40,13 @@ final class Task
         return $this->correlationId;
     }
 
-    public function getPlatformId(): string
+    public function getInvokerId(): string
     {
-        return $this->platformId;
+        return $this->invokerId;
     }
 
     public function resume(): string
     {
-        return sprintf('%s::%s::%s', $this->getResource(), $this->getCorrelationId(), $this->getPlatformId());
+        return sprintf('%s::%s::%s', $this->getResource(), $this->getCorrelationId(), $this->getInvokerId());
     }
 }

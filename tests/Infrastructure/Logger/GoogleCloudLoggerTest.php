@@ -37,7 +37,7 @@ class GoogleCloudLoggerTest extends TestCase
 
         $this->task->setResource('SQS:/queue')
             ->setCorrelationId('f54a34947e7c4010befcc60a7b799d21')
-            ->setPlatformId('9018488796262766009');
+            ->setInvokerId('9018488796262766009');
 
         $this->googleCloudLogger = new GoogleCloudLogger(
             driver: $this->logger,

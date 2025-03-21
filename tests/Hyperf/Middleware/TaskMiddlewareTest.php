@@ -32,7 +32,7 @@ final class TaskMiddlewareTest extends TestCase
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
                 'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
-                'task.default.platform_id' => ['X-Platform-ID', 'header'],
+                'task.default.invoker_id' => ['X-Invoker-ID', 'header'],
                 default => null,
             });
 
@@ -48,7 +48,7 @@ final class TaskMiddlewareTest extends TestCase
         $request->method('getHeaderLine')
             ->willReturnCallback(fn (string $name) => match ($name) {
                 'X-Correlation-ID' => $correlationId,
-                'X-Platform-ID' => $platformId,
+                'X-Invoker-ID' => $platformId,
                 default => '',
             });
 
@@ -64,7 +64,7 @@ final class TaskMiddlewareTest extends TestCase
 
         // Assert
         $this->assertEquals($correlationId, $task->getCorrelationId());
-        $this->assertEquals($platformId, $task->getPlatformId());
+        $this->assertEquals($platformId, $task->getInvokerId());
     }
 
     public function testShouldExtractFromQuery(): void
@@ -78,7 +78,7 @@ final class TaskMiddlewareTest extends TestCase
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
                 'task.default.correlation_id' => ['correlation_id', 'query'],
-                'task.default.platform_id' => ['platform_id', 'query'],
+                'task.default.invoker_id' => ['invoker_id', 'query'],
                 default => null,
             });
 
@@ -94,7 +94,7 @@ final class TaskMiddlewareTest extends TestCase
         $request->method('getQueryParams')
             ->willReturn([
                 'correlation_id' => $correlationId,
-                'platform_id' => $platformId,
+                'invoker_id' => $platformId,
             ]);
 
         $response = $this->createMock(ResponseInterface::class);
@@ -109,7 +109,7 @@ final class TaskMiddlewareTest extends TestCase
 
         // Assert
         $this->assertEquals($correlationId, $task->getCorrelationId());
-        $this->assertEquals($platformId, $task->getPlatformId());
+        $this->assertEquals($platformId, $task->getInvokerId());
     }
 
     public function testShouldExtractFromCookie(): void
@@ -123,7 +123,7 @@ final class TaskMiddlewareTest extends TestCase
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
                 'task.default.correlation_id' => ['correlation_id', 'cookie'],
-                'task.default.platform_id' => ['platform_id', 'cookie'],
+                'task.default.invoker_id' => ['invoker_id', 'cookie'],
                 default => null,
             });
 
@@ -139,7 +139,7 @@ final class TaskMiddlewareTest extends TestCase
         $request->method('getCookieParams')
             ->willReturn([
                 'correlation_id' => $correlationId,
-                'platform_id' => $platformId,
+                'invoker_id' => $platformId,
             ]);
 
         $response = $this->createMock(ResponseInterface::class);
@@ -154,7 +154,7 @@ final class TaskMiddlewareTest extends TestCase
 
         // Assert
         $this->assertEquals($correlationId, $task->getCorrelationId());
-        $this->assertEquals($platformId, $task->getPlatformId());
+        $this->assertEquals($platformId, $task->getInvokerId());
     }
 
     public function testShouldExtractFromParsedBody(): void
@@ -168,7 +168,7 @@ final class TaskMiddlewareTest extends TestCase
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
                 'task.default.correlation_id' => ['correlation_id', 'body'],
-                'task.default.platform_id' => ['platform_id', 'body'],
+                'task.default.invoker_id' => ['invoker_id', 'body'],
                 default => null,
             });
 
@@ -184,7 +184,7 @@ final class TaskMiddlewareTest extends TestCase
         $request->method('getParsedBody')
             ->willReturn([
                 'correlation_id' => $correlationId,
-                'platform_id' => $platformId,
+                'invoker_id' => $platformId,
             ]);
 
         $response = $this->createMock(ResponseInterface::class);
@@ -199,7 +199,7 @@ final class TaskMiddlewareTest extends TestCase
 
         // Assert
         $this->assertEquals($correlationId, $task->getCorrelationId());
-        $this->assertEquals($platformId, $task->getPlatformId());
+        $this->assertEquals($platformId, $task->getInvokerId());
     }
 
     public function testShouldNotExtractWhenTypeIsUnknown(): void
@@ -211,7 +211,7 @@ final class TaskMiddlewareTest extends TestCase
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
                 'task.default.correlation_id' => ['correlation_id', '***'],
-                'task.default.platform_id' => ['platform_id', '***'],
+                'task.default.invoker_id' => ['invoker_id', '***'],
                 default => null,
             });
 
@@ -236,7 +236,7 @@ final class TaskMiddlewareTest extends TestCase
 
         // Assert
         $this->assertEquals('N/A', $task->getCorrelationId());
-        $this->assertEquals('N/A', $task->getPlatformId());
+        $this->assertEquals('N/A', $task->getInvokerId());
     }
 
     public function testShouldUseNotApplicableCorrelationIdWhenNotPresent(): void
@@ -249,7 +249,7 @@ final class TaskMiddlewareTest extends TestCase
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
                 'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
-                'task.default.platform_id' => ['X-Platform-ID', 'header'],
+                'task.default.invoker_id' => ['X-Invoker-ID', 'header'],
                 default => null,
             });
 
@@ -265,7 +265,7 @@ final class TaskMiddlewareTest extends TestCase
         $request->method('getHeaderLine')
             ->willReturnCallback(fn (string $name) => match ($name) {
                 'X-Correlation-ID' => '',
-                'X-Platform-ID' => $platformId,
+                'X-Invoker-ID' => $platformId,
                 default => '',
             });
 
@@ -281,7 +281,7 @@ final class TaskMiddlewareTest extends TestCase
 
         // Assert
         $this->assertNotEmpty($task->getCorrelationId());
-        $this->assertEquals($platformId, $task->getPlatformId());
+        $this->assertEquals($platformId, $task->getInvokerId());
     }
 
     public function testShouldUseNotApplicablePlatformIdWhenNotPresent(): void
@@ -294,7 +294,7 @@ final class TaskMiddlewareTest extends TestCase
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
                 'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
-                'task.default.platform_id' => ['X-Platform-ID', 'header'],
+                'task.default.invoker_id' => ['X-Invoker-ID', 'header'],
                 default => null,
             });
 
@@ -325,7 +325,7 @@ final class TaskMiddlewareTest extends TestCase
 
         // Assert
         $this->assertEquals($correlationId, $task->getCorrelationId());
-        $this->assertNotEmpty($task->getPlatformId());
+        $this->assertNotEmpty($task->getInvokerId());
     }
 
     public function testShouldHandleExceptionDuringExtraction(): void
@@ -337,7 +337,7 @@ final class TaskMiddlewareTest extends TestCase
         $config->method('get')
             ->willReturnCallback(fn ($key) => match ($key) {
                 'task.default.correlation_id' => ['X-Correlation-ID', 'header'],
-                'task.default.platform_id' => ['X-Platform-ID', 'header'],
+                'task.default.invoker_id' => ['X-Invoker-ID', 'header'],
                 default => null,
             });
 
@@ -365,6 +365,6 @@ final class TaskMiddlewareTest extends TestCase
 
         // Assert
         $this->assertEquals('ERR', $task->getCorrelationId());
-        $this->assertEquals('ERR', $task->getPlatformId());
+        $this->assertEquals('ERR', $task->getInvokerId());
     }
 }
