@@ -14,7 +14,8 @@ setup: ## Setup the project
 ##@ Bash controls
 
 bash: ## Start nginx bash
-	@$(COMPOSE_RUNNER) run --rm --entrypoint sh app
+	@make up
+	@$(COMPOSE_RUNNER) exec app sh
 
 up: ## Start the project
 	@$(COMPOSE_RUNNER) up -d

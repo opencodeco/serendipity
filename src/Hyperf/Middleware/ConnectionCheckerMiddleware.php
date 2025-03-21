@@ -14,6 +14,8 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Hyperf\Database\Relational\HyperfConnectionChecker;
 
+use function Serendipity\Type\Cast\integerify;
+
 readonly class ConnectionCheckerMiddleware implements MiddlewareInterface
 {
     private HyperfConnectionChecker $connectionChecker;
@@ -33,8 +35,8 @@ readonly class ConnectionCheckerMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $this->connectionChecker->check(
-            $this->config->get('database.settings.check.max_attempts', 3),
-            $this->config->get('database.settings.check.delay_microseconds', 100),
+            integerify($this->config->get('database.settings.check.max_attempts', 3)),
+            integerify($this->config->get('database.settings.check.delay_microseconds', 100)),
         );
 
         return $handler->handle($request);
