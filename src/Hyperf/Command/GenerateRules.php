@@ -90,6 +90,9 @@ class GenerateRules extends HyperfCommand
     private function generateRulesFromFile(string $filePath): ?string
     {
         $projectRoot = dirname(__DIR__, 3);
+        if (defined('BASE_PATH')) {
+            $projectRoot = BASE_PATH;
+        }
         $composerJsonPath = sprintf('%s/composer.json', $projectRoot);
 
         $composer = json_decode(file_get_contents($composerJsonPath), true);
