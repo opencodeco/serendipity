@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\integerify;
+use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\Util\extractInt;
 
 if (! function_exists('array_flatten')) {
@@ -66,5 +67,28 @@ if (! function_exists('array_unshift_key')) {
         }
         $array[$key][] = $value;
         return $array;
+    }
+}
+
+if (! function_exists('array_export')) {
+    function array_export(array $array): string
+    {
+        $array_export_key = fn (int|string $key): string => match (true) {
+            is_string($key) => sprintf("'%s' => ", $key),
+            default => '',
+        };
+        $array_export_value = fn (mixed $value): string => match (true) {
+            is_string($value) => sprintf("'%s'", $value),
+            is_scalar($value) => (string) $value,
+            is_array($value) => array_export($value),
+            is_object($value) => stringify(json_encode($value)),
+            default => 'null',
+        };
+
+        $items = [];
+        foreach ($array as $key => $value) {
+            $items[] = sprintf('%s%s', $array_export_key($key), $array_export_value($value));
+        }
+        return sprintf('[%s]', implode(', ', $items));
     }
 }
