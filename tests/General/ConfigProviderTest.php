@@ -16,6 +16,7 @@ class ConfigProviderTest extends TestCase
     {
         $provider = new ConfigProvider();
         $config = $provider();
+        $this->assertArrayHasKey('commands', $config);
         $this->assertArrayHasKey('dependencies', $config);
         $this->assertArrayHasKey('annotations', $config);
     }
