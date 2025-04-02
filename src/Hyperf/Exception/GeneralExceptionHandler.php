@@ -9,9 +9,10 @@ use Hyperf\HttpMessage\Stream\SwooleStream;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Serendipity\Domain\Exception\Type;
+use Serendipity\Domain\Exception\ThrowableType;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
 use Serendipity\Infrastructure\Http\JsonFormatter;
+use Serendipity\Infrastructure\Http\ResponseType;
 use Throwable;
 
 use function array_map;
@@ -42,12 +43,16 @@ class GeneralExceptionHandler extends ExceptionHandler
         $context = $thrown->context();
 
         match ($thrown->type) {
-            Type::INVALID_INPUT => $this->logger->notice($message, $context),
+            ThrowableType::INVALID_INPUT => $this->logger->debug($message, $context),
+            ThrowableType::FALLBACK_REQUIRED => $this->logger->warning($message, $context),
+            ThrowableType::RETRY_AVAILABLE => $this->logger->info($message, $context),
+            ThrowableType::UNRECOVERABLE => $this->logger->error($message, $context),
             default => $this->logger->alert($message, $context),
         };
 
         $code = $this->code($throwable);
-        $contents = $this->formatter->format($context, $thrown->type);
+        $type = $this->detectType($thrown->type);
+        $contents = $this->formatter->format($context, $type);
         return $response->withStatus($code)
             ->withBody(new SwooleStream($contents));
     }
@@ -62,5 +67,16 @@ class GeneralExceptionHandler extends ExceptionHandler
     {
         $code = integerify($throwable->getCode());
         return ($code < 400 || $code > 599) ? 500 : $code;
+    }
+
+    private function detectType(ThrowableType $type): ResponseType
+    {
+        return match ($type) {
+            ThrowableType::INVALID_INPUT,
+            ThrowableType::FALLBACK_REQUIRED,
+            ThrowableType::RETRY_AVAILABLE => ResponseType::FAIL,
+            ThrowableType::UNRECOVERABLE,
+            ThrowableType::UNTREATED => ResponseType::ERROR,
+        };
     }
 }

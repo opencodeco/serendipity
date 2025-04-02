@@ -7,6 +7,8 @@ namespace Serendipity\Infrastructure\Logging;
 use Stringable;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use function array_export;
+use function in_array;
 use function Serendipity\Type\Cast\stringify;
 
 class StdoutLogger extends AbstractLogger
@@ -14,6 +16,7 @@ class StdoutLogger extends AbstractLogger
     public function __construct(
         private readonly OutputInterface $output,
         private readonly array $levels,
+        private readonly string $format,
         private readonly string $env,
     ) {
     }
@@ -23,36 +26,17 @@ class StdoutLogger extends AbstractLogger
         if (! in_array($level, $this->levels, true)) {
             return;
         }
-        $this->output->writeln(
-            sprintf('[%s.%s] %s: %s', $this->env, stringify($level), $message, $this->context($context))
-        );
+        $variables = $this->variables($level, $context);
+        $messages = $this->message($this->format, $message, $variables);
+        $this->output->writeln($messages);
     }
 
-    protected function context(array $context): string
+    protected function variables(mixed $level, array $context): array
     {
-        $items = [];
-        foreach ($context as $key => $value) {
-            $items[] = sprintf('%s%s', $this->key($key), $this->value($value));
-        }
-        return sprintf('[%s]', implode(', ', $items));
-    }
-
-    private function key(int|string $key): string
-    {
-        return match (true) {
-            is_string($key) => sprintf("'%s' => ", $key),
-            default => '',
-        };
-    }
-
-    private function value(mixed $value): string
-    {
-        return match (true) {
-            is_string($value) => sprintf("'%s'", $value),
-            is_scalar($value) => (string) $value,
-            is_array($value) => $this->context($value),
-            is_object($value) => stringify(json_encode($value)),
-            default => 'null',
-        };
+        return [
+            'env' => $this->env,
+            'level' => stringify($level),
+            'content' => array_export($context),
+        ];
     }
 }

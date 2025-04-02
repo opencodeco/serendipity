@@ -54,6 +54,7 @@ return [
     'gcloud' => [
         'project_id' => env('GOOGLE_CLOUD_PROJECT', 'unknown'),
         'service_name' => env('GOOGLE_CLOUD_SERVICE_NAME', 'unknown'),
+        'format' => '{{message}} | {{resource}} | {{correlation_id}} | {{invoker_id}}',
         'options' => [
             'batchEnabled' => true,
             'batchOptions' => [

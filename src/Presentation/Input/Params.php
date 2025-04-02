@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation\Input;
 
+use function Serendipity\Type\Cast\stringify;
+
 class Params extends Resolver
 {
     public function resolve(array $data): array
@@ -13,7 +15,7 @@ class Params extends Resolver
             if (array_key_exists($key, $data)) {
                 continue;
             }
-            $param = $this->input->route($key);
+            $param = $this->input->route(stringify($key));
             if ($param === null) {
                 continue;
             }

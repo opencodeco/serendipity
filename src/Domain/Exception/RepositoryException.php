@@ -9,12 +9,12 @@ use Throwable;
 
 class RepositoryException extends Exception
 {
-    public readonly Type $type;
+    public readonly ThrowableType $type;
 
     public function __construct(
         public readonly string $context,
         ?Throwable $previous = null,
-        ?Type $type = null,
+        ?ThrowableType $type = null,
         ?string $message = null,
         ?int $code = null,
     ) {
@@ -24,6 +24,6 @@ class RepositoryException extends Exception
             $previous
         );
 
-        $this->type = $type ?? Type::UNTREATED;
+        $this->type = $type ?? ThrowableType::UNTREATED;
     }
 }

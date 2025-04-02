@@ -29,6 +29,7 @@ readonly class StdoutLoggerFactory
     {
         $output = $this->container->get(ConsoleOutput::class);
         $config = $this->container->get(ConfigInterface::class);
+        $format = '[{{env}}.{{level}}] {{message}}: {{context}}';
         $default = [
             LogLevel::ALERT,
             LogLevel::CRITICAL,
@@ -40,6 +41,6 @@ readonly class StdoutLoggerFactory
             LogLevel::DEBUG,
         ];
         $levels = arrayify($config->get('logger.default.levels', $default));
-        return new StdoutLogger($output, $levels, $env);
+        return new StdoutLogger($output, $levels, $format, $env);
     }
 }

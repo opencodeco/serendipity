@@ -22,6 +22,7 @@ class GoogleCloudLogger extends AbstractLogger
     public function __construct(
         private readonly GoogleCloud $driver,
         private readonly Task $task,
+        private readonly string $format,
         public readonly string $projectId,
         public readonly string $serviceName,
         public readonly string $env,
@@ -33,10 +34,11 @@ class GoogleCloudLogger extends AbstractLogger
 
     public function log($level, string|Stringable $message, array $context = []): void
     {
-        $message = sprintf("%s | %s", $message, $this->task->resume());
-        $context['message'] = $message;
         $severity = $this->level(stringify($level));
+        $context['message'] = $message;
         $payload = $this->payload($severity, $context);
+
+        $message = $this->message($this->format, $message, [...$payload, ...$this->task->toArray()]);
         $write = fn () => $this->write($severity, $message, $payload);
 
         $this->useCoroutine

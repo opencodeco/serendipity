@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Logging;
 
+use Mustache_Engine;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Stringable;
+
+use function Serendipity\Type\Cast\stringify;
 
 abstract class AbstractLogger implements LoggerInterface
 {
@@ -48,5 +51,12 @@ abstract class AbstractLogger implements LoggerInterface
     final public function debug(string|Stringable $message, array $context = []): void
     {
         $this->log(LogLevel::DEBUG, $message, $context);
+    }
+
+    protected function message(string $template, Stringable|string $message, array $variables): string
+    {
+        $scape = fn (mixed $value): string => stringify($value);
+        $engine = new Mustache_Engine(['escape' => $scape]);
+        return stringify($engine->render($template, [...$variables, 'message' => $message]));
     }
 }

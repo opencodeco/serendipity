@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Exception;
 
 use DateTimeImmutable;
-use Serendipity\Domain\Exception\Type;
+use Serendipity\Domain\Exception\ThrowableType;
 use Throwable;
 
 class ThrownFactory
@@ -37,15 +37,15 @@ class ThrownFactory
         return $this->make($getPrevious);
     }
 
-    private function type(string $throwable): Type
+    private function type(string $throwable): ThrowableType
     {
         $type = $this->classification[$throwable] ?? null;
-        if ($type instanceof Type) {
+        if ($type instanceof ThrowableType) {
             return $type;
         }
         return match ($type) {
-            Type::INVALID_INPUT->value => Type::INVALID_INPUT,
-            default => Type::UNTREATED,
+            ThrowableType::INVALID_INPUT->value => ThrowableType::INVALID_INPUT,
+            default => ThrowableType::UNTREATED,
         };
     }
 }

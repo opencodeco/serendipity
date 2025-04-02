@@ -21,11 +21,12 @@ final class GoogleCloudLoggerFactoryTest extends TestCase
     {
         $task = $this->make(Task::class);
         $config = $this->createMock(ConfigInterface::class);
-        $config->expects($this->exactly(3))
+        $config->expects($this->exactly(4))
             ->method('get')
             ->willReturnCallback(fn (string $key) => match ($key) {
                 'logger.gcloud.project_id' => 'project-id',
                 'logger.gcloud.options' => [],
+                'logger.gcloud.format' => '{{message}}',
                 'logger.gcloud.service_name' => 'service-name',
                 default => null,
             });

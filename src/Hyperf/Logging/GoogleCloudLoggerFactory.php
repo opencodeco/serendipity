@@ -18,6 +18,8 @@ readonly class GoogleCloudLoggerFactory
 
     private string $serviceName;
 
+    private string $format;
+
     private array $options;
 
     public function __construct(
@@ -26,6 +28,9 @@ readonly class GoogleCloudLoggerFactory
     ) {
         $this->projectId = stringify($config->get('logger.gcloud.project_id', 'unknown'));
         $this->serviceName = stringify($config->get('logger.gcloud.service_name', 'unknown'));
+        $this->format = stringify(
+            $config->get('logger.gcloud.format', '{{message}} | {{resource}} | {{correlation_id}} | {{invoker_id}}')
+        );
         $this->options = arrayify($config->get('logger.gcloud.options'));
     }
 
@@ -33,6 +38,13 @@ readonly class GoogleCloudLoggerFactory
     {
         $logging = new LoggingClient(['projectId' => $this->projectId]);
         $driver = $logging->logger('google-cloud', $this->options);
-        return new GoogleCloudLogger($driver, $this->task, $this->projectId, $this->serviceName, $env);
+        return new GoogleCloudLogger(
+            $driver,
+            $this->task,
+            $this->format,
+            $this->projectId,
+            $this->serviceName,
+            $env
+        );
     }
 }

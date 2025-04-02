@@ -6,11 +6,9 @@ namespace Serendipity\Infrastructure\Http;
 
 use InvalidArgumentException;
 use Serendipity\Domain\Contract\Formatter;
-use Serendipity\Domain\Exception\Type;
 use Throwable;
 
 use function json_encode;
-use function Serendipity\Type\Cast\stringify;
 use function sprintf;
 
 class JsonFormatter implements Formatter
@@ -26,30 +24,28 @@ class JsonFormatter implements Formatter
         }
     }
 
-    private function type(mixed $option): ?Type
+    private function type(mixed $option): ?ResponseType
     {
-        if ($option === null || $option instanceof Type) {
+        if ($option === null || $option instanceof ResponseType) {
             return $option;
         }
-        throw new InvalidArgumentException(sprintf("The 'option' must be an instance of '%s'.", Type::class));
+        throw new InvalidArgumentException(sprintf("The 'option' must be an instance of '%s'.", ResponseType::class));
     }
 
-    private function parse(mixed $value, ?Type $type = null): array
+    private function parse(mixed $value, ?ResponseType $type = null): array
     {
-        if ($type === null) {
-            return [
-                'status' => 'success',
-                'data' => $value,
-            ];
-        }
         return match ($type) {
-            Type::INVALID_INPUT => [
+            ResponseType::FAIL => [
                 'status' => 'fail',
                 'data' => $value,
             ],
-            Type::UNTREATED => [
+            ResponseType::ERROR => [
                 'status' => 'error',
-                'message' => stringify($value),
+                'message' => $value,
+            ],
+            default => [
+                'status' => 'success',
+                'data' => $value,
             ],
         };
     }

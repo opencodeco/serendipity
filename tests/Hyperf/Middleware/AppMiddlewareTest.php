@@ -9,13 +9,15 @@ use Hyperf\Context\ResponseContext;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\HttpServer\Router\Handler;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Domain\Contract\Exportable;
+use Serendipity\Domain\Contract\Message;
+use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Middleware\AppMiddleware;
 use Serendipity\Presentation\Output;
-use Serendipity\Presentation\Output\NoContent;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Swow\Psr7\Message\ServerRequestPlusInterface;
 
@@ -86,13 +88,17 @@ final class AppMiddlewareTest extends TestCase
         $middleware->process($request, $handler);
     }
 
-    public function testShouldRenderNoContentResponse(): void
+    #[TestWith([null])]
+    #[TestWith([204])]
+    #[TestWith([300])]
+    #[TestWith([400])]
+    #[TestWith([500])]
+    public function testShouldRenderByStatus(?int $statusCode): void
     {
         $config = $this->createMock(ConfigInterface::class);
         $config->expects($this->once())
             ->method('get')
-            ->with(sprintf('http.result.%s.status', NoContent::class))
-            ->willReturn(204);
+            ->willReturn($statusCode);
 
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')
@@ -108,11 +114,20 @@ final class AppMiddlewareTest extends TestCase
 
         ResponseContext::set($response);
 
+        $message = $this->createMock(Message::class);
+        $message->expects($this->once())
+            ->method('properties')
+            ->willReturn(
+                Set::createFrom([
+                    'Invalid-Property' => 1,
+                    'Custom-Property' => 'CustomValue',
+                ])
+            );
         $request->method('getAttribute')
             ->willReturn(
                 new Dispatched([
                     Dispatcher::FOUND,
-                    new Handler(fn () => new NoContent(), ''),
+                    new Handler(fn () => $message, ''),
                     [],
                 ])
             );

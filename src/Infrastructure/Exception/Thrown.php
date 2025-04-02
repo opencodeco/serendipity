@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Exception;
 
 use DateTimeImmutable;
-use Serendipity\Domain\Exception\Type;
+use Serendipity\Domain\Exception\ThrowableType;
 use Throwable;
 
 class Thrown
 {
     public function __construct(
-        public readonly Type $type,
+        public readonly ThrowableType $type,
         public readonly DateTimeImmutable $at,
         public readonly string $kind,
         public readonly string $message,
@@ -23,7 +23,7 @@ class Thrown
     ) {
     }
 
-    public static function createFrom(Throwable $throwable, Type $type = Type::UNTREATED): Thrown
+    public static function createFrom(Throwable $throwable, ThrowableType $type = ThrowableType::UNTREATED): Thrown
     {
         $previous = $throwable->getPrevious();
         return new self(

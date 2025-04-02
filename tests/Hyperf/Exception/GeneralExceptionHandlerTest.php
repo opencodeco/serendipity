@@ -9,7 +9,7 @@ use Hyperf\HttpMessage\Server\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Serendipity\Domain\Exception\Type;
+use Serendipity\Domain\Exception\ThrowableType;
 use Serendipity\Hyperf\Exception\GeneralExceptionHandler;
 use Serendipity\Infrastructure\Exception\Thrown;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
@@ -78,7 +78,7 @@ final class GeneralExceptionHandlerTest extends TestCase
         $this->factory->expects($this->once())
             ->method('make')
             ->with($throwable)
-            ->willReturn(Thrown::createFrom($throwable, Type::INVALID_INPUT));
+            ->willReturn(Thrown::createFrom($throwable, ThrowableType::INVALID_INPUT));
 
         $result = $this->handler->handle($throwable, $response);
 

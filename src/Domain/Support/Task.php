@@ -45,8 +45,12 @@ final class Task
         return $this->invokerId;
     }
 
-    public function resume(): string
+    public function toArray(): array
     {
-        return sprintf('%s::%s::%s', $this->getResource(), $this->getCorrelationId(), $this->getInvokerId());
+        return [
+            'resource' => $this->getResource(),
+            'correlation_id' => $this->getCorrelationId(),
+            'invoker_id' => $this->getInvokerId(),
+        ];
     }
 }

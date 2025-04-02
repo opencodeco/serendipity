@@ -12,9 +12,12 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use ReflectionException;
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
+use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 use Serendipity\Infrastructure\Http\JsonFormatter;
+use Serendipity\Infrastructure\Http\ResponseType;
 use Swow\Psr7\Message\ResponsePlusInterface;
 
 use function is_string;
@@ -27,6 +30,8 @@ class AppMiddleware extends Hyperf
 
     private readonly JsonFormatter $formatter;
 
+    private Demolisher $demolisher;
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -37,8 +42,12 @@ class AppMiddleware extends Hyperf
 
         $this->config = $container->get(ConfigInterface::class);
         $this->formatter = $container->get(JsonFormatter::class);
+        $this->demolisher = $container->get(Demolisher::class);
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function handleFound(Dispatched $dispatched, ServerRequestInterface $request): mixed
     {
         $response = parent::handleFound($dispatched, $request);
@@ -51,7 +60,7 @@ class AppMiddleware extends Hyperf
 
     private function handleFoundMessage(Message $message): ResponsePlusInterface
     {
-        $statusCode = $this->normalizeStatusCode($message);
+        $statusCode = $this->detectStatusCode($message);
 
         $response = $this->response()
             ->addHeader('content-type', 'application/json')
@@ -63,21 +72,26 @@ class AppMiddleware extends Hyperf
             return $response->setBody(new SwooleStream());
         }
 
-        $body = $message->content();
-        $contents = $this->formatter->format($body);
+        $value = $message->content();
+        $option = $this->detectType($statusCode);
+        $contents = $this->formatter->format($value, $option);
         return $response->setBody(new SwooleStream($contents));
     }
 
+    /**
+     * @throws ReflectionException
+     */
     private function handleFoundExportable(Exportable $exportable): ResponsePlusInterface
     {
-        $contents = $this->formatter->format($exportable->export());
+        $value = $this->demolisher->demolish($exportable);
+        $contents = $this->formatter->format($value);
         return $this->response()
             ->addHeader('content-type', 'application/json')
             ->withStatus(200)
             ->setBody(new SwooleStream($contents));
     }
 
-    private function normalizeStatusCode(Message $response): int
+    private function detectStatusCode(Message $response): int
     {
         $statusCode = integerify($this->config->get(sprintf('http.result.%s.status', $response::class)));
         if ($statusCode === 0) {
@@ -96,5 +110,15 @@ class AppMiddleware extends Hyperf
             $response = $response->withAddedHeader(sprintf('X-%s', $key), $value);
         }
         return $response;
+    }
+
+    private function detectType(int $statusCode): ?ResponseType
+    {
+        return match (true) {
+            $statusCode >= 200 && $statusCode < 300 => ResponseType::SUCCESS,
+            $statusCode >= 400 && $statusCode < 500 => ResponseType::FAIL,
+            $statusCode >= 500 => ResponseType::ERROR,
+            default => null,
+        };
     }
 }

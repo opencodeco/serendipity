@@ -6,7 +6,7 @@ namespace Serendipity\Test\Infrastructure\Exception;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Serendipity\Domain\Exception\Type;
+use Serendipity\Domain\Exception\ThrowableType;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
 
 /**
@@ -31,14 +31,14 @@ final class ThrownFactoryTest extends TestCase
     {
         // Arrange
         $throwable = new Exception();
-        $classification = [$throwable::class => Type::INVALID_INPUT];
+        $classification = [$throwable::class => ThrowableType::INVALID_INPUT];
         $factory = new ThrownFactory($classification);
 
         // Act
         $thrown = $factory->make($throwable);
 
         // Assert
-        $this->assertEquals(Type::INVALID_INPUT, $thrown->type);
+        $this->assertEquals(ThrowableType::INVALID_INPUT, $thrown->type);
     }
 
     public function testShouldMakeThrownWithPrevious(): void

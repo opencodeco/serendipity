@@ -115,5 +115,4 @@ class GenerateRules extends HyperfCommand
         }
         return null;
     }
-
 }

@@ -12,8 +12,8 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Domain\Exception\InvalidInputException;
-use Serendipity\Domain\Exception\Type;
 use Serendipity\Infrastructure\Http\JsonFormatter;
+use Serendipity\Infrastructure\Http\ResponseType;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Throwable;
 
@@ -40,7 +40,7 @@ class ValidationExceptionHandler extends ExceptionHandler
         return $response
             ->setStatus($this->extractStatus($throwable))
             ->addHeader('content-type', 'application/json; charset=utf-8')
-            ->setBody(new SwooleStream($this->formatter->format($context, Type::INVALID_INPUT)));
+            ->setBody(new SwooleStream($this->formatter->format($context, ResponseType::FAIL)));
     }
 
     public function isValid(Throwable $throwable): bool

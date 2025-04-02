@@ -28,6 +28,7 @@ final class StdoutLoggerTest extends TestCase
         $this->stdoutLogger = new StdoutLogger(
             output: $this->output,
             levels: $levels,
+            format: '[{{env}}.{{level}}] {{message}}: {{content}}',
             env: 'test'
         );
     }
@@ -91,6 +92,7 @@ final class StdoutLoggerTest extends TestCase
         $stdoutLogger = new StdoutLogger(
             output: $this->output,
             levels: $limitedLevels,
+            format: '[{{env}}.{{level}}] {{message}}: {{content}}',
             env: 'test'
         );
 
