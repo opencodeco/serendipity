@@ -17,7 +17,7 @@ class HyperfThrownFactoryTest extends TestCase
         $classification = [Exception::class => ThrowableType::INVALID_INPUT];
         $configMock = $this->createMock(ConfigInterface::class);
         $configMock->method('get')
-            ->with('exception.classification')
+            ->with('exceptions.classification')
             ->willReturn($classification);
 
         $factory = new HyperfThrownFactory($configMock);

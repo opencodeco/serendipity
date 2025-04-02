@@ -67,8 +67,8 @@ final class ConnectionCheckerMiddlewareTest extends TestCase
 
         $config->method('get')
             ->willReturnCallback(fn ($key, $default) => match ($key) {
-                'database.settings.check.max_attempts' => 3,
-                'database.settings.check.delay_microseconds' => 500,
+                'databases.default.check.max_attempts' => 3,
+                'databases.default.check.delay_microseconds' => 500,
                 default => $default,
             });
 

@@ -17,7 +17,7 @@ class HyperfThrownFactory
 
     public function make(): ThrownFactory
     {
-        $classification = $this->config->get('exception.classification', []);
+        $classification = $this->config->get('exceptions.classification', []);
         return new ThrownFactory(arrayify($classification));
     }
 }

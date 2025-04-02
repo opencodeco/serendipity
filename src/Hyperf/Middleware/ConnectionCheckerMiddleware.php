@@ -35,8 +35,8 @@ readonly class ConnectionCheckerMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $this->connectionChecker->check(
-            integerify($this->config->get('database.settings.check.max_attempts', 3)),
-            integerify($this->config->get('database.settings.check.delay_microseconds', 100)),
+            integerify($this->config->get('databases.default.check.max_attempts', 3)),
+            integerify($this->config->get('databases.default.check.delay_microseconds', 100)),
         );
 
         return $handler->handle($request);

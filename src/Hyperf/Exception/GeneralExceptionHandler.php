@@ -19,6 +19,7 @@ use function array_map;
 use function in_array;
 use function Serendipity\Type\Cast\integerify;
 use function Serendipity\Type\Cast\stringify;
+use function Serendipity\Type\Json\decode;
 use function sprintf;
 
 class GeneralExceptionHandler extends ExceptionHandler
@@ -44,15 +45,16 @@ class GeneralExceptionHandler extends ExceptionHandler
 
         match ($thrown->type) {
             ThrowableType::INVALID_INPUT => $this->logger->debug($message, $context),
-            ThrowableType::FALLBACK_REQUIRED => $this->logger->warning($message, $context),
-            ThrowableType::RETRY_AVAILABLE => $this->logger->info($message, $context),
+            ThrowableType::FALLBACK_REQUIRED => $this->logger->info($message, $context),
+            ThrowableType::RETRY_AVAILABLE => $this->logger->warning($message, $context),
             ThrowableType::UNRECOVERABLE => $this->logger->error($message, $context),
             default => $this->logger->alert($message, $context),
         };
 
         $code = $this->code($throwable);
         $type = $this->detectType($thrown->type);
-        $contents = $this->formatter->format($context, $type);
+        $value = $this->format($type, $thrown->resume());
+        $contents = $this->formatter->format($value, $type);
         return $response->withStatus($code)
             ->withBody(new SwooleStream($contents));
     }
@@ -77,6 +79,16 @@ class GeneralExceptionHandler extends ExceptionHandler
             ThrowableType::RETRY_AVAILABLE => ResponseType::FAIL,
             ThrowableType::UNRECOVERABLE,
             ThrowableType::UNTREATED => ResponseType::ERROR,
+        };
+    }
+
+    private function format(ResponseType $type, string $message): string|array|null
+    {
+        $data = decode($message);
+        return match ($type) {
+            ResponseType::FAIL => $data ?? ['message' => $message],
+            ResponseType::ERROR => $message,
+            default => null,
         };
     }
 }
