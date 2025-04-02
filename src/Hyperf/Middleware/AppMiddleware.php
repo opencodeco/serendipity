@@ -30,7 +30,7 @@ class AppMiddleware extends Hyperf
 
     private readonly JsonFormatter $formatter;
 
-    private Demolisher $demolisher;
+    private readonly Demolisher $demolisher;
 
     /**
      * @throws ContainerExceptionInterface

@@ -19,11 +19,11 @@ use function defined;
 use function dirname;
 use function file_exists;
 use function file_get_contents;
+use function Hyperf\Collection\data_get;
 use function realpath;
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\Json\decode;
-use function Serendipity\Type\Util\extractArray;
 use function sprintf;
 use function str_replace;
 use function str_starts_with;
@@ -105,20 +105,12 @@ class GenerateRules extends HyperfCommand
     private function generateRulesFromFile(string $filePath): ?string
     {
         $projectRoot = $this->projectRoot();
-        $composerJsonPath = sprintf('%s/composer.json', $projectRoot);
-        $json = stringify(file_get_contents($composerJsonPath));
-        $composer = arrayify(decode($json));
-        $autoload = extractArray($composer, 'autoload');
-        $psr4Mappings = extractArray($autoload, 'psr-4');
-        if (empty($psr4Mappings)) {
-            return null;
-        }
+        $mappings = $this->mappings($projectRoot);
 
-        $realFilePath = stringify(realpath($filePath));
-        foreach ($psr4Mappings as $namespace => $directory) {
-            $directory = stringify($directory);
+        foreach ($mappings as $namespace => $mappedPath) {
+            $realMappedPath = stringify(realpath(sprintf('%s/%s', $projectRoot, stringify($mappedPath))));
             $namespace = stringify($namespace);
-            $detected = $this->detect($projectRoot, $directory, $namespace, $realFilePath);
+            $detected = $this->detect($realMappedPath, $namespace, $filePath);
             if ($detected !== null) {
                 return $detected;
             }
@@ -132,18 +124,25 @@ class GenerateRules extends HyperfCommand
         return stringify(defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__, 3));
     }
 
+    private function mappings(string $projectRoot): array
+    {
+        $composerJsonContent = stringify(file_get_contents(sprintf('%s/composer.json', $projectRoot)));
+        $target = arrayify(decode($composerJsonContent));
+        return arrayify(data_get($target, 'autoload.psr-4', []));
+    }
+
     /**
      * @throws ReflectionException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function detect(string $projectRoot, string $directory, string $namespace, string $realFilePath): ?string
+    private function detect(string $realMappedPath, string $namespace, string $filePath): ?string
     {
-        $basePath = stringify(realpath(sprintf('%s/%s', $projectRoot, $directory)));
-        if (! str_starts_with($realFilePath, $basePath)) {
+        $realFilePath = stringify(realpath($filePath));
+        if (! str_starts_with($realFilePath, $realMappedPath)) {
             return null;
         }
-        $relativePath = substr($realFilePath, strlen($basePath) + 1);
+        $relativePath = substr($realFilePath, strlen($realMappedPath) + 1);
         $class = $namespace . str_replace(['/', '.php'], ['\\', ''], $relativePath);
         return (! class_exists($class)) ? null : $this->generateRules($class);
     }
