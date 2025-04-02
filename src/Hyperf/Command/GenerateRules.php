@@ -13,8 +13,22 @@ use ReflectionException;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler;
 use Symfony\Component\Console\Input\InputArgument;
 
+use function array_export;
+use function class_exists;
+use function defined;
+use function dirname;
+use function file_exists;
+use function file_get_contents;
+use function realpath;
+use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\stringify;
+use function Serendipity\Type\Json\decode;
 use function Serendipity\Type\Util\extractArray;
+use function sprintf;
+use function str_replace;
+use function str_starts_with;
+use function strlen;
+use function substr;
 
 class GenerateRules extends HyperfCommand
 {
@@ -38,7 +52,7 @@ class GenerateRules extends HyperfCommand
     public function handle(): void
     {
         $this->getOutput()?->title('Exporting rules');
-        $entity = stringify($this->input->getArgument('entity'));
+        $entity = stringify($this->input?->getArgument('entity'));
         $this->line(sprintf("Generating rules for '%s'. Please wait...", $entity));
         $this->newLine();
 
@@ -70,6 +84,7 @@ class GenerateRules extends HyperfCommand
     }
 
     /**
+     * @param class-string<object> $entity
      * @throws ContainerExceptionInterface
      * @throws ReflectionException
      * @throws NotFoundExceptionInterface
@@ -89,30 +104,47 @@ class GenerateRules extends HyperfCommand
      */
     private function generateRulesFromFile(string $filePath): ?string
     {
-        $projectRoot = dirname(__DIR__, 3);
-        if (defined('BASE_PATH')) {
-            $projectRoot = BASE_PATH;
-        }
+        $projectRoot = $this->projectRoot();
         $composerJsonPath = sprintf('%s/composer.json', $projectRoot);
-
-        $composer = json_decode(file_get_contents($composerJsonPath), true);
+        $json = stringify(file_get_contents($composerJsonPath));
+        $composer = arrayify(decode($json));
         $autoload = extractArray($composer, 'autoload');
         $psr4Mappings = extractArray($autoload, 'psr-4');
+        if (empty($psr4Mappings)) {
+            return null;
+        }
 
-        $realFilePath = realpath($filePath);
-
+        $realFilePath = stringify(realpath($filePath));
         foreach ($psr4Mappings as $namespace => $directory) {
-            $basePath = realpath(sprintf('%s/%s', $projectRoot, $directory));
-            if (! str_starts_with($realFilePath, $basePath)) {
-                continue;
-            }
-            $relativePath = substr($realFilePath, strlen($basePath) + 1);
-            $class = $namespace . str_replace(['/', '.php'], ['\\', ''], $relativePath);
-
-            if (class_exists($class)) {
-                return $this->generateRules($class);
+            $directory = stringify($directory);
+            $namespace = stringify($namespace);
+            $detected = $this->detect($projectRoot, $directory, $namespace, $realFilePath);
+            if ($detected !== null) {
+                return $detected;
             }
         }
         return null;
+    }
+
+
+    private function projectRoot(): string
+    {
+        return stringify(defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__, 3));
+    }
+
+    /**
+     * @throws ReflectionException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function detect(string $projectRoot, string $directory, string $namespace, string $realFilePath): ?string
+    {
+        $basePath = stringify(realpath(sprintf('%s/%s', $projectRoot, $directory)));
+        if (! str_starts_with($realFilePath, $basePath)) {
+            return null;
+        }
+        $relativePath = substr($realFilePath, strlen($basePath) + 1);
+        $class = $namespace . str_replace(['/', '.php'], ['\\', ''], $relativePath);
+        return (! class_exists($class)) ? null : $this->generateRules($class);
     }
 }

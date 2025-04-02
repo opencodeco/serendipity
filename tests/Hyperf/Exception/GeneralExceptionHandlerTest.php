@@ -66,7 +66,7 @@ final class GeneralExceptionHandlerTest extends TestCase
     public function testHandleShouldLogErrorAndReturnFormattedResponseWith404Code(): void
     {
         $this->logger->expects($this->once())
-            ->method('notice')
+            ->method('debug')
             ->with(
                 $this->stringContains('<general>'),
                 $this->arrayHasKey('message')

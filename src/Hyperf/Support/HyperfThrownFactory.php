@@ -7,6 +7,8 @@ namespace Serendipity\Hyperf\Support;
 use Hyperf\Contract\ConfigInterface;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
 
+use function Serendipity\Type\Cast\arrayify;
+
 class HyperfThrownFactory
 {
     public function __construct(private readonly ConfigInterface $config)
@@ -16,6 +18,6 @@ class HyperfThrownFactory
     public function make(): ThrownFactory
     {
         $classification = $this->config->get('exception.classification', []);
-        return new ThrownFactory($classification);
+        return new ThrownFactory(arrayify($classification));
     }
 }

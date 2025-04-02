@@ -73,11 +73,11 @@ if (! function_exists('array_unshift_key')) {
 if (! function_exists('array_export')) {
     function array_export(array $array): string
     {
-        $array_export_key = fn (int|string $key): string => match (true) {
+        $arrayExportKey = fn (int|string $key): string => match (true) {
             is_string($key) => sprintf("'%s' => ", $key),
             default => '',
         };
-        $array_export_value = fn (mixed $value): string => match (true) {
+        $arrayExportValue = fn (mixed $value): string => match (true) {
             is_string($value) => sprintf("'%s'", $value),
             is_scalar($value) => (string) $value,
             is_array($value) => array_export($value),
@@ -87,7 +87,7 @@ if (! function_exists('array_export')) {
 
         $items = [];
         foreach ($array as $key => $value) {
-            $items[] = sprintf('%s%s', $array_export_key($key), $array_export_value($value));
+            $items[] = sprintf('%s%s', $arrayExportKey($key), $arrayExportValue($value));
         }
         return sprintf('[%s]', implode(', ', $items));
     }
