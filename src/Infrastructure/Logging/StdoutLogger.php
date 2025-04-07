@@ -15,9 +15,9 @@ class StdoutLogger extends AbstractLogger
 {
     public function __construct(
         private readonly OutputInterface $output,
-        private readonly array $levels,
-        private readonly string $format,
-        private readonly string $env,
+        public readonly array $levels,
+        public readonly string $format,
+        public readonly string $env,
     ) {
     }
 
@@ -36,7 +36,7 @@ class StdoutLogger extends AbstractLogger
         return [
             'env' => $this->env,
             'level' => stringify($level),
-            'content' => array_export($context),
+            'context' => array_export($context),
         ];
     }
 }

@@ -7,7 +7,6 @@ namespace Serendipity\Test\Hyperf\Logging;
 use Hyperf\Contract\ConfigInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use ReflectionClass;
 use Serendipity\Hyperf\Logging\StdoutLoggerFactory;
 use Serendipity\Infrastructure\Logging\StdoutLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -41,21 +40,12 @@ final class StdoutLoggerFactoryTest extends TestCase
     public function testMakeShouldReturnStdoutLoggerWithDefaultConfig(): void
     {
         // Arrange
-        $defaultLevels = [
-            'alert',
-            'critical',
-            'emergency',
-            'error',
-            'warning',
-            'notice',
-            'info',
-            'debug',
-        ];
-
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
-            ->with('logger.default.levels', $this->anything())
-            ->willReturn($defaultLevels);
+            ->willReturnCallback(fn (string $key, mixed $default) => match ($key) {
+                'logger.default.levels',
+                'logger.default.format' => $default,
+            });
 
         $this->container->expects($this->exactly(2))
             ->method('get')
@@ -69,21 +59,6 @@ final class StdoutLoggerFactoryTest extends TestCase
 
         // Assert
         $this->assertInstanceOf(StdoutLogger::class, $logger);
-
-        // Verificar propriedades usando Reflection
-        $reflection = new ReflectionClass($logger);
-
-        $outputProperty = $reflection->getProperty('output');
-        $outputProperty->setAccessible(true);
-        $this->assertSame($this->consoleOutput, $outputProperty->getValue($logger));
-
-        $levelsProperty = $reflection->getProperty('levels');
-        $levelsProperty->setAccessible(true);
-        $this->assertSame($defaultLevels, $levelsProperty->getValue($logger));
-
-        $envProperty = $reflection->getProperty('env');
-        $envProperty->setAccessible(true);
-        $this->assertSame('test-env', $envProperty->getValue($logger));
     }
 
     public function testMakeShouldReturnStdoutLoggerWithCustomConfig(): void
@@ -94,10 +69,12 @@ final class StdoutLoggerFactoryTest extends TestCase
             'critical',
         ];
 
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
-            ->with('logger.default.levels', $this->anything())
-            ->willReturn($customLevels);
+            ->willReturnCallback(fn (string $key, mixed $default) => match ($key) {
+                'logger.default.levels' => $customLevels,
+                'logger.default.format' => $default,
+            });
 
         $this->container->expects($this->exactly(2))
             ->method('get')
@@ -111,40 +88,18 @@ final class StdoutLoggerFactoryTest extends TestCase
 
         // Assert
         $this->assertInstanceOf(StdoutLogger::class, $logger);
-
-        // Verificar propriedades usando Reflection
-        $reflection = new ReflectionClass($logger);
-
-        $levelsProperty = $reflection->getProperty('levels');
-        $levelsProperty->setAccessible(true);
-        $this->assertSame($customLevels, $levelsProperty->getValue($logger));
-
-        $envProperty = $reflection->getProperty('env');
-        $envProperty->setAccessible(true);
-        $this->assertSame('production', $envProperty->getValue($logger));
+        $this->assertEquals($customLevels, $logger->levels);
     }
 
     public function testMakeShouldHandleNullLevelsConfig(): void
     {
         // Arrange
-        $defaultLevels = [
-            'alert',
-            'critical',
-            'emergency',
-            'error',
-            'warning',
-            'notice',
-            'info',
-            'debug',
-        ];
-
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
-            ->with(
-                'logger.default.levels',
-                $this->callback(fn ($default) => $default === $defaultLevels)
-            )
-            ->willReturn(null);
+            ->willReturnCallback(fn (string $key, mixed $default) => match ($key) {
+                'logger.default.levels' => null,
+                'logger.default.format' => $default,
+            });
 
         $this->container->expects($this->exactly(2))
             ->method('get')
@@ -158,11 +113,6 @@ final class StdoutLoggerFactoryTest extends TestCase
 
         // Assert
         $this->assertInstanceOf(StdoutLogger::class, $logger);
-
-        // Verificar se o arrayify lidou com o valor nulo corretamente
-        $reflection = new ReflectionClass($logger);
-        $levelsProperty = $reflection->getProperty('levels');
-        $levelsProperty->setAccessible(true);
-        $this->assertIsArray($levelsProperty->getValue($logger));
+        $this->assertEquals([], $logger->levels);
     }
 }

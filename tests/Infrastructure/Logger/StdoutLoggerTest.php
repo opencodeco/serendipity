@@ -28,7 +28,7 @@ final class StdoutLoggerTest extends TestCase
         $this->stdoutLogger = new StdoutLogger(
             output: $this->output,
             levels: $levels,
-            format: '[{{env}}.{{level}}] {{message}}: {{content}}',
+            format: '[{{env}}.{{level}}] {{message}}: {{context}}',
             env: 'test'
         );
     }

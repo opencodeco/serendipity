@@ -14,6 +14,7 @@ use Serendipity\Infrastructure\Logging\StdoutLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\stringify;
 
 readonly class StdoutLoggerFactory
 {
@@ -29,7 +30,6 @@ readonly class StdoutLoggerFactory
     {
         $output = $this->container->get(ConsoleOutput::class);
         $config = $this->container->get(ConfigInterface::class);
-        $format = '[{{env}}.{{level}}] {{message}}: {{context}}';
         $default = [
             LogLevel::ALERT,
             LogLevel::CRITICAL,
@@ -41,6 +41,7 @@ readonly class StdoutLoggerFactory
             LogLevel::DEBUG,
         ];
         $levels = arrayify($config->get('logger.default.levels', $default));
+        $format = stringify($config->get('logger.default.format', '[{{env}}.{{level}}] {{message}}: {{context}}'));
         return new StdoutLogger($output, $levels, $format, $env);
     }
 }
