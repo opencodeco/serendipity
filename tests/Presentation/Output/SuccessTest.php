@@ -80,7 +80,7 @@ final class SuccessTest extends TestCase
 
         $instance = $className::createFrom($exportable);
 
-        $this->assertEquals($exportableData, $instance->content());
+        $this->assertEquals($exportableData, $instance->content()->export());
         $this->assertEquals([], $instance->properties()->toArray());
         $this->assertInstanceOf($className, $instance);
     }

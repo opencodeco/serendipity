@@ -23,9 +23,6 @@ abstract class Success extends Output
                 array_merge($content->properties()->toArray(), $properties)
             );
         }
-        if ($content instanceof Exportable) {
-            return new static($content->export(), $properties);
-        }
         return new static($content, $properties);
     }
 }

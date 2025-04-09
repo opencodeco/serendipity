@@ -54,7 +54,7 @@ class OkTest extends TestCase
     public function testShouldHandleExportable(): void
     {
         $entity = new class extends Entity {
-            protected string $value = 'none';
+            public string $value = 'none';
         };
         $output = Ok::createFrom($entity);
         $this->assertEquals('none', $output->content()->value);
