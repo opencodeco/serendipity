@@ -13,6 +13,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionException;
+use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
@@ -83,7 +84,10 @@ class AppMiddleware extends Hyperf
      */
     private function handleFoundExportable(Exportable $exportable): ResponsePlusInterface
     {
-        $value = $this->demolisher->demolish($exportable);
+        $value = match (true) {
+            $exportable instanceof Collection => $this->demolisher->demolishCollection($exportable),
+            default => $this->demolisher->demolish($exportable),
+        };
         $contents = $this->formatter->format($value);
         return $this->response()
             ->addHeader('content-type', 'application/json')

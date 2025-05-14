@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter\Deserialize;
 
 use ReflectionException;
+use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
 use Serendipity\Domain\Support\Reflective\Engine;
@@ -51,6 +52,22 @@ class Demolisher extends Engine
             $data[$field] = $resolved->content;
         }
         return $data;
+    }
+
+    /**
+     * @return array<array>
+     * @throws ReflectionException
+     */
+    public function demolishCollection(Collection $collection): array
+    {
+        $demolished = [];
+        foreach ($collection as $instance) {
+            if ($instance instanceof Exportable) {
+                $instance = $this->demolish($instance);
+            }
+            $demolished[] = $instance;
+        }
+        return $demolished;
     }
 
     public function extractValues(object $instance): array
