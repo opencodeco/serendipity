@@ -15,14 +15,15 @@ final class Mapped extends Resolver
     public function resolve(array $data): array
     {
         $mappings = $this->input->mappings();
+        $payload = [];
         foreach ($mappings as $target => $from) {
             $value = $this->extractValue(arrayify($data), $target, $from);
             if ($value === null) {
                 continue;
             }
-            data_set($data, $target, $value);
+            data_set($payload, $target, $value);
         }
-        return parent::resolve(arrayify($data));
+        return parent::resolve(arrayify($payload));
     }
 
     private function extractValue(array $data, int|string $target, mixed $from): mixed
