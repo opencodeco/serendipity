@@ -15,7 +15,7 @@ final class Mapped extends Resolver
     public function resolve(array $data): array
     {
         $mappings = $this->input->mappings();
-        $payload = [];
+        $payload = $data;
         foreach ($mappings as $target => $from) {
             $value = $this->extractValue(arrayify($data), $target, $from);
             if ($value === null) {
