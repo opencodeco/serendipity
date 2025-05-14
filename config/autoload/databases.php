@@ -102,7 +102,7 @@ $connections = [
                 'score_key' => 'scoreKey',
                 'algorithm' => Query::SEARCH_ALGORITHM['hits'],
             ],
-            'folder_permissions' => env('DB_SLEEK_FOLDER_PERMISSIONS', 0644),
+            'folder_permissions' => env('DB_SLEEK_FOLDER_PERMISSIONS', 0755),
         ],
     ],
     'mongo' => [
