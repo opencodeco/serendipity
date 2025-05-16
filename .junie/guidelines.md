@@ -51,6 +51,10 @@ The project uses Docker Compose with the following services:
 - **app**: Hyperf PHP 8.3 application
 - **postgres**: PostgreSQL 16.2 database
 - **mongo**: MongoDB 6.0 with replica set configuration
+- **mongo-bootstrap**: Service to initialize the MongoDB replica set
+
+Note that the project uses the newer Docker Compose file naming convention with `compose.yml` and `compose.override.yml`
+instead of the traditional `compose.yml`.
 
 ## Testing Information
 
@@ -59,28 +63,44 @@ The project uses Docker Compose with the following services:
 Tests are executed using PHPUnit with a custom wrapper that supports Hyperf's coroutine-based architecture. All tests
 should be run within the Docker container using the make commands:
 
+- Run all tests with a coverage report:
+
 ```bash
-# Run all tests with coverage report
-make test
-
-# Run specific tests (executed in the Docker container)
-make bash
-# Then inside the container:
-composer test -- --filter=SimpleTest
-
-# Run tests with specific options
-make bash
-# Then inside the container:
-composer test -- --group=unit
+docker-compose exec app composer test
 ```
+
+- Run the test with a specific file
+
+```bash
+docker-compose exec app composer test -- --filter=ExampleTest
+```
+
+#### Coroutine-Based Testing
+
+This project uses Hyperf's coroutine-based testing approach, which requires special consideration:
+
+1. The custom PHPUnit wrapper (`bin/phpunit.php`) uses Swoole's coroutine runtime
+2. Tests are executed in a coroutine environment, which may affect how asynchronous code behaves
+3. When testing code that uses coroutines, be aware of potential race conditions and deadlocks
+4. The bootstrap process initializes the Hyperf container and enables coroutines automatically
 
 ### Adding New Tests
 
-1. Create a new test class in the `tests` directory, following the existing namespace structure
-2. Extend `PHPUnit\Framework\TestCase` for unit tests
-3. Use the `@internal` annotation for test classes
-4. Follow the Arrange-Act-Assert pattern in test methods
-5. Use descriptive test method names prefixed with `test`
+- Follow the naming convention: `*Test.php` for test files and `test*` for test methods
+- Use descriptive test method names that explain what is being tested
+- Do not use reflection to change the visibility of the methods
+- Do not use `@internal`, `@nocoverage`, `@internal` or any other phpunit annotations, the developer should be
+  responsible for use this kind of resource
+- Follow the Arrange-Act-Assert pattern in test methods
+- Use descriptive test method names prefixed with `test`
+- Create a new test class in the `tests` directory, following the existing namespace structure
+- Extend `PHPUnit\Framework\TestCase` for unit tests
+- Follow the Arrange-Act-Assert pattern in test methods
+- Use descriptive test method names prefixed with `test`
+- Always try to reach 100% code coverage
+- Use the coverage results of the tests at `tests/.phpunit/text.txt`, `tests/.phpunit/clover.xml` and
+  `tests/.phpunit/logging.xml` to check the lines that needs coverage
+- Always try to execute the tests using the commands provided at `Running Tests` before finish the task
 
 ### Example Test
 
@@ -194,6 +214,9 @@ The project supports both PostgreSQL and MongoDB:
 
 - PostgreSQL is used for relational data
 - MongoDB is configured with a replica set for distributed data storage
+
+The MongoDB replica set is automatically initialized by the mongo-bootstrap service, which runs a script to configure
+the replica set. This configuration is essential for features like transactions and change streams.
 
 ### Logging
 

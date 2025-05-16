@@ -6,12 +6,12 @@ namespace Serendipity\Hyperf\Listener;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Event\Contract\ListenerInterface;
+use Hyperf\Framework\Event\BootApplication;
 use Psr\Log\LoggerInterface;
 use Sentry\Dsn;
 use Sentry\HttpClient\HttpClientInterface;
 use Sentry\Integration\IntegrationInterface;
 use Sentry\State\Scope;
-use Serendipity\Hyperf\Event\HttpHandleCompleted;
 use Serendipity\Hyperf\Event\HttpHandleInterrupted;
 use Serendipity\Hyperf\Event\HttpHandleStarted;
 use Serendipity\Infrastructure\Exception\AdditionalFactory;
@@ -25,6 +25,12 @@ use function Serendipity\Type\Cast\boolify;
 
 class SentryHttpListener implements ListenerInterface
 {
+    public const array EVENTS = [
+        BootApplication::class,
+        HttpHandleStarted::class,
+        HttpHandleInterrupted::class,
+    ];
+
     /**
      * @var array{
      *     attach_metric_code_locations?: bool,
@@ -73,12 +79,14 @@ class SentryHttpListener implements ListenerInterface
      * }
      */
     private readonly array $options;
+
     private readonly bool $debug;
 
     public function __construct(
         private readonly ConfigInterface $config,
         private readonly LoggerInterface $logger,
         private readonly AdditionalFactory $factory,
+        private bool $booted = false,
     ) {
         $this->options = arrayify($this->config->get('sentry.options'));
         $this->debug = boolify($this->config->get('sentry.debug', false));
@@ -89,11 +97,10 @@ class SentryHttpListener implements ListenerInterface
         if (! isset($this->options['dsn'])) {
             return [];
         }
-        $events = [
-            HttpHandleStarted::class,
-            HttpHandleInterrupted::class,
-            HttpHandleCompleted::class,
-        ];
+        $events = self::EVENTS;
+        if (! $this->booted) {
+            return $events;
+        }
         if ($this->debug) {
             $this->logger->debug(sprintf("Sentry will listen to '%s' events", count($events)), $events);
         }
@@ -102,7 +109,12 @@ class SentryHttpListener implements ListenerInterface
 
     public function process(object $event): void
     {
+        if (! is_string($this->options['dsn'] ?? null)) {
+            return;
+        }
+
         match (true) {
+            $event instanceof BootApplication => $this->booted = true,
             $event instanceof HttpHandleStarted => $this->init($event),
             $event instanceof HttpHandleInterrupted => $this->capture($event),
             default => $this->fallback($event),
@@ -111,6 +123,10 @@ class SentryHttpListener implements ListenerInterface
 
     private function init(HttpHandleStarted $event): void
     {
+        if (! $this->booted) {
+            return;
+        }
+
         try {
             init($this->options);
             if ($this->debug) {
@@ -124,6 +140,10 @@ class SentryHttpListener implements ListenerInterface
 
     private function capture(HttpHandleInterrupted $event): void
     {
+        if (! $this->booted) {
+            return;
+        }
+
         $additional = $this->factory->make($event->request, $event->exception);
         $context = $additional->context();
         configureScope(function (Scope $scope) use ($additional, $context): void {
@@ -140,6 +160,9 @@ class SentryHttpListener implements ListenerInterface
 
     private function fallback(object $event): void
     {
+        if (! $this->booted) {
+            return;
+        }
         $this->logger->warning('Sentry integration does not support this event', ['event' => $event::class]);
     }
 }

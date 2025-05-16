@@ -15,6 +15,7 @@
     <coverage disableCodeCoverageIgnore="true">
         <report>
             <clover outputFile="tests/.phpunit/clover.xml"/>
+            <text outputFile="tests/.phpunit/text.txt"/>
         </report>
     </coverage>
 
