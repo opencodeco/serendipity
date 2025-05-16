@@ -78,6 +78,7 @@
     "mustache/mustache": "^2.14",
     "php-ds/php-ds": "^1.5",
     "psr/container": "^2.0",
+    "psr/event-dispatcher": "^1.0",
     "psr/http-client": "^1.0",
     "psr/http-message": "^2.0",
     "psr/http-server-handler": "^1.0",

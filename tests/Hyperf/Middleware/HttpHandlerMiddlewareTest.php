@@ -14,13 +14,18 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use RuntimeException;
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Example\Game\Domain\Collection\GameCollection;
 use Serendipity\Example\Game\Domain\Entity\Game;
-use Serendipity\Hyperf\Middleware\AppMiddleware;
+use Serendipity\Hyperf\Event\HttpHandleCompleted;
+use Serendipity\Hyperf\Event\HttpHandleInterrupted;
+use Serendipity\Hyperf\Event\HttpHandleStarted;
+use Serendipity\Hyperf\Middleware\HttpHandlerMiddleware;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 use Serendipity\Presentation\Output;
@@ -29,10 +34,7 @@ use Serendipity\Testing\Extension\FakerExtension;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Swow\Psr7\Message\ServerRequestPlusInterface;
 
-/**
- * @internal
- */
-final class AppMiddlewareTest extends TestCase
+final class HttpHandlerMiddlewareTest extends TestCase
 {
     use MakeExtension;
     use FakerExtension;
@@ -40,10 +42,29 @@ final class AppMiddlewareTest extends TestCase
 
     public function testShouldRenderOutputResponse(): void
     {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function ($event) {
+                static $callCount = 0;
+                $callCount++;
+
+                if ($callCount === 1) {
+                    $this->assertInstanceOf(HttpHandleStarted::class, $event);
+                } elseif ($callCount === 2) {
+                    $this->assertInstanceOf(HttpHandleCompleted::class, $event);
+                }
+
+                return $event;
+            });
+
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')
-            ->willReturnCallback(fn (string $class) => $this->createMock($class));
-        $middleware = new AppMiddleware($container);
+            ->willReturnCallback(fn (string $class) => match ($class) {
+                EventDispatcherInterface::class => $eventDispatcher,
+                default => $this->createMock($class),
+            });
+        $middleware = new HttpHandlerMiddleware($container);
 
         $request = $this->createMock(ServerRequestPlusInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -76,10 +97,29 @@ final class AppMiddlewareTest extends TestCase
 
     public function testShouldRenderWithoutOutput(): void
     {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function ($event) {
+                static $callCount = 0;
+                $callCount++;
+
+                if ($callCount === 1) {
+                    $this->assertInstanceOf(HttpHandleStarted::class, $event);
+                } elseif ($callCount === 2) {
+                    $this->assertInstanceOf(HttpHandleCompleted::class, $event);
+                }
+
+                return $event;
+            });
+
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')
-            ->willReturnCallback(fn (string $class) => $this->createMock($class));
-        $middleware = new AppMiddleware($container);
+            ->willReturnCallback(fn (string $class) => match ($class) {
+                EventDispatcherInterface::class => $eventDispatcher,
+                default => $this->createMock($class),
+            });
+        $middleware = new HttpHandlerMiddleware($container);
 
         $request = $this->createMock(ServerRequestPlusInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -107,6 +147,22 @@ final class AppMiddlewareTest extends TestCase
     #[TestWith([500])]
     public function testShouldRenderByStatus(?int $statusCode): void
     {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function ($event) {
+                static $callCount = 0;
+                $callCount++;
+
+                if ($callCount === 1) {
+                    $this->assertInstanceOf(HttpHandleStarted::class, $event);
+                } elseif ($callCount === 2) {
+                    $this->assertInstanceOf(HttpHandleCompleted::class, $event);
+                }
+
+                return $event;
+            });
+
         $config = $this->createMock(ConfigInterface::class);
         $config->expects($this->once())
             ->method('get')
@@ -116,9 +172,10 @@ final class AppMiddlewareTest extends TestCase
         $container->method('get')
             ->willReturnCallback(fn (string $class) => match ($class) {
                 ConfigInterface::class => $config,
+                EventDispatcherInterface::class => $eventDispatcher,
                 default => $this->createMock($class),
             });
-        $middleware = new AppMiddleware($container);
+        $middleware = new HttpHandlerMiddleware($container);
 
         $request = $this->createMock(ServerRequestPlusInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -154,10 +211,29 @@ final class AppMiddlewareTest extends TestCase
 
     public function testShouldRenderExportableResponse(): void
     {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function ($event) {
+                static $callCount = 0;
+                $callCount++;
+
+                if ($callCount === 1) {
+                    $this->assertInstanceOf(HttpHandleStarted::class, $event);
+                } elseif ($callCount === 2) {
+                    $this->assertInstanceOf(HttpHandleCompleted::class, $event);
+                }
+
+                return $event;
+            });
+
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')
-            ->willReturnCallback(fn (string $class) => $this->createMock($class));
-        $middleware = new AppMiddleware($container);
+            ->willReturnCallback(fn (string $class) => match ($class) {
+                EventDispatcherInterface::class => $eventDispatcher,
+                default => $this->createMock($class),
+            });
+        $middleware = new HttpHandlerMiddleware($container);
 
         $request = $this->createMock(ServerRequestPlusInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -189,10 +265,29 @@ final class AppMiddlewareTest extends TestCase
     #[DataProvider('providerShouldRenderDomain')]
     public function testShouldRenderDomain(string $context): void
     {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function ($event) {
+                static $callCount = 0;
+                $callCount++;
+
+                if ($callCount === 1) {
+                    $this->assertInstanceOf(HttpHandleStarted::class, $event);
+                } elseif ($callCount === 2) {
+                    $this->assertInstanceOf(HttpHandleCompleted::class, $event);
+                }
+
+                return $event;
+            });
+
         $container = $this->createMock(ContainerInterface::class);
         $container->method('get')
-            ->willReturnCallback(fn (string $class) => $this->make($class));
-        $middleware = new AppMiddleware($container);
+            ->willReturnCallback(fn (string $class) => match ($class) {
+                EventDispatcherInterface::class => $eventDispatcher,
+                default => $this->make($class),
+            });
+        $middleware = new HttpHandlerMiddleware($container);
 
         $request = $this->createMock(ServerRequestPlusInterface::class);
         $handler = $this->createMock(RequestHandlerInterface::class);
@@ -204,7 +299,7 @@ final class AppMiddlewareTest extends TestCase
         $collection = new GameCollection();
         $collection->push($game);
 
-        $callback = fn () => match($context) {
+        $callback = fn () => match ($context) {
             Game::class => $game,
             GameCollection::class => $collection,
             default => null,
@@ -226,7 +321,7 @@ final class AppMiddlewareTest extends TestCase
         $this->assertEquals('application/json', $response->getHeaderLine('content-type'));
         $expected = json_encode([
             'status' => 'success',
-            'data' => match($context) {
+            'data' => match ($context) {
                 Game::class => $demolisher->demolish($game),
                 GameCollection::class => $demolisher->demolishCollection($collection),
                 default => null,
@@ -246,5 +341,56 @@ final class AppMiddlewareTest extends TestCase
                 GameCollection::class,
             ],
         ];
+    }
+
+    public function testShouldDispatchInterruptedEventOnException(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function ($event) {
+                static $callCount = 0;
+                $callCount++;
+
+                if ($callCount === 1) {
+                    $this->assertInstanceOf(HttpHandleStarted::class, $event);
+                } elseif ($callCount === 2) {
+                    $this->assertInstanceOf(HttpHandleInterrupted::class, $event);
+                    $this->assertInstanceOf(RuntimeException::class, $event->exception);
+                }
+
+                return $event;
+            });
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('get')
+            ->willReturnCallback(fn (string $class) => match ($class) {
+                EventDispatcherInterface::class => $eventDispatcher,
+                default => $this->createMock($class),
+            });
+        $middleware = new HttpHandlerMiddleware($container);
+
+        $request = $this->createMock(ServerRequestPlusInterface::class);
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $response = $this->createMock(ResponsePlusInterface::class);
+
+        ResponseContext::set($response);
+
+        $exception = new RuntimeException('Test exception');
+        $request->method('getAttribute')
+            ->willReturn(
+                new Dispatched([
+                    Dispatcher::FOUND,
+                    new Handler(function () use ($exception) {
+                        throw $exception;
+                    }, ''),
+                    [],
+                ])
+            );
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Test exception');
+
+        $middleware->process($request, $handler);
     }
 }
