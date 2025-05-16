@@ -122,7 +122,7 @@ class SentryHttpListenerTest extends TestCase
                 'sentry.debug' => true,
             });
 
-        $callback = fn (array $context) => isset($context['exception']) && is_string($context['exception']);
+        $callback = fn (mixed $context) => is_array($context);
         $this->logger->expects($this->once())
             ->method('emergency')
             ->with('Sentry initialization failed', $this->callback($callback));

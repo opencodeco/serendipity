@@ -86,14 +86,18 @@ class SentryHttpListener implements ListenerInterface
 
     public function listen(): array
     {
-        if (isset($this->options['dsn'])) {
-            return [
-                HttpHandleStarted::class,
-                HttpHandleInterrupted::class,
-                HttpHandleCompleted::class,
-            ];
+        if (! isset($this->options['dsn'])) {
+            return [];
         }
-        return [];
+        $events = [
+            HttpHandleStarted::class,
+            HttpHandleInterrupted::class,
+            HttpHandleCompleted::class,
+        ];
+        if ($this->debug) {
+            $this->logger->debug(sprintf("Sentry will listen to '%s' events", count($events)), $events);
+        }
+        return $events;
     }
 
     public function process(object $event): void
@@ -110,10 +114,7 @@ class SentryHttpListener implements ListenerInterface
         try {
             init($this->options);
             if ($this->debug) {
-                $this->logger->debug(
-                    'Sentry initialized',
-                    ['environment' => $this->options['environment'] ?? 'unknown']
-                );
+                $this->logger->debug('Sentry initialized', $this->options);
             }
         } catch (Throwable $exception) {
             $additional = $this->factory->make($event->request, $exception);
