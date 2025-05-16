@@ -49,6 +49,7 @@ deptrac:
                 ^GuzzleHttp\\.*|\
                 ^SleekDB\\.*|\
                 ^Visus\\Cuid2\\.*|\
+                ^Sentry\\.*|\
                 ^Swow\\.*|\
                 ^MongoDB\\.*|\
                 ^Symfony\\.*

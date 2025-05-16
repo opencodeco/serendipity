@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Exception;
 
-use Hyperf\ExceptionHandler\ExceptionHandler;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -17,23 +18,29 @@ use Throwable;
 
 use function array_map;
 use function in_array;
+use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\integerify;
 use function Serendipity\Type\Cast\stringify;
 use function Serendipity\Type\Json\decode;
 use function sprintf;
 
-class GeneralExceptionHandler extends ExceptionHandler
+class GeneralExceptionHandler extends AbstractExceptionHandler
 {
     /**
      * @var array<string>
      */
-    private array $ignored = [];
+    private readonly array $ignored;
 
     public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly ThrownFactory $factory,
-        private readonly JsonFormatter $formatter,
+        LoggerInterface $logger,
+        JsonFormatter $formatter,
+        ThrownFactory $factory,
+        RequestInterface $request,
+        ConfigInterface $config,
     ) {
+        parent::__construct($logger, $formatter, $factory, $request);
+
+        $this->ignored = arrayify($config->get('exception.ignore', []));
     }
 
     public function handle(Throwable $throwable, ResponseInterface $response): MessageInterface|ResponseInterface
@@ -41,7 +48,7 @@ class GeneralExceptionHandler extends ExceptionHandler
         $thrown = $this->factory->make($throwable);
 
         $message = sprintf('<general> %s', $thrown->resume());
-        $context = $thrown->context();
+        $context = $this->extractContext($throwable, $thrown);
 
         match ($thrown->type) {
             ThrowableType::INVALID_INPUT => $this->logger->debug($message, $context),

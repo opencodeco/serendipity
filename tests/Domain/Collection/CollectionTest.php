@@ -31,4 +31,21 @@ final class CollectionTest extends TestCase
         $collection = new Collection();
         $collection->push(new stdClass());
     }
+
+    public function testShouldExportData(): void
+    {
+        $collection = new Collection();
+        $stub1 = new Stub('foo');
+        $stub2 = new Stub('bar');
+
+        $collection->push($stub1);
+        $collection->push($stub2);
+
+        $exported = $collection->export();
+
+        $this->assertIsArray($exported);
+        $this->assertCount(2, $exported);
+        $this->assertSame($stub1, $exported[0]);
+        $this->assertSame($stub2, $exported[1]);
+    }
 }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Serendipity\Test\Hyperf\Exception;
 
 use Exception;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpMessage\Server\Response;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -26,16 +28,21 @@ final class GeneralExceptionHandlerTest extends TestCase
 
     private ThrownFactory $factory;
 
+    private ConfigInterface $config;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->factory = $this->createMock(ThrownFactory::class);
+        $this->config = $this->createMock(ConfigInterface::class);
         $this->handler = new GeneralExceptionHandler(
             $this->logger,
+            new JsonFormatter(),
             $this->factory,
-            new JsonFormatter()
+            $this->createMock(RequestInterface::class),
+            $this->config,
         );
     }
 

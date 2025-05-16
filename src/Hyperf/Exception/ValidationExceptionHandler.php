@@ -4,31 +4,19 @@ declare(strict_types=1);
 
 namespace Serendipity\Hyperf\Exception;
 
-use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
-use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use Serendipity\Domain\Exception\InvalidInputException;
-use Serendipity\Infrastructure\Http\JsonFormatter;
 use Serendipity\Infrastructure\Http\ResponseType;
 use Swow\Psr7\Message\ResponsePlusInterface;
 use Throwable;
 
-use function Serendipity\Type\Cast\stringify;
 use function sprintf;
 
-class ValidationExceptionHandler extends ExceptionHandler
+class ValidationExceptionHandler extends AbstractExceptionHandler
 {
-    public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly JsonFormatter $formatter,
-        private readonly RequestInterface $request,
-    ) {
-    }
-
     public function handle(Throwable $throwable, ResponsePlusInterface $response): MessageInterface|ResponseInterface
     {
         $this->stopPropagation();
@@ -48,21 +36,6 @@ class ValidationExceptionHandler extends ExceptionHandler
         return $throwable instanceof ValidationException || $throwable instanceof InvalidInputException;
     }
 
-    private function extractContext(Throwable $throwable): array
-    {
-        $errors = match (true) {
-            $throwable instanceof ValidationException => $throwable->validator->errors()->getMessages(),
-            $throwable instanceof InvalidInputException => $throwable->getErrors(),
-            default => [],
-        };
-        return [
-            'errors' => $errors,
-            'headers' => $this->headers(),
-            'query' => $this->request->query(),
-            'body' => $this->request->post(),
-        ];
-    }
-
     private function extractStatus(Throwable $throwable): int
     {
         return match (true) {
@@ -70,16 +43,5 @@ class ValidationExceptionHandler extends ExceptionHandler
             $throwable instanceof InvalidInputException => 428,
             default => 400,
         };
-    }
-
-    private function headers(): array
-    {
-        $callback = function (mixed $header): string {
-            if (! is_array($header)) {
-                return stringify($header);
-            }
-            return implode('; ', array_map(fn (mixed $value) => stringify($value), $header));
-        };
-        return array_map($callback, $this->request->getHeaders());
     }
 }

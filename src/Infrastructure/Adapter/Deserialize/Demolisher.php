@@ -55,7 +55,6 @@ class Demolisher extends Engine
     }
 
     /**
-     * @return array<array>
      * @throws ReflectionException
      */
     public function demolishCollection(Collection $collection): array

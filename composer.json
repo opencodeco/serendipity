@@ -84,6 +84,7 @@
     "psr/http-server-middleware": "^1.0",
     "psr/log": "^3.0",
     "rakibtg/sleekdb": "^2.15",
+    "sentry/sentry": "^4.11",
     "swow/psr7-plus": "^1.1",
     "symfony/console": "^7.2",
     "visus/cuid2": "^4.1"

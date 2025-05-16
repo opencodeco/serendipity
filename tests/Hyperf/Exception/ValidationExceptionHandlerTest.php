@@ -45,7 +45,12 @@ final class ValidationExceptionHandlerTest extends TestCase
                 'accept' => ['application/json', 'UTF-8'],
                 'content-type' => 'text/xml',
             ]);
-        $handler = new ValidationExceptionHandler($logger, $formatter, $request);
+        $handler = new ValidationExceptionHandler(
+            $logger,
+            $formatter,
+            $this->createMock(\Serendipity\Infrastructure\Exception\ThrownFactory::class),
+            $request
+        );
 
         $response = $this->createMock(ResponsePlusInterface::class);
         $response->method('setStatus')->willReturnSelf();
@@ -72,7 +77,12 @@ final class ValidationExceptionHandlerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $formatter = $this->createMock(JsonFormatter::class);
         $request = $this->createMock(RequestInterface::class);
-        $handler = new ValidationExceptionHandler($logger, $formatter, $request);
+        $handler = new ValidationExceptionHandler(
+            $logger,
+            $formatter,
+            $this->createMock(\Serendipity\Infrastructure\Exception\ThrownFactory::class),
+            $request
+        );
 
         $response = $this->createMock(ResponsePlusInterface::class);
         $response->method('setStatus')->willReturnSelf();
@@ -93,7 +103,12 @@ final class ValidationExceptionHandlerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $formatter = $this->createMock(JsonFormatter::class);
         $request = $this->createMock(RequestInterface::class);
-        $handler = new ValidationExceptionHandler($logger, $formatter, $request);
+        $handler = new ValidationExceptionHandler(
+            $logger,
+            $formatter,
+            $this->createMock(\Serendipity\Infrastructure\Exception\ThrownFactory::class),
+            $request
+        );
 
         $validator = $this->createMock(ValidatorInterface::class);
         $throwable = new ValidationException($validator);
@@ -106,7 +121,12 @@ final class ValidationExceptionHandlerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $formatter = $this->createMock(JsonFormatter::class);
         $request = $this->createMock(RequestInterface::class);
-        $handler = new ValidationExceptionHandler($logger, $formatter, $request);
+        $handler = new ValidationExceptionHandler(
+            $logger,
+            $formatter,
+            $this->createMock(\Serendipity\Infrastructure\Exception\ThrownFactory::class),
+            $request
+        );
         $throwable = $this->createMock(Throwable::class);
 
         $this->assertFalse($handler->isValid($throwable));
@@ -117,7 +137,12 @@ final class ValidationExceptionHandlerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $formatter = $this->createMock(JsonFormatter::class);
         $request = $this->createMock(RequestInterface::class);
-        $handler = new ValidationExceptionHandler($logger, $formatter, $request);
+        $handler = new ValidationExceptionHandler(
+            $logger,
+            $formatter,
+            $this->createMock(\Serendipity\Infrastructure\Exception\ThrownFactory::class),
+            $request
+        );
 
         $response = $this->createMock(ResponsePlusInterface::class);
         $response->method('setStatus')->willReturnSelf();
