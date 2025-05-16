@@ -17,9 +17,6 @@ use Serendipity\Test\Testing\Stub\Union;
 use Serendipity\Test\Testing\Stub\Variety;
 use Serendipity\Testing\Faker\Resolver\FromDependency;
 
-/**
- * @internal
- */
 final class FromDependencyTest extends TestCase
 {
     public function testShouldResolveClassDependency(): void

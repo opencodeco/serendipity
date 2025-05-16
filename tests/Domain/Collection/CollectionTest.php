@@ -10,9 +10,6 @@ use Serendipity\Test\Domain\Collection\CollectionTestMock as Collection;
 use Serendipity\Test\Domain\Collection\CollectionTestMockStub as Stub;
 use stdClass;
 
-/**
- * @internal
- */
 final class CollectionTest extends TestCase
 {
     public function testShouldCreateFromArray(): void

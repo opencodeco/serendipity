@@ -11,9 +11,6 @@ use Serendipity\Domain\Support\Reflective\Ruleset;
 use Serendipity\Test\Testing\Stub\AttributesVariety;
 use Serendipity\Test\Testing\Stub\PatternMock;
 
-/**
- * @internal
- */
 class AttributeChainTest extends TestCase
 {
     public function testPatternAttributeProcessing(): void

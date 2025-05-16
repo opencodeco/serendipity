@@ -9,9 +9,6 @@ use Serendipity\Infrastructure\Logging\StdoutLogger;
 use stdClass;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * @internal
- */
 final class StdoutLoggerTest extends TestCase
 {
     private OutputInterface $output;

@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\ThrowableType;
 use Serendipity\Infrastructure\Exception\ThrownFactory;
 
-/**
- * @internal
- */
 final class ThrownFactoryTest extends TestCase
 {
     public function testShouldMakeThrown(): void

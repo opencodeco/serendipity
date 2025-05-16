@@ -8,9 +8,6 @@ use MongoDB\BSON\UTCDateTime;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\EqualCondition;
 
-/**
- * @internal
- */
 class EqualConditionTest extends TestCase
 {
     public function testShouldCompose(): void

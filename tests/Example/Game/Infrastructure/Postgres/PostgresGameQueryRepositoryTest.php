@@ -11,9 +11,6 @@ use Serendipity\Testing\Extension\ManagedExtension;
 
 use function Hyperf\Collection\collect;
 
-/**
- * @internal
- */
 class PostgresGameQueryRepositoryTest extends InfrastructureCase
 {
     use ManagedExtension;

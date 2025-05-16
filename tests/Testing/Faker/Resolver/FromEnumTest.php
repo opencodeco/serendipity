@@ -14,9 +14,6 @@ use Serendipity\Test\Testing\Stub\NotNative;
 use Serendipity\Test\Testing\Stub\Variety;
 use Serendipity\Testing\Faker\Resolver\FromEnum;
 
-/**
- * @internal
- */
 final class FromEnumTest extends TestCase
 {
     public function testShouldResolveBackedEnum(): void

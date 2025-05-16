@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Adapter\Serializer;
 use Serendipity\Test\Testing\Stub\Stub;
 
-/**
- * @internal
- */
 final class SerializerTest extends TestCase
 {
     private Serializer $serializer;

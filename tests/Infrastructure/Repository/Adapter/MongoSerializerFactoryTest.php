@@ -12,9 +12,6 @@ use Serendipity\Infrastructure\Repository\Formatter\MongoArrayToEntity;
 use Serendipity\Infrastructure\Repository\Formatter\MongoDateTimeToEntity;
 use Serendipity\Test\Testing\Stub\Stub;
 
-/**
- * @internal
- */
 final class MongoSerializerFactoryTest extends TestCase
 {
     public function testShouldCreateSerializer(): void

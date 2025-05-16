@@ -6,9 +6,6 @@ namespace Serendipity\Test\General;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
 final class FunctionsPolyfillTest extends TestCase
 {
     public function testArrayFlattenShouldFlattenNestedArrays(): void

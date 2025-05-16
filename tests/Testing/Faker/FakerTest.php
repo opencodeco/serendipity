@@ -14,9 +14,6 @@ use Serendipity\Test\Testing\Stub\Type\SingleBacked;
 use Serendipity\Test\Testing\Stub\Union;
 use Serendipity\Testing\Faker\Faker;
 
-/**
- * @internal
- */
 class FakerTest extends TestCase
 {
     public function testShouldMakeFakeEntityStub(): void

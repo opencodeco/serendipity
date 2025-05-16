@@ -11,9 +11,6 @@ use Serendipity\Example\Game\Infrastructure\Repository\Postgres\PostgresGameComm
 use Serendipity\Test\Example\Game\InfrastructureCase;
 use Serendipity\Testing\Extension\BuilderExtension;
 
-/**
- * @internal
- */
 final class PostgresGameCommandRepositoryTest extends InfrastructureCase
 {
     use BuilderExtension;

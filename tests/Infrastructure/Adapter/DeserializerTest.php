@@ -11,9 +11,6 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Deserializer;
 use Serendipity\Test\Testing\Stub\Stub;
 
-/**
- * @internal
- */
 final class DeserializerTest extends TestCase
 {
     public function testShouldNotDeserializeInvalidType(): void

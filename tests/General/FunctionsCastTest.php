@@ -13,9 +13,6 @@ use function Serendipity\Type\Cast\floatify;
 use function Serendipity\Type\Cast\integerify;
 use function Serendipity\Type\Cast\stringify;
 
-/**
- * @internal
- */
 final class FunctionsCastTest extends TestCase
 {
     public function testToArrayReturnsArrayWhenValueIsArray(): void

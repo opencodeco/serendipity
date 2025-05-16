@@ -7,9 +7,6 @@ namespace Serendipity\Test\Domain\Collection;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Collection\AbstractCollection;
 
-/**
- * @internal
- */
 final class AbstractCollectionTest extends TestCase
 {
     public function testShouldRewind(): void

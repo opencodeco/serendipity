@@ -12,9 +12,6 @@ use Serendipity\Test\Testing\ExtensibleCase;
 use Serendipity\Testing\Extension\FakerExtension;
 use Serendipity\Testing\Extension\ResourceExtension;
 
-/**
- * @internal
- */
 abstract class InfrastructureCase extends ExtensibleCase
 {
     use MakeExtension;

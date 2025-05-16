@@ -11,9 +11,6 @@ use Serendipity\Testing\Extension\ManagedExtension;
 
 use function Hyperf\Collection\collect;
 
-/**
- * @internal
- */
 class SleekDBGameQueryRepositoryTest extends InfrastructureCase
 {
     use ManagedExtension;

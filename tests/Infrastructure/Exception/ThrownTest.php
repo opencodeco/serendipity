@@ -10,9 +10,6 @@ use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Infrastructure\Exception\Thrown;
 use Serendipity\Testing\Extension\FakerExtension;
 
-/**
- * @internal
- */
 class ThrownTest extends TestCase
 {
     use MakeExtension;

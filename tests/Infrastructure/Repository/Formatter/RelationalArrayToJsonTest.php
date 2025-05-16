@@ -7,9 +7,6 @@ namespace Serendipity\Test\Infrastructure\Repository\Formatter;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalArrayToJson;
 
-/**
- * @internal
- */
 final class RelationalArrayToJsonTest extends TestCase
 {
     final public function testConvertArrayToString(): void

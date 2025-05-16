@@ -10,9 +10,6 @@ use Serendipity\Example\Game\Infrastructure\Repository\Mongo\MongoGameCommandRep
 use Serendipity\Test\Example\Game\InfrastructureCase;
 use Serendipity\Testing\Extension\BuilderExtension;
 
-/**
- * @internal
- */
 class MongoGameCommandRepositoryTest extends InfrastructureCase
 {
     use BuilderExtension;

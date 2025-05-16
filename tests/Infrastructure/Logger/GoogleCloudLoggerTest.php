@@ -15,9 +15,6 @@ use Serendipity\Infrastructure\Logging\GoogleCloudLogger;
 use function Hyperf\Collection\data_get;
 use function Hyperf\Collection\data_set;
 
-/**
- * @internal
- */
 class GoogleCloudLoggerTest extends TestCase
 {
     use MakeExtension;

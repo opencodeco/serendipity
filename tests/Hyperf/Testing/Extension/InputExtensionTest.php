@@ -11,9 +11,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Serendipity\Testing\FailException;
 use Serendipity\Testing\Mock\InputExtensionMock;
 
-/**
- * @internal
- */
 final class InputExtensionTest extends TestCase
 {
     private InputExtensionMock $mock;

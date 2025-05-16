@@ -7,9 +7,6 @@ namespace Serendipity\Test\Domain\Entity;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Entity\Entity;
 
-/**
- * @internal
- */
 final class EntityTest extends TestCase
 {
     public function testShouldExposeValues(): void

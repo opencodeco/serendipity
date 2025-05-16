@@ -13,9 +13,6 @@ use Serendipity\Test\Testing\Stub\Command;
 use Serendipity\Test\Testing\Stub\NullableAndOptional;
 use Serendipity\Testing\Faker\Resolver\FromDefaultValue;
 
-/**
- * @internal
- */
 final class FromDefaultValueTest extends TestCase
 {
     public function testShouldResolveParameterWithDefaultValue(): void

@@ -19,9 +19,6 @@ use Serendipity\Presentation\Output\PartialContent;
 use Serendipity\Presentation\Output\ResetContent;
 use Serendipity\Testing\Extension\FakerExtension;
 
-/**
- * @internal
- */
 final class SuccessTest extends TestCase
 {
     use MakeExtension;

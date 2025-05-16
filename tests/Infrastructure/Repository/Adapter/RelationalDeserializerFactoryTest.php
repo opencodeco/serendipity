@@ -12,9 +12,6 @@ use Serendipity\Infrastructure\Repository\Formatter\RelationalArrayToJson;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalDatetimeToString;
 use Serendipity\Test\Testing\Stub\Stub;
 
-/**
- * @internal
- */
 final class RelationalDeserializerFactoryTest extends TestCase
 {
     public function testShouldCreateDeserializer(): void

@@ -11,9 +11,6 @@ use Serendipity\Domain\Support\Set;
 use Serendipity\Testing\FailException;
 use Serendipity\Testing\Mock\ResourceExtensionMock;
 
-/**
- * @internal
- */
 final class ResourceExtensionTest extends TestCase
 {
     private ResourceExtensionMock $mock;

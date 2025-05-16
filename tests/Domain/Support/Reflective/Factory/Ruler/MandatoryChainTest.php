@@ -10,9 +10,6 @@ use Serendipity\Domain\Support\Reflective\Factory\Ruler\MandatoryChain;
 use Serendipity\Domain\Support\Reflective\Ruleset;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 
-/**
- * @internal
- */
 class MandatoryChainTest extends TestCase
 {
     public function testRequiredParameterResolution(): void

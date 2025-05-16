@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Hyperf\Database\Relational\HyperfConnectionFactory;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 
-/**
- * @internal
- */
 final class HyperfConnectionFactoryTest extends TestCase
 {
     use MakeExtension;

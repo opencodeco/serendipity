@@ -14,9 +14,6 @@ use Serendipity\Test\Testing\Stub\Complex;
 use Serendipity\Test\Testing\Stub\Deep;
 use Serendipity\Test\Testing\Stub\Union;
 
-/**
- * @internal
- */
 class RecursiveChainTest extends TestCase
 {
     private RecursiveChain $chain;

@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Database\Managed;
 
-/**
- * @internal
- */
 final class MongoRepositoryTest extends TestCase
 {
     public function testResource(): void

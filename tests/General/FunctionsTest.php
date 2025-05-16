@@ -6,9 +6,6 @@ namespace Serendipity\Test\General;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
 class FunctionsTest extends TestCase
 {
     public function testShouldRequireFunctions(): void

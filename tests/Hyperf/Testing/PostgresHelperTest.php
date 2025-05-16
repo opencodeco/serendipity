@@ -18,9 +18,6 @@ use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Testing\Faker\Faker;
 
-/**
- * @internal
- */
 final class PostgresHelperTest extends TestCase
 {
     private Faker|MockObject $faker;

@@ -9,9 +9,6 @@ use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalJsonToArray;
 use Serendipity\Test\Testing\Stub\Stub;
 
-/**
- * @internal
- */
 final class RelationalSerializerFactoryTest extends TestCase
 {
     public function testShouldCreateSerializer(): void

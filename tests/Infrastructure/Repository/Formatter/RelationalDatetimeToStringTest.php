@@ -8,9 +8,6 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalDatetimeToString;
 
-/**
- * @internal
- */
 final class RelationalDatetimeToStringTest extends TestCase
 {
     final public function testConvertDatetimeToString(): void

@@ -10,9 +10,6 @@ use Serendipity\Hyperf\Testing\Observability\Logger\InMemory\Memory;
 use Serendipity\Testing\FailException;
 use Serendipity\Testing\Mock\LoggerExtensionMock;
 
-/**
- * @internal
- */
 final class LoggerExtensionTest extends TestCase
 {
     private LoggerExtensionMock $mock;

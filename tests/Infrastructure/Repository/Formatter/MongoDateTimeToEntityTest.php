@@ -10,9 +10,6 @@ use MongoDB\BSON\UTCDateTime;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Repository\Formatter\MongoDateTimeToEntity;
 
-/**
- * @internal
- */
 final class MongoDateTimeToEntityTest extends TestCase
 {
     public function testConvertUTCDateTimeToDateTimeImmutable(): void

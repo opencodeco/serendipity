@@ -16,9 +16,6 @@ use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Testing\Faker\Faker;
 use SleekDB\Store;
 
-/**
- * @internal
- */
 final class SleekDBHelperTest extends TestCase
 {
     private Faker|MockObject $faker;

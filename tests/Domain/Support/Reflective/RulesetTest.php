@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Support\Reflective\Ruleset;
 use Stringable;
 
-/**
- * @internal
- */
 class RulesetTest extends TestCase
 {
     public function testShouldAddRuleWithoutParameters(): void

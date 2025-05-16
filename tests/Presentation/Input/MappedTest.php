@@ -13,9 +13,6 @@ use Serendipity\Testing\Extension\FakerExtension;
 
 use function Serendipity\Type\Cast\stringify;
 
-/**
- * @internal
- */
 final class MappedTest extends ExtensibleCase
 {
     use MakeExtension;

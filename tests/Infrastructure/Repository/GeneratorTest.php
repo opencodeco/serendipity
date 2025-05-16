@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Infrastructure\Database\Managed;
 
-/**
- * @internal
- */
 final class GeneratorTest extends TestCase
 {
     final public function testId(): void

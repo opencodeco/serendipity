@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Exception\SchemaException;
 use Serendipity\Domain\Support\Set;
 
-/**
- * @internal
- */
 final class SetTest extends TestCase
 {
     public function testCreateFromArray(): void

@@ -7,9 +7,6 @@ namespace Serendipity\Test\Presentation;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Presentation\Output;
 
-/**
- * @internal
- */
 class OutputTest extends TestCase
 {
     public function testShouldHasPropertiesAsEmptyArrayAndValuesNull(): void

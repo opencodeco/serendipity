@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 use function Serendipity\Runtime\coroutine;
 use function Serendipity\Runtime\invoke;
 
-/**
- * @internal
- */
 final class FunctionsRuntimeTest extends TestCase
 {
     public function testInvokeShouldCallCallable(): void

@@ -12,9 +12,6 @@ use Serendipity\Test\Testing\Stub\Builtin;
 use Serendipity\Test\Testing\Stub\Variety;
 use Serendipity\Testing\Faker\Resolver\FromTypeBuiltin;
 
-/**
- * @internal
- */
 final class FromTypeBuiltinTest extends TestCase
 {
     public function testShouldResolveStringType(): void

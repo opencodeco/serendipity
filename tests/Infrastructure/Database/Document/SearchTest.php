@@ -8,9 +8,6 @@ use MongoDB\BSON\UTCDateTime;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Document\Mongo\Search;
 
-/**
- * @internal
- */
 class SearchTest extends TestCase
 {
     public function testShouldMakeSearchParam(): void

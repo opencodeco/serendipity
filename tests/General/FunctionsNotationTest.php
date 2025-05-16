@@ -17,9 +17,6 @@ use function Serendipity\Notation\titlelify;
 use function Serendipity\Notation\trainify;
 use function Serendipity\Notation\upperify;
 
-/**
- * @internal
- */
 final class FunctionsNotationTest extends TestCase
 {
     public function testSnakifyConvertsUpperCaseToSnakeCase(): void

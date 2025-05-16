@@ -9,9 +9,6 @@ use Serendipity\Domain\Support\Reflective\Factory\Ruler;
 use Serendipity\Domain\Support\Reflective\Ruleset;
 use Serendipity\Test\Testing\Stub\Command;
 
-/**
- * @internal
- */
 class RulerTest extends TestCase
 {
     private Ruler $ruler;

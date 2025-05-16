@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 use function Serendipity\Crypt\decrypt;
 use function Serendipity\Crypt\encrypt;
 
-/**
- * @internal
- */
 final class CryptFunctionsTest extends TestCase
 {
     public function testShouldEncrypt(): void

@@ -12,9 +12,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Serendipity\Hyperf\Middleware\CorsMiddleware;
 
-/**
- * @internal
- */
 final class CorsMiddlewareTest extends TestCase
 {
     public function testShouldAllowCors(): void

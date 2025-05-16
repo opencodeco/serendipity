@@ -34,9 +34,6 @@ use Serendipity\Presentation\Output\Fail\UnsupportedMediaType;
 use Serendipity\Presentation\Output\Fail\UpdateRequired;
 use Serendipity\Testing\Extension\FakerExtension;
 
-/**
- * @internal
- */
 final class FailTest extends TestCase
 {
     use MakeExtension;

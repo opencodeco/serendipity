@@ -15,9 +15,6 @@ use Serendipity\Test\Testing\Stub\PatternMock;
 use Serendipity\Test\Testing\Stub\Variety;
 use Serendipity\Testing\Faker\Resolver\FromTypeAttributes;
 
-/**
- * @internal
- */
 final class FromTypeAttributesTest extends TestCase
 {
     public function testShouldResolveEmailAttribute(): void

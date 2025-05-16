@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Test\Testing\Stub\Stub;
 
-/**
- * @internal
- */
 final class DeserializerFactoryTest extends TestCase
 {
     public function testShouldCreateDeserializer(): void

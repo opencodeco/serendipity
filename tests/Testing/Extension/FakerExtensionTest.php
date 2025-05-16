@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Testing\Faker\Faker;
 use Serendipity\Testing\Mock\FakerExtensionMock;
 
-/**
- * @internal
- */
 final class FakerExtensionTest extends TestCase
 {
     public function testFaker(): void

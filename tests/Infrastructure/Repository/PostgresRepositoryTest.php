@@ -14,9 +14,6 @@ use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 use stdClass;
 
-/**
- * @internal
- */
 final class PostgresRepositoryTest extends TestCase
 {
     private PostgresRepositoryTestMock $repository;

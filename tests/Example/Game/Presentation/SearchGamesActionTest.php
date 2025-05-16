@@ -10,9 +10,6 @@ use Serendipity\Example\Game\Presentation\Input\SearchGamesInput;
 use Serendipity\Presentation\Output\Ok;
 use Serendipity\Test\Example\Game\PresentationCase;
 
-/**
- * @internal
- */
 final class SearchGamesActionTest extends PresentationCase
 {
     protected function setUp(): void

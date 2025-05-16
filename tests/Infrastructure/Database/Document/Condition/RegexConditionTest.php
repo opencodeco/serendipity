@@ -7,9 +7,6 @@ namespace Serendipity\Test\Infrastructure\Database\Document\Condition;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Document\Mongo\Condition\RegexCondition;
 
-/**
- * @internal
- */
 class RegexConditionTest extends TestCase
 {
     public function testShouldComposeOneItem(): void

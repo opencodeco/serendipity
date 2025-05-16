@@ -19,9 +19,6 @@ use Serendipity\Presentation\Output\Error\ServiceUnavailable;
 use Serendipity\Presentation\Output\Error\VariantAlsoNegotiates;
 use Serendipity\Testing\Extension\FakerExtension;
 
-/**
- * @internal
- */
 final class ErrorTest extends TestCase
 {
     use MakeExtension;

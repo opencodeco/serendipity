@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Adapter\Serialize\Builder;
 use Serendipity\Testing\Mock\BuilderExtensionMock;
 
-/**
- * @internal
- */
 final class BuilderExtensionTest extends TestCase
 {
     public function testBuilder(): void

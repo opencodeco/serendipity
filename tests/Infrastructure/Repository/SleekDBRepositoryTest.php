@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Document\SleekDBFactory;
 use Serendipity\Infrastructure\Database\Managed;
 
-/**
- * @internal
- */
 final class SleekDBRepositoryTest extends TestCase
 {
     public function testResource(): void

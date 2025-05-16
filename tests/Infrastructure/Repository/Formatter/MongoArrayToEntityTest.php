@@ -8,9 +8,6 @@ use MongoDB\Model\BSONArray;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Repository\Formatter\MongoArrayToEntity;
 
-/**
- * @internal
- */
 final class MongoArrayToEntityTest extends TestCase
 {
     public function testConvertBSONArrayToArray(): void

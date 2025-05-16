@@ -10,9 +10,6 @@ use Hyperf\Coordinator\CoordinatorManager;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Hyperf\Listener\ResumeExitCoordinatorListener;
 
-/**
- * @internal
- */
 final class ResumeExitCoordinatorListenerTest extends TestCase
 {
     public function testShouldListenToAfterExecuteEvent(): void

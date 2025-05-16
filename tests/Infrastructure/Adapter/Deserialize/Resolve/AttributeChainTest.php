@@ -21,9 +21,6 @@ use Serendipity\Test\Testing\Stub\Type\Sensitive;
 
 use function Serendipity\Crypt\decrypt;
 
-/**
- * @internal
- */
 final class AttributeChainTest extends TestCase
 {
     public function testResolveWithoutType(): void

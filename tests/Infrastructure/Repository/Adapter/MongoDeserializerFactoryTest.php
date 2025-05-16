@@ -11,9 +11,6 @@ use Serendipity\Infrastructure\Repository\Adapter\MongoDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\MongoDateTimeToDatabase;
 use Serendipity\Test\Testing\Stub\Stub;
 
-/**
- * @internal
- */
 final class MongoDeserializerFactoryTest extends TestCase
 {
     public function testShouldCreateDeserializer(): void

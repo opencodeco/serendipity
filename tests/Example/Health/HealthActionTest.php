@@ -12,9 +12,6 @@ use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Test\Testing\ExtensibleCase;
 use Serendipity\Testing\Extension\FakerExtension;
 
-/**
- * @internal
- */
 final class HealthActionTest extends ExtensibleCase
 {
     use MakeExtension;

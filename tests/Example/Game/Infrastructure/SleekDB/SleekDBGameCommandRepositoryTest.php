@@ -10,9 +10,6 @@ use Serendipity\Example\Game\Infrastructure\Repository\SleekDB\SleekDBGameComman
 use Serendipity\Test\Example\Game\InfrastructureCase;
 use Serendipity\Testing\Extension\BuilderExtension;
 
-/**
- * @internal
- */
 class SleekDBGameCommandRepositoryTest extends InfrastructureCase
 {
     use BuilderExtension;

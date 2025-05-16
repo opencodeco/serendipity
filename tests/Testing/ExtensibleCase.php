@@ -6,9 +6,6 @@ namespace Serendipity\Test\Testing;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
 abstract class ExtensibleCase extends TestCase
 {
     private array $callbacks = [];

@@ -11,9 +11,6 @@ use Serendipity\Presentation\Input;
 use Serendipity\Test\Testing\ExtensibleCase;
 use Serendipity\Testing\Extension\FakerExtension;
 
-/**
- * @internal
- */
 final class InputTest extends ExtensibleCase
 {
     use MakeExtension;

@@ -11,9 +11,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Hyperf\Database\Relational\HyperfConnection;
 
-/**
- * @internal
- */
 final class HyperfConnectionTest extends TestCase
 {
     private Database $database;

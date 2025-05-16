@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionParameter;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 
-/**
- * @internal
- */
 final class DoNothingChainTest extends TestCase
 {
     public function testResolveValue(): void

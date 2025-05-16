@@ -9,9 +9,6 @@ use PHPUnit\Framework\TestCase;
 use function Serendipity\Type\Json\decode;
 use function Serendipity\Type\Json\encode;
 
-/**
- * @internal
- */
 final class FunctionsJsonTest extends TestCase
 {
     public function testDecodeShouldReturnArrayWhenJsonIsValid(): void

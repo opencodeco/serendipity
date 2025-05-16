@@ -19,9 +19,6 @@ use Serendipity\Infrastructure\Repository\Adapter\MongoSerializerFactory;
 use Serendipity\Testing\Faker\Faker;
 use stdClass;
 
-/**
- * @internal
- */
 final class MongoHelperTest extends TestCase
 {
     private Faker|MockObject $faker;

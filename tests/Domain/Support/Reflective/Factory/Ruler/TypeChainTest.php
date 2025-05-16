@@ -16,9 +16,6 @@ use Serendipity\Test\Testing\Stub\DeepDeepDown;
 use Serendipity\Test\Testing\Stub\EnumVariety;
 use Serendipity\Test\Testing\Stub\Variety;
 
-/**
- * @internal
- */
 class TypeChainTest extends TestCase
 {
     /**

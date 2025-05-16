@@ -12,9 +12,6 @@ use Serendipity\Presentation\Output\Ok;
 use Serendipity\Testing\Extension\FakerExtension;
 use stdClass;
 
-/**
- * @internal
- */
 class OkTest extends TestCase
 {
     use MakeExtension;

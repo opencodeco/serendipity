@@ -11,9 +11,6 @@ use Serendipity\Presentation\Output\Fail\NotFound;
 use Serendipity\Presentation\Output\Ok;
 use Serendipity\Test\Example\Game\PresentationCase;
 
-/**
- * @internal
- */
 class ReadGameActionTest extends PresentationCase
 {
     protected function setUp(): void

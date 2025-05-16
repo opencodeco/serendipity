@@ -24,9 +24,6 @@ use stdClass;
 
 use function Serendipity\Type\Json\encode;
 
-/**
- * @internal
- */
 final class BuilderTest extends TestCase
 {
     use MakeExtension;

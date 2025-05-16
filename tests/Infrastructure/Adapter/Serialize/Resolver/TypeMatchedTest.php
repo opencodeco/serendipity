@@ -28,9 +28,6 @@ use Serendipity\Test\Testing\Stub\Variety;
 use Serendipity\Testing\Extension\FakerExtension;
 use stdClass;
 
-/**
- * @internal
- */
 final class TypeMatchedTest extends TestCase
 {
     use MakeExtension;

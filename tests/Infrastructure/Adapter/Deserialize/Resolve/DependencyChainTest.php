@@ -9,9 +9,6 @@ use ReflectionParameter;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use stdClass;
 
-/**
- * @internal
- */
 final class DependencyChainTest extends TestCase
 {
     public function testResolveObject(): void

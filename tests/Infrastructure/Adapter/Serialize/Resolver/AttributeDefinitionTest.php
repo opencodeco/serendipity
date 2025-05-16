@@ -16,9 +16,6 @@ use Serendipity\Test\Testing\Stub\AttributesVariety;
 
 use function Serendipity\Crypt\encrypt;
 
-/**
- * @internal
- */
 final class AttributeDefinitionTest extends TestCase
 {
     public function testResolveManaged(): void

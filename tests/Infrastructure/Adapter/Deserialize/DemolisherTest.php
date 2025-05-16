@@ -11,9 +11,6 @@ use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 use stdClass;
 
-/**
- * @internal
- */
 final class DemolisherTest extends TestCase
 {
     public function testShouldDemolish(): void

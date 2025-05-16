@@ -13,9 +13,6 @@ use stdClass;
 
 use function Serendipity\Type\Json\encode;
 
-/**
- * @internal
- */
 final class FormatterChainTest extends TestCase
 {
     #[TestWith([10.5])]

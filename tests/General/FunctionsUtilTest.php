@@ -12,9 +12,6 @@ use function Serendipity\Type\Util\extractInt;
 use function Serendipity\Type\Util\extractNumeric;
 use function Serendipity\Type\Util\extractString;
 
-/**
- * @internal
- */
 final class FunctionsUtilTest extends TestCase
 {
     public function testExtractArrayReturnsArrayWhenPropertyExists(): void

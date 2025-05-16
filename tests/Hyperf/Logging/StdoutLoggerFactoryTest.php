@@ -11,9 +11,6 @@ use Serendipity\Hyperf\Logging\StdoutLoggerFactory;
 use Serendipity\Infrastructure\Logging\StdoutLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-/**
- * @internal
- */
 final class StdoutLoggerFactoryTest extends TestCase
 {
     private ContainerInterface $container;

@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Serendipity\Infrastructure\Database\Managed;
 use Serendipity\Testing\Mock\ManagedExtensionMock;
 
-/**
- * @internal
- */
 final class ManagedExtensionTest extends TestCase
 {
     public function testManaged(): void

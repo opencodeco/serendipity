@@ -15,9 +15,6 @@ use Serendipity\Test\Testing\Stub\Native;
 use Serendipity\Test\Testing\Stub\Variety;
 use Serendipity\Testing\Faker\Resolver\FromTypeNative;
 
-/**
- * @internal
- */
 final class FromTypeNativeTest extends TestCase
 {
     public function testShouldResolveDateTimeImmutable(): void

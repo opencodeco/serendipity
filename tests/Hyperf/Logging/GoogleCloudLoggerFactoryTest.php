@@ -10,9 +10,6 @@ use Serendipity\Domain\Support\Task;
 use Serendipity\Hyperf\Logging\GoogleCloudLoggerFactory;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 
-/**
- * @internal
- */
 final class GoogleCloudLoggerFactoryTest extends TestCase
 {
     use MakeExtension;

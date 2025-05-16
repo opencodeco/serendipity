@@ -9,9 +9,6 @@ use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Output\Fail\NotFound;
 use Serendipity\Testing\Extension\FakerExtension;
 
-/**
- * @internal
- */
 final class NotFoundTest extends TestCase
 {
     use MakeExtension;

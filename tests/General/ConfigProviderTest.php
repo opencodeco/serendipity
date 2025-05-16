@@ -7,9 +7,6 @@ namespace Serendipity\Test\General;
 use PHPUnit\Framework\TestCase;
 use Serendipity\ConfigProvider;
 
-/**
- * @internal
- */
 class ConfigProviderTest extends TestCase
 {
     public function testBeSuccessfully(): void

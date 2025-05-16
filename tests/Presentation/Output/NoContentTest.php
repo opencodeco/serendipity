@@ -9,9 +9,6 @@ use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Presentation\Output\NoContent;
 use Serendipity\Testing\Extension\FakerExtension;
 
-/**
- * @internal
- */
 final class NoContentTest extends TestCase
 {
     use MakeExtension;

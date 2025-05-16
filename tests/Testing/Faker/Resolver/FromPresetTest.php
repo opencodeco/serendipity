@@ -14,9 +14,6 @@ use Serendipity\Test\Testing\Stub\Variety;
 use Serendipity\Testing\Faker\Resolver\FromPreset;
 use stdClass;
 
-/**
- * @internal
- */
 final class FromPresetTest extends TestCase
 {
     public function testShouldResolvePresetWithExactParameterName(): void
