@@ -109,10 +109,6 @@ class SentryHttpListener implements ListenerInterface
 
     public function process(object $event): void
     {
-        if (! is_string($this->options['dsn'] ?? null)) {
-            return;
-        }
-
         match (true) {
             $event instanceof BootApplication => $this->booted = true,
             $event instanceof HttpHandleStarted => $this->init($event),
