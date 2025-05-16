@@ -18,7 +18,7 @@ class Thrown
         public readonly int $code,
         public readonly string $file,
         public readonly int $line,
-        public readonly string $trace,
+        public readonly array $trace,
         public readonly ?Thrown $previous = null,
     ) {
     }
@@ -34,7 +34,7 @@ class Thrown
             code: $throwable->getCode(),
             file: $throwable->getFile(),
             line: $throwable->getLine(),
-            trace: $throwable->getTraceAsString(),
+            trace: $throwable->getTrace(),
             previous: $previous
                 ? self::createFrom($previous, $type)
                 : null,

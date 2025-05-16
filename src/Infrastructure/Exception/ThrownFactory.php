@@ -24,7 +24,7 @@ class ThrownFactory
             $throwable->getCode(),
             $throwable->getFile(),
             $throwable->getLine(),
-            $throwable->getTraceAsString(),
+            $throwable->getTrace(),
             $this->previous($throwable->getPrevious()),
         );
     }
