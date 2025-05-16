@@ -6,17 +6,23 @@ namespace Serendipity\Hyperf\Listener;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Event\Contract\ListenerInterface;
-use Hyperf\Framework\Event\MainWorkerStart;
 use Psr\Log\LoggerInterface;
 use Sentry\Dsn;
 use Sentry\HttpClient\HttpClientInterface;
 use Sentry\Integration\IntegrationInterface;
+use Sentry\State\Scope;
+use Serendipity\Hyperf\Event\HttpHandleCompleted;
+use Serendipity\Hyperf\Event\HttpHandleInterrupted;
+use Serendipity\Hyperf\Event\HttpHandleStarted;
+use Serendipity\Infrastructure\Exception\AdditionalFactory;
 use Throwable;
 
+use function Sentry\captureException;
+use function Sentry\configureScope;
 use function Sentry\init;
 use function Serendipity\Type\Cast\arrayify;
 
-class SentryInitializeListener implements ListenerInterface
+class SentryHttpListener implements ListenerInterface
 {
     /**
      * @var array{
@@ -70,6 +76,7 @@ class SentryInitializeListener implements ListenerInterface
     public function __construct(
         private readonly ConfigInterface $config,
         private readonly LoggerInterface $logger,
+        private readonly AdditionalFactory $factory,
     ) {
         $this->options = arrayify($this->config->get('sentry'));
     }
@@ -78,13 +85,24 @@ class SentryInitializeListener implements ListenerInterface
     {
         if (isset($this->options['dsn'])) {
             return [
-                MainWorkerStart::class,
+                HttpHandleStarted::class,
+                HttpHandleInterrupted::class,
+                HttpHandleCompleted::class,
             ];
         }
         return [];
     }
 
     public function process(object $event): void
+    {
+        match (true) {
+            $event instanceof HttpHandleStarted => $this->init(),
+            $event instanceof HttpHandleInterrupted => $this->capture($event),
+            default => $this->fallback($event),
+        };
+    }
+
+    private function init(): void
     {
         try {
             init($this->options);
@@ -94,5 +112,24 @@ class SentryInitializeListener implements ListenerInterface
                 'options' => $this->options,
             ]);
         }
+    }
+
+    private function capture(HttpHandleInterrupted $event): void
+    {
+        $additional = $this->factory->make($event->request, $event->exception);
+        $context = $additional->context();
+        configureScope(function (Scope $scope) use ($additional, $context): void {
+            foreach ($context as $key => $value) {
+                $scope->setExtra($key, $value);
+            }
+            $scope->setExtra('details', $additional->message);
+        });
+        $this->logger->debug('Sentry captured exception', $context);
+        captureException($event->exception);
+    }
+
+    private function fallback(object $event): void
+    {
+        $this->logger->warning('Sentry integration does not support this event', ['event' => $event::class]);
     }
 }

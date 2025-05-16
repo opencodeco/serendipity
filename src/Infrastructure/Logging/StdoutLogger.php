@@ -28,7 +28,7 @@ class StdoutLogger extends AbstractLogger
         }
         $variables = $this->variables($level, $context);
         $messages = $this->message($this->format, $message, $variables);
-        $this->output->writeln($messages);
+        $this->output->writeln(str_replace(PHP_EOL, '\n', $messages));
     }
 
     protected function variables(mixed $level, array $context): array

@@ -11,27 +11,37 @@ use Hyperf\HttpServer\Router\Dispatched;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionException;
 use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
+use Serendipity\Hyperf\Event\HttpHandleCompleted;
+use Serendipity\Hyperf\Event\HttpHandleInterrupted;
+use Serendipity\Hyperf\Event\HttpHandleStarted;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 use Serendipity\Infrastructure\Http\JsonFormatter;
 use Serendipity\Infrastructure\Http\ResponseType;
 use Swow\Psr7\Message\ResponsePlusInterface;
+use Throwable;
 
 use function is_string;
 use function Serendipity\Type\Cast\integerify;
 use function sprintf;
 
-class AppMiddleware extends Hyperf
+/**
+ * @SuppressWarnings(CouplingBetweenObjects)
+ */
+class HttpHandlerMiddleware extends Hyperf
 {
     private readonly ConfigInterface $config;
 
     private readonly JsonFormatter $formatter;
 
     private readonly Demolisher $demolisher;
+
+    private readonly EventDispatcherInterface $eventDispatcher;
 
     /**
      * @throws ContainerExceptionInterface
@@ -44,19 +54,29 @@ class AppMiddleware extends Hyperf
         $this->config = $container->get(ConfigInterface::class);
         $this->formatter = $container->get(JsonFormatter::class);
         $this->demolisher = $container->get(Demolisher::class);
+        $this->eventDispatcher = $container->get(EventDispatcherInterface::class);
     }
 
     /**
      * @throws ReflectionException
+     * @throws Throwable
      */
     protected function handleFound(Dispatched $dispatched, ServerRequestInterface $request): mixed
     {
-        $response = parent::handleFound($dispatched, $request);
-        return match (true) {
-            $response instanceof Message => $this->handleFoundMessage($response),
-            $response instanceof Exportable => $this->handleFoundExportable($response),
-            default => $response,
-        };
+        $this->eventDispatcher->dispatch(new HttpHandleStarted($request));
+        try {
+            $previous = parent::handleFound($dispatched, $request);
+            $response = match (true) {
+                $previous instanceof Message => $this->handleFoundMessage($previous),
+                $previous instanceof Exportable => $this->handleFoundExportable($previous),
+                default => $previous,
+            };
+            $this->eventDispatcher->dispatch(new HttpHandleCompleted($request, $response));
+            return $response;
+        } catch (Throwable $throwable) {
+            $this->eventDispatcher->dispatch(new HttpHandleInterrupted($request, $throwable));
+            throw $throwable;
+        }
     }
 
     private function handleFoundMessage(Message $message): ResponsePlusInterface

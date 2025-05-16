@@ -5,52 +5,44 @@ declare(strict_types=1);
 namespace Serendipity\Hyperf\Exception;
 
 use Hyperf\Contract\ConfigInterface;
+use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Serendipity\Domain\Exception\ThrowableType;
-use Serendipity\Infrastructure\Exception\ThrownFactory;
+use Serendipity\Infrastructure\Exception\AdditionalFactory;
+use Serendipity\Infrastructure\Http\ExceptionResponseNormalizer;
 use Serendipity\Infrastructure\Http\JsonFormatter;
-use Serendipity\Infrastructure\Http\ResponseType;
 use Throwable;
 
 use function array_map;
 use function in_array;
 use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\integerify;
 use function Serendipity\Type\Cast\stringify;
-use function Serendipity\Type\Json\decode;
 use function sprintf;
 
-class GeneralExceptionHandler extends AbstractExceptionHandler
+class GeneralExceptionHandler extends ExceptionHandler
 {
-    /**
-     * @var array<string>
-     */
-    private readonly array $ignored;
-
     public function __construct(
-        LoggerInterface $logger,
-        JsonFormatter $formatter,
-        ThrownFactory $factory,
-        RequestInterface $request,
-        ConfigInterface $config,
+        private readonly LoggerInterface $logger,
+        private readonly RequestInterface $request,
+        private readonly ConfigInterface $config,
+        private readonly JsonFormatter $formatter,
+        private readonly AdditionalFactory $factory,
+        private readonly ExceptionResponseNormalizer $normalizer,
     ) {
-        parent::__construct($logger, $formatter, $factory, $request);
-
-        $this->ignored = arrayify($config->get('exception.ignore', []));
     }
 
     public function handle(Throwable $throwable, ResponseInterface $response): MessageInterface|ResponseInterface
     {
-        $thrown = $this->factory->make($throwable);
+        $additional = $this->factory->make($this->request, $throwable);
 
-        $message = sprintf('<general> %s', $thrown->resume());
-        $context = $this->extractContext($throwable, $thrown);
-
-        match ($thrown->type) {
+        $type = $additional->thrown->type;
+        $message = sprintf('<general> %s', $additional->message);
+        $context = $additional->context();
+        match ($type) {
             ThrowableType::INVALID_INPUT => $this->logger->debug($message, $context),
             ThrowableType::FALLBACK_REQUIRED => $this->logger->info($message, $context),
             ThrowableType::RETRY_AVAILABLE => $this->logger->warning($message, $context),
@@ -58,9 +50,9 @@ class GeneralExceptionHandler extends AbstractExceptionHandler
             default => $this->logger->alert($message, $context),
         };
 
-        $code = $this->code($throwable);
-        $type = $this->detectType($thrown->type);
-        $value = $this->format($type, $thrown->resume());
+        $code = $this->normalizer->normalizeStatusCode($throwable);
+        $type = $this->normalizer->detectType($type);
+        $value = $this->normalizer->normalizeBody($type, $additional->thrown->resume());
         $contents = $this->formatter->format($value, $type);
         return $response->withStatus($code)
             ->withBody(new SwooleStream($contents));
@@ -68,34 +60,9 @@ class GeneralExceptionHandler extends AbstractExceptionHandler
 
     public function isValid(Throwable $throwable): bool
     {
-        $haystack = array_map(fn (mixed $candidate) => stringify($candidate), $this->ignored);
+        /** @var array<string> $ignored */
+        $ignored = arrayify($this->config->get('exception.ignore', []));
+        $haystack = array_map(fn (mixed $candidate) => stringify($candidate), $ignored);
         return ! in_array($throwable::class, $haystack, true);
-    }
-
-    public function code(Throwable $throwable): int
-    {
-        $code = integerify($throwable->getCode());
-        return ($code < 400 || $code > 599) ? 500 : $code;
-    }
-
-    private function detectType(ThrowableType $type): ResponseType
-    {
-        return match ($type) {
-            ThrowableType::INVALID_INPUT,
-            ThrowableType::FALLBACK_REQUIRED,
-            ThrowableType::RETRY_AVAILABLE => ResponseType::FAIL,
-            ThrowableType::UNRECOVERABLE,
-            ThrowableType::UNTREATED => ResponseType::ERROR,
-        };
-    }
-
-    private function format(ResponseType $type, string $message): string|array|null
-    {
-        $data = decode($message);
-        return match ($type) {
-            ResponseType::FAIL => $data ?? ['message' => $message],
-            ResponseType::ERROR => $message,
-            default => null,
-        };
     }
 }
