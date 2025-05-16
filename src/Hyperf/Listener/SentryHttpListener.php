@@ -21,6 +21,7 @@ use function Sentry\captureException;
 use function Sentry\configureScope;
 use function Sentry\init;
 use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\boolify;
 
 class SentryHttpListener implements ListenerInterface
 {
@@ -72,13 +73,15 @@ class SentryHttpListener implements ListenerInterface
      * }
      */
     private readonly array $options;
+    private readonly bool $debug;
 
     public function __construct(
         private readonly ConfigInterface $config,
         private readonly LoggerInterface $logger,
         private readonly AdditionalFactory $factory,
     ) {
-        $this->options = arrayify($this->config->get('sentry'));
+        $this->options = arrayify($this->config->get('sentry.options'));
+        $this->debug = boolify($this->config->get('sentry.debug', false));
     }
 
     public function listen(): array
@@ -96,21 +99,25 @@ class SentryHttpListener implements ListenerInterface
     public function process(object $event): void
     {
         match (true) {
-            $event instanceof HttpHandleStarted => $this->init(),
+            $event instanceof HttpHandleStarted => $this->init($event),
             $event instanceof HttpHandleInterrupted => $this->capture($event),
             default => $this->fallback($event),
         };
     }
 
-    private function init(): void
+    private function init(HttpHandleStarted $event): void
     {
         try {
             init($this->options);
+            if ($this->debug) {
+                $this->logger->debug(
+                    'Sentry initialized',
+                    ['environment' => $this->options['environment'] ?? 'unknown']
+                );
+            }
         } catch (Throwable $exception) {
-            $this->logger->emergency('Sentry initialization failed', [
-                'exception' => $exception,
-                'options' => $this->options,
-            ]);
+            $additional = $this->factory->make($event->request, $exception);
+            $this->logger->emergency('Sentry initialization failed', ['exception' => $additional->message]);
         }
     }
 
@@ -124,7 +131,9 @@ class SentryHttpListener implements ListenerInterface
             }
             $scope->setExtra('details', $additional->message);
         });
-        $this->logger->debug('Sentry captured exception', $context);
+        if ($this->debug) {
+            $this->logger->debug('Sentry captured exception', ['exception' => $additional->message]);
+        }
         captureException($event->exception);
     }
 

@@ -16,6 +16,7 @@ use Serendipity\Hyperf\Listener\SentryHttpListener;
 use Serendipity\Infrastructure\Exception\Additional;
 use Serendipity\Infrastructure\Exception\AdditionalFactory;
 use Serendipity\Infrastructure\Exception\Thrown;
+use Serendipity\Infrastructure\Exception\ThrownFactory;
 use stdClass;
 use Throwable;
 
@@ -30,21 +31,23 @@ class SentryHttpListenerTest extends TestCase
         parent::setUp();
         $this->config = $this->createMock(ConfigInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->factory = $this->createMock(AdditionalFactory::class);
+        $this->factory = new AdditionalFactory(new ThrownFactory());
     }
 
     public function testConstructorInitializesOptions(): void
     {
         // Arrange
-        $sentryConfig = [
+        $options = [
             'dsn' => 'https://example.com/sentry',
             'environment' => 'testing',
         ];
 
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
-            ->with('sentry')
-            ->willReturn($sentryConfig);
+            ->willReturnCallback(fn (string $name) => match ($name) {
+                'sentry.options' => $options,
+                'sentry.debug' => true,
+            });
 
         // Act
         $listener = new SentryHttpListener($this->config, $this->logger, $this->factory);
@@ -56,14 +59,16 @@ class SentryHttpListenerTest extends TestCase
     public function testListenReturnsEmptyArrayWhenDsnIsNotSet(): void
     {
         // Arrange
-        $sentryConfig = [
+        $options = [
             'environment' => 'testing',
         ];
 
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
-            ->with('sentry')
-            ->willReturn($sentryConfig);
+            ->willReturnCallback(fn (string $name) => match ($name) {
+                'sentry.options' => $options,
+                'sentry.debug' => true,
+            });
 
         $listener = new SentryHttpListener($this->config, $this->logger, $this->factory);
 
@@ -77,15 +82,17 @@ class SentryHttpListenerTest extends TestCase
     public function testListenReturnsHttpEventsWhenDsnIsSet(): void
     {
         // Arrange
-        $sentryConfig = [
+        $options = [
             'dsn' => 'https://example.com/sentry',
             'environment' => 'testing',
         ];
 
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
-            ->with('sentry')
-            ->willReturn($sentryConfig);
+            ->willReturnCallback(fn (string $name) => match ($name) {
+                'sentry.options' => $options,
+                'sentry.debug' => true,
+            });
 
         $listener = new SentryHttpListener($this->config, $this->logger, $this->factory);
 
@@ -100,7 +107,7 @@ class SentryHttpListenerTest extends TestCase
         ], $result);
     }
 
-    public function testProcessCallsSentryInitOnHttpHandleStarted(): void
+    public function testProcessCallsFailsInitOnHttpHandleStarted(): void
     {
         // Arrange
         $options = [
@@ -108,16 +115,45 @@ class SentryHttpListenerTest extends TestCase
             'environment' => 'testing',
         ];
 
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
-            ->with('sentry')
-            ->willReturn($options);
+            ->willReturnCallback(fn (string $name) => match ($name) {
+                'sentry.options' => $options,
+                'sentry.debug' => true,
+            });
 
-        $callback = fn (array $context
-        ) => $context['exception'] instanceof Throwable && $context['options'] === $options;
+        $callback = fn (array $context) => isset($context['exception']) && is_string($context['exception']);
         $this->logger->expects($this->once())
             ->method('emergency')
             ->with('Sentry initialization failed', $this->callback($callback));
+
+        $listener = new SentryHttpListener($this->config, $this->logger, $this->factory);
+        $request = $this->createMock(RequestInterface::class);
+        $event = new HttpHandleStarted($request);
+
+        // Act
+        $listener->process($event);
+    }
+
+    public function testProcessCallsSentryInitOnHttpHandleStarted(): void
+    {
+        // Arrange
+        $options = [
+            'dsn' => null,
+            'environment' => 'testing',
+        ];
+
+        $this->config->expects($this->exactly(2))
+            ->method('get')
+            ->willReturnCallback(fn (string $name) => match ($name) {
+                'sentry.options' => $options,
+                'sentry.debug' => true,
+            });
+
+        $callback = fn (array $context) => isset($context['environment']) && is_string($context['environment']);
+        $this->logger->expects($this->once())
+            ->method('debug')
+            ->with('Sentry initialized', $this->callback($callback));
 
         $listener = new SentryHttpListener($this->config, $this->logger, $this->factory);
         $request = $this->createMock(RequestInterface::class);
@@ -135,10 +171,12 @@ class SentryHttpListenerTest extends TestCase
             'environment' => 'testing',
         ];
 
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
-            ->with('sentry')
-            ->willReturn($options);
+            ->willReturnCallback(fn (string $name) => match ($name) {
+                'sentry.options' => $options,
+                'sentry.debug' => true,
+            });
 
         $request = $this->createMock(RequestInterface::class);
         $exception = $this->createMock(Throwable::class);
@@ -159,16 +197,10 @@ class SentryHttpListenerTest extends TestCase
             errors: []
         );
 
-        $context = $additional->context();
-
-        $this->factory->expects($this->once())
-            ->method('make')
-            ->with($request, $exception)
-            ->willReturn($additional);
-
+        $callback = fn (array $context) => isset($context['exception']) && is_string($context['exception']);
         $this->logger->expects($this->once())
             ->method('debug')
-            ->with('Sentry captured exception', $context);
+            ->with('Sentry captured exception', $this->callback($callback));
 
         $listener = new SentryHttpListener($this->config, $this->logger, $this->factory);
         $event = new HttpHandleInterrupted($request, $exception);
