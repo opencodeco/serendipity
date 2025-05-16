@@ -9,7 +9,7 @@ use Hyperf\Framework\Event\MainWorkerStart;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Serendipity\Hyperf\Listener\SentryInitializeListener;
+use Serendipity\Hyperf\Listener\SentryHttpListener;
 use Throwable;
 
 class SentryInitializeListenerTest extends TestCase
@@ -38,7 +38,7 @@ class SentryInitializeListenerTest extends TestCase
             ->willReturn($sentryConfig);
 
         // Act
-        $listener = new SentryInitializeListener($this->config, $this->logger);
+        $listener = new SentryHttpListener($this->config, $this->logger);
 
         // Assert - We can't directly test private properties, but we can test the behavior
         $this->assertNotEmpty($listener->listen());
@@ -56,7 +56,7 @@ class SentryInitializeListenerTest extends TestCase
             ->with('sentry')
             ->willReturn($sentryConfig);
 
-        $listener = new SentryInitializeListener($this->config, $this->logger);
+        $listener = new SentryHttpListener($this->config, $this->logger);
 
         // Act
         $result = $listener->listen();
@@ -78,7 +78,7 @@ class SentryInitializeListenerTest extends TestCase
             ->with('sentry')
             ->willReturn($sentryConfig);
 
-        $listener = new SentryInitializeListener($this->config, $this->logger);
+        $listener = new SentryHttpListener($this->config, $this->logger);
 
         // Act
         $result = $listener->listen();
@@ -106,7 +106,7 @@ class SentryInitializeListenerTest extends TestCase
             ->method('emergency')
             ->with('Sentry initialization failed', $this->callback($callback));
 
-        $listener = new SentryInitializeListener($this->config, $this->logger);
+        $listener = new SentryHttpListener($this->config, $this->logger);
         $event = $this->createMock(MainWorkerStart::class);
 
         // Act
