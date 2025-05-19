@@ -79,6 +79,9 @@ class HttpHandlerMiddleware extends Hyperf
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     private function handleFoundMessage(Message $message): ResponsePlusInterface
     {
         $statusCode = $this->detectStatusCode($message);
@@ -93,7 +96,7 @@ class HttpHandlerMiddleware extends Hyperf
             return $response->setBody(new SwooleStream());
         }
 
-        $value = $message->content();
+        $value = $this->demolish($message->content());
         $option = $this->detectType($statusCode);
         $contents = $this->formatter->format($value, $option);
         return $response->setBody(new SwooleStream($contents));
@@ -104,15 +107,24 @@ class HttpHandlerMiddleware extends Hyperf
      */
     private function handleFoundExportable(Exportable $exportable): ResponsePlusInterface
     {
-        $value = match (true) {
-            $exportable instanceof Collection => $this->demolisher->demolishCollection($exportable),
-            default => $this->demolisher->demolish($exportable),
-        };
+        $value = $this->demolish($exportable);
         $contents = $this->formatter->format($value);
         return $this->response()
             ->addHeader('content-type', 'application/json')
             ->withStatus(200)
             ->setBody(new SwooleStream($contents));
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function demolish(mixed $value): mixed
+    {
+        return match (true) {
+            $value instanceof Collection => $this->demolisher->demolishCollection($value),
+            is_object($value) => $this->demolisher->demolish($value),
+            default => $value,
+        };
     }
 
     private function detectStatusCode(Message $response): int
