@@ -6,6 +6,7 @@ namespace Serendipity\Infrastructure\Repository\Adapter;
 
 use DateTime;
 use DateTimeImmutable;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalArrayToJson;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalDatetimeToString;
@@ -16,6 +17,7 @@ class RelationalDeserializerFactory extends DeserializerFactory
     {
         return [
             'array' => new RelationalArrayToJson(),
+            Timestamp::class => new RelationalDatetimeToString(),
             DateTime::class => new RelationalDatetimeToString(),
             DateTimeImmutable::class => new RelationalDatetimeToString(),
         ];
