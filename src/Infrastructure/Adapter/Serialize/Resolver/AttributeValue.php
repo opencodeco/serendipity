@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter\Serialize\Resolver;
 
 use DateMalformedStringException;
-use DateTimeImmutable;
 use ReflectionNamedType;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Reflective\Attribute\Managed;
@@ -14,6 +13,7 @@ use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\Serialize\ResolverTyped;
 use Serendipity\Infrastructure\Adapter\Support\AttributeAdapter;
 
@@ -48,7 +48,7 @@ final class AttributeValue extends ResolverTyped
     {
         return match ($instance->management) {
             'id' => new Value($value),
-            'timestamp' => new Value(new DateTimeImmutable(stringify($value))),
+            'timestamp' => new Value(new Timestamp(stringify($value))),
             default => null,
         };
     }

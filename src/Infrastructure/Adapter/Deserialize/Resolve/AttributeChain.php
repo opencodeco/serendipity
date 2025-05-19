@@ -14,6 +14,7 @@ use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
 use Serendipity\Domain\Support\Reflective\Definition\TypeExtended;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\Deserialize\Chain;
 use Serendipity\Infrastructure\Adapter\Support\AttributeAdapter;
 
@@ -40,13 +41,20 @@ class AttributeChain extends Chain
     {
         return match ($instance->management) {
             'id' => new Value($value),
-            'timestamp' => new Value(
-                $value instanceof DateTimeImmutable
-                    ? $value->format(DateTimeInterface::ATOM)
-                    : $value
-            ),
+            'timestamp' => $this->resolveManagedTimestamp($value),
             default => null,
         };
+    }
+
+    private function resolveManagedTimestamp(mixed $value): Value
+    {
+        return new Value(
+            match (true) {
+                $value instanceof Timestamp => $value->toString(),
+                $value instanceof DateTimeImmutable => $value->format(DateTimeInterface::ATOM),
+                default => $value,
+            }
+        );
     }
 
     protected function resolveDefineType(Type $type, mixed $value): Value

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Database;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Serendipity\Domain\Exception\ManagedException;
+use Serendipity\Domain\Type\Timestamp;
 use Throwable;
 use Visus\Cuid2\Cuid2;
 
@@ -30,6 +29,6 @@ class Managed
 
     public function now(): string
     {
-        return (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
+        return (new Timestamp())->toString();
     }
 }

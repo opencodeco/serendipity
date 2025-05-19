@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Serendipity\Example\Game\Domain\Entity;
 
-use DateTimeImmutable;
 use Serendipity\Domain\Support\Reflective\Attribute\Managed;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 
 class Game extends GameCommand
@@ -15,9 +15,9 @@ class Game extends GameCommand
         #[Managed('id')]
         public readonly string $id,
         #[Managed('timestamp')]
-        public readonly DateTimeImmutable $createdAt,
+        public readonly Timestamp $createdAt,
         #[Managed('timestamp')]
-        public readonly DateTimeImmutable $updatedAt,
+        public readonly Timestamp $updatedAt,
         #[Pattern('/^[a-zA-Z]{1,255}$/')]
         string $name,
         string $slug,

@@ -16,6 +16,7 @@ use Serendipity\Domain\Support\Reflective\Attribute\Define;
 use Serendipity\Domain\Support\Reflective\Attribute\Managed;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Support\Reflective\Definition\Type;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\AttributeChain;
 use Serendipity\Test\Testing\Stub\Type\Sensitive;
 
@@ -84,11 +85,13 @@ final class AttributeChainTest extends TestCase
             ->willReturn([$managed]);
 
         // Act
-        $dateTime = new DateTimeImmutable();
+        $dateTime = new Timestamp();
         $result = $chain->resolve($parameter, $dateTime);
 
         // Assert
-        $this->assertEquals($dateTime->format(DateTimeInterface::ATOM), $result->content);
+        $expected = $dateTime->format(DateTimeInterface::ATOM);
+        $actual = $result->content;
+        $this->assertEquals($expected, $actual);
     }
 
     #[TestWith([Type::EMOJI, '😀'])]
