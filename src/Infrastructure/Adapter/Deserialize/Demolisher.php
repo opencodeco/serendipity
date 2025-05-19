@@ -12,6 +12,7 @@ use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\AttributeChain;
+use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DateChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DependencyChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChain;
 use Serendipity\Infrastructure\Adapter\Deserialize\Resolve\FormatterChain;
@@ -45,6 +46,7 @@ class Demolisher extends Engine
             $resolved = (new DoNothingChain($this->notation))
                 ->then(new DependencyChain($this->notation))
                 ->then(new AttributeChain($this->notation))
+                ->then(new DateChain($this->notation))
                 ->then(new FormatterChain($this->notation, $this->formatters))
                 ->resolve($parameter, $set->get($name));
 

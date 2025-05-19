@@ -1,0 +1,1050 @@
+> bin/phpunit.php
+  Runtime: PHPUnit 10.5.46 using PHP 8.3.15 (cli) on Linux
+   PASS  Serendipity\Test\Domain\Collection\AbstractCollectionTest
+  ✓ should rewind                                                        0.04s
+  ✓ should return key
+  ✓ should return next
+  ✓ should return valid
+  ✓ should return count
+  ✓ should return rows
+  ✓ should return all
+  ✓ should return map
+   PASS  Serendipity\Test\Domain\Collection\CollectionTest
+  ✓ should create from array                                             0.03s
+  ✓ should fail on invalid datum
+  ✓ should export data
+   PASS  Serendipity\Test\Domain\Entity\EntityTest
+  ✓ should expose values                                                 0.01s
+   PASS  Serendipity\Test\Domain\Support\Reflective\Factory\Ruler\AttributeChainTest
+  ✓ pattern attribute processing                                         0.05s
+  ✓ pattern attribute with numeric type
+  ✓ pattern attribute with union type
+  ✓ define attribute processing                                          0.01s
+  ✓ define attribute with type extended                                  0.01s
+  ✓ parameter without attributes
+  ✓ unsupported attribute
+   FAIL  Serendipity\Test\Domain\Support\Reflective\Factory\Ruler\MandatoryChainTest
+  ✓ required parameter resolution                                        0.03s
+  ⨯ optional parameter resolution                                        0.04s
+   PASS  Serendipity\Test\Domain\Support\Reflective\Factory\Ruler\RecursiveChainTest
+  ✓ does not process primitive types                                     0.01s
+  ✓ processes object types                                               0.02s
+  ✓ handles union types
+  ✓ nested path prefixing                                                0.01s
+  ✓ deep nested objects                                                  0.01s
+  ✓ chaining with other resolvers                                        0.03s
+   PASS  Serendipity\Test\Domain\Support\Reflective\Factory\Ruler\TypeChainTest
+  ✓ builtin type resolution with data set "array"                        0.02s
+  ✓ builtin type resolution with data set "bool"
+  ✓ builtin type resolution with data set "integer"
+  ✓ builtin type resolution with data set "float"
+  ✓ builtin type resolution with data set "string"
+  ✓ backed enum resolution
+  ✓ backed enum in union type
+  ✓ empty backed enum
+  ✓ regular enum skipped
+  ✓ mixed type skipped
+  ✓ non builtin type
+  ✓ null type
+   PASS  Serendipity\Test\Domain\Support\Reflective\Factory\RulerTest
+  ✓ ruleset should have expected count                                   0.03s
+  ✓ required fields with data set #0                                     0.01s
+  ✓ required fields with data set #1                                     0.01s
+  ✓ required fields with data set #2                                     0.01s
+  ✓ required fields with data set #3                                     0.01s
+  ✓ required fields with data set #4                                     0.01s
+  ✓ optional fields with data set #0                                     0.01s
+  ✓ optional fields with data set #1                                     0.01s
+  ✓ optional fields with data set #2                                     0.01s
+  ✓ optional fields with data set #3                                     0.01s
+  ✓ optional fields with data set #4                                     0.01s
+  ✓ optional fields with data set #5                                     0.01s
+  ✓ optional fields with data set #6                                     0.01s
+  ✓ optional fields with data set #7                                     0.01s
+  ✓ optional fields with data set #8                                     0.01s
+  ✓ optional fields with data set #9                                     0.01s
+  ✓ optional fields with data set #10                                    0.01s
+  ✓ optional fields with data set #11                                    0.01s
+  ✓ optional fields with data set #12                                    0.01s
+  ✓ ruleset with path                                                    0.01s
+  ✓ ruleset caching                                                      0.02s
+   PASS  Serendipity\Test\Domain\Support\Reflective\RulesetTest
+  ✓ should add rule without parameters                                   0.07s
+  ✓ should add rule with parameters
+  ✓ should return false when adding invalid rule
+  ✓ should add multiple rules to same field
+  ✓ should return empty array for nonexistent field
+  ✓ should return all rules
+  ✓ should handle stringable objects
+  ✓ should handle stringable parameters objects
+   PASS  Serendipity\Test\Domain\Support\SetTest
+  ✓ create from array                                                    0.03s
+  ✓ get existing key
+  ✓ get non existing key
+  ✓ with new value
+  ✓ along with values
+  ✓ has key
+  ✓ copy values
+  ✓ invalid values array                                                 0.01s
+  ✓ invalid keys in array
+  ✓ at existing key
+  ✓ at non existing key
+   PASS  Serendipity\Test\Domain\Support\ValueTest
+  ✓ should have content                                                  0.03s
+   PASS  Serendipity\Test\Domain\Type\TimestampTest
+  ✓ timestamp extends date time immutable                                0.01s
+  ✓ to string
+  ✓ json serialize
+  ✓ create from string
+  ✓ immutability
+   PASS  Serendipity\Test\Example\Game\Infrastructure\Mongo\MongoGameCommandRepositoryTest
+  ✓ should persist successfully                                          0.38s
+  ✓ should destroy successfully                                          0.08s
+   PASS  Serendipity\Test\Example\Game\Infrastructure\Mongo\MongoGameQueryRepositoryTest
+  ✓ should read game successfully                                        0.06s
+  ✓ should return null when game not exists                              0.01s
+  ✓ get games returns game collection                                    0.08s
+  ✓ get games contains expected games                                    0.17s
+  ✓ get games contains expected slug                                     0.15s
+  ✓ get games returns empty collection when no games
+   FAIL  Serendipity\Test\Example\Game\Infrastructure\Postgres\PostgresGameCommandRepositoryTest
+  ✓ should persist successfully                                          0.16s
+  ✓ should raise unique key violation exception on duplicate key         0.06s
+  ⨯ should destroy successfully                                          0.05s
+   FAIL  Serendipity\Test\Example\Game\Infrastructure\Postgres\PostgresGameQueryRepositoryTest
+  ⨯ should read game successfully                                        0.05s
+  ✓ should return null when game not exists                              0.01s
+  ⨯ get games returns game collection                                    0.04s
+  ⨯ get games contains expected games                                    0.03s
+  ✓ get games returns empty collection when no games
+   PASS  Serendipity\Test\Example\Game\Infrastructure\SleekDB\SleekDBGameCommandRepositoryTest
+  ✓ should persist successfully                                          0.10s
+  ✓ should destroy successfully                                          0.05s
+   PASS  Serendipity\Test\Example\Game\Infrastructure\SleekDB\SleekDBGameQueryRepositoryTest
+  ✓ should read game successfully                                        0.06s
+  ✓ should return null when game not exists                              0.01s
+  ✓ get games returns game collection                                    0.08s
+  ✓ get games contains expected games                                    0.20s
+  ✓ get games contains expected slug                                     0.19s
+  ✓ get games returns empty collection when no games                     0.01s
+   FAIL  Serendipity\Test\Example\Game\Presentation\CreateGameActionTest
+  ⨯ create game successfully                                             0.16s
+   PASS  Serendipity\Test\Example\Game\Presentation\ReadGameActionTest
+  ✓ should return ok                                                     0.07s
+  ✓ should return not found                                              0.02s
+   PASS  Serendipity\Test\Example\Game\Presentation\SearchGamesActionTest
+  ✓ should return games                                                  0.14s
+  ✓ should return empty array                                            0.01s
+   PASS  Serendipity\Test\Example\Health\HealthActionTest
+  ✓ health action                                                        0.04s
+   PASS  Serendipity\Test\Example\SimpleTest
+  ✓ simple assertion
+  ✓ string manipulation
+   PASS  Serendipity\Test\General\ConfigProviderTest
+  ✓ be successfully                                                      0.01s
+   PASS  Serendipity\Test\General\CryptFunctionsTest
+  ✓ should encrypt                                                       0.01s
+   PASS  Serendipity\Test\General\FunctionsCastTest
+  ✓ to array returns array when value is array
+  ✓ to array returns default when value is not array
+  ✓ to string returns string when value is string
+  ✓ to string returns default when value is not string
+  ✓ to int returns int when value is int
+  ✓ to int returns default when value is not int
+  ✓ to bool returns bool when value is bool
+  ✓ to bool returns default when value is not bool
+  ✓ floatify returns float when value is float
+  ✓ floatify returns default when value is not float
+  ✓ floatify converts numeric strings to float
+  ✓ floatify converts integers to float
+   PASS  Serendipity\Test\General\FunctionsJsonTest
+  ✓ decode should return array when json is valid                        0.02s
+  ✓ decode should return null when json is invalid
+  ✓ decode should return null with incomplete json
+  ✓ encode should return json string when array is valid
+  ✓ encode should return null when non utf8 values are provided
+  ✓ encode should return null with recursive references
+   PASS  Serendipity\Test\General\FunctionsNotationTest
+  ✓ snakify converts upper case to snake case                            0.01s
+  ✓ snakify handles already snake case strings
+  ✓ snakify handles empty string
+  ✓ snakify number
+  ✓ camelify converts to lower camel case
+  ✓ pascalify converts to upper camel case
+  ✓ kebabify converts to kebab case
+  ✓ format with different notations                                      0.01s
+  ✓ upperify converts to upper case
+  ✓ lowerify converts to lower case
+  ✓ titlelify converts to title case
+  ✓ titlelify converts to train case
+   PASS  Serendipity\Test\General\FunctionsPolyfillTest
+  ✓ array flatten should flatten nested arrays                           0.03s
+  ✓ array flatten prefixed should flatten with prefixes
+  ✓ array shift pluck int
+  ✓ array shift pluck int returns null for empty array
+  ✓ array shift pluck int returns null for non numeric value
+  ✓ array first
+  ✓ array first returns null for empty array
+  ✓ array unshift key
+   PASS  Serendipity\Test\General\FunctionsRuntimeTest
+  ✓ invoke should call callable                                          0.02s
+  ✓ invoke should pass multiple arguments
+  ✓ coroutine should return id                                           0.01s
+   PASS  Serendipity\Test\General\FunctionsTest
+  ✓ should require functions                                             0.01s
+   PASS  Serendipity\Test\General\FunctionsUtilTest
+  ✓ extract array returns array when property exists
+  ✓ extract array returns default when property does not exist
+  ✓ extract string returns string when property exists
+  ✓ extract string returns default when property does not exist
+  ✓ extract int returns int when property exists
+  ✓ extract int returns default when property does not exist
+  ✓ extract bool returns bool when property exists
+  ✓ extract bool returns default when property does not exist
+  ✓ extract numeric returns numeric when property exists
+  ✓ extract numeric converts string to numeric
+  ✓ extract numeric returns default when property does not exist
+  ✓ extract numeric returns default when property is not numeric
+   PASS  Serendipity\Test\Hyperf\Command\GenerateRulesTest
+  ✓ configure                                                            0.03s
+  ✓ handle no entity provided                                            0.01s
+  ✓ handle entity does not exist                                         0.04s
+  ✓ handle generate rules for valid entity
+  ✓ handle generate rules from file                                      0.01s
+  ✓ cant handle not mapped file
+   PASS  Serendipity\Test\Hyperf\Database\Document\HyperfSleekDBFactoryTest
+  ✓ should create sleek d b                                              0.03s
+   PASS  Serendipity\Test\Hyperf\Database\Relational\HyperfConnectionCheckerTest
+  ✓ check with one failed attempt                                        0.02s
+  ✓ check with all failed attempts                                       0.01s
+  ✓ should create instance without debugging
+   PASS  Serendipity\Test\Hyperf\Database\Relational\HyperfConnectionFactoryTest
+  ✓ should create database connection                                    0.01s
+   PASS  Serendipity\Test\Hyperf\Database\Relational\HyperfConnectionTest
+  ✓ begin transaction                                                    0.01s
+  ✓ commit
+  ✓ rollback
+  ✓ insert
+  ✓ insert with non numeric return
+  ✓ execute
+  ✓ query
+  ✓ query with non array return
+  ✓ fetch
+  ✓ fetch with object result
+  ✓ fetch with array result
+  ✓ fetch with null result
+  ✓ run
+   PASS  Serendipity\Test\Hyperf\Database\Relational\Support\HasPostgresUniqueConstraintTest
+  ✓ should not detect unique constraint violation                        0.03s
+  ✓ should detect unique constraint violation
+   PASS  Serendipity\Test\Hyperf\Exception\GeneralExceptionHandlerTest
+  ✓ handle should log alert and return formatted response with untreate… 0.06s
+  ✓ handle should log debug and return formatted response with invalid input type
+  ✓ handle should log info and return formatted response with fallback required type
+  ✓ handle should log warning and return formatted response with retry available type
+  ✓ handle should log error and return formatted response with unrecoverable type
+  ✓ is valid should return true when exception is not ignored
+  ✓ is valid should return false when exception is ignored
+   PASS  Serendipity\Test\Hyperf\Exception\ValidationExceptionHandlerTest
+  ✓ handle should return validation errors                               0.05s
+  ✓ handle should return invalid input errors                            0.01s
+  ✓ is valid should return true for validation exception
+  ✓ is valid should return false for non validation exception
+  ✓ is valid should return true for invalid input exception
+   PASS  Serendipity\Test\Hyperf\Listener\ResumeExitCoordinatorListenerTest
+  ✓ should listen to after execute event                                 0.02s
+  ✓ should resume coordinator on process                                 0.01s
+   PASS  Serendipity\Test\Hyperf\Listener\SentryHttpListenerTest
+  ✓ listen without dsn                                                   0.01s
+  ✓ listen with not booted
+  ✓ listen with booted
+  ✓ process with boot application
+  ✓ process with http handle started not booted                          0.01s
+  ✓ process with http handle started                                     0.06s
+  ✓ process with http handle started fail                                0.01s
+  ✓ process with http handle interrupted not booted                      0.01s
+  ✓ process with http handle interrupted                                 0.04s
+  ✓ process with unsupported event not booted
+  ✓ process with unsupported event
+   PASS  Serendipity\Test\Hyperf\Logging\GoogleCloudLoggerFactoryTest
+  ✓ should make google cloud logger                                      0.11s
+   PASS  Serendipity\Test\Hyperf\Logging\StdoutLoggerFactoryTest
+  ✓ make should return stdout logger with default config                 0.02s
+  ✓ make should return stdout logger with custom config
+  ✓ make should handle null levels config
+   PASS  Serendipity\Test\Hyperf\Middleware\ConnectionCheckerMiddlewareTest
+  ✓ should check connection with default settings                        0.03s
+  ✓ should check connection with custom settings
+   PASS  Serendipity\Test\Hyperf\Middleware\CorsMiddlewareTest
+  ✓ should allow cors                                                    0.02s
+  ✓ should allow cors when response is not instance of response interface
+   PASS  Serendipity\Test\Hyperf\Middleware\HttpHandlerMiddlewareTest
+  ✓ should render output response                                        0.04s
+  ✓ should render without output
+  ✓ should render by status with data set #0
+  ✓ should render by status with data set #1
+  ✓ should render by status with data set #2
+  ✓ should render by status with data set #3
+  ✓ should render by status with data set #4
+  ✓ should render exportable response
+  ✓ should render domain with data set " game"                           0.05s
+  ✓ should render domain with data set " game collection"                0.04s
+  ✓ should dispatch interrupted event on exception
+   PASS  Serendipity\Test\Hyperf\Middleware\TaskMiddlewareTest
+  ✓ should extract from header                                           0.03s
+  ✓ should extract from query
+  ✓ should extract from cookie
+  ✓ should extract from parsed body
+  ✓ should not extract when type is unknown
+  ✓ should use not applicable correlation id when not present
+  ✓ should use not applicable platform id when not present
+  ✓ should handle exception during extraction
+   PASS  Serendipity\Test\Hyperf\Support\HyperfThrownFactoryTest
+  ✓ make                                                                 0.03s
+   PASS  Serendipity\Test\Hyperf\Testing\Extension\InputExtensionTest
+  ✓ set up input should register tear down                               0.01s
+  ✓ tear down input should update state and destroy context
+  ✓ input should fail when request not set up                            0.01s
+  ✓ input should set up context and call make when request is set up
+  ✓ set up request context should configure request properly
+   PASS  Serendipity\Test\Hyperf\Testing\Extension\LoggerExtensionTest
+  ✓ set up logger should register tear down                              0.02s
+  ✓ tear down logger should clear memory and update state
+  ✓ assert logged should fail when logger not set up
+  ✓ assert logged should pass when log contains match
+  ✓ tally should count matching records
+  ✓ assert logged should match by pattern only
+  ✓ assert logged should match by level only
+  ✓ assert logged should match any log when no filters provided
+   PASS  Serendipity\Test\Hyperf\Testing\MongoHelperTest
+  ✓ truncate should delete all documents from collection                 0.03s
+  ✓ seed should insert fake data and return set using correct transformation
+  ✓ seed should respeitar override nos campos fornecidos
+  ✓ count should return number of documents
+  ✓ count should handle empty results
+  ✓ seed should handle multiple fields correctly
+   PASS  Serendipity\Test\Hyperf\Testing\PostgresHelperTest
+  ✓ truncate should delete all records from table                        0.02s
+  ✓ seed should insert fake data and return set using correct transformation
+  ✓ seed should respeitar override nos campos fornecidos
+  ✓ seed should handle multiple fields correctly
+  ✓ count should return number of records with simple filters
+  ✓ count should handle null values in filters
+  ✓ count should return zero when result is empty
+  ✓ count should return zero when count is not present
+   PASS  Serendipity\Test\Hyperf\Testing\SleekDBHelperTest
+  ✓ truncate should delete all documents from store                      0.03s
+  ✓ seed should insert fake data and return set using correct transformation
+  ✓ seed should respeitar override nos campos fornecidos
+  ✓ count should return number of documents
+  ✓ count should handle empty results
+  ✓ seed should handle multiple fields correctly
+   PASS  Serendipity\Test\Infrastructure\Adapter\Deserialize\DemolisherDateTest
+  ✓ should demolish with timestamp                                       0.01s
+  ✓ should demolish with date time immutable
+   FAIL  Serendipity\Test\Infrastructure\Adapter\Deserialize\DemolisherTest
+  ⨯ should demolish                                                      0.01s
+  ✓ should not use invalid nova value parameter
+  ⨯ should demolish collection
+  ⨯ should handle mixed items in collection
+   PASS  Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve\AttributeChainTest
+  ✓ resolve without type                                                 0.02s
+  ✓ resolve with managed attribute id                                    0.01s
+  ✓ resolve with managed attribute now
+  ✓ resolve with define type with data set #0
+  ✓ resolve with define type with data set #1
+  ✓ resolve with define type extended
+  ✓ resolve with pattern
+  ✓ resolve with union type and pattern
+  ✓ resolve with multiple attributes
+   PASS  Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve\DateChainTest
+  ✓ resolve with timestamp                                               0.02s
+  ✓ resolve with date time interface
+  ✓ resolve with non date value
+   PASS  Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve\DependencyChainTest
+  ✓ resolve object                                                       0.01s
+  ✓ resolve non object
+   PASS  Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve\DoNothingChainTest
+  ✓ resolve value                                                        0.01s
+   PASS  Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve\FormatterChainTest
+  ✓ resolve without converter with data set #0
+  ✓ resolve without converter with data set #1
+  ✓ resolve without converter with data set #2
+  ✓ resolve without converter with data set #3
+  ✓ resolve with array value
+   PASS  Serendipity\Test\Infrastructure\Adapter\DeserializerFactoryTest
+  ✓ should create deserializer                                           0.01s
+   PASS  Serendipity\Test\Infrastructure\Adapter\DeserializerTest
+  ✓ should not deserialize invalid type
+  ✓ should serialize when is not an instance of result
+  ✓ should serialize when an instance of result
+   PASS  Serendipity\Test\Infrastructure\Adapter\Serialize\BuilderTest
+  ✓ map with valid values                                                0.01s
+  ✓ map with missing optional value
+  ✓ map with errors                                                      0.01s
+  ✓ map with no constructor
+  ✓ map with reflection error
+  ✓ map with reflection invalid args error
+  ✓ edge type cases                                                      0.01s
+  ✓ edge type cases failure
+  ✓ edge type cases failure nested                                       0.01s
+  ✓ should build deep down                                               0.01s
+   PASS  Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver\AttributeDefinitionTest
+  ✓ resolve managed                                                      0.02s
+  ✓ resolve define
+  ✓ resolve pattern                                                      0.01s
+  ✓ resolve pattern with union type
+  ✓ resolve invalid pattern
+  ✓ property with no attribute
+  ✓ property with unsupported attribute
+  ✓ property with no type definition
+  ✓ password attribute with invalid value
+  ✓ no attribute invalid value
+  ✓ should resolve type defined
+   PASS  Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValueTest
+  ✓ should handle backed enum value                                      0.03s
+  ✓ should not resolve invalid value
+  ✓ should not resolve invalid union and intersection
+  ✓ should not resolve type mismatch
+   PASS  Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver\DependencyValueTest
+  ✓ should handle dependency with data set #0                            0.01s
+  ✓ should handle dependency with data set #1
+  ✓ should handle dependency complex                                     0.01s
+  ✓ should handle dependency union
+  ✓ should handle dependency intersection
+   PASS  Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver\FormatValueTest
+  ✓ format value builtin successfully                                    0.01s
+  ✓ type matched should resolve variety
+   PASS  Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver\NoValueTest
+  ✓ no value successfully                                                0.01s
+   PASS  Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver\TypeMatchedTest
+  ✓ type matched builtin successfully                                    0.01s
+  ✓ type matched native successfully
+  ✓ type matched not native successfully
+  ✓ type matched intersection successfully
+  ✓ type matched union successfully
+  ✓ type matched should not resolve no value
+  ✓ type matched should not resolve invalid for intersection
+  ✓ type matched should not resolve invalid for union
+  ✓ type matched should resolve variety
+  ✓ type matched should resolve v nullable filled with null
+   PASS  Serendipity\Test\Infrastructure\Adapter\Serialize\Resolver\ValidateValueTest
+  ✓ should validate value required                                       0.02s
+  ✓ should validate value mismatch
+   PASS  Serendipity\Test\Infrastructure\Adapter\SerializerFactoryTest
+  ✓ should create serializer                                             0.01s
+   PASS  Serendipity\Test\Infrastructure\Adapter\SerializerTest
+  ✓ serialize                                                            0.01s
+   PASS  Serendipity\Test\Infrastructure\Database\Document\Condition\BetweenConditionTest
+  ✓ should compose                                                       0.02s
+  ✓ should compose with just date
+  ✓ should fail compose with few arguments
+  ✓ should fail compose with invalid date
+   PASS  Serendipity\Test\Infrastructure\Database\Document\Condition\EqualConditionTest
+  ✓ should compose                                                       0.02s
+  ✓ should compose date
+   PASS  Serendipity\Test\Infrastructure\Database\Document\Condition\InConditionTest
+  ✓ should compose                                                       0.01s
+   PASS  Serendipity\Test\Infrastructure\Database\Document\Condition\RegexConditionTest
+  ✓ should compose one item                                              0.01s
+  ✓ should compose multiple item
+   PASS  Serendipity\Test\Infrastructure\Database\Document\ConditionParserTest
+  ✓ should parse                                                         0.01s
+  ✓ should parse using condition
+  ✓ should parse using not condition
+  ✓ should reuse created condition
+  ✓ should fail on invalid condition                                     0.01s
+  ✓ should fail on invalid configuration
+   PASS  Serendipity\Test\Infrastructure\Database\Document\SearchTest
+  ✓ should make search param                                             0.03s
+  ✓ should parse simple expression
+  ✓ should parse complex expression
+  ✓ should parse conditions expression
+   PASS  Serendipity\Test\Infrastructure\Exception\AdditionalFactoryTest
+  ✓ should create additional factory with data set #0                    0.02s
+  ✓ should create additional factory with data set #1
+   PASS  Serendipity\Test\Infrastructure\Exception\ThrownFactoryTest
+  ✓ should make thrown                                                   0.01s
+  ✓ should make thrown with type from config
+  ✓ should make thrown with previous
+   PASS  Serendipity\Test\Infrastructure\Exception\ThrownTest
+  ✓ should create from                                                   0.01s
+  ✓ should resume
+   PASS  Serendipity\Test\Infrastructure\Http\ExceptionResponseNormalizerTest
+  ✓ should normalize status code for validation exception                0.01s
+  ✓ should normalize status code for invalid input exception
+  ✓ should normalize status code for generic exception
+  ✓ should use default status code when exception code is invalid
+  ✓ should use custom fallback status code
+  ✓ should detect fail response type for invalid input
+  ✓ should detect fail response type for fallback required
+  ✓ should detect fail response type for retry available
+  ✓ should detect error response type for unrecoverable
+  ✓ should detect error response type for untreated
+  ✓ should normalize body for fail with json message
+  ✓ should normalize body for fail with non json message
+  ✓ should normalize body for error
+  ✓ should normalize body for success
+   PASS  Serendipity\Test\Infrastructure\Http\JsonFormatterTest
+  ✓ should format success                                                0.03s
+  ✓ should format fail
+  ✓ should format error
+  ✓ should throws exception when type is invalid
+   PASS  Serendipity\Test\Infrastructure\Logger\GoogleCloudLoggerTest
+  ✓ should log messages correctly                                        0.04s
+  ✓ should log emergency message correctly
+  ✓ should log info message correctly
+  ✓ should log alert message correctly
+  ✓ should log critical message correctly
+  ✓ should log error message correctly
+  ✓ should log warning message correctly
+  ✓ should log notice message correctly
+  ✓ should log debug message correctly
+  ✓ should printf on exception
+  ✓ should write log using coroutine
+   PASS  Serendipity\Test\Infrastructure\Logger\StdoutLoggerTest
+  ✓ should log info message correctly                                    0.03s
+  ✓ should log debug message correctly
+  ✓ should log error message correctly                                   0.01s
+  ✓ should not log when level not included
+  ✓ should handle complex array context
+  ✓ should handle scalar and non scalar values
+  ✓ should log without context correctly
+   PASS  Serendipity\Test\Infrastructure\Repository\Adapter\MongoDeserializerFactoryTest
+  ✓ should create deserializer                                           0.02s
+   PASS  Serendipity\Test\Infrastructure\Repository\Adapter\MongoSerializerFactoryTest
+  ✓ should create serializer
+   PASS  Serendipity\Test\Infrastructure\Repository\Adapter\RelationalDeserializerFactoryTest
+  ✓ should create deserializer
+   PASS  Serendipity\Test\Infrastructure\Repository\Adapter\RelationalSerializerFactoryTest
+  ✓ should create serializer
+   PASS  Serendipity\Test\Infrastructure\Repository\Formatter\MongoArrayToEntityTest
+  ✓ convert b s o n array to array
+  ✓ convert array to array
+  ✓ convert invalid type to null
+   PASS  Serendipity\Test\Infrastructure\Repository\Formatter\MongoDateTimeToDatabaseTest
+  ✓ convert date time to u t c date time                                 0.01s
+  ✓ convert string to u t c date time
+  ✓ convert invalid type to null
+   PASS  Serendipity\Test\Infrastructure\Repository\Formatter\MongoDateTimeToEntityTest
+  ✓ convert u t c date time to date time immutable                       0.01s
+  ✓ convert string to date time immutable
+  ✓ convert invalid type to null
+   PASS  Serendipity\Test\Infrastructure\Repository\Formatter\RelationalArrayToJsonTest
+  ✓ convert array to string                                              0.01s
+  ✓ convert string to string
+  ✓ convert invalid type to null
+   PASS  Serendipity\Test\Infrastructure\Repository\Formatter\RelationalDatetimeToStringTest
+  ✓ convert datetime to string                                           0.01s
+  ✓ convert string to string
+  ✓ convert invalid type to null
+   PASS  Serendipity\Test\Infrastructure\Repository\Formatter\RelationalJsonToArrayTest
+  ✓ convert string to array                                              0.01s
+  ✓ convert array to array
+  ✓ convert invalid type to null
+   PASS  Serendipity\Test\Infrastructure\Repository\GeneratorTest
+  ✓ id                                                                   0.01s
+  ✓ now
+  ✓ id with length                                                       0.01s
+   PASS  Serendipity\Test\Infrastructure\Repository\HttpRepositoryTest
+  ✓ should have content and properties                                   0.03s
+  ✓ should raise general exception                                       0.02s
+   PASS  Serendipity\Test\Infrastructure\Repository\MongoRepositoryTest
+  ✓ resource                                                             0.02s
+   PASS  Serendipity\Test\Infrastructure\Repository\PostgresRepositoryTest
+  ✓ should generate bindings                                             0.01s
+  ✓ should raise mapping exception on invalid generate
+  ✓ should render columns
+  ✓ should render values
+   PASS  Serendipity\Test\Infrastructure\Repository\SleekDBRepositoryTest
+  ✓ resource                                                             0.02s
+   PASS  Serendipity\Test\Presentation\Input\MappedTest
+  ✓ should map string source to target                                   0.02s
+  ✓ should apply callable transformations
+  ✓ should skip null values from extraction
+  ✓ should map nested target paths
+   PASS  Serendipity\Test\Presentation\Input\ParamsTest
+  ✓ should get value from params                                         0.01s
+  ✓ should not override existing param value
+  ✓ should skip param if not found in route
+   PASS  Serendipity\Test\Presentation\InputTest
+  ✓ should authorize                                                     0.01s
+  ✓ should has given rules
+  ✓ should get value from parsed body
+  ✓ should get value from values
+  ✓ should get property from headers
+  ✓ should get property from properties
+  ✓ should call value behind post
+  ✓ should call values behind post
+  ✓ should call value behind input
+   PASS  Serendipity\Test\Presentation\Output\AcceptedTest
+  ✓ should have token on content                                         0.03s
+   PASS  Serendipity\Test\Presentation\Output\CreatedTest
+  ✓ should have id on content                                            0.01s
+   PASS  Serendipity\Test\Presentation\Output\Error\ErrorTest
+  ✓ error classes with string content with data set " internal server e… 0.02s
+  ✓ error classes with string content with data set " bad gateway"       0.01s
+  ✓ error classes with string content with data set " insufficient stor… 0.01s
+  ✓ error classes with string content with data set " service unavailab… 0.01s
+  ✓ error classes with string content with data set " protocol version…  0.01s
+  ✓ error classes with string content with data set " variant also nego… 0.01s
+  ✓ error classes with string content with data set " not implemented"   0.01s
+  ✓ error classes with string content with data set " gateway timeout"   0.01s
+  ✓ error classes with string content with data set " network authentic… 0.01s
+  ✓ error classes with string content with data set " loop detected"     0.01s
+  ✓ error classes with integer content with data set " internal server error"
+  ✓ error classes with integer content with data set " bad gateway"
+  ✓ error classes with integer content with data set " insufficient storage"
+  ✓ error classes with integer content with data set " service unavailable"
+  ✓ error classes with integer content with data set " protocol version not supported"
+  ✓ error classes with integer content with data set " variant also negotiates"
+  ✓ error classes with integer content with data set " not implemented"
+  ✓ error classes with integer content with data set " gateway timeout"
+  ✓ error classes with integer content with data set " network authentication required"
+  ✓ error classes with integer content with data set " loop detected"
+  ✓ error classes with null content with data set " internal server error"
+  ✓ error classes with null content with data set " bad gateway"
+  ✓ error classes with null content with data set " insufficient storage"
+  ✓ error classes with null content with data set " service unavailable"
+  ✓ error classes with null content with data set " protocol version not supported"
+  ✓ error classes with null content with data set " variant also negotiates"
+  ✓ error classes with null content with data set " not implemented"
+  ✓ error classes with null content with data set " gateway timeout"
+  ✓ error classes with null content with data set " network authentication required"
+  ✓ error classes with null content with data set " loop detected"
+  ✓ error classes with detailed properties with data set " internal server error"
+  ✓ error classes with detailed properties with data set " bad gateway"
+  ✓ error classes with detailed properties with data set " insufficient storage"
+  ✓ error classes with detailed properties with data set " service unavailable"
+  ✓ error classes with detailed properties with data set " protocol version not supported"
+  ✓ error classes with detailed properties with data set " variant also negotiates"
+  ✓ error classes with detailed properties with data set " not implemented"
+  ✓ error classes with detailed properties with data set " gateway timeout"
+  ✓ error classes with detailed properties with data set " network authentication required"
+  ✓ error classes with detailed properties with data set " loop detected"
+   PASS  Serendipity\Test\Presentation\Output\Fail\FailTest
+  ✓ fail classes with string content with data set " bad request"        0.10s
+  ✓ fail classes with string content with data set " conflict"           0.01s
+  ✓ fail classes with string content with data set " expectation failed… 0.01s
+  ✓ fail classes with string content with data set " failed dependency"  0.01s
+  ✓ fail classes with string content with data set " forbidden"          0.01s
+  ✓ fail classes with string content with data set " gone"               0.01s
+  ✓ fail classes with string content with data set " length required"    0.01s
+  ✓ fail classes with string content with data set " locked"             0.01s
+  ✓ fail classes with string content with data set " method not allowed… 0.01s
+  ✓ fail classes with string content with data set " misdirected"        0.01s
+  ✓ fail classes with string content with data set " payload too large"  0.01s
+  ✓ fail classes with string content with data set " payment required"   0.01s
+  ✓ fail classes with string content with data set " precondition faile… 0.01s
+  ✓ fail classes with string content with data set " precondition requi… 0.01s
+  ✓ fail classes with string content with data set " proxy authenticati… 0.01s
+  ✓ fail classes with string content with data set " range not satisfia… 0.01s
+  ✓ fail classes with string content with data set " properties are too… 0.01s
+  ✓ fail classes with string content with data set " request timeout"    0.01s
+  ✓ fail classes with string content with data set " too early"          0.01s
+  ✓ fail classes with string content with data set " too many"           0.01s
+  ✓ fail classes with string content with data set " unauthorized"       0.01s
+  ✓ fail classes with string content with data set " unavailable for le… 0.01s
+  ✓ fail classes with string content with data set " unprocessable enti… 0.01s
+  ✓ fail classes with string content with data set " unsupported media…  0.01s
+  ✓ fail classes with string content with data set " update required"    0.01s
+  ✓ fail classes with array content with data set " bad request"
+  ✓ fail classes with array content with data set " conflict"
+  ✓ fail classes with array content with data set " expectation failed"
+  ✓ fail classes with array content with data set " failed dependency"
+  ✓ fail classes with array content with data set " forbidden"
+  ✓ fail classes with array content with data set " gone"
+  ✓ fail classes with array content with data set " length required"
+  ✓ fail classes with array content with data set " locked"
+  ✓ fail classes with array content with data set " method not allowed"
+  ✓ fail classes with array content with data set " misdirected"
+  ✓ fail classes with array content with data set " payload too large"
+  ✓ fail classes with array content with data set " payment required"
+  ✓ fail classes with array content with data set " precondition failed"
+  ✓ fail classes with array content with data set " precondition required"
+  ✓ fail classes with array content with data set " proxy authentication required"
+  ✓ fail classes with array content with data set " range not satisfiable"
+  ✓ fail classes with array content with data set " properties are too large"
+  ✓ fail classes with array content with data set " request timeout"
+  ✓ fail classes with array content with data set " too early"
+  ✓ fail classes with array content with data set " too many"
+  ✓ fail classes with array content with data set " unauthorized"
+  ✓ fail classes with array content with data set " unavailable for legal reasons"
+  ✓ fail classes with array content with data set " unprocessable entity"
+  ✓ fail classes with array content with data set " unsupported media type"
+  ✓ fail classes with array content with data set " update required"
+  ✓ fail classes with integer content with data set " bad request"
+  ✓ fail classes with integer content with data set " conflict"
+  ✓ fail classes with integer content with data set " expectation failed"
+  ✓ fail classes with integer content with data set " failed dependency"
+  ✓ fail classes with integer content with data set " forbidden"
+  ✓ fail classes with integer content with data set " gone"
+  ✓ fail classes with integer content with data set " length required"
+  ✓ fail classes with integer content with data set " locked"
+  ✓ fail classes with integer content with data set " method not allowed"
+  ✓ fail classes with integer content with data set " misdirected"
+  ✓ fail classes with integer content with data set " payload too large"
+  ✓ fail classes with integer content with data set " payment required"
+  ✓ fail classes with integer content with data set " precondition failed"
+  ✓ fail classes with integer content with data set " precondition required"
+  ✓ fail classes with integer content with data set " proxy authentication required"
+  ✓ fail classes with integer content with data set " range not satisfiable"
+  ✓ fail classes with integer content with data set " properties are too large"
+  ✓ fail classes with integer content with data set " request timeout"
+  ✓ fail classes with integer content with data set " too early"
+  ✓ fail classes with integer content with data set " too many"
+  ✓ fail classes with integer content with data set " unauthorized"
+  ✓ fail classes with integer content with data set " unavailable for legal reasons"
+  ✓ fail classes with integer content with data set " unprocessable entity"
+  ✓ fail classes with integer content with data set " unsupported media type"
+  ✓ fail classes with integer content with data set " update required"
+  ✓ fail classes with null content with data set " bad request"
+  ✓ fail classes with null content with data set " conflict"
+  ✓ fail classes with null content with data set " expectation failed"
+  ✓ fail classes with null content with data set " failed dependency"
+  ✓ fail classes with null content with data set " forbidden"
+  ✓ fail classes with null content with data set " gone"
+  ✓ fail classes with null content with data set " length required"
+  ✓ fail classes with null content with data set " locked"
+  ✓ fail classes with null content with data set " method not allowed"
+  ✓ fail classes with null content with data set " misdirected"
+  ✓ fail classes with null content with data set " payload too large"
+  ✓ fail classes with null content with data set " payment required"
+  ✓ fail classes with null content with data set " precondition failed"
+  ✓ fail classes with null content with data set " precondition required"
+  ✓ fail classes with null content with data set " proxy authentication required"
+  ✓ fail classes with null content with data set " range not satisfiable"
+  ✓ fail classes with null content with data set " properties are too large"
+  ✓ fail classes with null content with data set " request timeout"
+  ✓ fail classes with null content with data set " too early"
+  ✓ fail classes with null content with data set " too many"
+  ✓ fail classes with null content with data set " unauthorized"
+  ✓ fail classes with null content with data set " unavailable for legal reasons"
+  ✓ fail classes with null content with data set " unprocessable entity"
+  ✓ fail classes with null content with data set " unsupported media type"
+  ✓ fail classes with null content with data set " update required"
+  ✓ fail classes with properties with data set " bad request"
+  ✓ fail classes with properties with data set " conflict"
+  ✓ fail classes with properties with data set " expectation failed"
+  ✓ fail classes with properties with data set " failed dependency"
+  ✓ fail classes with properties with data set " forbidden"
+  ✓ fail classes with properties with data set " gone"
+  ✓ fail classes with properties with data set " length required"
+  ✓ fail classes with properties with data set " locked"
+  ✓ fail classes with properties with data set " method not allowed"
+  ✓ fail classes with properties with data set " misdirected"
+  ✓ fail classes with properties with data set " payload too large"
+  ✓ fail classes with properties with data set " payment required"
+  ✓ fail classes with properties with data set " precondition failed"
+  ✓ fail classes with properties with data set " precondition required"
+  ✓ fail classes with properties with data set " proxy authentication required"
+  ✓ fail classes with properties with data set " range not satisfiable"
+  ✓ fail classes with properties with data set " properties are too large"
+  ✓ fail classes with properties with data set " request timeout"
+  ✓ fail classes with properties with data set " too early"
+  ✓ fail classes with properties with data set " too many"
+  ✓ fail classes with properties with data set " unauthorized"
+  ✓ fail classes with properties with data set " unavailable for legal reasons"
+  ✓ fail classes with properties with data set " unprocessable entity"
+  ✓ fail classes with properties with data set " unsupported media type"
+  ✓ fail classes with properties with data set " update required"
+   PASS  Serendipity\Test\Presentation\Output\Fail\NotAcceptableTest
+  ✓ should have token on content                                         0.25s
+   PASS  Serendipity\Test\Presentation\Output\NoContentTest
+  ✓ should have no content                                               0.01s
+   PASS  Serendipity\Test\Presentation\Output\NotFoundTest
+  ✓ should have missing on content                                       0.01s
+   PASS  Serendipity\Test\Presentation\Output\OkTest
+  ✓ should have no content                                               0.01s
+  ✓ should handle mixed content with data set #0
+  ✓ should handle mixed content with data set #1
+  ✓ should handle mixed content with data set #2
+  ✓ should handle mixed content with data set #3
+  ✓ should handle mixed content with data set #4
+  ✓ should handle mixed content with data set #5
+  ✓ should handle mixed content with data set #6
+  ✓ should handle message
+  ✓ should handle exportable
+   PASS  Serendipity\Test\Presentation\Output\SuccessTest
+  ✓ success classes with primitive content with data set " ok"           0.02s
+  ✓ success classes with primitive content with data set " already repo… 0.01s
+  ✓ success classes with primitive content with data set " im used"      0.01s
+  ✓ success classes with primitive content with data set " multi status… 0.01s
+  ✓ success classes with primitive content with data set " non authorit… 0.01s
+  ✓ success classes with primitive content with data set " partial cont… 0.01s
+  ✓ success classes with primitive content with data set " reset conten… 0.01s
+  ✓ success classes with message with data set " ok"
+  ✓ success classes with message with data set " already reported"
+  ✓ success classes with message with data set " im used"
+  ✓ success classes with message with data set " multi status"
+  ✓ success classes with message with data set " non authoritative"
+  ✓ success classes with message with data set " partial content"
+  ✓ success classes with message with data set " reset content"
+  ✓ success classes with exportable with data set " ok"
+  ✓ success classes with exportable with data set " already reported"
+  ✓ success classes with exportable with data set " im used"
+  ✓ success classes with exportable with data set " multi status"
+  ✓ success classes with exportable with data set " non authoritative"
+  ✓ success classes with exportable with data set " partial content"
+  ✓ success classes with exportable with data set " reset content"
+  ✓ success classes with null with data set " ok"
+  ✓ success classes with null with data set " already reported"
+  ✓ success classes with null with data set " im used"
+  ✓ success classes with null with data set " multi status"
+  ✓ success classes with null with data set " non authoritative"
+  ✓ success classes with null with data set " partial content"
+  ✓ success classes with null with data set " reset content"
+  ✓ success classes with array content with data set " ok"
+  ✓ success classes with array content with data set " already reported"
+  ✓ success classes with array content with data set " im used"
+  ✓ success classes with array content with data set " multi status"
+  ✓ success classes with array content with data set " non authoritative"
+  ✓ success classes with array content with data set " partial content"
+  ✓ success classes with array content with data set " reset content"
+  ✓ success classes with boolean content with data set " ok"
+  ✓ success classes with boolean content with data set " already reported"
+  ✓ success classes with boolean content with data set " im used"
+  ✓ success classes with boolean content with data set " multi status"
+  ✓ success classes with boolean content with data set " non authoritative"
+  ✓ success classes with boolean content with data set " partial content"
+  ✓ success classes with boolean content with data set " reset content"
+  ✓ success classes with numeric content with data set " ok"
+  ✓ success classes with numeric content with data set " already reported"
+  ✓ success classes with numeric content with data set " im used"
+  ✓ success classes with numeric content with data set " multi status"
+  ✓ success classes with numeric content with data set " non authoritative"
+  ✓ success classes with numeric content with data set " partial content"
+  ✓ success classes with numeric content with data set " reset content"
+   PASS  Serendipity\Test\Presentation\OutputTest
+  ✓ should has properties as empty array and values null                 0.11s
+  ✓ should has properties
+  ✓ should has values
+   PASS  Serendipity\Test\Testing\Extension\BuilderExtensionTest
+  ✓ builder                                                              0.02s
+   PASS  Serendipity\Test\Testing\Extension\FakerExtensionTest
+  ✓ faker                                                                0.01s
+  ✓ generator                                                            0.01s
+   PASS  Serendipity\Test\Testing\Extension\ManagedExtensionTest
+  ✓ managed                                                              0.02s
+   PASS  Serendipity\Test\Testing\Extension\ResourceExtensionTest
+  ✓ should set up resource helper                                        0.01s
+  ✓ should set up resource
+  ✓ should raise exception with invalid helper
+  ✓ should seed
+  ✓ should fail on invalid helper
+  ✓ should fail on resource not defined
+  ✓ should seed using the unique resource
+  ✓ should seed resource name
+  ✓ should assert has
+  ✓ should assert has not
+  ✓ should assert has exactly
+   PASS  Serendipity\Test\Testing\Faker\FakerTest
+  ✓ should make fake entity stub                                         0.06s
+  ✓ should make fake builtin                                             0.02s
+  ✓ should make fake command                                             0.07s
+  ✓ should use generate on undefined methods
+  ✓ should skip parameter when no resolver can handle                    0.01s
+  ✓ should resolve union type parameter                                  0.03s
+   PASS  Serendipity\Test\Testing\Faker\Resolver\FromDefaultValueTest
+  ✓ should resolve parameter with default value                          0.02s
+  ✓ should resolve optional parameter
+  ✓ should resolve nullable parameter
+  ✓ should fallback to next resolver
+   PASS  Serendipity\Test\Testing\Faker\Resolver\FromDependencyTest
+  ✓ should resolve class dependency                                      0.05s
+  ✓ should not resolve builtin type
+  ✓ should not resolve enum type
+  ✓ should not resolve intersection type
+  ✓ should resolve union type with first eligible type
+  ✓ should fallback to next resolver for non existing class
+  ✓ should return null for parameter without type
+   PASS  Serendipity\Test\Testing\Faker\Resolver\FromEnumTest
+  ✓ should resolve backed enum                                           0.02s
+  ✓ should not resolve non backed enum
+  ✓ should resolve enum in union type
+  ✓ should fallback to next resolver for non enum
+  ✓ should return null for empty enumeration
+  ✓ should not resolve not backed enum
+   PASS  Serendipity\Test\Testing\Faker\Resolver\FromPresetTest
+  ✓ should resolve preset with exact parameter name                      0.02s
+  ✓ should resolve preset with camel case parameter name
+  ✓ should resolve preset with multi word camel case parameter name
+  ✓ should resolve nested property name
+  ✓ should fallback to next resolver when preset not found
+   PASS  Serendipity\Test\Testing\Faker\Resolver\FromTypeAttributesTest
+  ✓ should resolve email attribute                                       0.01s
+  ✓ should resolve ip address attribute
+  ✓ should resolve first name attribute
+  ✓ should resolve type extended attribute
+  ✓ should fallback to next resolver when no attribute
+  ✓ should return null for undefined type
+  ✓ should resolve managed attributes
+  ✓ should detect type before fake pattern                               0.01s
+   PASS  Serendipity\Test\Testing\Faker\Resolver\FromTypeBuiltinTest
+  ✓ should resolve string type                                           0.02s
+  ✓ should resolve int type
+  ✓ should resolve float type
+  ✓ should resolve bool type
+  ✓ should resolve array type
+  ✓ should fallback to next resolver for non builtin type
+  ✓ should return null for null type
+  ✓ should return null for parameter without type
+   PASS  Serendipity\Test\Testing\Faker\Resolver\FromTypeDateTest
+  ✓ should resolve date time immutable                                   0.02s
+  ✓ should resolve date time
+  ✓ should resolve date time interface
+  ✓ should not resolve fallback to next resolver for non native type
+  ✓ should return null for parameter without type
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Domain\Support\Reflective\Factory\Ruler\Mandator…
+  Failed asserting that two arrays are equal.
+   Array (
+  -    0 => 'sometimes'
+   )
+
+  at tests/Domain/Support/Reflective/Factory/Ruler/MandatoryChainTest.php:40
+     36▕         $parameters = $constructor->getParameters();
+     37▕
+     38▕         $chain->resolve($parameters[2], $ruleset);
+     39▕
+  ➜  40▕         $this->assertEquals(['sometimes'], $ruleset->get('data'));
+     41▕     }
+     42▕ }
+     43▕
+  1   tests/Domain/Support/Reflective/Factory/Ruler/MandatoryChainTest.php:40
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Example\Game\Infrastructure\Post…  QueryException
+  ERROR:  column "done" of relation "games" does not exist
+LINE 1: ...es" ("id","created_at","updated_at","name","slug","done","da...
+                                                             ^
+  at vendor/hyperf/db/src/PgSQL/PgSQLConnection.php:179
+    175▕         }
+    176▕
+    177▕         $statement = $this->connection->prepare($query);
+    178▕         if (! $statement) {
+  ➜ 179▕             throw new QueryException($this->connection->error);
+    180▕         }
+    181▕
+    182▕         return $statement;
+    183▕     }
+      +3 vendor frames
+  4   src/Hyperf/Database/Relational/HyperfConnection.php:62
+  5   src/Hyperf/Testing/PostgresHelper.php:66
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Example\Game\Infrastructure\Post…  QueryException
+  ERROR:  column "done" of relation "games" does not exist
+LINE 1: ...es" ("id","created_at","updated_at","name","slug","done","da...
+                                                             ^
+  at vendor/hyperf/db/src/PgSQL/PgSQLConnection.php:179
+    175▕         }
+    176▕
+    177▕         $statement = $this->connection->prepare($query);
+    178▕         if (! $statement) {
+  ➜ 179▕             throw new QueryException($this->connection->error);
+    180▕         }
+    181▕
+    182▕         return $statement;
+    183▕     }
+      +3 vendor frames
+  4   src/Hyperf/Database/Relational/HyperfConnection.php:62
+  5   src/Hyperf/Testing/PostgresHelper.php:66
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Example\Game\Infrastructure\Post…  QueryException
+  ERROR:  column "done" of relation "games" does not exist
+LINE 1: ...es" ("id","created_at","updated_at","name","slug","done","da...
+                                                             ^
+  at vendor/hyperf/db/src/PgSQL/PgSQLConnection.php:179
+    175▕         }
+    176▕
+    177▕         $statement = $this->connection->prepare($query);
+    178▕         if (! $statement) {
+  ➜ 179▕             throw new QueryException($this->connection->error);
+    180▕         }
+    181▕
+    182▕         return $statement;
+    183▕     }
+      +3 vendor frames
+  4   src/Hyperf/Database/Relational/HyperfConnection.php:62
+  5   src/Hyperf/Testing/PostgresHelper.php:66
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Example\Game\Infrastructure\Post…  QueryException
+  ERROR:  column "done" of relation "games" does not exist
+LINE 1: ...es" ("id","created_at","updated_at","name","slug","done","da...
+                                                             ^
+  at vendor/hyperf/db/src/PgSQL/PgSQLConnection.php:179
+    175▕         }
+    176▕
+    177▕         $statement = $this->connection->prepare($query);
+    178▕         if (! $statement) {
+  ➜ 179▕             throw new QueryException($this->connection->error);
+    180▕         }
+    181▕
+    182▕         return $statement;
+    183▕     }
+      +3 vendor frames
+  4   src/Hyperf/Database/Relational/HyperfConnection.php:62
+  5   src/Hyperf/Testing/PostgresHelper.php:66
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Example\Game\Presentation\Crea…  AdapterException
+  Adapter failed with 1 error(s). The errors are: "The value for 'done' is required and was not given."
+  at src/Infrastructure/Adapter/Serialize/Builder.php:69
+     65▕         if (empty($resolution->errors())) {
+     66▕             /* @phpstan-ignore return.type */
+     67▕             return $target->getReflectionClass()->newInstanceArgs($resolution->args());
+     68▕         }
+  ➜  69▕         throw new AdapterException($set, $resolution->errors());
+     70▕     }
+     71▕
+     72▕     /**
+     73▕      * @param array<ReflectionParameter> $parameters
+  1   src/Infrastructure/Adapter/Serialize/Builder.php:69
+  2   src/Infrastructure/Adapter/Serialize/Builder.php:35
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Infrastructure\Adapter\Deser…  ArgumentCountError
+  Too few arguments to function Serendipity\Example\Game\Domain\Entity\Command\GameCommand::__construct(), 2 passed in /opt/www/tests/Infrastructure/Adapter/Deserialize/DemolisherTest.php on line 21 and at least 3 expected
+  at src/Example/Game/Domain/Entity/Command/GameCommand.php:12
+      8▕ use Serendipity\Domain\Type\Timestamp;
+      9▕
+     10▕ class GameCommand extends Entity
+     11▕ {
+  ➜  12▕     public function __construct(
+     13▕         public readonly string $name,
+     14▕         public readonly string $slug,
+     15▕         public readonly Timestamp $done,
+     16▕         public readonly array $data = [],
+  1   src/Example/Game/Domain/Entity/Command/GameCommand.php:12
+  2   tests/Infrastructure/Adapter/Deserialize/DemolisherTest.php:21
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Infrastructure\Adapter\Deser…  ArgumentCountError
+  Too few arguments to function Serendipity\Example\Game\Domain\Entity\Command\GameCommand::__construct(), 2 passed in /opt/www/tests/Infrastructure/Adapter/Deserialize/DemolisherTest.php on line 64 and at least 3 expected
+  at src/Example/Game/Domain/Entity/Command/GameCommand.php:12
+      8▕ use Serendipity\Domain\Type\Timestamp;
+      9▕
+     10▕ class GameCommand extends Entity
+     11▕ {
+  ➜  12▕     public function __construct(
+     13▕         public readonly string $name,
+     14▕         public readonly string $slug,
+     15▕         public readonly Timestamp $done,
+     16▕         public readonly array $data = [],
+  1   src/Example/Game/Domain/Entity/Command/GameCommand.php:12
+  2   tests/Infrastructure/Adapter/Deserialize/DemolisherTest.php:64
+  ────────────────────────────────────────────────────────────────────────────
+   FAILED  Serendipity\Test\Infrastructure\Adapter\Deser…  ArgumentCountError
+  Too few arguments to function Serendipity\Example\Game\Domain\Entity\Command\GameCommand::__construct(), 2 passed in /opt/www/tests/Infrastructure/Adapter/Deserialize/DemolisherTest.php on line 97 and at least 3 expected
+  at src/Example/Game/Domain/Entity/Command/GameCommand.php:12
+      8▕ use Serendipity\Domain\Type\Timestamp;
+      9▕
+     10▕ class GameCommand extends Entity
+     11▕ {
+  ➜  12▕     public function __construct(
+     13▕         public readonly string $name,
+     14▕         public readonly string $slug,
+     15▕         public readonly Timestamp $done,
+     16▕         public readonly array $data = [],
+  1   src/Example/Game/Domain/Entity/Command/GameCommand.php:12
+  2   tests/Infrastructure/Adapter/Deserialize/DemolisherTest.php:97
+  Tests:    9 failed, 760 passed (1879 assertions)
+  Duration: 8.38s
+Generating code coverage report in Clover XML format ... done [00:00.183]
+Script bin/phpunit.php handling the test event returned with error code 2

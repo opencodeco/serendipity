@@ -11,11 +11,12 @@ use DateTimeInterface;
 use ReflectionParameter;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Domain\Support\Value;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
 use Serendipity\Testing\Extension\ManagedExtension;
 use Serendipity\Testing\Faker\Resolver;
 
-final class FromTypeNative extends Resolver
+final class FromTypeDate extends Resolver
 {
     use MakeExtension;
     use ManagedExtension;
@@ -30,19 +31,21 @@ final class FromTypeNative extends Resolver
             return parent::resolve($parameter, $presets);
         }
 
-        return $this->resolveByNative($type)
+        return $this->resolveByClassName($type)
             ?? parent::resolve($parameter, $presets);
     }
 
     /**
      * @throws DateMalformedStringException
      */
-    private function resolveByNative(string $type): ?Value
+    private function resolveByClassName(string $type): ?Value
     {
+        $now = $this->now();
         return match ($type) {
-            DateTimeImmutable::class => new Value(new DateTimeImmutable($this->now())),
+            Timestamp::class => new Value(new Timestamp($now)),
+            DateTimeImmutable::class => new Value(new DateTimeImmutable($now)),
             DateTime::class,
-            DateTimeInterface::class => new Value(new DateTime($this->now())),
+            DateTimeInterface::class => new Value(new DateTime($now)),
             default => null,
         };
     }

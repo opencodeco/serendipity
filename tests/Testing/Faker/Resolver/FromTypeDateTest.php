@@ -13,13 +13,13 @@ use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Test\Testing\Stub\Native;
 use Serendipity\Test\Testing\Stub\Variety;
-use Serendipity\Testing\Faker\Resolver\FromTypeNative;
+use Serendipity\Testing\Faker\Resolver\FromTypeDate;
 
-final class FromTypeNativeTest extends TestCase
+final class FromTypeDateTest extends TestCase
 {
     public function testShouldResolveDateTimeImmutable(): void
     {
-        $resolver = new FromTypeNative(Notation::SNAKE);
+        $resolver = new FromTypeDate(Notation::SNAKE);
         $target = Target::createFrom(Native::class);
         $parameters = $target->getReflectionParameters();
 
@@ -34,7 +34,7 @@ final class FromTypeNativeTest extends TestCase
 
     public function testShouldResolveDateTime(): void
     {
-        $resolver = new FromTypeNative(Notation::SNAKE);
+        $resolver = new FromTypeDate(Notation::SNAKE);
         $target = Target::createFrom(Native::class);
         $parameters = $target->getReflectionParameters();
 
@@ -49,7 +49,7 @@ final class FromTypeNativeTest extends TestCase
 
     public function testShouldResolveDateTimeInterface(): void
     {
-        $resolver = new FromTypeNative(Notation::SNAKE);
+        $resolver = new FromTypeDate(Notation::SNAKE);
         $target = Target::createFrom(Native::class);
         $parameters = $target->getReflectionParameters();
 
@@ -64,7 +64,7 @@ final class FromTypeNativeTest extends TestCase
 
     public function testShouldNotResolveFallbackToNextResolverForNonNativeType(): void
     {
-        $resolver = new FromTypeNative(Notation::SNAKE);
+        $resolver = new FromTypeDate(Notation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 
@@ -78,7 +78,7 @@ final class FromTypeNativeTest extends TestCase
 
     public function testShouldReturnNullForParameterWithoutType(): void
     {
-        $resolver = new FromTypeNative(Notation::SNAKE);
+        $resolver = new FromTypeDate(Notation::SNAKE);
         $target = Target::createFrom(Variety::class);
         $parameters = $target->getReflectionParameters();
 

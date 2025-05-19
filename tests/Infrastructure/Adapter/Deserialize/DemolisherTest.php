@@ -7,6 +7,7 @@ namespace Serendipity\Test\Infrastructure\Adapter\Deserialize;
 use PHPUnit\Framework\TestCase;
 use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Exportable;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 use stdClass;
@@ -18,7 +19,8 @@ final class DemolisherTest extends TestCase
         $demolisher = new Demolisher(formatters: [
             'string' => fn ($value) => sprintf('[%s]', $value),
         ]);
-        $instance = new GameCommand('Cool game', 'cool-game');
+        $timestamp = new Timestamp();
+        $instance = new GameCommand('Cool game', 'cool-game', $timestamp);
         $values = $demolisher->demolish($instance);
 
         $this->assertEquals('[Cool game]', $values['name']);
@@ -61,8 +63,10 @@ final class DemolisherTest extends TestCase
         };
 
         // Add some Exportable objects to the collection
-        $collection->push(new GameCommand('Game 1', 'game-1'));
-        $collection->push(new GameCommand('Game 2', 'game-2'));
+        $timestamp1 = new Timestamp();
+        $timestamp2 = new Timestamp();
+        $collection->push(new GameCommand('Game 1', 'game-1', $timestamp1));
+        $collection->push(new GameCommand('Game 2', 'game-2', $timestamp2));
 
         // Test demolishCollection method
         $demolisher = new Demolisher(formatters: [
@@ -94,7 +98,8 @@ final class DemolisherTest extends TestCase
         };
 
         // Add an Exportable object and a non-Exportable object to the collection
-        $collection->push(new GameCommand('Game 1', 'game-1'));
+        $timestamp = new Timestamp();
+        $collection->push(new GameCommand('Game 1', 'game-1', $timestamp));
         $collection->push(new stdClass());
 
         // Test demolishCollection method

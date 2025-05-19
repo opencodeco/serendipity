@@ -20,7 +20,7 @@ use Serendipity\Testing\Faker\Resolver\FromEnum;
 use Serendipity\Testing\Faker\Resolver\FromPreset;
 use Serendipity\Testing\Faker\Resolver\FromTypeAttributes;
 use Serendipity\Testing\Faker\Resolver\FromTypeBuiltin;
-use Serendipity\Testing\Faker\Resolver\FromTypeNative;
+use Serendipity\Testing\Faker\Resolver\FromTypeDate;
 
 use function Serendipity\Type\Cast\stringify;
 
@@ -82,7 +82,7 @@ class Faker extends Engine implements Contract
         foreach ($parameters as $parameter) {
             $field = $this->casedField($parameter);
             $generated = (new FromDependency($this->notation))
-                ->then(new FromTypeNative($this->notation))
+                ->then(new FromTypeDate($this->notation))
                 ->then(new FromTypeBuiltin($this->notation))
                 ->then(new FromTypeAttributes($this->notation))
                 ->then(new FromEnum($this->notation))
