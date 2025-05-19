@@ -19,12 +19,9 @@ class MongoTimestampToEntity implements Formatter
     {
         return match (true) {
             $value instanceof Timestamp => $value,
-            $value instanceof UTCDateTime => match ($option) {
-                Timestamp::class => new Timestamp(
-                    $value->toDateTime()->format(DateTimeInterface::ATOM)
-                ),
-                default => $value->toDateTime()
-            },
+            $value instanceof UTCDateTime => new Timestamp(
+                $value->toDateTime()->format(DateTimeInterface::ATOM)
+            ),
             is_string($value) => new Timestamp($value),
             default => null
         };
