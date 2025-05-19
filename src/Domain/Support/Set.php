@@ -63,6 +63,7 @@ readonly class Set
      */
     public function toArray(): array
     {
+        /* @phpstan-ignore return.type */
         return array_map(fn (mixed $item) => $item instanceof Set ? $item->toArray() : $item, $this->data);
     }
 
