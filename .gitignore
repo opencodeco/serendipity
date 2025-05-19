@@ -17,3 +17,4 @@ vendor/
 *.override.*
 composer.lock
 *.log
+.output.txt

@@ -50,13 +50,7 @@ final class DateChainTest extends TestCase
         $parameter = $this->createMock(ReflectionParameter::class);
 
         // Create a test double of DateChain that extends the real DateChain
-        $chain = new class extends DateChain {
-            public function resolveByClassName(mixed $value): ?string
-            {
-                // This will always return null for our test, forcing it to call parent::resolve
-                return null;
-            }
-        };
+        $chain = new DateChain();
 
         // Act
         $result = $chain->resolve($parameter, $value);

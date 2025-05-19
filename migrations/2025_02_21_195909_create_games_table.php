@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->char('id', 10)->unique();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->dateTime('published_at');
             $table->json('data');
+
             $table->datetimes();
         });
     }

@@ -30,11 +30,12 @@ class PostgresGameCommandRepository extends PostgresRepository implements GameCo
             'updated_at',
             'name',
             'slug',
+            'published_at',
             'data',
         ];
         /* @noinspection SqlNoDataSourceInspection, SqlResolve */
-        $query = 'insert into "games" ("id", "created_at", "updated_at", "name", "slug", "data") '
-            . 'values (?, ?, ?, ?, ?, ?)';
+        $query = 'insert into "games" ("id", "created_at", "updated_at", "name", "slug", "published_at", "data") '
+            . 'values (?, ?, ?, ?, ?, ?, ?)';
 
 
         $bindings = $this->bindings($game, $fields, ['id' => $id]);

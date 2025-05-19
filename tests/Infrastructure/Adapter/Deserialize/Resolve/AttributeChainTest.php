@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Serendipity\Test\Infrastructure\Adapter\Deserialize\Resolve;
 
+use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use ReflectionAttribute;
@@ -64,7 +66,10 @@ final class AttributeChainTest extends TestCase
         $this->assertEquals('uuid-123', $result->content);
     }
 
-    public function testResolveWithManagedAttributeNow(): void
+    #[TestWith([new Timestamp()])]
+    #[TestWith([new DateTimeImmutable()])]
+    #[TestWith([new DateTime()])]
+    public function testResolveWithManagedAttributeNow(DateTimeInterface $value): void
     {
         // Arrange
         $chain = new AttributeChain();
@@ -85,11 +90,10 @@ final class AttributeChainTest extends TestCase
             ->willReturn([$managed]);
 
         // Act
-        $dateTime = new Timestamp();
-        $result = $chain->resolve($parameter, $dateTime);
+        $result = $chain->resolve($parameter, $value);
 
         // Assert
-        $expected = $dateTime->format(DateTimeInterface::ATOM);
+        $expected = $value->format(DateTimeInterface::ATOM);
         $actual = $result->content;
         $this->assertEquals($expected, $actual);
     }

@@ -13,6 +13,7 @@ class CreateGameInput extends Input
         return [
             'name' => ['required', 'string'],
             'slug' => ['required', 'string'],
+            'published_at' => ['required', 'date'],
             'data' => ['sometimes', 'array'],
         ];
     }

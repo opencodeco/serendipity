@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter\Deserialize\Resolve;
 
 use DateMalformedStringException;
+use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use ReflectionNamedType;
@@ -51,6 +52,7 @@ class AttributeChain extends Chain
         return new Value(
             match (true) {
                 $value instanceof Timestamp => $value->toString(),
+                $value instanceof DateTime,
                 $value instanceof DateTimeImmutable => $value->format(DateTimeInterface::ATOM),
                 default => $value,
             }

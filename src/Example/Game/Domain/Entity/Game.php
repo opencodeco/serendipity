@@ -21,9 +21,9 @@ class Game extends GameCommand
         #[Pattern('/^[a-zA-Z]{1,255}$/')]
         string $name,
         string $slug,
-        Timestamp $done,
+        Timestamp $publishedAt,
         array $data = [],
     ) {
-        parent::__construct($name, $slug, $done, $data);
+        parent::__construct($name, $slug, $publishedAt, $data);
     }
 }

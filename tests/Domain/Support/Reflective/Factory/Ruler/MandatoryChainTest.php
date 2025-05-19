@@ -35,7 +35,7 @@ class MandatoryChainTest extends TestCase
         $constructor = $reflection->getConstructor();
         $parameters = $constructor->getParameters();
 
-        $chain->resolve($parameters[2], $ruleset);
+        $chain->resolve($parameters[3], $ruleset);
 
         $this->assertEquals(['sometimes'], $ruleset->get('data'));
     }

@@ -25,7 +25,7 @@ final class PostgresGameCommandRepositoryTest extends InfrastructureCase
     public function testShouldPersistSuccessfully(): void
     {
         # ## Arrange
-        // create an instance of Repository
+        // to create an instance of Repository
         $repository = $this->make(PostgresGameCommandRepository::class);
         // generate fake values for Game
         $values = $this->faker()->fake(GameCommand::class);
@@ -37,7 +37,7 @@ final class PostgresGameCommandRepositoryTest extends InfrastructureCase
         $id = $repository->create($game);
 
         # ## Assert
-        // check if there is a record on database with the same ID
+        // check if there is a record on a database with the same ID
         $this->assertHas(['id' => $id]);
     }
 
