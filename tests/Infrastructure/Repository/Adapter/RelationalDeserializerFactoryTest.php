@@ -7,9 +7,11 @@ namespace Serendipity\Test\Infrastructure\Repository\Adapter;
 use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalArrayToJson;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalDatetimeToString;
+use Serendipity\Infrastructure\Repository\Formatter\RelationalTimestampToString;
 use Serendipity\Test\Testing\Stub\Stub;
 
 final class RelationalDeserializerFactoryTest extends TestCase
@@ -22,6 +24,7 @@ final class RelationalDeserializerFactoryTest extends TestCase
         $this->assertEquals(Stub::class, $serializer->type);
         $converters = [
             'array' => new RelationalArrayToJson(),
+            Timestamp::class => new RelationalTimestampToString(),
             DateTime::class => new RelationalDatetimeToString(),
             DateTimeImmutable::class => new RelationalDatetimeToString(),
         ];

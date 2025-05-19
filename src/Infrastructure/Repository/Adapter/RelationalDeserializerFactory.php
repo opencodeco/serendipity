@@ -10,6 +10,7 @@ use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalArrayToJson;
 use Serendipity\Infrastructure\Repository\Formatter\RelationalDatetimeToString;
+use Serendipity\Infrastructure\Repository\Formatter\RelationalTimestampToString;
 
 class RelationalDeserializerFactory extends DeserializerFactory
 {
@@ -17,7 +18,7 @@ class RelationalDeserializerFactory extends DeserializerFactory
     {
         return [
             'array' => new RelationalArrayToJson(),
-            Timestamp::class => new RelationalDatetimeToString(),
+            Timestamp::class => new RelationalTimestampToString(),
             DateTime::class => new RelationalDatetimeToString(),
             DateTimeImmutable::class => new RelationalDatetimeToString(),
         ];

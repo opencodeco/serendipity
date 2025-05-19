@@ -7,9 +7,11 @@ namespace Serendipity\Test\Infrastructure\Repository\Adapter;
 use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Repository\Adapter\MongoSerializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\MongoArrayToEntity;
 use Serendipity\Infrastructure\Repository\Formatter\MongoDateTimeToEntity;
+use Serendipity\Infrastructure\Repository\Formatter\MongoTimestampToEntity;
 use Serendipity\Test\Testing\Stub\Stub;
 
 final class MongoSerializerFactoryTest extends TestCase
@@ -20,6 +22,7 @@ final class MongoSerializerFactoryTest extends TestCase
         $serializer = $factory->make(Stub::class);
 
         $converters = [
+            Timestamp::class => new MongoTimestampToEntity(),
             DateTime::class => new MongoDateTimeToEntity(),
             DateTimeImmutable::class => new MongoDateTimeToEntity(),
             'array' => new MongoArrayToEntity(),

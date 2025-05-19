@@ -7,8 +7,10 @@ namespace Serendipity\Test\Infrastructure\Repository\Adapter;
 use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Repository\Adapter\MongoDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\MongoDateTimeToDatabase;
+use Serendipity\Infrastructure\Repository\Formatter\MongoTimestampToDatabase;
 use Serendipity\Test\Testing\Stub\Stub;
 
 final class MongoDeserializerFactoryTest extends TestCase
@@ -19,6 +21,7 @@ final class MongoDeserializerFactoryTest extends TestCase
         $deserializer = $factory->make(Stub::class);
 
         $converters = [
+            Timestamp::class => new MongoTimestampToDatabase(),
             DateTime::class => new MongoDateTimeToDatabase(),
             DateTimeImmutable::class => new MongoDateTimeToDatabase(),
         ];

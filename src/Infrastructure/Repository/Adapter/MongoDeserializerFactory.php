@@ -9,13 +9,14 @@ use DateTimeImmutable;
 use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\DeserializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\MongoDateTimeToDatabase;
+use Serendipity\Infrastructure\Repository\Formatter\MongoTimestampToDatabase;
 
 class MongoDeserializerFactory extends DeserializerFactory
 {
     protected function formatters(): array
     {
         return [
-            Timestamp::class => new MongoDateTimeToDatabase(),
+            Timestamp::class => new MongoTimestampToDatabase(),
             DateTime::class => new MongoDateTimeToDatabase(),
             DateTimeImmutable::class => new MongoDateTimeToDatabase(),
         ];
