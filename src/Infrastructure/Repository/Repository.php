@@ -18,13 +18,15 @@ abstract class Repository
      *
      * @return null|T
      */
-    protected function entity(Serializer $serializer, array $data): mixed
+    protected function entity(Serializer $serializer, array $data, array $fixes = []): mixed
     {
         if (empty($data)) {
             return null;
         }
         $datum = array_shift($data);
-        return $serializer->serialize($this->toArray($datum));
+        $datum = $this->toArray($datum);
+        $datum = array_merge($fixes, $datum);
+        return $serializer->serialize($datum);
     }
 
     /**
@@ -33,11 +35,12 @@ abstract class Repository
      *
      * @return T
      */
-    protected function collection(Serializer $serializer, array $data, string $collection): mixed
-    {
+    protected function collection(Serializer $serializer, array $data, string $collection, array $fixes = []): mixed {
         $instance = new $collection();
         foreach ($data as $datum) {
-            $instance->push($serializer->serialize($this->toArray($datum)));
+            $datum = $this->toArray($datum);
+            $datum = array_merge($fixes, $datum);
+            $instance->push($serializer->serialize($datum));
         }
         return $instance;
     }
