@@ -22,6 +22,7 @@ use function count;
 use function implode;
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\integerify;
+use function Serendipity\Type\Json\encode;
 use function sprintf;
 use function str_repeat;
 
@@ -61,7 +62,11 @@ final class PostgresHelper extends AbstractHelper
 
         /** @noinspection SqlNoDataSourceInspection, SqlResolve */
         $query = sprintf('insert into "%s" (%s) values (%s)', $resource, $columns, $values);
-        $bindings = array_values($data);
+        $callback = fn (mixed $element) => match (true) {
+            is_scalar($element) => $element,
+            default => encode($element),
+        };
+        $bindings = array_map($callback, array_values($data));
 
         $this->database->execute($query, $bindings);
         return new Set($data);
