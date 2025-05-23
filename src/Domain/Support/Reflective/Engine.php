@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Serendipity\Domain\Support\Reflective;
 
+use ReflectionClass;
+use ReflectionException;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
+use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
+use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Formatter;
 use Serendipity\Domain\Support\Reflective\Engine\Resolution;
 
@@ -30,14 +34,18 @@ abstract class Engine extends Resolution
         };
     }
 
-    protected function selectFormatter(string $type): ?callable
+    protected function selectFormatter(string $candidate): ?callable
     {
-        $formatter = $this->formatters[$type] ?? null;
-        return match (true) {
-            $formatter instanceof Formatter => $this->formatFormatter($formatter),
-            is_callable($formatter) => $formatter,
-            default => null,
-        };
+        $formatter = $this->formatters[$candidate] ?? null;
+        if ($formatter !== null) {
+            return $this->matchFormatter($formatter);
+        }
+        foreach ($this->formatters as $type => $formatter) {
+            if (is_string($type) && class_exists($candidate) && is_subclass_of($candidate, $type)) {
+                return $this->matchFormatter($formatter);
+            }
+        }
+        return null;
     }
 
     protected function detectValueType(mixed $value): string
@@ -56,6 +64,31 @@ abstract class Engine extends Resolution
         return $type;
     }
 
+    protected function detectCollectionName(ReflectionParameter $parameter): ?string
+    {
+        $type = $parameter->getType();
+        if (! $type instanceof ReflectionNamedType || $type->isBuiltin()) {
+            return null;
+        }
+        $candidate = $type->getName();
+        return class_exists($candidate) && is_subclass_of($candidate, Collection::class)
+            ? $candidate
+            : null;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    protected function detectCollectionType(ReflectionClass $collection): ?string
+    {
+        $method = $collection->getMethod('current');
+        $returnType = $method->getReturnType();
+        if ($returnType && ! $returnType->isBuiltin()) {
+            return $returnType instanceof ReflectionNamedType ? $returnType->getName() : null;
+        }
+        return null;
+    }
+
     /**
      * @param array<ReflectionType> $types
      */
@@ -64,6 +97,15 @@ abstract class Engine extends Resolution
         $array = array_map(fn (ReflectionType $type) => $this->formatTypeName($type), $types);
         sort($array);
         return implode($separator, $array);
+    }
+
+    private function matchFormatter(mixed $formatter): ?callable
+    {
+        return match (true) {
+            $formatter instanceof Formatter => $this->formatFormatter($formatter),
+            is_callable($formatter) => $formatter,
+            default => null,
+        };
     }
 
     private function formatFormatter(Formatter $formatter): callable
