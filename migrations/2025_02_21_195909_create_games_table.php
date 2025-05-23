@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('slug')->unique();
             $table->dateTime('published_at');
             $table->json('data');
+            $table->json('features');
 
             $table->datetimes();
         });

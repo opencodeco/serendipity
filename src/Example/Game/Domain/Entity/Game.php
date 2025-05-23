@@ -7,6 +7,7 @@ namespace Serendipity\Example\Game\Domain\Entity;
 use Serendipity\Domain\Support\Reflective\Attribute\Managed;
 use Serendipity\Domain\Support\Reflective\Attribute\Pattern;
 use Serendipity\Domain\Type\Timestamp;
+use Serendipity\Example\Game\Domain\Collection\Game\FeatureCollection;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
 
 class Game extends GameCommand
@@ -22,8 +23,15 @@ class Game extends GameCommand
         string $name,
         string $slug,
         Timestamp $publishedAt,
-        array $data = [],
+        array $data,
+        FeatureCollection $features,
     ) {
-        parent::__construct($name, $slug, $publishedAt, $data);
+        parent::__construct(
+            name: $name,
+            slug: $slug,
+            publishedAt: $publishedAt,
+            data: $data,
+            features: $features,
+        );
     }
 }

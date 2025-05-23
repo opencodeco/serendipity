@@ -14,7 +14,11 @@ class CreateGameInput extends Input
             'name' => ['required', 'string'],
             'slug' => ['required', 'string'],
             'published_at' => ['required', 'date'],
-            'data' => ['sometimes', 'array'],
+            'data' => ['required', 'array'],
+            'features' => ['required', 'array'],
+            'features.*.name' => ['required', 'string'],
+            'features.*.description' => ['required', 'string'],
+            'features.*.enabled' => ['required', 'boolean'],
         ];
     }
 }
