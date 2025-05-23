@@ -9,6 +9,7 @@ use ReflectionClass;
 use Serendipity\Domain\Support\Reflective\Factory\Ruler\MandatoryChain;
 use Serendipity\Domain\Support\Reflective\Ruleset;
 use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
+use Serendipity\Test\Testing\Stub\EntityStub;
 
 class MandatoryChainTest extends TestCase
 {
@@ -31,12 +32,12 @@ class MandatoryChainTest extends TestCase
         $chain = new MandatoryChain();
         $ruleset = new Ruleset();
 
-        $reflection = new ReflectionClass(GameCommand::class);
+        $reflection = new ReflectionClass(EntityStub::class);
         $constructor = $reflection->getConstructor();
         $parameters = $constructor->getParameters();
 
-        $chain->resolve($parameters[3], $ruleset);
+        $chain->resolve($parameters[7], $ruleset);
 
-        $this->assertEquals(['sometimes'], $ruleset->get('data'));
+        $this->assertEquals(['sometimes'], $ruleset->get('tags'));
     }
 }

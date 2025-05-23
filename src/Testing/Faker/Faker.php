@@ -14,6 +14,7 @@ use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Domain\Support\Set;
+use Serendipity\Testing\Faker\Resolver\FromCollection;
 use Serendipity\Testing\Faker\Resolver\FromDefaultValue;
 use Serendipity\Testing\Faker\Resolver\FromDependency;
 use Serendipity\Testing\Faker\Resolver\FromEnum;
@@ -83,6 +84,7 @@ class Faker extends Engine implements Contract
             $field = $this->casedField($parameter);
             $generated = (new FromDependency($this->notation))
                 ->then(new FromTypeDate($this->notation))
+                ->then(new FromCollection($this->notation))
                 ->then(new FromTypeBuiltin($this->notation))
                 ->then(new FromTypeAttributes($this->notation))
                 ->then(new FromEnum($this->notation))

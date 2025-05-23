@@ -6,6 +6,7 @@ namespace Serendipity\Infrastructure\Repository\Adapter;
 
 use DateTime;
 use DateTimeImmutable;
+use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\SerializerFactory;
 use Serendipity\Infrastructure\Repository\Formatter\MongoArrayToEntity;
@@ -20,6 +21,7 @@ class MongoSerializerFactory extends SerializerFactory
             Timestamp::class => new MongoTimestampToEntity(),
             DateTime::class => new MongoDateTimeToEntity(),
             DateTimeImmutable::class => new MongoDateTimeToEntity(),
+            Collection::class => new MongoArrayToEntity(),
             'array' => new MongoArrayToEntity(),
         ];
     }

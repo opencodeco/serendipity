@@ -40,8 +40,8 @@ class PostgresGameQueryRepositoryTest extends InfrastructureCase
 
     public function testGetGamesReturnsGameCollection(): void
     {
-        $this->seed(Game::class);
-        $this->seed(Game::class);
+        $this->seed(Game::class, ['slug' => 'game-1']);
+        $this->seed(Game::class, ['slug' => 'game-2']);
 
         $repository = $this->make(PostgresGameQueryRepository::class);
         $games = $repository->getGames();

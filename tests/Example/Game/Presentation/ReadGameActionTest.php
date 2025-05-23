@@ -11,6 +11,9 @@ use Serendipity\Presentation\Output\Fail\NotFound;
 use Serendipity\Presentation\Output\Ok;
 use Serendipity\Test\Example\Game\PresentationCase;
 
+use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Util\extractString;
+
 class ReadGameActionTest extends PresentationCase
 {
     protected function setUp(): void
@@ -30,8 +33,19 @@ class ReadGameActionTest extends PresentationCase
         $actual = $action($input);
 
         $this->assertInstanceOf(Ok::class, $actual);
-        $this->assertSame($values->get('id'), $actual->content()->id);
-        $this->assertSame($values->get('name'), $actual->content()->name);
+        $game = $actual->content();
+        $this->assertInstanceOf(Game::class, $game);
+        $this->assertSame($values->get('id'), $game->id);
+        $this->assertSame($values->get('name'), $game->name);
+
+        $features = arrayify($values->get('features'));
+        $names = array_map(
+            static fn (array $feature): string => extractString($feature, 'name'),
+            $features,
+        );
+        foreach ($game->features as $feature) {
+            $this->assertContains($feature->name, $names);
+        }
     }
 
     final public function testShouldReturnNotFound(): void

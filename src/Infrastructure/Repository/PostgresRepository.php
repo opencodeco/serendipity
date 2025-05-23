@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Serendipity\Infrastructure\Repository;
 
+use ReflectionException;
 use Serendipity\Domain\Exception\ManagedException;
 use Serendipity\Infrastructure\Database\Managed;
 use Serendipity\Infrastructure\Database\Relational\Connection;
 use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
+
+use function Serendipity\Type\Json\encode;
 
 abstract class PostgresRepository extends Repository
 {
@@ -29,6 +32,7 @@ abstract class PostgresRepository extends Repository
      * @param array<string,mixed> $default
      * @param array<string,string> $managed
      * @throws ManagedException
+     * @throws ReflectionException
      */
     protected function bindings(
         object $instance,
@@ -49,11 +53,14 @@ abstract class PostgresRepository extends Repository
             };
             $values[$field] = $value;
         }
-
-        return array_map(
-            static fn (string $field) => $values[$field] ?? null,
-            $fields
-        );
+        $callback = function (string $field) use ($values) {
+            $element = $values[$field] ?? null;
+            return match (true) {
+                is_scalar($element) => $element,
+                default => encode($element),
+            };
+        };
+        return array_map($callback, $fields);
     }
 
     /**
