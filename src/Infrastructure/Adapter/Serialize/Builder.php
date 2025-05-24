@@ -12,6 +12,7 @@ use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\AttributeValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\BackedEnumValue;
+use Serendipity\Infrastructure\Adapter\Serialize\Resolver\CollectionValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\DependencyValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\FormatValue;
 use Serendipity\Infrastructure\Adapter\Serialize\Resolver\NoValue;
@@ -82,7 +83,10 @@ class Builder extends Engine
                 ->then(new BackedEnumValue(notation: $this->notation, path: $nestedPath))
                 ->then(new TypeMatched(notation: $this->notation, path: $nestedPath))
                 ->then(new AttributeValue(notation: $this->notation, path: $nestedPath))
+                ->then(new CollectionValue(notation: $this->notation, path: $nestedPath))
+                ->then(new TypeMatched(notation: $this->notation, path: $nestedPath))
                 ->then(new FormatValue($this->notation, $this->formatters, $nestedPath))
+                ->then(new TypeMatched(notation: $this->notation, path: $nestedPath))
                 ->then(new NoValue(notation: $this->notation, path: $nestedPath))
                 ->resolve($parameter, $set);
 

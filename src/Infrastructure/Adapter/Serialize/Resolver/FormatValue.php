@@ -29,10 +29,11 @@ final class FormatValue extends ResolverTyped
         $field = $this->casedField($parameter);
         $value = $set->get($field);
 
-        $content = $formatter($value, $expected);
-
-        $resolved = $this->resolveReflectionParameterType($type, $content);
-        return $resolved
-            ?? $this->notResolvedAsTypeMismatch($expected, $this->detectValueType($content), $content);
+        $formatted = $formatter($value, $expected);
+        $resolved = $this->resolveReflectionParameterType($type, $formatted);
+        if ($resolved) {
+            return $resolved;
+        }
+        return parent::resolve($parameter, $set->with($field, $formatted));
     }
 }

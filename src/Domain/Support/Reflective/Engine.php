@@ -82,11 +82,8 @@ abstract class Engine extends Resolution
     protected function detectCollectionType(ReflectionClass $collection): ?string
     {
         $method = $collection->getMethod('current');
-        $returnType = $method->getReturnType();
-        if ($returnType && ! $returnType->isBuiltin()) {
-            return $returnType instanceof ReflectionNamedType ? $returnType->getName() : null;
-        }
-        return null;
+        $type = $method->getReturnType();
+        return $type instanceof ReflectionNamedType ? $type->getName() : null;
     }
 
     /**

@@ -64,10 +64,7 @@ final class FormatValueTest extends TestCase
 
         $value = $resolver->resolve($float, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
-        $this->assertEquals(
-            "The value for '*' must be of type 'float' and 'stdClass' was given.",
-            $value->content->message
-        );
+        $this->assertEquals("The value given for '*' is not supported.", $value->content->message);
 
         $value = $resolver->resolve($bool, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
@@ -111,10 +108,7 @@ final class FormatValueTest extends TestCase
 
         $value = $resolver->resolve($union, $set);
         $this->assertInstanceOf(NotResolved::class, $value->content);
-        $this->assertEquals(
-            "The value for '*' must be of type 'int|string' and 'bool' was given.",
-            $value->content->message
-        );
+        $this->assertEquals("The value given for '*' is not supported.", $value->content->message);
 
         $value = $resolver->resolve($intersection, $set);
         $this->assertInstanceOf(Intersected::class, $value->content);
