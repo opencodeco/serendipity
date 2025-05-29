@@ -25,6 +25,6 @@ class DependencyChain extends Chain
         if ($value instanceof BackedEnum) {
             return new Value($value->value);
         }
-        return new Value($this->demolish($value));
+        return new Value((array) $this->demolish($value));
     }
 }

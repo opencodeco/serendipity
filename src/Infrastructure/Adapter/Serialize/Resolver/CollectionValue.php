@@ -31,6 +31,8 @@ class CollectionValue extends Resolver
     }
 
     /**
+     * @template T of object
+     * @param class-string<T> $collectionName
      * @throws ReflectionException
      */
     private function resolveCollection(string $collectionName, mixed $value): Value

@@ -64,7 +64,7 @@ final class PostgresHelper extends AbstractHelper
         $query = sprintf('insert into "%s" (%s) values (%s)', $resource, $columns, $values);
         $callback = fn (mixed $element) => match (true) {
             is_scalar($element) => $element,
-            default => encode($element),
+            default => encode(arrayify($element)),
         };
         $bindings = array_map($callback, array_values($data));
 

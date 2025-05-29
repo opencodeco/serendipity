@@ -15,6 +15,7 @@ use Serendipity\Domain\Type\Timestamp;
 use Serendipity\Infrastructure\Adapter\Deserialize\Chain;
 
 use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\stringify;
 
 class CollectionChain extends Chain
 {
@@ -24,24 +25,31 @@ class CollectionChain extends Chain
     public function resolve(ReflectionParameter $parameter, mixed $value): Value
     {
         $candidate = $this->detectCollectionName($parameter);
-        if (! $candidate) {
+        $className = stringify($candidate);
+        if (! $candidate || ! is_subclass_of($className, Collection::class) || ! $value instanceof Collection) {
             return parent::resolve($parameter, $value);
         }
-        $reflection = new ReflectionClass($candidate);
-        if (! $reflection->isInstance($value)) {
-            return parent::resolve($parameter, $value);
-        }
-        return $this->resolveCollection($value);
+        return $this->resolveCollection($parameter, $className, $value);
     }
 
     /**
+     * @param Collection|class-string<Collection> $className
      * @throws ReflectionException
      */
-    private function resolveCollection(Collection $value): Value
+    private function resolveCollection(
+        ReflectionParameter $parameter,
+        Collection|string $className,
+        Collection $value
+    ): Value {
+        $reflection = new ReflectionClass($className);
+        if (! $reflection->isInstance($value)) {
+            return parent::resolve($parameter, $value);
+        }
+        return $this->resolveCollectionValue($value);
+    }
+
+    private function resolveCollectionValue(Collection $value): Value
     {
-        $callback = function (mixed $instance): array {
-            return arrayify($this->demolish($instance));
-        };
-        return new Value(array_map($callback, $value->all()));
+        return new Value($value->map(fn (object $instance): array => (array) $this->demolish($instance)));
     }
 }

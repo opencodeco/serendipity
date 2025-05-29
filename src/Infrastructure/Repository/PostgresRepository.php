@@ -57,7 +57,7 @@ abstract class PostgresRepository extends Repository
             $element = $values[$field] ?? null;
             return match (true) {
                 is_scalar($element) => $element,
-                default => encode($element),
+                default => json_encode($element),
             };
         };
         return array_map($callback, $fields);

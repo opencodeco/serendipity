@@ -24,8 +24,8 @@ final class DemolisherTest extends TestCase
         $instance = new GameCommand('Cool game', 'cool-game', $timestamp, [], new FeatureCollection());
         $values = $demolisher->demolish($instance);
 
-        $this->assertEquals('[Cool game]', $values['name']);
-        $this->assertEquals('[cool-game]', $values['slug']);
+        $this->assertEquals('[Cool game]', $values->name);
+        $this->assertEquals('[cool-game]', $values->slug);
     }
 
     public function testShouldNotUseInvalidNovaValueParameter(): void
@@ -42,7 +42,7 @@ final class DemolisherTest extends TestCase
             }
         };
         $values = $demolisher->demolish($instance);
-        $this->assertEmpty($values);
+        $this->assertEmpty(get_object_vars($values));
     }
 
     public function testShouldDemolishCollection(): void
@@ -77,10 +77,10 @@ final class DemolisherTest extends TestCase
 
         // Verify results
         $this->assertCount(2, $demolished);
-        $this->assertEquals('[Game 1]', $demolished[0]['name']);
-        $this->assertEquals('[game-1]', $demolished[0]['slug']);
-        $this->assertEquals('[Game 2]', $demolished[1]['name']);
-        $this->assertEquals('[game-2]', $demolished[1]['slug']);
+        $this->assertEquals('[Game 1]', $demolished[0]->name);
+        $this->assertEquals('[game-1]', $demolished[0]->slug);
+        $this->assertEquals('[Game 2]', $demolished[1]->name);
+        $this->assertEquals('[game-2]', $demolished[1]->slug);
     }
 
     public function testShouldHandleMixedItemsInCollection(): void
@@ -111,8 +111,8 @@ final class DemolisherTest extends TestCase
 
         // Verify results
         $this->assertCount(2, $demolished);
-        $this->assertEquals('[Game 1]', $demolished[0]['name']);
-        $this->assertEquals('[game-1]', $demolished[0]['slug']);
+        $this->assertEquals('[Game 1]', $demolished[0]->name);
+        $this->assertEquals('[game-1]', $demolished[0]->slug);
         $this->assertInstanceOf(stdClass::class, $demolished[1]);
     }
 }

@@ -8,6 +8,7 @@ use ReflectionException;
 use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
+use Serendipity\Domain\Support\Datum;
 use Serendipity\Domain\Support\Reflective\Engine;
 use Serendipity\Domain\Support\Reflective\Factory\Target;
 use Serendipity\Domain\Support\Set;
@@ -24,38 +25,16 @@ use function Serendipity\Type\Cast\arrayify;
 class Demolisher extends Engine
 {
     /**
-     * @return array<string, mixed>
      * @throws ReflectionException
      */
-    public function demolish(object $instance): array
+    public function demolish(object $instance): object
     {
+        if ($instance instanceof Datum) {
+            return $instance->export();
+        }
         $target = Target::createFrom($instance::class);
         $parameters = $target->getReflectionParameters();
-        if (empty($parameters)) {
-            return [];
-        }
-
-        $parameters = $target->getReflectionParameters();
-        $set = Set::createFrom($this->extractValues($instance));
-        $data = [];
-        foreach ($parameters as $parameter) {
-            $name = $parameter->getName();
-            if (! $set->has($name)) {
-                continue;
-            }
-
-            $resolved = (new DoNothingChain($this->notation))
-                ->then(new DependencyChain($this->notation))
-                ->then(new AttributeChain($this->notation))
-                ->then(new CollectionChain($this->notation))
-                ->then(new DateChain($this->notation))
-                ->then(new FormatterChain($this->notation, $this->formatters))
-                ->resolve($parameter, $set->get($name));
-
-            $field = $this->casedField($parameter);
-            $data[$field] = $resolved->content;
-        }
-        return $data;
+        return $this->resolveParameters($parameters, $target, $instance);
     }
 
     /**
@@ -82,5 +61,35 @@ class Demolisher extends Engine
             return (array) $instance->export();
         }
         return get_object_vars($instance);
+    }
+
+    protected function resolveParameters(array $parameters, Target $target, object $instance): object
+    {
+        if (empty($parameters)) {
+            return (object) [];
+        }
+
+        $parameters = $target->getReflectionParameters();
+        $data = $this->extractValues($instance);
+        $set = Set::createFrom($data);
+        $data = [];
+        foreach ($parameters as $parameter) {
+            $name = $parameter->getName();
+            if (! $set->has($name)) {
+                continue;
+            }
+
+            $resolved = (new DoNothingChain($this->notation))
+                ->then(new DependencyChain($this->notation))
+                ->then(new AttributeChain($this->notation))
+                ->then(new CollectionChain($this->notation))
+                ->then(new DateChain($this->notation))
+                ->then(new FormatterChain($this->notation, $this->formatters))
+                ->resolve($parameter, $set->get($name));
+
+            $field = $this->casedField($parameter);
+            $data[$field] = $resolved->content;
+        }
+        return (object) $data;
     }
 }

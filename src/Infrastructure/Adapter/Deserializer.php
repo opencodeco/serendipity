@@ -12,6 +12,7 @@ use Serendipity\Domain\Support\Reflective\Notation;
 use Serendipity\Infrastructure\Adapter\Deserialize\Demolisher;
 
 use function is_object;
+use function Serendipity\Type\Cast\mapify;
 
 /**
  * @template T of object
@@ -39,9 +40,11 @@ class Deserializer extends Demolisher implements Contract
     public function deserialize(mixed $instance): array
     {
         if (is_object($instance) && $instance::class !== $this->type) {
-            throw new InvalidArgumentException('Invalid instance type');
+            throw new InvalidArgumentException(
+                sprintf('Invalid instance type, expected: %s, got: %s', $this->type, $instance::class)
+            );
         }
 
-        return $this->demolish($instance);
+        return mapify($this->demolish($instance));
     }
 }

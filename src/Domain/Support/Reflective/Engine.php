@@ -41,11 +41,16 @@ abstract class Engine extends Resolution
             return $this->matchFormatter($formatter);
         }
         foreach ($this->formatters as $type => $formatter) {
-            if (is_string($type) && class_exists($candidate) && is_subclass_of($candidate, $type)) {
+            if ($this->isFormatter($type, $candidate)) {
                 return $this->matchFormatter($formatter);
             }
         }
         return null;
+    }
+
+    private function isFormatter(int|string $type, string $candidate): bool
+    {
+        return is_string($type) && class_exists($candidate) && is_subclass_of($candidate, $type);
     }
 
     protected function detectValueType(mixed $value): string
@@ -64,6 +69,9 @@ abstract class Engine extends Resolution
         return $type;
     }
 
+    /**
+     * @return class-string<Collection>|null
+     */
     protected function detectCollectionName(ReflectionParameter $parameter): ?string
     {
         $type = $parameter->getType();
@@ -77,13 +85,15 @@ abstract class Engine extends Resolution
     }
 
     /**
+     * @return class-string<object>|null
      * @throws ReflectionException
      */
     protected function detectCollectionType(ReflectionClass $collection): ?string
     {
         $method = $collection->getMethod('current');
         $type = $method->getReturnType();
-        return $type instanceof ReflectionNamedType ? $type->getName() : null;
+        $name = $type instanceof ReflectionNamedType ? $type->getName() : '';
+        return class_exists($name) ? $name : null;
     }
 
     /**

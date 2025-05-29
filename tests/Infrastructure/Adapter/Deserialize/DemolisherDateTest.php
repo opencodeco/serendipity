@@ -36,7 +36,7 @@ final class DemolisherDateTest extends TestCase
         $values = $demolisher->demolish($instance);
 
         // Assert
-        $this->assertEquals($timestamp->toString(), $values['created_at']);
+        $this->assertEquals($timestamp->toString(), $values->created_at);
     }
 
     public function testShouldDemolishWithDateTimeImmutable(): void
@@ -62,6 +62,6 @@ final class DemolisherDateTest extends TestCase
         $values = $demolisher->demolish($instance);
 
         // Assert
-        $this->assertEquals($dateTime->format(DateTimeInterface::ATOM), $values['updated_at']);
+        $this->assertEquals($dateTime->format(DateTimeInterface::ATOM), $values->updated_at);
     }
 }

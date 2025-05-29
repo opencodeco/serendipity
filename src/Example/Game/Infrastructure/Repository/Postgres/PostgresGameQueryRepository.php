@@ -25,7 +25,8 @@ class PostgresGameQueryRepository extends PostgresRepository implements GameQuer
     public function getGames(array $filters = []): GameCollection
     {
         /* @noinspection SqlNoDataSourceInspection, SqlResolve */
-        $query = 'select "id", "created_at", "updated_at", "name", "slug", "published_at", "data", "features" from "games"';
+        $query = 'select "id", "created_at", "updated_at", "name", "slug", "published_at", "data", "features" 
+                    from "games"';
         $data = $this->database->query($query);
         $serializer = $this->serializerFactory->make(Game::class);
         return $this->collection($serializer, $data, GameCollection::class);

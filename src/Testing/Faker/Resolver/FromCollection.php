@@ -32,11 +32,11 @@ final class FromCollection extends Resolver
     }
 
     /**
+     * @param class-string<Collection> $collectionName
      * @throws ReflectionException
      */
     private function resolveCollection(string $collectionName): Value
     {
-        /** @var Collection $collection */
         $reflection = new ReflectionClass($collectionName);
         $type = $this->detectCollectionType($reflection);
 
@@ -44,6 +44,7 @@ final class FromCollection extends Resolver
     }
 
     /**
+     * @param class-string<object> $type
      * @throws ReflectionException
      */
     private function resolveCollectionFake(string $type): array

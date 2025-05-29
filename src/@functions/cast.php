@@ -19,6 +19,27 @@ if (! function_exists(__NAMESPACE__ . '\arrayify')) {
     }
 }
 
+if (! function_exists(__NAMESPACE__ . '\mapify')) {
+    /**
+     * @param array<string, mixed> $default
+     * @return array<string, mixed>
+     */
+    function mapify(mixed $data, array $default = []): array
+    {
+        $data = match (true) {
+            is_object($data) => (array) $data,
+            is_array($data) => $data,
+            default => $default,
+        };
+        $mapping = [];
+        foreach ($data as $key => $datum) {
+            $key = is_string($key) ? $key : sprintf('key_%s', $key);
+            $mapping[$key] = $datum;
+        }
+        return $mapping;
+    }
+}
+
 if (! function_exists(__NAMESPACE__ . '\stringify')) {
     function stringify(mixed $value, string $default = ''): string
     {

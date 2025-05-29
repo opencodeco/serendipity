@@ -7,8 +7,13 @@ namespace Serendipity\Infrastructure\Repository;
 use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Adapter\Serializer;
 use Serendipity\Domain\Entity\Entity;
+use Serendipity\Domain\Support\Datum;
+use Throwable;
 
 use function Serendipity\Type\Cast\arrayify;
+use function Serendipity\Type\Cast\mapify;
+use function array_shift;
+use function array_merge;
 
 abstract class Repository
 {
@@ -25,7 +30,7 @@ abstract class Repository
         }
         $datum = array_shift($data);
         $datum = $this->toArray($datum);
-        $datum = array_merge($fixes, $datum);
+        $datum = mapify(array_merge($fixes, $datum));
         return $serializer->serialize($datum);
     }
 
@@ -35,12 +40,14 @@ abstract class Repository
      *
      * @return T
      */
-    protected function collection(Serializer $serializer, array $data, string $collection, array $fixes = []): mixed {
+    protected function collection(Serializer $serializer, array $data, string $collection, array $fixes = []): mixed
+    {
         $instance = new $collection();
         foreach ($data as $datum) {
             $datum = $this->toArray($datum);
-            $datum = array_merge($fixes, $datum);
-            $instance->push($serializer->serialize($datum));
+            $datum = mapify(array_merge($fixes, $datum));
+            $datum = $this->serialize($serializer, $datum);
+            $instance->push($datum);
         }
         return $instance;
     }
@@ -51,5 +58,17 @@ abstract class Repository
     protected function toArray(mixed $datum): array
     {
         return arrayify($datum);
+    }
+
+    /**
+     * @param array<string, mixed> $datum
+     */
+    private function serialize(Serializer $serializer, array $datum): object
+    {
+        try {
+            return $serializer->serialize($datum);
+        } catch (Throwable $exception) {
+            return new Datum($datum, $exception);
+        }
     }
 }
