@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Infrastructure\Adapter\Deserialize;
 
 use ReflectionException;
+use ReflectionParameter;
 use Serendipity\Domain\Collection\Collection;
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
@@ -66,6 +67,9 @@ class Demolisher extends Engine
         return get_object_vars($instance);
     }
 
+    /**
+     * @param array<ReflectionParameter> $parameters
+     */
     protected function resolveParameters(array $parameters, object $instance): object
     {
         $data = $this->extractValues($instance);

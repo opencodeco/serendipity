@@ -14,6 +14,8 @@ use MongoDB\Model\BSONDocument;
 use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Database\Managed;
 
+use function Serendipity\Type\Cast\mapify;
+
 abstract class MongoRepository extends Repository
 {
     protected readonly Collection $collection;
@@ -38,6 +40,9 @@ abstract class MongoRepository extends Repository
         return new UTCDateTime($dateTime->getTimestamp() * 1000);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function toArray(mixed $datum): array
     {
         return $this->transform
@@ -45,6 +50,9 @@ abstract class MongoRepository extends Repository
             : parent::toArray($datum);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function transform(mixed $datum): array
     {
         if ($datum instanceof BSONDocument || $datum instanceof BSONArray) {
@@ -52,11 +60,14 @@ abstract class MongoRepository extends Repository
         }
         if (is_array($datum)) {
             $this->transformRecursive($datum);
-            return $datum;
+            return mapify($datum);
         }
         return parent::toArray($datum);
     }
 
+    /**
+     * @SuppressWarnings(CyclomaticComplexity)
+     */
     private function transformRecursive(array &$array): void
     {
         foreach ($array as &$value) {
