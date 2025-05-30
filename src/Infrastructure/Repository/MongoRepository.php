@@ -11,6 +11,7 @@ use MongoDB\BSON\UTCDateTime;
 use MongoDB\Collection;
 use MongoDB\Model\BSONArray;
 use MongoDB\Model\BSONDocument;
+use Override;
 use Serendipity\Infrastructure\Database\Document\MongoFactory;
 use Serendipity\Infrastructure\Database\Managed;
 
@@ -43,11 +44,12 @@ abstract class MongoRepository extends Repository
     /**
      * @return array<string, mixed>
      */
-    protected function toArray(mixed $datum): array
+    #[Override]
+    protected function normalize(mixed $datum): array
     {
         return $this->transform
             ? $this->transform($datum)
-            : parent::toArray($datum);
+            : parent::normalize($datum);
     }
 
     /**
@@ -62,7 +64,7 @@ abstract class MongoRepository extends Repository
             $this->transformRecursive($datum);
             return mapify($datum);
         }
-        return parent::toArray($datum);
+        return parent::normalize($datum);
     }
 
     /**

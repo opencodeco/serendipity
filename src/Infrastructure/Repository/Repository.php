@@ -10,10 +10,8 @@ use Serendipity\Domain\Entity\Entity;
 use Serendipity\Domain\Support\Datum;
 use Throwable;
 
-use function array_merge;
 use function array_shift;
 use function Serendipity\Type\Cast\arrayify;
-use function Serendipity\Type\Cast\mapify;
 
 abstract class Repository
 {
@@ -23,14 +21,13 @@ abstract class Repository
      *
      * @return null|T
      */
-    protected function entity(Serializer $serializer, array $data, array $fixes = []): mixed
+    protected function entity(Serializer $serializer, array $data): mixed
     {
         if (empty($data)) {
             return null;
         }
         $datum = array_shift($data);
-        $datum = $this->toArray($datum);
-        $datum = mapify(array_merge($fixes, $datum));
+        $datum = $this->normalize($datum);
         return $serializer->serialize($datum);
     }
 
@@ -40,12 +37,12 @@ abstract class Repository
      *
      * @return T
      */
-    protected function collection(Serializer $serializer, array $data, string $collection, array $fixes = []): mixed
+    protected function collection(Serializer $serializer, array $data, string $collection): mixed
     {
         $instance = new $collection();
         foreach ($data as $datum) {
-            $datum = $this->toArray($datum);
-            $datum = mapify(array_merge($fixes, $datum));
+            $datum = $this->normalize($datum);
+            $datum = $this->normalize($datum);
             $datum = $this->serialize($serializer, $datum);
             $instance->push($datum);
         }
@@ -55,7 +52,7 @@ abstract class Repository
     /**
      * @return array<string, mixed>
      */
-    protected function toArray(mixed $datum): array
+    protected function normalize(mixed $datum): array
     {
         return arrayify($datum);
     }

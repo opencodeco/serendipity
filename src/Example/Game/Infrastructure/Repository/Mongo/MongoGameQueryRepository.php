@@ -44,11 +44,11 @@ class MongoGameQueryRepository extends MongoGameRepository implements GameQueryR
     /**
      * @return array<string, mixed>
      */
-    protected function toArray(mixed $datum): array
+    protected function normalize(mixed $datum): array
     {
         return match (true) {
             $datum instanceof BSONDocument => $datum->getArrayCopy(),
-            default => parent::toArray($datum),
+            default => parent::normalize($datum),
         };
     }
 }
