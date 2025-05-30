@@ -52,7 +52,7 @@ final class CollectionTest extends TestCase
     {
         // Arrange
         $collection = (new Collection())->unsafe(true);
-        $datum = new Datum([], new Exception());
+        $datum = new Datum(new Exception(), []);
 
         // Act
         $collection->push($datum);

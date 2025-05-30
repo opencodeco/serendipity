@@ -42,7 +42,6 @@ abstract class Repository
         $instance = new $collection();
         foreach ($data as $datum) {
             $datum = $this->normalize($datum);
-            $datum = $this->normalize($datum);
             $datum = $this->serialize($serializer, $datum);
             $instance->push($datum);
         }
@@ -65,7 +64,7 @@ abstract class Repository
         try {
             return $serializer->serialize($datum);
         } catch (Throwable $exception) {
-            return new Datum($datum, $exception);
+            return new Datum($exception, $datum);
         }
     }
 }
