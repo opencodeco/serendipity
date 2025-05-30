@@ -8,16 +8,13 @@ use DomainException;
 use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Support\Datum;
 
-use function Serendipity\Type\Cast\mapify;
-use function Serendipity\Type\Json\encode;
-
 /**
  * @template T
  * @extends AbstractCollection<T>
  */
 abstract class Collection extends AbstractCollection implements Exportable
 {
-    protected bool $strict = true;
+    protected bool $unsafe = false;
 
     final public function __construct()
     {
@@ -31,12 +28,9 @@ abstract class Collection extends AbstractCollection implements Exportable
 
     final public function push(object $datum): void
     {
-        if ($this->strict && $datum instanceof Datum) {
-            $message = sprintf(
-                "A mal formed entity was pushed, but the strict is active: %s",
-                encode(mapify($datum->export()))
-            );
-            throw new DomainException($message);
+        if ($this->unsafe && $datum instanceof Datum) {
+            $this->data[] = $datum;
+            return;
         }
         $this->data[] = $this->validate($datum);
     }

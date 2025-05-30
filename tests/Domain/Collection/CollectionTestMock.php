@@ -9,11 +9,9 @@ use Serendipity\Test\Domain\Collection\CollectionTestMockStub as Stub;
 
 final class CollectionTestMock extends Collection
 {
-    protected bool $strict = false;
-
-    public function setStrict(bool $strict): self
+    public function unsafe(bool $strict): self
     {
-        $this->strict = $strict;
+        $this->unsafe = $strict;
         return $this;
     }
 

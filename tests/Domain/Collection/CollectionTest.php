@@ -51,14 +51,14 @@ final class CollectionTest extends TestCase
     public function testShouldAllowNonStrictMode(): void
     {
         // Arrange
-        $collection = (new Collection())->setStrict(true);
-        $this->expectException(DomainException::class);
+        $collection = (new Collection())->unsafe(true);
+        $datum = new Datum([], new Exception());
 
         // Act
-        $collection->push(new Datum([], new Exception()));
+        $collection->push($datum);
 
         // Assert
         $this->assertCount(1, $collection);
-        $this->assertInstanceOf(stdClass::class, $collection->current());
+        $this->assertInstanceOf(Datum::class, $collection->all()[0]);
     }
 }

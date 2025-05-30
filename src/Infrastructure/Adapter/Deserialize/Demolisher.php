@@ -47,7 +47,7 @@ class Demolisher extends Engine
     public function demolishCollection(Collection $collection): array
     {
         $demolished = [];
-        foreach ($collection as $instance) {
+        foreach ($collection->all() as $instance) {
             if ($instance instanceof Exportable) {
                 $instance = $this->demolish($instance);
             }
