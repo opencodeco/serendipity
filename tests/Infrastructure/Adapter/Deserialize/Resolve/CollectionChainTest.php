@@ -19,9 +19,6 @@ final class CollectionChainTest extends TestCase
         // Arrange
         $type = $this->createMock(ReflectionNamedType::class);
         $type->expects($this->once())
-            ->method('isBuiltin')
-            ->willReturn(false);
-        $type->expects($this->once())
             ->method('getName')
             ->willReturn(FeatureCollection::class);
         $parameter = $this->createMock(ReflectionParameter::class);
@@ -45,9 +42,6 @@ final class CollectionChainTest extends TestCase
         $chain = new CollectionChain();
         $type = $this->createMock(ReflectionNamedType::class);
         $type->expects($this->once())
-            ->method('isBuiltin')
-            ->willReturn(false);
-        $type->expects($this->once())
             ->method('getName')
             ->willReturn(stdClass::class);
         $parameter = $this->createMock(ReflectionParameter::class);
@@ -68,9 +62,6 @@ final class CollectionChainTest extends TestCase
         // Arrange
         $chain = new CollectionChain();
         $type = $this->createMock(ReflectionNamedType::class);
-        $type->expects($this->once())
-            ->method('isBuiltin')
-            ->willReturn(false);
         $type->expects($this->once())
             ->method('getName')
             ->willReturn(GameCollection::class);

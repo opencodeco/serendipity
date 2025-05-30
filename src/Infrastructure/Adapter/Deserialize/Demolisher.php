@@ -34,7 +34,10 @@ class Demolisher extends Engine
         }
         $target = Target::createFrom($instance::class);
         $parameters = $target->getReflectionParameters();
-        return $this->resolveParameters($parameters, $target, $instance);
+        if (empty($parameters)) {
+            return (object) [];
+        }
+        return $this->resolveParameters($parameters, $instance);
     }
 
     /**
@@ -63,13 +66,8 @@ class Demolisher extends Engine
         return get_object_vars($instance);
     }
 
-    protected function resolveParameters(array $parameters, Target $target, object $instance): object
+    protected function resolveParameters(array $parameters, object $instance): object
     {
-        if (empty($parameters)) {
-            return (object) [];
-        }
-
-        $parameters = $target->getReflectionParameters();
         $data = $this->extractValues($instance);
         $set = Set::createFrom($data);
         $data = [];

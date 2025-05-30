@@ -9,6 +9,14 @@ use Serendipity\Test\Domain\Collection\CollectionTestMockStub as Stub;
 
 final class CollectionTestMock extends Collection
 {
+    protected bool $strict = false;
+
+    public function setStrict(bool $strict): self
+    {
+        $this->strict = $strict;
+        return $this;
+    }
+
     public function current(): Stub
     {
         return $this->validate($this->datum());

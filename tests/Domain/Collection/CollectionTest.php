@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Serendipity\Test\Domain\Collection;
 
 use DomainException;
+use Exception;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Support\Datum;
 use Serendipity\Test\Domain\Collection\CollectionTestMock as Collection;
 use Serendipity\Test\Domain\Collection\CollectionTestMockStub as Stub;
 use stdClass;
@@ -44,5 +46,19 @@ final class CollectionTest extends TestCase
         $this->assertCount(2, $exported);
         $this->assertSame($stub1, $exported[0]);
         $this->assertSame($stub2, $exported[1]);
+    }
+
+    public function testShouldAllowNonStrictMode(): void
+    {
+        // Arrange
+        $collection = (new Collection())->setStrict(true);
+        $this->expectException(DomainException::class);
+
+        // Act
+        $collection->push(new Datum([], new Exception()));
+
+        // Assert
+        $this->assertCount(1, $collection);
+        $this->assertInstanceOf(stdClass::class, $collection->current());
     }
 }

@@ -12,8 +12,6 @@ use Serendipity\Infrastructure\Database\Relational\ConnectionFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalDeserializerFactory;
 use Serendipity\Infrastructure\Repository\Adapter\RelationalSerializerFactory;
 
-use function Serendipity\Type\Json\encode;
-
 abstract class PostgresRepository extends Repository
 {
     protected readonly Connection $database;

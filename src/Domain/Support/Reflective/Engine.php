@@ -75,7 +75,7 @@ abstract class Engine extends Resolution
     protected function detectCollectionName(ReflectionParameter $parameter): ?string
     {
         $type = $parameter->getType();
-        if (! $type instanceof ReflectionNamedType || $type->isBuiltin()) {
+        if (! $type instanceof ReflectionNamedType) {
             return null;
         }
         $candidate = $type->getName();

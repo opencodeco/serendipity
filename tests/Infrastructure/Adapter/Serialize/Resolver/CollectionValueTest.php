@@ -26,9 +26,6 @@ final class CollectionValueTest extends TestCase
         // Arrange
         $type = $this->createMock(ReflectionNamedType::class);
         $type->expects($this->once())
-            ->method('isBuiltin')
-            ->willReturn(false);
-        $type->expects($this->once())
             ->method('getName')
             ->willReturn(FeatureCollection::class);
         $parameter = $this->createMock(ReflectionParameter::class);
@@ -61,9 +58,6 @@ final class CollectionValueTest extends TestCase
         // Arrange
         $type = $this->createMock(ReflectionNamedType::class);
         $type->expects($this->once())
-            ->method('isBuiltin')
-            ->willReturn(false);
-        $type->expects($this->once())
             ->method('getName')
             ->willReturn(FeatureCollection::class);
         $parameter = $this->createMock(ReflectionParameter::class);
@@ -92,9 +86,6 @@ final class CollectionValueTest extends TestCase
         // Arrange
         $chain = new CollectionValue();
         $type = $this->createMock(ReflectionNamedType::class);
-        $type->expects($this->once())
-            ->method('isBuiltin')
-            ->willReturn(false);
         $type->expects($this->once())
             ->method('getName')
             ->willReturn(stdClass::class);

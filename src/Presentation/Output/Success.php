@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serendipity\Presentation\Output;
 
-use Serendipity\Domain\Contract\Exportable;
 use Serendipity\Domain\Contract\Message;
 use Serendipity\Presentation\Output;
 

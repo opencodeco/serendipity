@@ -10,10 +10,10 @@ use Serendipity\Domain\Entity\Entity;
 use Serendipity\Domain\Support\Datum;
 use Throwable;
 
+use function array_merge;
+use function array_shift;
 use function Serendipity\Type\Cast\arrayify;
 use function Serendipity\Type\Cast\mapify;
-use function array_shift;
-use function array_merge;
 
 abstract class Repository
 {
