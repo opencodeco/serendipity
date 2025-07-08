@@ -11,11 +11,11 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Serendipity\Domain\Exception\Parser\AdditionalFactory;
+use Serendipity\Domain\Exception\Parser\ThrownFactory;
 use Serendipity\Hyperf\Event\HttpHandleInterrupted;
 use Serendipity\Hyperf\Event\HttpHandleStarted;
 use Serendipity\Hyperf\Listener\SentryHttpListener;
-use Serendipity\Infrastructure\Exception\AdditionalFactory;
-use Serendipity\Infrastructure\Exception\ThrownFactory;
 use stdClass;
 
 class SentryHttpListenerTest extends TestCase

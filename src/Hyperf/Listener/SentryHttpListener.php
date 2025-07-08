@@ -12,9 +12,9 @@ use Sentry\Dsn;
 use Sentry\HttpClient\HttpClientInterface;
 use Sentry\Integration\IntegrationInterface;
 use Sentry\State\Scope;
+use Serendipity\Domain\Exception\Parser\AdditionalFactory;
 use Serendipity\Hyperf\Event\HttpHandleInterrupted;
 use Serendipity\Hyperf\Event\HttpHandleStarted;
-use Serendipity\Infrastructure\Exception\AdditionalFactory;
 use Throwable;
 
 use function Sentry\captureException;

@@ -9,10 +9,10 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
+use Serendipity\Domain\Exception\Parser\AdditionalFactory;
+use Serendipity\Domain\Exception\Parser\Thrown;
+use Serendipity\Domain\Exception\Parser\ThrownFactory;
 use Serendipity\Domain\Exception\InvalidInputException;
-use Serendipity\Infrastructure\Exception\AdditionalFactory;
-use Serendipity\Infrastructure\Exception\Thrown;
-use Serendipity\Infrastructure\Exception\ThrownFactory;
 use Throwable;
 
 final class AdditionalFactoryTest extends TestCase

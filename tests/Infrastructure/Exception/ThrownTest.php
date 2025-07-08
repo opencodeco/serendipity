@@ -6,8 +6,8 @@ namespace Serendipity\Test\Infrastructure\Exception;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Exception\Parser\Thrown;
 use Serendipity\Hyperf\Testing\Extension\MakeExtension;
-use Serendipity\Infrastructure\Exception\Thrown;
 use Serendipity\Testing\Extension\FakerExtension;
 
 class ThrownTest extends TestCase

@@ -6,8 +6,8 @@ namespace Serendipity\Test\Infrastructure\Exception;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Serendipity\Domain\Exception\Parser\ThrownFactory;
 use Serendipity\Domain\Exception\ThrowableType;
-use Serendipity\Infrastructure\Exception\ThrownFactory;
 
 final class ThrownFactoryTest extends TestCase
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serendipity\Hyperf\Support;
 
 use Hyperf\Contract\ConfigInterface;
-use Serendipity\Infrastructure\Exception\ThrownFactory;
+use Serendipity\Domain\Exception\Parser\ThrownFactory;
 
 use function Serendipity\Type\Cast\arrayify;
 
