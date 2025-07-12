@@ -1,28 +1,29 @@
 # Serendipity Design Patterns
 
-This document describes the structure of elements found in the base code, specifically analyzing the components
-implemented in the `src/Example` directory.
+This document outlines the structure of elements intended for use in projects built with the Serendipity library. It
+focuses on the components provided in the `src/Example` directory, serving as practical references for implementation.
 
 ## Structure of Elements
 
-This guide describes the format of the components that can be used to implement the `Serendipity` pattern.
+This guide explains the expected structure of components that follow the `Serendipity` pattern and how they should be
+applied in consuming projects.
 
-#### Entity Pattern (Actual Implementation)
+#### Entity Pattern (Expected Usage)
 
-The project uses a different Entity pattern than traditional DDD. Entities use attributes for metadata and extend
-command classes.
+Serendipity defines a distinct Entity pattern that deviates from traditional DDD. Entities are constructed with metadata
+attributes and inherit from command-specific base classes.
 
 **Characteristics**:
 
-- Uses `#[Managed]` attributes for field management
-- Uses `#[Pattern]` attributes for validation
-- Extends command classes for separation of concerns
-- Integrates with base Entity class from the package
+* Uses `#[Managed]` attributes for field tracking
+* Uses `#[Pattern]` attributes for input validation
+* Extends command classes to separate write responsibilities
+* Inherits from the base `Entity` class provided by the library
 
-The entities are immutable and use constructor injection for dependencies. They are designed to encapsulate the business
-logic and be used in query operations.
+Entities are immutable, receive their dependencies through constructor injection, and are intended to encapsulate domain
+logic used in query operations.
 
-**Example location src/Domain/Entity/Example.php**:
+**Example from `src/Domain/Entity/Example.php`**:
 
 ```php
 <?php
@@ -66,10 +67,10 @@ class Example extends ExampleCommand
 
 #### Command Pattern
 
-Entities extend command classes that inherit from a base Entity class. The command entities are used to encapsulate the
-write operations.
+Entities extend command classes that inherit from a shared base. These command classes encapsulate write behavior and
+represent mutation-focused versions of the domain model.
 
-**Example location src/Domain/Entity/Command/ExampleCommand.php**:
+**Example from `src/Domain/Entity/Command/ExampleCommand.php`**:
 
 ```php
 <?php
@@ -97,9 +98,10 @@ class ExampleCommand extends Entity
 
 #### Collection Pattern
 
-Type-safe collections that extend a base Collection class with validation.
+Projects should implement type-safe collections by extending Serendipity’s base `Collection` class and applying item
+validation.
 
-**Example location src/Domain/Collection/ExampleCollection.php**:
+**Example from `src/Domain/Collection/ExampleCollection.php`**:
 
 ```php
 <?php
@@ -130,9 +132,10 @@ final class ExampleCollection extends Collection
 
 #### CQRS Repository Pattern
 
-Separate repositories for command and query operations.
+Projects should implement separate repositories for command (write) and query (read) concerns, following a CQRS
+architecture.
 
-**Command Repository from src/Domain/Repository/ExampleCommandRepository.php**:
+**Command repository in `src/Domain/Repository/ExampleCommandRepository.php`**:
 
 ```php
 <?php
@@ -155,7 +158,7 @@ interface ExampleCommandRepository
 }
 ```
 
-**Query Repository from src/Domain/Repository/ExampleQueryRepository.php**:
+**Query repository in `src/Domain/Repository/ExampleQueryRepository.php`**:
 
 ```php
 <?php
@@ -175,15 +178,12 @@ interface ExampleQueryRepository
 }
 ```
 
-### Health Components
-
-The `src/Example/Health` directory demonstrates action and input patterns:
-
 #### Action Pattern
 
-Readonly classes with dependency injection using the `__invoke` method.
+Actions are readonly classes that rely on constructor injection and expose a single `__invoke` method. They are commonly
+used in service layers or application logic.
 
-**Example location srcealth/HealthAction.php**:
+**Example from `src/Presentation/Action/HealthAction.php`**:
 
 ```php
 <?php
@@ -218,9 +218,10 @@ readonly class HealthAction
 
 #### Input Pattern
 
-Input classes that extend a base Input class with validation rules.
+Input classes extend Serendipity’s base `Input` class and define validation rules for structured data. They are designed
+to be used as typed argument objects for actions.
 
-**Example location `src/Presentation/Input/HealthInput.php`**:
+**Example from `src/Presentation/Input/HealthInput.php`**:
 
 ```php
 <?php
@@ -244,14 +245,14 @@ final class HealthInput extends Input
 
 ## Summary of Implemented Patterns
 
-The `src/` directory demonstrates the following patterns actually used in the project:
+The components within the `src/` directory exemplify the following architectural patterns provided by Serendipity:
 
-1. **Entity Pattern**: Using attributes for metadata and extending command classes
-2. **Command Pattern**: Separating entity concerns through command inheritance
-3. **Collection Pattern**: Type-safe collections with validation
-4. **CQRS Repository Pattern**: Separate command and query repositories
-5. **Action Pattern**: Readonly classes with `__invoke` method and dependency injection
-6. **Input Pattern**: Validation-enabled input classes extending base Input class
+1. **Entity Pattern** – Metadata via attributes and inheritance from command classes
+2. **Command Pattern** – Write-focused structure through command inheritance
+3. **Collection Pattern** – Type-safe, validated collection wrappers
+4. **CQRS Repository Pattern** – Separation of command and query interfaces
+5. **Action Pattern** – Readonly classes with constructor-based dependency injection and `__invoke` usage
+6. **Input Pattern** – Validation-enabled request objects extending a base Input class
 
-These patterns differ significantly from traditional DDD patterns and represent the actual architectural approach used
-in this Serendipity project.
+These patterns form the core architectural approach promoted by the Serendipity library and are intended to be followed
+consistently across consuming projects.
