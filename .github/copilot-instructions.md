@@ -1,27 +1,78 @@
-# Contributor Guidelines
+# Serendipity Development Guidelines
 
-## Language Standards
+> **Note**: This document has been reorganized for better structure and maintainability. The comprehensive development information is now organized across multiple specialized documents in the `.ai/` directory.
 
-- All comments and documentation must be written in English
-- Variable names, class names, and method names should follow English naming conventions
-- Never write comments in Portuguese in the codebase
-- Keep commit messages in English
-- When writing tests, use English for test method names and descriptions
-- Use English for PHPDoc blocks
+To get started with development, load these files at the beginning of each session:
+```
+/remember .ai/*.md
+```
+## Quick Reference
 
-## Code Documentation
+For detailed development information, please refer to the following documents:
 
-- Use clear, concise English in all comments
-- Document public APIs with complete PHPDoc blocks
-- Avoid unnecessary comments that simply restate what the code does
-- Focus on explaining the "why" rather than the "what" in comments
-- For complex logic, include English explanation of the algorithm or approach
+### 🚀 [Quick Start Guide](.ai/quickstart.md)
+**Start here if you're new to the project**
+- Complete setup instructions (5-minute setup)
+- Prerequisites and environment configuration
+- Essential commands for daily development
+- Troubleshooting common issues
 
-## Process
+### 📋 [Development Guidelines](.ai/guidelines.md)
+**Comprehensive development standards and practices**
+- Code quality and style guidelines
+- Testing standards and best practices
+- Coroutine-based development guidelines
+- Development workflow and daily commands
 
-- When reviewing code, ensure all comments are in English
-- If translating legacy comments from Portuguese, ensure accuracy of technical meaning
-- When discussing code in pull requests, use English
-- Keep English documentation up to date with code changes
+### 🏗️ [Project Context](.ai/context.md)
+**Understanding the project architecture and technology stack**
+- Project overview and technology stack
+- Architecture principles and development philosophy
+- Project structure and external references
+- Hyperf framework context and resources
 
-This ensures our codebase remains accessible to all developers regardless of language background.
+### 🎯 [Design Patterns](.ai/patterns.md)
+**Architectural and coding patterns used in the project**
+- Architectural patterns (DI, Repository, AOP)
+- Domain-driven design patterns
+- Coroutine patterns and testing patterns
+- Error handling and performance patterns
+
+### 📝 [Architectural Decisions](.ai/decisions.md)
+**Understanding the rationale behind technical choices**
+- Framework and technology selection decisions
+- Testing strategy and code quality decisions
+- Development workflow and infrastructure decisions
+- Security and performance considerations
+
+## Most Common Tasks
+
+### Quick Setup
+```bash
+# Complete project setup
+make setup
+
+# Start development
+make up
+```
+
+### Daily Development
+```bash
+# Fix code style
+make fix
+
+# Check code quality
+make lint
+
+# Run tests
+make test
+```
+
+### Getting Help
+- Check the [Quick Start Guide](.ai/quickstart.md) for setup issues
+- Review [Development Guidelines](.ai/guidelines.md) for coding standards
+- Consult [Design Patterns](.ai/patterns.md) for implementation guidance
+
+---
+
+**For the complete development experience, start with the [Quick Start Guide](.ai/quickstart.md) and then explore the other documents as needed.**
