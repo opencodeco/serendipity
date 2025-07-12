@@ -167,81 +167,141 @@ declare(strict_types=1);
 
 namespace App\Example\Domain\Repository;
 
-use App\Example\Domain\Collection\ExampleCollection;
 use App\Example\Domain\Entity\Example;
+use App\Example\Domain\Collection\ExampleCollection;
 
 interface ExampleQueryRepository
 {
-    public function getExample(string $id): ?Example;
-
-    public function getExamples(array $filters = []): ExampleCollection;
+    public function findById(string $id): ?Example;
+    public function findAll(): ExampleCollection;
 }
 ```
 
-#### Action Pattern
+---
 
-Actions are readonly classes that rely on constructor injection and expose a single `__invoke` method. They are commonly
-used in service layers or application logic.
+### Input Pattern
 
-**Example from `src/Presentation/Action/HealthAction.php`**:
+Input classes in Serendipity encapsulate and validate incoming data for use cases such as commands, queries, or API endpoints. They extend the base `Input` class and define a `rules()` method that specifies validation rules for each field, following a convention similar to Laravel's validation system. This approach ensures consistent, reusable, and testable input validation across the application.
 
+**Characteristics:**
+
+- Extend the base `Input` class
+- Define a `rules()` method returning an array of validation rules
+- Support for required, optional, and nested fields
+- Used for both write (command) and read (query/search) actions
+
+**Examples:**
+
+*ExampleCreateInput (for write actions):*
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace App\Health;
-
-use Psr\Log\LoggerInterface;
-
-readonly class HealthAction
-{
-    public function __construct(private LoggerInterface $logger)
-    {
-    }
-
-    public function __invoke(HealthInput $input): string
-    {
-        $value = $input->value('message', 'Kicking ass and taking names!');
-        $this->logger->emergency(sprintf('Health action message using emergency: %s', $value));
-        $this->logger->alert(sprintf('Health action message using alert: %s', $value));
-        $this->logger->critical(sprintf('Health action message using critical: %s', $value));
-        $this->logger->error(sprintf('Health action message using error: %s', $value));
-        $this->logger->warning(sprintf('Health action message using warning: %s', $value));
-        $this->logger->notice(sprintf('Health action message using notice: %s', $value));
-        $this->logger->info(sprintf('Health action message using info: %s', $value));
-        $this->logger->debug(sprintf('Health action message using debug: %s', $value));
-        return $value;
-    }
-}
-```
-
-#### Input Pattern
-
-Input classes extend Serendipity’s base `Input` class and define validation rules for structured data. They are designed
-to be used as typed argument objects for actions.
-
-**Example from `src/Presentation/Input/HealthInput.php`**:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Health;
+namespace App\Example\Presentation\Input;
 
 use Serendipity\Presentation\Input;
 
-final class HealthInput extends Input
+class ExampleCreateInput extends Input
 {
     public function rules(): array
     {
         return [
-            'message' => 'sometimes|string',
+            'name' => ['required', 'string'],
+            'slug' => ['required', 'string'],
+            'published_at' => ['required', 'date'],
+            'data' => ['required', 'array'],
+            'features' => ['required', 'array'],
+            'features.*.name' => ['required', 'string'],
+            'features.*.description' => ['required', 'string'],
+            'features.*.enabled' => ['required', 'boolean'],
         ];
     }
 }
 ```
+
+*ExampleReadInput (for query/read actions):*
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Example\Presentation\Input;
+
+use Serendipity\Presentation\Input;
+
+class ExampleReadInput extends Input
+{
+    public function rules(): array
+    {
+        return [
+            'id' => 'required|string',
+        ];
+    }
+}
+```
+
+*ExampleSearchInput (for search/filter actions):*
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Example\Presentation\Input;
+
+use Serendipity\Presentation\Input;
+
+class ExampleSearchInput extends Input
+{
+    public function rules(): array
+    {
+        return [
+            'name' => ['sometimes', 'string'],
+            'slug' => ['sometimes', 'string'],
+        ];
+    }
+}
+```
+
+These input classes are typically used in controllers or handlers to validate incoming request data before passing it to domain services or repositories.
+
+---
+
+### Example Usage: Query and Write Actions
+
+#### Query (Read) Action Example
+
+```php
+// Querying an entity by ID using the query repository
+$example = $exampleQueryRepository->findById($id);
+if ($example !== null) {
+    // Use the entity for read-only operations
+    echo $example->id;
+    echo $example->name;
+}
+```
+
+#### Write (Command) Action Example
+
+```php
+// Creating a new entity using input and command repository
+$input = new ExampleInput(
+    name: 'Sample',
+    slug: 'sample',
+    publishedAt: new Timestamp(),
+    data: ['foo' => 'bar'],
+);
+$command = new ExampleCommand(
+    name: $input->name,
+    slug: $input->slug,
+    publishedAt: $input->publishedAt,
+    data: $input->data,
+    features: new FeatureCollection([]),
+);
+$newId = $exampleCommandRepository->create($command);
+```
+
+---
 
 ## Summary of Implemented Patterns
 
