@@ -177,9 +177,7 @@ interface ExampleQueryRepository
 }
 ```
 
----
-
-### Input Pattern
+#### Input Pattern
 
 Input classes in Serendipity encapsulate and validate incoming data for use cases such as commands, queries, or API endpoints. They extend the base `Input` class and define a `rules()` method that specifies validation rules for each field, following a convention similar to Laravel's validation system. This approach ensures consistent, reusable, and testable input validation across the application.
 
@@ -190,9 +188,8 @@ Input classes in Serendipity encapsulate and validate incoming data for use case
 - Support for required, optional, and nested fields
 - Used for both write (command) and read (query/search) actions
 
-**Examples:**
+**Create input for write actions in `src/Presentation/Input/ExampleCreateInput.php`**:
 
-*ExampleCreateInput (for write actions):*
 ```php
 <?php
 
@@ -220,7 +217,8 @@ class ExampleCreateInput extends Input
 }
 ```
 
-*ExampleReadInput (for query/read actions):*
+**Read input for query actions in `src/Presentation/Input/ExampleReadInput.php`**:
+
 ```php
 <?php
 
@@ -241,7 +239,8 @@ class ExampleReadInput extends Input
 }
 ```
 
-*ExampleSearchInput (for search/filter actions):*
+**Search input for filter actions in `src/Presentation/Input/ExampleSearchInput.php`**:
+
 ```php
 <?php
 
@@ -263,45 +262,86 @@ class ExampleSearchInput extends Input
 }
 ```
 
-These input classes are typically used in controllers or handlers to validate incoming request data before passing it to domain services or repositories.
+#### Action Pattern
 
----
+Actions in Serendipity are readonly classes that encapsulate business logic for specific use cases. They follow the single responsibility principle and use constructor-based dependency injection with an `__invoke` method for execution.
 
-### Example Usage: Query and Write Actions
+**Characteristics:**
 
-#### Query (Read) Action Example
+- Readonly classes with constructor dependency injection
+- Implement `__invoke` method that takes an Input and returns a Message
+- Separate actions for command (write) and query (read) operations
+- Use appropriate repositories and return structured responses
+
+**Write action in `src/Presentation/Action/CreateExampleAction.php`**:
 
 ```php
-// Querying an entity by ID using the query repository
-$example = $exampleQueryRepository->findById($id);
-if ($example !== null) {
-    // Use the entity for read-only operations
-    echo $example->id;
-    echo $example->name;
+<?php
+
+declare(strict_types=1);
+
+namespace Serendipity\Example\Game\Presentation\Action;
+
+use Serendipity\Domain\Contract\Message;
+use Serendipity\Domain\Exception\ManagedException;
+use Serendipity\Example\Game\Domain\Entity\Command\GameCommand;
+use Serendipity\Example\Game\Domain\Repository\GameCommandRepository;
+use Serendipity\Example\Game\Presentation\Input\CreateGameInput;
+use Serendipity\Infrastructure\Adapter\Serialize\Builder;
+use Serendipity\Presentation\Output\Accepted;
+
+readonly class CreateGameAction
+{
+    public function __construct(
+        private Builder $builder,
+        private GameCommandRepository $gameCommandRepository,
+    ) {
+    }
+
+    /**
+     * @throws ManagedException
+     */
+    public function __invoke(CreateGameInput $input): Message
+    {
+        $game = $this->builder->build(GameCommand::class, $input->values());
+        $id = $this->gameCommandRepository->create($game);
+        return Accepted::createFrom($id);
+    }
 }
 ```
 
-#### Write (Command) Action Example
+**Read action in `src/Presentation/Action/ReadExampleAction.php`**:
 
 ```php
-// Creating a new entity using input and command repository
-$input = new ExampleInput(
-    name: 'Sample',
-    slug: 'sample',
-    publishedAt: new Timestamp(),
-    data: ['foo' => 'bar'],
-);
-$command = new ExampleCommand(
-    name: $input->name,
-    slug: $input->slug,
-    publishedAt: $input->publishedAt,
-    data: $input->data,
-    features: new FeatureCollection([]),
-);
-$newId = $exampleCommandRepository->create($command);
-```
+<?php
 
----
+declare(strict_types=1);
+
+namespace Serendipity\Example\Game\Presentation\Action;
+
+use Serendipity\Domain\Contract\Message;
+use Serendipity\Example\Game\Domain\Entity\Game;
+use Serendipity\Example\Game\Domain\Repository\GameQueryRepository;
+use Serendipity\Example\Game\Presentation\Input\ReadGameInput;
+use Serendipity\Presentation\Output\Fail\NotFound;
+use Serendipity\Presentation\Output\Ok;
+
+readonly class ReadGameAction
+{
+    public function __construct(private GameQueryRepository $gameQueryRepository)
+    {
+    }
+
+    public function __invoke(ReadGameInput $input): Message
+    {
+        $id = $input->value('id', '');
+        $game = $this->gameQueryRepository->getGame($id);
+        return $game
+            ? Ok::createFrom($game)
+            : NotFound::createFrom(Game::class, $id);
+    }
+}
+```
 
 ## Summary of Implemented Patterns
 
